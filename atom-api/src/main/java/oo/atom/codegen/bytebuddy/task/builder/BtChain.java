@@ -32,6 +32,7 @@ import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
 /**
  *
  * @author Kapralov Sergey
+ * @todo #1:15m/DEV BtChain class must be outlined to a common task implementation
  */
 public class BtChain implements BuilderTask {
     private final DynamicType.Builder<?> builder;

@@ -32,6 +32,7 @@ import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
 /**
  *
  * @author Kapralov Sergey
+ * @todo #1:15m/DEV SmtChain class must be outlined to a common task implementation
  */
 public class SmtChain implements StackManipulationTask {
     private final StackManipulation sm;
