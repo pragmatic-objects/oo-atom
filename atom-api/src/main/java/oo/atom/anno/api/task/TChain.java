@@ -21,16 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.builder;
+package oo.atom.anno.api.task;
 
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.api.task.TaskLink;
+import javaslang.collection.List;
+import javaslang.control.Option;
 import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public interface BuilderTaskLink extends TaskLink<DynamicType.Builder<?>, BuilderTaskResult> {
+public class TChain<V, R extends TaskResult<? extends V>, L extends TaskLink<V, R>> implements Task<V, R> {
+    private final R value;
+    private final List<L> links;
+
+    public TChain(R value, List<L> links) {
+        this.value = value;
+        this.links = links;
+    }
+
+    @Override
+    public R result() {
+        return links.<R>foldLeft(value, (smtr, smtl) -> {
+            Option<Task<V, R>> taskOpt = smtr.item().map(smtl::task);
+            return taskOpt.map(Task::result).getOrElse(smtr);
+        });
+    }
 }

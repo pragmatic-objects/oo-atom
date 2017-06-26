@@ -21,16 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.builder;
+package oo.atom.anno.api.task;
 
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.api.task.TaskLink;
 import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public interface BuilderTaskLink extends TaskLink<DynamicType.Builder<?>, BuilderTaskResult> {
+public interface TaskLink<V, R extends TaskResult<? extends V>> {
+    Task<V, R> task(V value);
 }

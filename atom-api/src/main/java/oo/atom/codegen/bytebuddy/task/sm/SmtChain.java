@@ -24,34 +24,24 @@
 package oo.atom.codegen.bytebuddy.task.sm;
 
 import javaslang.collection.List;
-import javaslang.control.Option;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.api.task.TChain;
 import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
 import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
 
 /**
  *
  * @author Kapralov Sergey
- * @todo #1:15m/DEV SmtChain class must be outlined to a common task implementation
  */
-public class SmtChain implements StackManipulationTask {
-    private final StackManipulation sm;
-    private final List<StackManipulationTaskLink> links;
-
+public class SmtChain extends TChain<StackManipulation, StackManipulationTaskResult, StackManipulationTaskLink> implements StackManipulationTask {
     public SmtChain(StackManipulation sm, List<StackManipulationTaskLink> links) {
-        this.sm = sm;
-        this.links = links;
+        super(
+                new SmtrSuccess(sm),
+                links
+        );
     }
     
     public SmtChain(StackManipulation sm, StackManipulationTaskLink... links) {
         this(sm, List.of(links));
-    }
-    
-    @Override
-    public StackManipulationTaskResult result() {
-        return links.<StackManipulationTaskResult>foldLeft(new SmtrSuccess(sm), (smtr, smtl) -> {
-            Option<StackManipulationTask> taskOpt = smtr.item().map(smtl::task);
-            return taskOpt.map(StackManipulationTask::result).getOrElse(smtr);
-        });
     }
 }

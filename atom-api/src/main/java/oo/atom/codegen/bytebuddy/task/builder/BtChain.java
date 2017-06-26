@@ -24,35 +24,24 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import javaslang.collection.List;
-import javaslang.control.Option;
 import net.bytebuddy.dynamic.DynamicType;
+import oo.atom.anno.api.task.TChain;
 import oo.atom.codegen.bytebuddy.task.builder.result.BtrSuccess;
 import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
 
 /**
  *
  * @author Kapralov Sergey
- * @todo #1:15m/DEV BtChain class must be outlined to a common task implementation
  */
-public class BtChain implements BuilderTask {
-    private final DynamicType.Builder<?> builder;
-    private final List<BuilderTaskLink> links;
-
+public class BtChain extends TChain<DynamicType.Builder<?>, BuilderTaskResult, BuilderTaskLink> implements BuilderTask {
     public BtChain(DynamicType.Builder<?> builder, List<BuilderTaskLink> links) {
-        this.builder = builder;
-        this.links = links;
+        super(
+            new BtrSuccess(builder),
+            links
+        );
     }
     
     public BtChain(DynamicType.Builder<?> builder, BuilderTaskLink... links) {
         this(builder, List.of(links));
-    }
-    
-
-    @Override
-    public BuilderTaskResult result() {
-        return links.<BuilderTaskResult>foldLeft(new BtrSuccess(builder), (btr, btl) -> {
-            Option<BuilderTask> taskOpt = btr.item().map(btl::task);
-            return taskOpt.map(BuilderTask::result).getOrElse(btr);
-        });
     }
 }
