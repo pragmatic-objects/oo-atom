@@ -23,8 +23,7 @@
  */
 package oo.atom.anno.api.task.result;
 
-import javaslang.control.Option;
-import static org.assertj.core.api.Assertions.*;
+import oo.atom.anno.api.task.result.assertions.ATaskResultsAreSame;
 import org.junit.Test;
 
 /**
@@ -33,30 +32,27 @@ import org.junit.Test;
  */
 public class TrCombinationTest {
     @Test
-    public void errorCase() {
-        assertThat(
-            new TrCombination<>(
-                    new TrSuccess<>(0),
-                    (a, b) -> a + b,
-                    new TrSuccess<>(2),
-                    new TrSuccess<>(2),
-                    new TrFailure<Integer>()
-            ).item()
-        ).isEqualTo(
-                Option.none()
-        );
+    public void errorCase() throws Exception {
+        new ATaskResultsAreSame<>(
+                new TrCombination<>(
+                        new TrSuccess<>(0),
+                        (a, b) -> a + b,
+                        new TrSuccess<>(2),
+                        new TrSuccess<>(2),
+                        new TrFailure<>()
+                ),
+                new TrFailure<>()
+        ).run();
     }
-    
+
     @Test
-    public void empty() {
-        assertThat(
-            new TrCombination<Integer>(
-                    new TrSuccess<>(0),
-                    (a, b) -> a + b
-            ).item()
-        ).isEqualTo(
-                Option.of(0)
-        );
+    public void emptyCombinationIsSameAsItsDefaultResult() throws Exception {
+        new ATaskResultsAreSame<>(
+                new TrCombination<Integer>(
+                        new TrSuccess<>(0),
+                        (a, b) -> a + b
+                ),
+                new TrSuccess<>(0)
+        ).run();
     }
-    
 }
