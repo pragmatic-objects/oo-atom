@@ -45,8 +45,9 @@ public class SmtFieldsEquality extends SmtDerived {
                 return new SmtCombined(
                         List.of(type)
                             .flatMap(TypeDescription::getDeclaredFields)
-                            .map(f -> new SmtAtomFieldEquality(type, f))
-                            .toJavaArray(SmtAtomFieldEquality.class)
+                            .filter(f -> !f.isStatic())
+                            .map(f -> new SmtFieldEquality(type, f))
+                            .toJavaArray(SmtFieldEquality.class)
                 );
             }
         });
