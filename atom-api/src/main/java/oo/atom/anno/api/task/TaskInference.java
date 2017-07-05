@@ -21,23 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.builder;
+package oo.atom.anno.api.task;
 
-import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
+import oo.atom.anno.Atom;
+import oo.atom.anno.api.task.result.TaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtDerived implements BuilderTask {
-    private final BuilderTaskDerivative derivative;
-
-    public BtDerived(BuilderTaskDerivative derivative) {
-        this.derivative = derivative;
-    }
-
-    @Override
-    public BuilderTaskResult result() {
-        return derivative.task().result();
-    }
+@Atom
+public interface TaskInference<V, R extends TaskResult<? extends V>> {
+    Task<V, R> task();
 }

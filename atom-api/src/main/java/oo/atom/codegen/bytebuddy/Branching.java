@@ -28,23 +28,26 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
+import oo.atom.anno.Atom;
 
 /**
  *
  * @author Kapralov Sergey
  */
+@Atom
 public interface Branching extends StackManipulation {
+    @Atom
     interface Derivative {
         Branching branching();
     }
     
-    abstract class Abstract implements Branching {
+    class Base implements Branching {
         private final int sizeImpact;
         private final int maxSize;
         private final Label label;
         private final int opcode;
 
-        public Abstract(int sizeImpact, int maxSize, Label label, int opcode) {
+        public Base(int sizeImpact, int maxSize, Label label, int opcode) {
             this.sizeImpact = sizeImpact;
             this.maxSize = maxSize;
             this.label = label;
@@ -101,13 +104,13 @@ public interface Branching extends StackManipulation {
         }
     }
     
-    class IfNe extends Abstract {
+    class IfNe extends Base {
         public IfNe(Label label) {
             super(-1, 0, label, Opcodes.IFNE);
         }
     }
     
-    class IfEq extends Abstract {
+    class IfEq extends Base {
         public IfEq(Label label) {
             super(-1, 0, label, Opcodes.IFEQ);
         }
@@ -124,13 +127,13 @@ public interface Branching extends StackManipulation {
         }
     }
 
-    class IfIcmpNe extends Abstract {
+    class IfIcmpNe extends Base {
         public IfIcmpNe(Label label) {
             super(-2, 0, label, Opcodes.IF_ICMPNE);
         }
     }
 
-    class IfIcmpEq extends Abstract {
+    class IfIcmpEq extends Base {
         public IfIcmpEq(Label label) {
             super(-2, 0, label, Opcodes.IF_ICMPEQ);
         }
@@ -147,13 +150,13 @@ public interface Branching extends StackManipulation {
         }
     }
 
-    class IfAcmpNe extends Abstract {
+    class IfAcmpNe extends Base {
         public IfAcmpNe(Label label) {
             super(-2, 0, label, Opcodes.IF_ACMPNE);
         }
     }
 
-    class IfAcmpEq extends Abstract {
+    class IfAcmpEq extends Base {
         public IfAcmpEq(Label label) {
             super(-2, 0, label, Opcodes.IF_ACMPEQ);
         }
@@ -170,13 +173,13 @@ public interface Branching extends StackManipulation {
         }
     }
 
-    class IfNonNull extends Abstract {
+    class IfNonNull extends Base {
         public IfNonNull(Label label) {
             super(-1, 0, label, Opcodes.IFNONNULL);
         }
     }
     
-    class IfNull extends Abstract {
+    class IfNull extends Base {
         public IfNull(Label label) {
             super(-1, 0, label, Opcodes.IFNULL);
         }

@@ -30,9 +30,9 @@ import net.bytebuddy.dynamic.DynamicType;
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends BtDerived implements BuilderTask {
+public class BtApplyPatch extends BtInferred implements BuilderTask {
     public BtApplyPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
-        super(new BuilderTaskDerivative() {
+        super(new BuilderTaskInference() {
             @Override
             public BuilderTask task() {
                 return new BtChain(

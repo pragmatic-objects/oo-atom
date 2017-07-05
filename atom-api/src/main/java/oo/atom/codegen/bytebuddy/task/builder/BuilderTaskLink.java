@@ -24,13 +24,14 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.dynamic.DynamicType;
+import oo.atom.anno.Atom;
 import oo.atom.anno.api.task.TaskLink;
-import oo.atom.anno.api.task.result.TaskResult;
 import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
+@Atom
 public interface BuilderTaskLink extends TaskLink<DynamicType.Builder<?>, BuilderTaskResult> {
 }

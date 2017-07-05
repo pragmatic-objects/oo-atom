@@ -41,12 +41,7 @@ import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
 public class AtomPlugin implements Plugin {
     @Override
     public DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription td) {
-        BuilderTaskResult result = new Supplier<BtApplyPatch>() {
-            @Override
-            public BtApplyPatch get() {
-                return new BtApplyPatch(builder, td);
-            }
-        }.get().result();
+        BuilderTaskResult result = new BtApplyPatch(builder, td).result();
         return result.item().getOrElseThrow(() -> new RuntimeException(
                 new IssuesFoundException(result.issues().toJavaArray(Issue.class))
         ));

@@ -21,14 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.anno.api.task;
+package oo.atom.codegen.bytebuddy.task.builder;
 
-import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.Atom;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public interface TaskDerivative<V, R extends TaskResult<? extends V>> {
-    Task<V, R> task();
+@Atom
+public interface BuilderTaskInference {
+    BuilderTask task();
 }

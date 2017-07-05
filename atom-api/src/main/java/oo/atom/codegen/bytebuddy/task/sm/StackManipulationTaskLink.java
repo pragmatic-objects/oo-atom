@@ -24,6 +24,7 @@
 package oo.atom.codegen.bytebuddy.task.sm;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.Atom;
 import oo.atom.anno.api.task.TaskLink;
 import oo.atom.anno.api.task.result.TaskResult;
 import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
@@ -32,5 +33,6 @@ import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
  *
  * @author Kapralov Sergey
  */
+@Atom
 public interface StackManipulationTaskLink extends TaskLink<StackManipulation, StackManipulationTaskResult> {
 }

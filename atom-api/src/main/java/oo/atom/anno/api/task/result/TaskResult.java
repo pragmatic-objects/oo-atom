@@ -27,12 +27,14 @@ import oo.atom.anno.api.task.issue.Issue;
 import java.util.function.BinaryOperator;
 import javaslang.collection.List;
 import javaslang.control.Option;
+import oo.atom.anno.Atom;
 import oo.atom.anno.api.task.issue.Issue;
 
 /**
  *
  * @author Kapralov Sergey
  */
+@Atom
 public interface TaskResult<T> {
 
     Option<T> item();

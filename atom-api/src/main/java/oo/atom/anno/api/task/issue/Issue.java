@@ -23,10 +23,13 @@
  */
 package oo.atom.anno.api.task.issue;
 
+import oo.atom.anno.Atom;
+
 /**
  *
  * @author Kapralov Sergey
  */
+@Atom
 public interface Issue {
     @Override
     String toString();

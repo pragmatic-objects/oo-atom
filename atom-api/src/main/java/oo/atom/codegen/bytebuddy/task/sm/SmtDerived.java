@@ -24,16 +24,14 @@
 package oo.atom.codegen.bytebuddy.task.sm;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.anno.api.task.TDerived;
-import oo.atom.anno.api.task.TaskDerivative;
-import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.TInferred;
 import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtDerived extends TDerived<StackManipulation, StackManipulationTaskResult> implements StackManipulationTask {
+public class SmtDerived extends TInferred<StackManipulation, StackManipulationTaskResult> implements StackManipulationTask {
     public SmtDerived(StackManipulationTaskDerivative derivative) {
         super(derivative);
     }

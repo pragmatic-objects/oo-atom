@@ -5,10 +5,13 @@
  */
 package oo.atom.assertion;
 
+import oo.atom.anno.Atom;
+
 /**
  *
  * @author skapral
  */
+@Atom
 public interface Assertion {
     void run() throws Exception;
 }

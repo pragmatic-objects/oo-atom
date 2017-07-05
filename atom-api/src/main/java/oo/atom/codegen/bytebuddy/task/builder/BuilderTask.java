@@ -24,6 +24,7 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.dynamic.DynamicType;
+import oo.atom.anno.Atom;
 import oo.atom.anno.api.task.Task;
 import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
 
@@ -31,6 +32,7 @@ import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
  *
  * @author Kapralov Sergey
  */
+@Atom
 public interface BuilderTask extends Task<DynamicType.Builder<?>, BuilderTaskResult> {
 
     

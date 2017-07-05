@@ -28,11 +28,13 @@ import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
 import oo.atom.anno.api.task.result.TaskResult;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.Atom;
 import oo.atom.anno.api.task.Task;
 
 /**
  *
  * @author Kapralov Sergey
  */
+@Atom
 public interface StackManipulationTask extends Task<StackManipulation, StackManipulationTaskResult> {
 }

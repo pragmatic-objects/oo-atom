@@ -21,27 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.examples;
+package oo.atom.codegen.bytebuddy.task.builder;
 
-import oo.atom.anno.Atom;
+import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
-@Atom
-public class LongHolder {
-    private Long value;
+public class BtInferred implements BuilderTask {
+    private final BuilderTaskInference derivative;
 
-    public LongHolder(long value) {
-        this.value = Long.valueOf(value);
+    public BtInferred(BuilderTaskInference derivative) {
+        this.derivative = derivative;
     }
 
-    public LongHolder(Long value) {
-        this.value = value;
-    }
-
-    public long getValue() {
-        return value;
+    @Override
+    public BuilderTaskResult result() {
+        return derivative.task().result();
     }
 }

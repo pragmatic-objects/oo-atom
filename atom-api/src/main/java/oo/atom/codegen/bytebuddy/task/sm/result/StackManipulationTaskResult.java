@@ -24,12 +24,14 @@
 package oo.atom.codegen.bytebuddy.task.sm.result;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.Atom;
 import oo.atom.anno.api.task.result.TaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
+@Atom
 public interface StackManipulationTaskResult extends TaskResult<StackManipulation> {
     
 }

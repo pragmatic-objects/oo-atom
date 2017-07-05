@@ -24,12 +24,14 @@
 package oo.atom.codegen.bytebuddy.task.sm;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.anno.api.task.TaskDerivative;
+import oo.atom.anno.Atom;
 import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.TaskInference;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public interface StackManipulationTaskDerivative extends TaskDerivative<StackManipulation, StackManipulationTaskResult> {
+@Atom
+public interface StackManipulationTaskDerivative extends TaskInference<StackManipulation, StackManipulationTaskResult> {
 }

@@ -52,7 +52,5 @@ SOFTWARE.
     
     <modules>
         <module>atom-api</module>
-        <module>atom-plugin</module>
-        <module>atom-examples</module>
     </modules>
 </project>
