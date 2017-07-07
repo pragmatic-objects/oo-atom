@@ -48,7 +48,7 @@ public class TrCombination<T> implements TaskResult<T> {
     }
 
     @Override
-    public Option<T> item() {
+    public final Option<T> item() {
         return taskResults.isEmpty() ? defaultResult.item() : taskResults
                 .map(TaskResult::item)
                 .reduceLeft((Option<T> optItem1, Option<T> optItem2) -> {
@@ -61,7 +61,7 @@ public class TrCombination<T> implements TaskResult<T> {
     }
 
     @Override
-    public List<Issue> issues() {
+    public final List<Issue> issues() {
         return taskResults.isEmpty() ? defaultResult.issues(): taskResults
                 .map(TaskResult::issues)
                 .foldLeft(List.empty(), List::appendAll);

@@ -11,15 +11,15 @@ import oo.atom.anno.api.task.result.TaskResult;
  *
  * @author skapral
  */
-public class TFake<V, R extends TaskResult<? extends V>> implements Task<V, R> {
-    private final R result;
+public class TFake<V> implements Task<V> {
+    private final TaskResult<V> result;
 
-    public TFake(R result) {
+    public TFake(TaskResult<V> result) {
         this.result = result;
     }
 
     @Override
-    public final R result() {
+    public final TaskResult<V> result() {
         return result;
     }
 }

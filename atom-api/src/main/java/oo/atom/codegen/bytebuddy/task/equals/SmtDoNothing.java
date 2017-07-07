@@ -21,23 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.builder;
+package oo.atom.codegen.bytebuddy.task.equals;
 
-import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class BtInferred implements BuilderTask {
-    private final BuilderTaskInference derivative;
-
-    public BtInferred(BuilderTaskInference derivative) {
-        this.derivative = derivative;
-    }
-
+public class SmtDoNothing implements Task<StackManipulation> {
     @Override
-    public BuilderTaskResult result() {
-        return derivative.task().result();
+    public final TaskResult<StackManipulation> result() {
+        return new TrSuccess<>(
+                new StackManipulation.Compound()
+        );
     }
 }

@@ -32,19 +32,23 @@ import oo.atom.anno.api.task.result.TrSuccess;
  *
  * @author Kapralov Sergey
  */
-public class TChain<V, R extends TaskResult<? extends V>, L extends TaskLink<V, R>> implements Task<V, R> {
-    private final R value;
-    private final List<L> links;
+public class TChain<V> implements Task<V> {
+    private final TaskResult<V> value;
+    private final List<TaskLink<V>> links;
 
-    public TChain(R value, List<L> links) {
+    public TChain(TaskResult<V> value, List<TaskLink<V>> links) {
         this.value = value;
         this.links = links;
     }
+    
+    public TChain(TaskResult<V> value, TaskLink<V>... links) {
+        this(value, List.of(links));
+    }
 
     @Override
-    public R result() {
-        return links.<R>foldLeft(value, (smtr, smtl) -> {
-            Option<Task<V, R>> taskOpt = smtr.item().map(smtl::task);
+    public final TaskResult<V> result() {
+        return links.foldLeft(value, (smtr, smtl) -> {
+            Option<Task<V>> taskOpt = smtr.item().map(smtl::task);
             return taskOpt.map(Task::result).getOrElse(smtr);
         });
     }

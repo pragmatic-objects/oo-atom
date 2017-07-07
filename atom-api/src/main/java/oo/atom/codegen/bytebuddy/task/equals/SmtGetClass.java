@@ -25,16 +25,17 @@ package oo.atom.codegen.bytebuddy.task.equals;
 
 import java.lang.reflect.Method;
 import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtGetClass implements StackManipulationTask {
+public class SmtGetClass implements Task<StackManipulation> {
     private final static Method GETCLASS;
 
     static {
@@ -46,8 +47,8 @@ public class SmtGetClass implements StackManipulationTask {
     }
     
     @Override
-    public StackManipulationTaskResult result() {
-        return new SmtrSuccess(
+    public final TaskResult<StackManipulation> result() {
+        return new TrSuccess<>(
                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(GETCLASS))
         );
     }

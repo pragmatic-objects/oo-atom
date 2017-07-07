@@ -23,8 +23,6 @@
  */
 package oo.atom.anno.api.task.result;
 
-import oo.atom.anno.api.task.issue.Issue;
-import java.util.function.BinaryOperator;
 import javaslang.collection.List;
 import javaslang.control.Option;
 import oo.atom.anno.Atom;

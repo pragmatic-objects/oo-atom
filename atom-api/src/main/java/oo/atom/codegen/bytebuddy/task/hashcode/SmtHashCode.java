@@ -35,15 +35,15 @@ import net.bytebuddy.implementation.bytecode.member.FieldAccess;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtHashCode implements StackManipulationTask {
+public class SmtHashCode implements Task<StackManipulation> {
 
     private static final Method OBJECTS_HASH;
 
@@ -62,7 +62,7 @@ public class SmtHashCode implements StackManipulationTask {
     }
 
     @Override
-    public StackManipulationTaskResult result() {
+    public final TaskResult<StackManipulation> result() {
         List<StackManipulation> stackManipulations = List.empty();
 
         for (FieldDescription field : type.getDeclaredFields()) {
@@ -85,6 +85,6 @@ public class SmtHashCode implements StackManipulationTask {
             )
         );
         
-        return new SmtrSuccess(new StackManipulation.Compound(stackManipulations.toJavaList()));
+        return new TrSuccess<>(new StackManipulation.Compound(stackManipulations.toJavaList()));
     }
 }

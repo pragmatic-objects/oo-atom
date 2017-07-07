@@ -27,6 +27,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 import oo.atom.codegen.bytebuddy.task.equals.SmtEquals;
+import oo.atom.codegen.bytebuddy.task.hashcode.SmtHashCode;
 
 /**
  *
@@ -36,8 +37,8 @@ public class BtGenerateHashCode extends BtGenerateMethod {
     public BtGenerateHashCode(DynamicType.Builder<?> builder, TypeDescription td) {
         super(
                 builder,
-                named("equals"),
-                new SmtEquals(td)
+                named("hashCode"),
+                new SmtHashCode(td)
         );
     }
 }

@@ -23,16 +23,17 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
+import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadReference implements StackManipulationTask {
+public class SmtLoadReference implements Task<StackManipulation> {
     private final int index;
 
     public SmtLoadReference(int index) {
@@ -40,8 +41,8 @@ public class SmtLoadReference implements StackManipulationTask {
     }
     
     @Override
-    public StackManipulationTaskResult result() {
-        return new SmtrSuccess(
+    public TaskResult<StackManipulation> result() {
+        return new TrSuccess<>(
                 MethodVariableAccess.REFERENCE.loadFrom(index)
         );
     }

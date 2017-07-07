@@ -24,14 +24,14 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.codegen.bytebuddy.task.sm.SmtCombined;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.api.task.Task;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtEquals extends SmtCombined implements StackManipulationTask {
+public class SmtEquals extends SmtCombined implements Task<StackManipulation> {
     public SmtEquals(TypeDescription type) {
         super(
                 new SmtLoadReference(0),

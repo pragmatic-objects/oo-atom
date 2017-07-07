@@ -23,15 +23,14 @@
  */
 package oo.atom.plugin;
 
-import java.util.function.Supplier;
 import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.anno.api.task.issue.Issue;
 import oo.atom.anno.api.task.issue.x.IssuesFoundException;
+import oo.atom.anno.api.task.result.TaskResult;
 import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
 import oo.atom.codegen.bytebuddy.task.builder.BtApplyPatch;
-import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
 
 
 /**
@@ -41,14 +40,14 @@ import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
 public class AtomPlugin implements Plugin {
     @Override
     public DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription td) {
-        BuilderTaskResult result = new BtApplyPatch(builder, td).result();
+        TaskResult<DynamicType.Builder<?>> result = new BtApplyPatch(builder, td).result();
         return result.item().getOrElseThrow(() -> new RuntimeException(
                 new IssuesFoundException(result.issues().toJavaArray(Issue.class))
         ));
     }
 
     @Override
-    public boolean matches(TypeDescription td) {
+    public final boolean matches(TypeDescription td) {
         return new ShouldBeInstrumented().matches(td);
     }
 }

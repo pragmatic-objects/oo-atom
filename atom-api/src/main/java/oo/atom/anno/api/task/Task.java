@@ -29,6 +29,6 @@ import oo.atom.anno.api.task.result.TaskResult;
  *
  * @author Kapralov Sergey
  */
-public interface Task<V, R extends TaskResult<? extends V>> {
-    R result();
+public interface Task<V> {
+    TaskResult<V> result();
 }

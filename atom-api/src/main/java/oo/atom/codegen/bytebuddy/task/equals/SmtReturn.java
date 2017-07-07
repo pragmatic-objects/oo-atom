@@ -26,15 +26,15 @@ package oo.atom.codegen.bytebuddy.task.equals;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtReturn implements StackManipulationTask {
+public class SmtReturn implements Task<StackManipulation> {
     private final Integer integer;
 
     public SmtReturn(Integer integer) {
@@ -42,8 +42,8 @@ public class SmtReturn implements StackManipulationTask {
     }
     
     @Override
-    public StackManipulationTaskResult result() {
-        return new SmtrSuccess(
+    public final TaskResult<StackManipulation> result() {
+        return new TrSuccess<>(
                 new StackManipulation.Compound(
                         IntegerConstant.forValue(integer),
                         MethodReturn.INTEGER

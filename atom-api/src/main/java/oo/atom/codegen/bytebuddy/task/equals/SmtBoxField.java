@@ -24,23 +24,27 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import net.bytebuddy.description.field.FieldDescription;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.api.task.TInferred;
 import oo.atom.anno.api.task.Task;
-import oo.atom.codegen.bytebuddy.task.sm.SmtDerived;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTaskDerivative;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.TaskInference;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtBoxField extends SmtDerived implements StackManipulationTask {
+public class SmtBoxField extends TInferred<StackManipulation> implements Task<StackManipulation> {
     public SmtBoxField(FieldDescription field) {
-        super(new StackManipulationTaskDerivative() {
+        super(new TaskInference<StackManipulation>() {
             @Override
-            public Task<StackManipulation, StackManipulationTaskResult> task() {
-                return new SmtBox(field.getType().asErasure());
+            public Task<StackManipulation> task() {
+                TypeDescription type = field.getType().asErasure();
+                if(type.isPrimitive()) {
+                    return new SmtBox(type);
+                } else {
+                    return new SmtDoNothing();
+                }
             }
         });
     }

@@ -24,16 +24,17 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import net.bytebuddy.description.field.FieldDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.FieldAccess;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtGetField implements StackManipulationTask {
+public class SmtGetField implements Task<StackManipulation> {
     private final FieldDescription field;
 
     public SmtGetField(FieldDescription field) {
@@ -41,8 +42,8 @@ public class SmtGetField implements StackManipulationTask {
     }
     
     @Override
-    public StackManipulationTaskResult result() {
-        return new SmtrSuccess(
+    public final TaskResult<StackManipulation> result() {
+        return new TrSuccess<>(
                 FieldAccess.forField(field).read()
         );
     }

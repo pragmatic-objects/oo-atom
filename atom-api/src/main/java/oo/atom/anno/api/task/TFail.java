@@ -21,27 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.sm;
+package oo.atom.anno.api.task;
 
 import javaslang.collection.List;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.anno.api.task.TChain;
-import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.issue.Issue;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrFailure;
 
 /**
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class SmtChain extends TChain<StackManipulation, StackManipulationTaskResult, StackManipulationTaskLink> implements StackManipulationTask {
-    public SmtChain(StackManipulation sm, List<StackManipulationTaskLink> links) {
-        super(
-                new SmtrSuccess(sm),
-                links
-        );
+public class TFail<T> implements Task<T> {
+    private final List<Issue> issues;
+
+    public TFail(List<Issue> issues) {
+        this.issues = issues;
     }
     
-    public SmtChain(StackManipulation sm, StackManipulationTaskLink... links) {
-        this(sm, List.of(links));
+    public TFail(Issue... issues) {
+        this(List.of(issues));
+    }
+
+    @Override
+    public final TaskResult<T> result() {
+        return new TrFailure<>(issues);
     }
 }

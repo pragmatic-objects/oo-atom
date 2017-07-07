@@ -44,12 +44,12 @@ public class TrFailure<T> implements TaskResult<T> {
     }
 
     @Override
-    public Option<T> item() {
+    public final Option<T> item() {
         return Option.none();
     }
 
     @Override
-    public List<Issue> issues() {
+    public final List<Issue> issues() {
         return issues;
     }
 }

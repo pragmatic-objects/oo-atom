@@ -24,16 +24,17 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtCast implements StackManipulationTask {
+public class SmtCast implements Task<StackManipulation> {
     private final TypeDescription type;
 
     public SmtCast(TypeDescription type) {
@@ -41,8 +42,8 @@ public class SmtCast implements StackManipulationTask {
     }
     
     @Override
-    public final StackManipulationTaskResult result() {
-        return new SmtrSuccess(
+    public final TaskResult<StackManipulation> result() {
+        return new TrSuccess<>(
                 TypeCasting.to(type)
         );
     }

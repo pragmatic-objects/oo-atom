@@ -27,19 +27,22 @@ import static javaslang.API.*;
 import java.lang.reflect.Method;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.issue.IPlainErrorMessage;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrFailure;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtBox implements StackManipulationTask {
-
+public class SmtBox implements Task<StackManipulation> {
     private static final Method BOOLEAN_VALUEOF;
     private static final Method BYTE_VALUEOF;
+    private static final Method CHAR_VALUEOF;
     private static final Method SHORT_VALUEOF;
     private static final Method INT_VALUEOF;
     private static final Method LONG_VALUEOF;
@@ -50,6 +53,7 @@ public class SmtBox implements StackManipulationTask {
         try {
             BOOLEAN_VALUEOF = Boolean.class.getMethod("valueOf", boolean.class);
             BYTE_VALUEOF = Byte.class.getMethod("valueOf", byte.class);
+            CHAR_VALUEOF = Double.class.getMethod("valueOf", double.class);
             SHORT_VALUEOF = Short.class.getMethod("valueOf", short.class);
             INT_VALUEOF = Integer.class.getMethod("valueOf", int.class);
             LONG_VALUEOF = Long.class.getMethod("valueOf", long.class);
@@ -65,32 +69,39 @@ public class SmtBox implements StackManipulationTask {
     public SmtBox(TypeDescription type) {
         this.type = type;
     }
-
+    
     @Override
-    public StackManipulationTaskResult result() {
-        return Match(type).of(
-                Case($(t -> t.represents(boolean.class)), new SmtrSuccess(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
-                )),
-                Case($(t -> t.represents(byte.class)), new SmtrSuccess(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
-                )),
-                Case($(t -> t.represents(short.class)), new SmtrSuccess(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
-                )),
-                Case($(t -> t.represents(int.class)), new SmtrSuccess(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
-                )),
-                Case($(t -> t.represents(long.class)), new SmtrSuccess(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
-                )),
-                Case($(t -> t.represents(float.class)), new SmtrSuccess(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
-                )),
-                Case($(t -> t.represents(double.class)), new SmtrSuccess(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
-                )),
-                Case($(), new SmtrSuccess())
+    public final TaskResult<StackManipulation> result() {
+        return Match(type).<TaskResult<StackManipulation>>of(
+            Case($(t -> t.represents(boolean.class)), new TrSuccess<>(
+                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
+            )),
+            Case($(t -> t.represents(byte.class)), new TrSuccess<>(
+                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
+            )),
+            Case($(t -> t.represents(char.class)), new TrSuccess<>(
+                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
+            )),
+            Case($(t -> t.represents(short.class)), new TrSuccess<>(
+                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
+            )),
+            Case($(t -> t.represents(int.class)), new TrSuccess<>(
+                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+            )),
+            Case($(t -> t.represents(long.class)), new TrSuccess<>(
+                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
+            )),
+            Case($(t -> t.represents(float.class)), new TrSuccess<>(
+                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
+            )),
+            Case($(t -> t.represents(double.class)), new TrSuccess<>(
+                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
+            )),
+            Case($(), new TrFailure<>(
+                    new IPlainErrorMessage(
+                            String.format("Attempt to box non-primitive type %s", type)
+                    )
+            ))
         );
     }
 }

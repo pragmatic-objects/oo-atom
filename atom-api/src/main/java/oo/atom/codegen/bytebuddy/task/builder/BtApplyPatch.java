@@ -25,20 +25,25 @@ package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
+import oo.atom.anno.api.task.TChain;
+import oo.atom.anno.api.task.TInferred;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.TaskInference;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends BtInferred implements BuilderTask {
+public class BtApplyPatch extends TInferred<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
     public BtApplyPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
-        super(new BuilderTaskInference() {
+        super(new TaskInference<DynamicType.Builder<?>>() {
             @Override
-            public BuilderTask task() {
-                return new BtChain(
-                        builder, 
-                        b -> new BtGenerateEquals(b, td),
-                        b -> new BtGenerateHashCode(b, td)
+            public Task<DynamicType.Builder<?>> task() {
+                return new TChain<>(
+                        new TrSuccess<>(builder), 
+                        b -> new BtGenerateEquals(b, td)/*,
+                        b -> new BtGenerateHashCode(b, td)*/
                 );
             }
         });

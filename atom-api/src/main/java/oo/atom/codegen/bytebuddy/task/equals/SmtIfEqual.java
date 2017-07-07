@@ -28,17 +28,17 @@ import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.jar.asm.Label;
+import oo.atom.anno.api.task.TChained;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 import oo.atom.codegen.bytebuddy.Branching;
-import oo.atom.codegen.bytebuddy.task.sm.SmtChained;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.sm.result.SmtrSuccess;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
-class SmtIfEqual extends SmtChained implements StackManipulationTask {
+class SmtIfEqual extends TChained<StackManipulation> implements Task<StackManipulation> {
 
     private final static Method EQUALS;
 
@@ -50,11 +50,11 @@ class SmtIfEqual extends SmtChained implements StackManipulationTask {
         }
     }
 
-    public SmtIfEqual(boolean isTrue, StackManipulationTask task) {
-        super(task, sm -> new StackManipulationTask() {
-            public StackManipulationTaskResult result() {
+    public SmtIfEqual(boolean isTrue, Task<StackManipulation> task) {
+        super(task, sm -> new Task() {
+            public TaskResult<StackManipulation> result() {
                 final Label checkEnd = new Label();
-                return new SmtrSuccess(
+                return new TrSuccess<>(
                         new StackManipulation.Compound(
                                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQUALS)),
                                 new Branching.IsZero(!isTrue, checkEnd),

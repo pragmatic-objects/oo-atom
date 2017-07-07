@@ -29,15 +29,15 @@ import oo.atom.anno.api.task.result.TaskResult;
  *
  * @author Kapralov Sergey
  */
-public class TInferred<V, R extends TaskResult<? extends V>> implements Task<V, R> {
-    private final TaskInference<V, R> derivative;
+public class TInferred<V> implements Task<V> {
+    private final TaskInference<V> derivative;
 
-    public TInferred(TaskInference<V, R> derivative) {
+    public TInferred(TaskInference<V> derivative) {
         this.derivative = derivative;
     }
 
     @Override
-    public final R result() {
+    public final TaskResult<V> result() {
         return derivative.task().result();
     }
 }

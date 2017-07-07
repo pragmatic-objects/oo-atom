@@ -21,17 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.builder;
+package oo.atom.codegen.bytebuddy.task.equals;
 
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.Atom;
-import oo.atom.anno.api.task.TaskLink;
-import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
+import javaslang.collection.List;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.api.task.TCombined;
+import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-@Atom
-public interface BuilderTaskLink extends TaskLink<DynamicType.Builder<?>, BuilderTaskResult> {
+public class SmtCombined extends TCombined<StackManipulation> implements Task<StackManipulation> {
+    public SmtCombined(List<Task<StackManipulation>> subtasks) {
+        super(
+                new TrSuccess<StackManipulation>(new StackManipulation.Compound()),
+                (sm1, sm2) -> new StackManipulation.Compound(sm1, sm2),
+                subtasks
+        );
+    }
+
+    public SmtCombined(Task<StackManipulation>... tasks) {
+        this(
+                List.of(tasks)
+        );
+    }
 }

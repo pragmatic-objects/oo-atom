@@ -21,20 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.sm;
+package oo.atom.anno.api.task;
 
-import java.lang.reflect.Method;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import java.util.function.BinaryOperator;
+import javaslang.collection.List;
 import oo.atom.anno.api.task.result.TaskResult;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.anno.Atom;
-import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TrCombination;
 
 /**
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-@Atom
-public interface StackManipulationTask extends Task<StackManipulation, StackManipulationTaskResult> {
+public class TCombined<T> implements Task<T> {
+    private final TaskResult<T> defaultResult;
+    private final BinaryOperator<T> combinationFunction;
+    private final List<Task<T>> subtasks;
+    
+    public TCombined(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, List<Task<T>> subtasks) {
+        this.defaultResult = defaultResult;
+        this.combinationFunction = combinationFunction;
+        this.subtasks = subtasks;
+    }
+    
+    public TCombined(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, Task<T>... subtasks) {
+        this(defaultResult, combinationFunction, List.of(subtasks));
+    }
+    
+    @Override
+    public final TaskResult<T> result() {
+        return subtasks
+                .map(Task::result)
+                .transform(tr -> new TrCombination<>(
+                        defaultResult,
+                        combinationFunction,
+                        tr
+                ));
+    }
 }

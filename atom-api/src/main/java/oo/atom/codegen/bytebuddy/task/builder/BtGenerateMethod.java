@@ -33,31 +33,29 @@ import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.matcher.ElementMatcher;
+import oo.atom.anno.api.task.Task;
 import oo.atom.anno.api.task.issue.Issue;
-import oo.atom.codegen.bytebuddy.EnableFramesComputing;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTask;
-import oo.atom.codegen.bytebuddy.task.builder.result.BuilderTaskResult;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.result.TaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateMethod implements BuilderTask {
+public class BtGenerateMethod implements Task<DynamicType.Builder<?>> {
     private final DynamicType.Builder<?> builder;
     private final ElementMatcher<? super MethodDescription> elementMatcher;
-    private final StackManipulationTask methodBodyTask;
+    private final Task<StackManipulation> methodBodyTask;
 
-    public BtGenerateMethod(DynamicType.Builder<?> builder, ElementMatcher<? super MethodDescription> elementMatcher, StackManipulationTask methodBodyTask) {
+    public BtGenerateMethod(DynamicType.Builder<?> builder, ElementMatcher<? super MethodDescription> elementMatcher, Task<StackManipulation> methodBodyTask) {
         this.builder = builder;
         this.elementMatcher = elementMatcher;
         this.methodBodyTask = methodBodyTask;
     }
 
     @Override
-    public final BuilderTaskResult result() {
-        final StackManipulationTaskResult result = methodBodyTask.result();
-        return new BuilderTaskResult() {
+    public final TaskResult<DynamicType.Builder<?>> result() {
+        final TaskResult<StackManipulation> result = methodBodyTask.result();
+        return new TaskResult<DynamicType.Builder<?>>() {
             @Override
             public Option<DynamicType.Builder<?>> item() {
                 return result.item()

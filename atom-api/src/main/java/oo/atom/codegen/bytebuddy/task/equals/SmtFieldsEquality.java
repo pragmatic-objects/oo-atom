@@ -26,22 +26,20 @@ package oo.atom.codegen.bytebuddy.task.equals;
 import javaslang.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.api.task.TInferred;
 import oo.atom.anno.api.task.Task;
-import oo.atom.codegen.bytebuddy.task.sm.SmtCombined;
-import oo.atom.codegen.bytebuddy.task.sm.SmtDerived;
-import oo.atom.codegen.bytebuddy.task.sm.StackManipulationTaskDerivative;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
+import oo.atom.anno.api.task.TaskInference;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtFieldsEquality extends SmtDerived {
+public class SmtFieldsEquality extends TInferred<StackManipulation> {
 
     public SmtFieldsEquality(final TypeDescription type) {
-        super(new StackManipulationTaskDerivative() {
+        super(new TaskInference<StackManipulation>() {
             @Override
-            public Task<StackManipulation, StackManipulationTaskResult> task() {
+            public Task<StackManipulation> task() {
                 return new SmtCombined(
                         List.of(type)
                             .flatMap(TypeDescription::getDeclaredFields)

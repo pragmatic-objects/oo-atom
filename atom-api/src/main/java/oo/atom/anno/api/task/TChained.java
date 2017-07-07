@@ -21,17 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.sm;
+package oo.atom.anno.api.task;
 
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.anno.Atom;
-import oo.atom.codegen.bytebuddy.task.sm.result.StackManipulationTaskResult;
-import oo.atom.anno.api.task.TaskInference;
+import javaslang.control.Option;
 
 /**
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-@Atom
-public interface StackManipulationTaskDerivative extends TaskInference<StackManipulation, StackManipulationTaskResult> {
+public class TChained<T> extends TInferred<T> implements Task<T> {
+    public TChained(Task<T> task, TaskLink<T>... links) {
+        super(new TaskInference<T>() {
+            @Override
+            public final Task<T> task() {
+                return Option.of(task.result())
+                        .<Task<T>>map(i -> new TChain<>(i, links))
+                        .getOrElse(task);
+            }
+        });
+    }
 }
