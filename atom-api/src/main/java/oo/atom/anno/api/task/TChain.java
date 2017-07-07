@@ -26,7 +26,6 @@ package oo.atom.anno.api.task;
 import javaslang.collection.List;
 import javaslang.control.Option;
 import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *

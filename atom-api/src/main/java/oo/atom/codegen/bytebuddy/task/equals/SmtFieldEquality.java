@@ -37,7 +37,7 @@ public class SmtFieldEquality extends SmtCombined implements Task<StackManipulat
     public SmtFieldEquality(final TypeDescription type, final FieldDescription field) {
         super(
                 new SmtLoadPairOfFields(type, field),
-                new SmtIfEqual(true, new SmtReturn(0))
+                new SmtIfEqual(true, new SmtReturnInteger(0))
         );
     }
 }

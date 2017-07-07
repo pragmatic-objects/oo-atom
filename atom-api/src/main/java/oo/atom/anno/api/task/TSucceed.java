@@ -21,12 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.equals;
+package oo.atom.anno.api.task;
 
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
-import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import oo.atom.anno.api.task.Task;
 import oo.atom.anno.api.task.result.TaskResult;
 import oo.atom.anno.api.task.result.TrSuccess;
 
@@ -34,20 +30,15 @@ import oo.atom.anno.api.task.result.TrSuccess;
  *
  * @author Kapralov Sergey
  */
-public class SmtReturn implements Task<StackManipulation> {
-    private final Integer integer;
+public class TSucceed<T> implements Task<T> {
+    private final T result;
 
-    public SmtReturn(Integer integer) {
-        this.integer = integer;
+    public TSucceed(T result) {
+        this.result = result;
     }
-    
+
     @Override
-    public final TaskResult<StackManipulation> result() {
-        return new TrSuccess<>(
-                new StackManipulation.Compound(
-                        IntegerConstant.forValue(integer),
-                        MethodReturn.INTEGER
-                )
-        );
+    public final TaskResult<T> result() {
+        return new TrSuccess(result);
     }
 }

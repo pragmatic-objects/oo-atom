@@ -21,31 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.equals;
+package oo.atom.codegen.bytebuddy.task.hashcode;
 
+import javaslang.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.api.task.TInferred;
 import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.TaskInference;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtEquals extends SmtCombined implements Task<StackManipulation> {
-    public SmtEquals(TypeDescription type) {
-        super(
-                new SmtLoadReference(0),
-                new SmtLoadReference(1),
-                new SmtIfEqualByReference(false, new SmtReturnInteger(1)),
-                new SmtLoadReference(1),
-                new SmtIfNull(false, new SmtReturnInteger(0)),
-                new SmtLoadReference(0),
-                new SmtGetClass(),
-                new SmtLoadReference(1),
-                new SmtGetClass(),
-                new SmtIfEqualByReference(true, new SmtReturnInteger(0)),
-                new SmtFieldsEquality(type),
-                new SmtReturnInteger(1)
-        );
+public class SmtLoadArrayOfFields extends TInferred<StackManipulation> {
+    public SmtLoadArrayOfFields(TypeDescription type) {
+        super(new TaskInference<StackManipulation>() {
+            @Override
+            public final Task<StackManipulation> task() {
+                return new SmtArray(
+                        List.of(type)
+                            .flatMap(TypeDescription::getDeclaredFields)
+                            .filter(f -> !f.isStatic())
+                            .map(f -> new SmtLoadField(f))
+                            .toJavaArray(SmtLoadField.class)
+                );
+            }
+        });
     }
 }

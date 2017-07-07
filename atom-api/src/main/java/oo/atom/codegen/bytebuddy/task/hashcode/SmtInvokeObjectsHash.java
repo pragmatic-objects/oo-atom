@@ -21,31 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.equals;
+package oo.atom.codegen.bytebuddy.task.hashcode;
 
-import net.bytebuddy.description.type.TypeDescription;
+import java.lang.reflect.Method;
+import java.util.Objects;
+import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 import oo.atom.anno.api.task.Task;
+import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtEquals extends SmtCombined implements Task<StackManipulation> {
-    public SmtEquals(TypeDescription type) {
-        super(
-                new SmtLoadReference(0),
-                new SmtLoadReference(1),
-                new SmtIfEqualByReference(false, new SmtReturnInteger(1)),
-                new SmtLoadReference(1),
-                new SmtIfNull(false, new SmtReturnInteger(0)),
-                new SmtLoadReference(0),
-                new SmtGetClass(),
-                new SmtLoadReference(1),
-                new SmtGetClass(),
-                new SmtIfEqualByReference(true, new SmtReturnInteger(0)),
-                new SmtFieldsEquality(type),
-                new SmtReturnInteger(1)
+public class SmtInvokeObjectsHash implements Task<StackManipulation> {
+
+    private static final Method OBJECTS_HASH;
+
+    static {
+        try {
+            OBJECTS_HASH = Objects.class.getMethod("hash", Object[].class);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public final TaskResult<StackManipulation> result() {
+        return new TrSuccess<>(
+                new StackManipulation.Compound(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(OBJECTS_HASH)),
+                        MethodReturn.INTEGER
+                )
         );
     }
 }

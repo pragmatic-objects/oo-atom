@@ -42,8 +42,8 @@ public class BtApplyPatch extends TInferred<DynamicType.Builder<?>> implements T
             public Task<DynamicType.Builder<?>> task() {
                 return new TChain<>(
                         new TrSuccess<>(builder), 
-                        b -> new BtGenerateEquals(b, td)/*,
-                        b -> new BtGenerateHashCode(b, td)*/
+                        b -> new BtGenerateEquals(b, td),
+                        b -> new BtGenerateHashCode(b, td)
                 );
             }
         });

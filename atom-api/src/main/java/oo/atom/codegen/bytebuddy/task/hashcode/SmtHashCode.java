@@ -23,68 +23,22 @@
  */
 package oo.atom.codegen.bytebuddy.task.hashcode;
 
-import java.lang.reflect.Method;
-import java.util.Objects;
-import javaslang.collection.List;
-import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
-import net.bytebuddy.implementation.bytecode.member.FieldAccess;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrSuccess;
+import oo.atom.codegen.bytebuddy.task.equals.SmtCombined;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtHashCode implements Task<StackManipulation> {
-
-    private static final Method OBJECTS_HASH;
-
-    static {
-        try {
-            OBJECTS_HASH = Objects.class.getMethod("hash", Object[].class);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private final TypeDescription type;
+public class SmtHashCode extends SmtCombined implements Task<StackManipulation> {
 
     public SmtHashCode(TypeDescription type) {
-        this.type = type;
-    }
-
-    @Override
-    public final TaskResult<StackManipulation> result() {
-        List<StackManipulation> stackManipulations = List.empty();
-
-        for (FieldDescription field : type.getDeclaredFields()) {
-            stackManipulations = stackManipulations.append(
-                    new StackManipulation.Compound(
-                            MethodVariableAccess.loadThis(),
-                            FieldAccess.forField(field).read()
-                    )
-            );
-        }
-
-        stackManipulations = List.of(
-            ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
-                stackManipulations.toJavaList()
-            )
-        ).append(
-            new StackManipulation.Compound(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(OBJECTS_HASH)),
-                MethodReturn.INTEGER
-            )
+        super(
+                new SmtLoadArrayOfFields(type),
+                new SmtInvokeObjectsHash()
         );
-        
-        return new TrSuccess<>(new StackManipulation.Compound(stackManipulations.toJavaList()));
     }
+
 }

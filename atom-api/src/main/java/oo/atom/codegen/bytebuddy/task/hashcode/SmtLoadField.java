@@ -21,31 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.equals;
+package oo.atom.codegen.bytebuddy.task.hashcode;
 
-import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.anno.api.task.Task;
+import oo.atom.codegen.bytebuddy.task.equals.SmtBoxField;
+import oo.atom.codegen.bytebuddy.task.equals.SmtCombined;
+import oo.atom.codegen.bytebuddy.task.equals.SmtGetField;
+import oo.atom.codegen.bytebuddy.task.equals.SmtLoadReference;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtEquals extends SmtCombined implements Task<StackManipulation> {
-    public SmtEquals(TypeDescription type) {
+public class SmtLoadField extends SmtCombined implements Task<StackManipulation> {
+    public SmtLoadField(FieldDescription field) {
         super(
                 new SmtLoadReference(0),
-                new SmtLoadReference(1),
-                new SmtIfEqualByReference(false, new SmtReturnInteger(1)),
-                new SmtLoadReference(1),
-                new SmtIfNull(false, new SmtReturnInteger(0)),
-                new SmtLoadReference(0),
-                new SmtGetClass(),
-                new SmtLoadReference(1),
-                new SmtGetClass(),
-                new SmtIfEqualByReference(true, new SmtReturnInteger(0)),
-                new SmtFieldsEquality(type),
-                new SmtReturnInteger(1)
+                new SmtGetField(field),
+                new SmtBoxField(field)
         );
     }
 }
