@@ -36,7 +36,7 @@ public class IssuesFoundException extends Exception {
                 String.join(
                         "\r\n", 
                         String.format("%d issue(s) found:", issues.length),
-                        List.of(issues).map(Issue::toString).fold("", (s1, s2) -> s1 + s2)
+                        List.of(issues).map(Issue::toString).fold("\r\n", (s1, s2) -> s1 + s2)
                 )
         );
     }
