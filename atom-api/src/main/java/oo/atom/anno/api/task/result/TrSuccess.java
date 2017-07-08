@@ -23,28 +23,16 @@
  */
 package oo.atom.anno.api.task.result;
 
-import javaslang.collection.List;
-import javaslang.control.Option;
-import oo.atom.anno.api.task.issue.Issue;
+import javaslang.control.Try;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrSuccess<T> implements TaskResult<T> {
-    private final T item;
-
+public class TrSuccess<T> extends TrConst<T> implements TaskResult<T> {
     public TrSuccess(T item) {
-        this.item = item;
-    }
-
-    @Override
-    public final Option<T> item() {
-        return Option.of(item);
-    }
-
-    @Override
-    public final List<Issue> issues() {
-        return List.empty();
+        super(
+                Try.of(() -> item)
+        );
     }
 }

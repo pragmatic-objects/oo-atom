@@ -23,36 +23,35 @@
  */
 package oo.atom.anno.api.task.result;
 
-import oo.atom.anno.api.task.result.assertions.ATaskResultsAreSame;
-import org.junit.Test;
+import java.util.function.BinaryOperator;
+import javaslang.collection.List;
+import javaslang.control.Try;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrCombinationTest {
-    @Test
-    public void errorCase() throws Exception {
-        new ATaskResultsAreSame<>(
-                new TrCombination<>(
-                        new TrSuccess<>(0),
-                        (a, b) -> a + b,
-                        new TrSuccess<>(2),
-                        new TrSuccess<>(2),
-                        new TrFailure<>()
-                ),
-                new TrFailure<>()
-        ).run();
+public class TrTransformed<T> implements TaskResult<T> {
+    private final TaskResult<T> defaultResult;
+    private final BinaryOperator<T> combinationFunction;
+    private final List<TaskResult<T>> taskResults;
+
+    public TrTransformed(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, List<TaskResult<T>> taskResults) {
+        this.defaultResult = defaultResult;
+        this.combinationFunction = combinationFunction;
+        this.taskResults = taskResults;
+    }
+    
+    public TrTransformed(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, TaskResult<T>... taskResults) {
+        this(defaultResult, combinationFunction, List.of(taskResults));
     }
 
-    @Test
-    public void emptyCombinationIsSameAsItsDefaultResult() throws Exception {
-        new ATaskResultsAreSame<>(
-                new TrCombination<Integer>(
-                        new TrSuccess<>(0),
-                        (a, b) -> a + b
-                ),
-                new TrSuccess<>(0)
-        ).run();
+    @Override
+    public final Try<T> item() {
+        return taskResults.isEmpty() ? defaultResult.item() : taskResults
+                .map(TaskResult::item)
+                .reduce((t1, t2) -> Try.of(
+                        () -> combinationFunction.apply(t1.get(), t2.get())
+                ));
     }
 }

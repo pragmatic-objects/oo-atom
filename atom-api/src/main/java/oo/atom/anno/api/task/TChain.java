@@ -24,7 +24,7 @@
 package oo.atom.anno.api.task;
 
 import javaslang.collection.List;
-import javaslang.control.Option;
+import javaslang.control.Try;
 import oo.atom.anno.api.task.result.TaskResult;
 
 /**
@@ -47,7 +47,7 @@ public class TChain<V> implements Task<V> {
     @Override
     public final TaskResult<V> result() {
         return links.foldLeft(value, (smtr, smtl) -> {
-            Option<Task<V>> taskOpt = smtr.item().map(smtl::task);
+            Try<Task<V>> taskOpt = smtr.item().map(smtl::task);
             return taskOpt.map(Task::result).getOrElse(smtr);
         });
     }

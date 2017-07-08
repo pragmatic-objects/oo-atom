@@ -24,46 +24,41 @@
 package oo.atom.codegen.bytebuddy.task.hashcode;
 
 import javaslang.collection.List;
+import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
-import oo.atom.anno.api.task.TFail;
-import oo.atom.anno.api.task.TInferred;
-import oo.atom.anno.api.task.TSucceed;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.TaskInference;
-import oo.atom.anno.api.task.issue.Issue;
 import oo.atom.anno.api.task.result.TaskResult;
+import oo.atom.anno.api.task.result.TrConst;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtArray extends TInferred<StackManipulation> implements Task<StackManipulation> {
+public class SmtArray implements Task<StackManipulation> {
 
-    public SmtArray(Task<StackManipulation>... subtasks) {
-        super(new TaskInference<StackManipulation>() {
-            @Override
-            public final Task<StackManipulation> task() {
-                List<TaskResult<StackManipulation>> results = List.of(subtasks)
-                        .map(Task::result);
-                        
-                
-                List<Issue> issues = results.flatMap(TaskResult::issues);
-                boolean isNOK = issues.nonEmpty();
-                
-                if(isNOK) {
-                    return new TFail<>(issues);
-                } else {
-                    return new TSucceed<>(
-                            ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
-                                results.map(TaskResult::item)
-                                        .flatMap(o -> o)
-                                        .toJavaList()
-                            )
-                    );
-                }
-            }
-        });
+    private final List<Task<StackManipulation>> members;
+
+    public SmtArray(List<Task<StackManipulation>> members) {
+        this.members = members;
+    }
+
+    public SmtArray(Task<StackManipulation>... members) {
+        this(List.of(members));
+    }
+
+    @Override
+    public final TaskResult<StackManipulation> result() {
+        Try<StackManipulation> result = members
+                .map(Task::result)
+                .map(TaskResult::item)
+                .transform(Try::sequence)
+                .map(seq -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
+                            seq.toJavaList()
+                    )
+                );
+        
+        return new TrConst<>(result);
     }
 }

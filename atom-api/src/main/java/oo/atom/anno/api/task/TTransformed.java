@@ -26,24 +26,24 @@ package oo.atom.anno.api.task;
 import java.util.function.BinaryOperator;
 import javaslang.collection.List;
 import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrCombination;
+import oo.atom.anno.api.task.result.TrTransformed;
 
 /**
  *
  * @author skapral
  */
-public class TCombined<T> implements Task<T> {
+public class TTransformed<T> implements Task<T> {
     private final TaskResult<T> defaultResult;
     private final BinaryOperator<T> combinationFunction;
     private final List<Task<T>> subtasks;
     
-    public TCombined(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, List<Task<T>> subtasks) {
+    public TTransformed(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, List<Task<T>> subtasks) {
         this.defaultResult = defaultResult;
         this.combinationFunction = combinationFunction;
         this.subtasks = subtasks;
     }
     
-    public TCombined(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, Task<T>... subtasks) {
+    public TTransformed(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, Task<T>... subtasks) {
         this(defaultResult, combinationFunction, List.of(subtasks));
     }
     
@@ -51,7 +51,7 @@ public class TCombined<T> implements Task<T> {
     public final TaskResult<T> result() {
         return subtasks
                 .map(Task::result)
-                .transform(tr -> new TrCombination<>(
+                .transform(tr -> new TrTransformed<>(
                         defaultResult,
                         combinationFunction,
                         tr

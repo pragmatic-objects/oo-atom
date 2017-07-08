@@ -31,13 +31,19 @@ import oo.atom.anno.api.task.issue.Issue;
  * @author Kapralov Sergey
  */
 public class IssuesFoundException extends Exception {
-    public IssuesFoundException(Issue... issues) {
+    public IssuesFoundException(List<Issue> issues) {
         super(
                 String.join(
                         "\r\n", 
-                        String.format("%d issue(s) found:", issues.length),
-                        List.of(issues).map(Issue::toString).fold("\r\n", (s1, s2) -> s1 + s2)
+                        String.format("%d issue(s) found:", issues.size()),
+                        issues.map(Issue::toString).fold("\r\n", (s1, s2) -> s1 + s2)
                 )
+        );
+    }
+    
+    public IssuesFoundException(Issue... issues) {
+        this(
+                List.of(issues)
         );
     }
 }

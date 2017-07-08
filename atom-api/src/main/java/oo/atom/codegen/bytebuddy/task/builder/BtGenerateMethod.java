@@ -25,6 +25,7 @@ package oo.atom.codegen.bytebuddy.task.builder;
 
 import javaslang.collection.List;
 import javaslang.control.Option;
+import javaslang.control.Try;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.scaffold.InstrumentedType;
@@ -57,7 +58,7 @@ public class BtGenerateMethod implements Task<DynamicType.Builder<?>> {
         final TaskResult<StackManipulation> result = methodBodyTask.result();
         return new TaskResult<DynamicType.Builder<?>>() {
             @Override
-            public Option<DynamicType.Builder<?>> item() {
+            public Try<DynamicType.Builder<?>> item() {
                 return result.item()
                         .map(sm -> {
                             return builder
@@ -80,11 +81,6 @@ public class BtGenerateMethod implements Task<DynamicType.Builder<?>> {
                                         }
                                     });
                         });
-            }
-
-            @Override
-            public List<Issue> issues() {
-                return result.issues();
             }
         };
     }

@@ -24,32 +24,22 @@
 package oo.atom.anno.api.task.result;
 
 import javaslang.collection.List;
-import javaslang.control.Option;
+import javaslang.control.Try;
 import oo.atom.anno.api.task.issue.Issue;
+import oo.atom.anno.api.task.issue.x.IssuesFoundException;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrFailure<T> implements TaskResult<T> {
-
-    private final List<Issue> issues;
-
+public class TrFailure<T> extends TrConst<T> implements TaskResult<T> {
     public TrFailure(List<Issue> issues) {
-        this.issues = issues;
+        super(
+                Try.failure(new IssuesFoundException(issues))
+        );
     }
     
     public TrFailure(Issue... issues) {
         this(List.of(issues));
-    }
-
-    @Override
-    public final Option<T> item() {
-        return Option.none();
-    }
-
-    @Override
-    public final List<Issue> issues() {
-        return issues;
     }
 }

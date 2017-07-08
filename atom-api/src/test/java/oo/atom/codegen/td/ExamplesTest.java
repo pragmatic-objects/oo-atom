@@ -23,7 +23,6 @@
  */
 package oo.atom.codegen.td;
 
-import oo.atom.subject.Holder;
 import oo.atom.subject.LongHolder;
 import oo.atom.subject.Node;
 import org.assertj.core.api.Assertions;

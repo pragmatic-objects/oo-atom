@@ -23,10 +23,8 @@
  */
 package oo.atom.anno.api.task.result;
 
-import javaslang.collection.List;
-import javaslang.control.Option;
+import javaslang.control.Try;
 import oo.atom.anno.Atom;
-import oo.atom.anno.api.task.issue.Issue;
 
 /**
  *
@@ -34,10 +32,5 @@ import oo.atom.anno.api.task.issue.Issue;
  */
 @Atom
 public interface TaskResult<T> {
-
-    Option<T> item();
-
-    List<Issue> issues();
-
-    
+    Try<T> item();
 }
