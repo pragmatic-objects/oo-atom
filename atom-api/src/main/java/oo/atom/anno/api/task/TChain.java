@@ -25,29 +25,28 @@ package oo.atom.anno.api.task;
 
 import javaslang.collection.List;
 import javaslang.control.Try;
-import oo.atom.anno.api.task.result.TaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
 public class TChain<V> implements Task<V> {
-    private final TaskResult<V> value;
+    private final Try<V> value;
     private final List<TaskLink<V>> links;
 
-    public TChain(TaskResult<V> value, List<TaskLink<V>> links) {
+    public TChain(Try<V> value, List<TaskLink<V>> links) {
         this.value = value;
         this.links = links;
     }
     
-    public TChain(TaskResult<V> value, TaskLink<V>... links) {
+    public TChain(Try<V> value, TaskLink<V>... links) {
         this(value, List.of(links));
     }
 
     @Override
-    public final TaskResult<V> result() {
+    public final Try<V> result() {
         return links.foldLeft(value, (smtr, smtl) -> {
-            Try<Task<V>> taskOpt = smtr.item().map(smtl::task);
+            Try<Task<V>> taskOpt = smtr.map(smtl::task);
             return taskOpt.map(Task::result).getOrElse(smtr);
         });
     }

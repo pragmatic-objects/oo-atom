@@ -5,21 +5,21 @@
  */
 package oo.atom.anno.api.task;
 
-import oo.atom.anno.api.task.result.TaskResult;
+import javaslang.control.Try;
 
 /**
  *
  * @author skapral
  */
-public class TFake<V> implements Task<V> {
-    private final TaskResult<V> result;
+public class TConst<V> implements Task<V> {
+    private final Try<V> result;
 
-    public TFake(TaskResult<V> result) {
+    public TConst(Try<V> result) {
         this.result = result;
     }
 
     @Override
-    public final TaskResult<V> result() {
+    public final Try<V> result() {
         return result;
     }
 }

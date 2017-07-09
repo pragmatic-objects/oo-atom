@@ -29,16 +29,14 @@ import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
+import oo.atom.anno.api.task.TSucceed;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtInvokeObjectsHash implements Task<StackManipulation> {
-
+public class SmtInvokeObjectsHash extends TSucceed<StackManipulation> implements Task<StackManipulation> {
     private static final Method OBJECTS_HASH;
 
     static {
@@ -48,14 +46,14 @@ public class SmtInvokeObjectsHash implements Task<StackManipulation> {
             throw new RuntimeException(ex);
         }
     }
-
-    @Override
-    public final TaskResult<StackManipulation> result() {
-        return new TrSuccess<>(
+    
+    public SmtInvokeObjectsHash() {
+        super(
                 new StackManipulation.Compound(
                         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(OBJECTS_HASH)),
                         MethodReturn.INTEGER
                 )
         );
     }
+
 }

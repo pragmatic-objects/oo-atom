@@ -23,8 +23,6 @@
  */
 package oo.atom.codegen.bytebuddy.task.builder;
 
-import javaslang.collection.List;
-import javaslang.control.Option;
 import javaslang.control.Try;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.dynamic.DynamicType;
@@ -35,14 +33,13 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.issue.Issue;
-import oo.atom.anno.api.task.result.TaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
 public class BtGenerateMethod implements Task<DynamicType.Builder<?>> {
+
     private final DynamicType.Builder<?> builder;
     private final ElementMatcher<? super MethodDescription> elementMatcher;
     private final Task<StackManipulation> methodBodyTask;
@@ -54,34 +51,29 @@ public class BtGenerateMethod implements Task<DynamicType.Builder<?>> {
     }
 
     @Override
-    public final TaskResult<DynamicType.Builder<?>> result() {
-        final TaskResult<StackManipulation> result = methodBodyTask.result();
-        return new TaskResult<DynamicType.Builder<?>>() {
-            @Override
-            public Try<DynamicType.Builder<?>> item() {
-                return result.item()
-                        .map(sm -> {
-                            return builder
-                                    .method(elementMatcher)
-                                    .intercept(new Implementation() {
-                                        @Override
-                                        public ByteCodeAppender appender(Implementation.Target implementationTarget) {
-                                            return new ByteCodeAppender() {
-                                                @Override
-                                                public ByteCodeAppender.Size apply(MethodVisitor mv, Implementation.Context ctx, MethodDescription method) {
-                                                    StackManipulation.Size size = sm.apply(mv, ctx);
-                                                    return new ByteCodeAppender.Size(size.getMaximalSize(), method.getStackSize());
-                                                }
-                                            };
-                                        }
+    public final Try<DynamicType.Builder<?>> result() {
+        final Try<StackManipulation> result = methodBodyTask.result();
+        return result.map(sm -> {
+            return builder
+                    .method(elementMatcher)
+                    .intercept(new Implementation() {
+                        @Override
+                        public ByteCodeAppender appender(Implementation.Target implementationTarget) {
+                            return new ByteCodeAppender() {
+                                @Override
+                                public ByteCodeAppender.Size apply(MethodVisitor mv, Implementation.Context ctx, MethodDescription method) {
+                                    StackManipulation.Size size = sm.apply(mv, ctx);
+                                    return new ByteCodeAppender.Size(size.getMaximalSize(), method.getStackSize());
+                                }
+                            };
+                        }
 
-                                        @Override
-                                        public InstrumentedType prepare(InstrumentedType instrumentedType) {
-                                            return instrumentedType;
-                                        }
-                                    });
-                        });
-            }
-        };
+                        @Override
+                        public InstrumentedType prepare(InstrumentedType instrumentedType) {
+                            return instrumentedType;
+                        }
+                    });
+        });
     }
+
 }

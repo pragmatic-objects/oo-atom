@@ -101,7 +101,6 @@ SOFTWARE.
                     <execution>
                         <goals>
                             <goal>transform</goal>
-                            <goal>transform-test</goal>
                         </goals>
                     </execution>
                 </executions>

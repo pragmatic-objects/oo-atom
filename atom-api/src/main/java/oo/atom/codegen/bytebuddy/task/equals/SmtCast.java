@@ -26,25 +26,17 @@ package oo.atom.codegen.bytebuddy.task.equals;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
+import oo.atom.anno.api.task.TSucceed;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtCast implements Task<StackManipulation> {
-    private final TypeDescription type;
-
+public class SmtCast extends TSucceed<StackManipulation> implements Task<StackManipulation> {
     public SmtCast(TypeDescription type) {
-        this.type = type;
-    }
-    
-    @Override
-    public final TaskResult<StackManipulation> result() {
-        return new TrSuccess<>(
-                TypeCasting.to(type)
+        super(
+            TypeCasting.to(type)
         );
     }
 }

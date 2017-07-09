@@ -26,7 +26,6 @@ package oo.atom.plugin;
 import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.api.task.result.TaskResult;
 import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
 import oo.atom.codegen.bytebuddy.task.builder.BtApplyPatch;
 
@@ -38,8 +37,7 @@ import oo.atom.codegen.bytebuddy.task.builder.BtApplyPatch;
 public class AtomPlugin implements Plugin {
     @Override
     public DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription td) {
-        TaskResult<DynamicType.Builder<?>> result = new BtApplyPatch(builder, td).result();
-        return result.item().get();
+        return new BtApplyPatch(builder, td).result().get();
     }
 
     @Override

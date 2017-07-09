@@ -23,13 +23,13 @@
  */
 package oo.atom.codegen.bytebuddy.task.builder;
 
+import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.anno.api.task.TChain;
 import oo.atom.anno.api.task.TInferred;
 import oo.atom.anno.api.task.Task;
 import oo.atom.anno.api.task.TaskInference;
-import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
@@ -41,7 +41,7 @@ public class BtApplyPatch extends TInferred<DynamicType.Builder<?>> implements T
             @Override
             public Task<DynamicType.Builder<?>> task() {
                 return new TChain<>(
-                        new TrSuccess<>(builder), 
+                        Try.success(builder), 
                         b -> new BtGenerateEquals(b, td),
                         b -> new BtGenerateHashCode(b, td)
                 );

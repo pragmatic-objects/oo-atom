@@ -23,12 +23,11 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
+import javaslang.control.Try;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
 import oo.atom.anno.api.task.TChained;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrSuccess;
 import oo.atom.codegen.bytebuddy.Branching;
 
 /**
@@ -39,9 +38,9 @@ public class SmtIfNull extends TChained<StackManipulation> implements Task<Stack
 
     public SmtIfNull(boolean isTrue, Task<StackManipulation> task) {
         super(task, sm -> new Task() {
-            public TaskResult<StackManipulation> result() {
+            public Try<StackManipulation> result() {
                 final Label checkEnd = new Label();
-                return new TrSuccess<>(
+                return Try.success(
                         new StackManipulation.Compound(
                             new Branching.IsNull(isTrue, checkEnd),
                             sm,

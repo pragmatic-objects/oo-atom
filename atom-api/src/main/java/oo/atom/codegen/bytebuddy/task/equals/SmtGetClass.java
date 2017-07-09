@@ -27,15 +27,14 @@ import java.lang.reflect.Method;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+import oo.atom.anno.api.task.TSucceed;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtGetClass implements Task<StackManipulation> {
+public class SmtGetClass extends TSucceed<StackManipulation> implements Task<StackManipulation> {
     private final static Method GETCLASS;
 
     static {
@@ -45,10 +44,9 @@ public class SmtGetClass implements Task<StackManipulation> {
             throw new RuntimeException(ex);
         }
     }
-    
-    @Override
-    public final TaskResult<StackManipulation> result() {
-        return new TrSuccess<>(
+
+    public SmtGetClass() {
+        super(
                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(GETCLASS))
         );
     }

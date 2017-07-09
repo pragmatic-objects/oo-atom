@@ -24,14 +24,13 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import java.lang.reflect.Method;
+import javaslang.control.Try;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.jar.asm.Label;
 import oo.atom.anno.api.task.TChained;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrSuccess;
 import oo.atom.codegen.bytebuddy.Branching;
 
 /**
@@ -52,9 +51,9 @@ class SmtIfEqual extends TChained<StackManipulation> implements Task<StackManipu
 
     public SmtIfEqual(boolean isTrue, Task<StackManipulation> task) {
         super(task, sm -> new Task() {
-            public TaskResult<StackManipulation> result() {
+            public Try<StackManipulation> result() {
                 final Label checkEnd = new Label();
-                return new TrSuccess<>(
+                return Try.success(
                         new StackManipulation.Compound(
                                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQUALS)),
                                 new Branching.IsZero(!isTrue, checkEnd),

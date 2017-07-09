@@ -23,22 +23,14 @@
  */
 package oo.atom.anno.api.task;
 
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrSuccess;
+import javaslang.control.Try;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TSucceed<T> implements Task<T> {
-    private final T result;
-
-    public TSucceed(T result) {
-        this.result = result;
-    }
-
-    @Override
-    public final TaskResult<T> result() {
-        return new TrSuccess(result);
+public class TSucceed<T> extends TConst<T> implements Task<T> {
+    public TSucceed(T value) {
+        super(Try.success(value));
     }
 }

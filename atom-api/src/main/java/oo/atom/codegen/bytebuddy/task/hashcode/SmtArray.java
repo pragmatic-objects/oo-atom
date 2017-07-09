@@ -29,8 +29,6 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrConst;
 
 /**
  *
@@ -49,16 +47,15 @@ public class SmtArray implements Task<StackManipulation> {
     }
 
     @Override
-    public final TaskResult<StackManipulation> result() {
+    public final Try<StackManipulation> result() {
         Try<StackManipulation> result = members
                 .map(Task::result)
-                .map(TaskResult::item)
                 .transform(Try::sequence)
                 .map(seq -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
                             seq.toJavaList()
                     )
                 );
         
-        return new TrConst<>(result);
+        return result;
     }
 }

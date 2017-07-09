@@ -24,18 +24,16 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.api.task.TSucceed;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrSuccess;
 
 /**
  *
  * @author skapral
  */
-public class SmtDoNothing implements Task<StackManipulation> {
-    @Override
-    public final TaskResult<StackManipulation> result() {
-        return new TrSuccess<>(
+public class SmtDoNothing extends TSucceed<StackManipulation> implements Task<StackManipulation> {
+    public SmtDoNothing() {
+        super(
                 new StackManipulation.Compound()
         );
     }

@@ -23,7 +23,7 @@
  */
 package oo.atom.anno.api.task;
 
-import oo.atom.anno.api.task.result.TaskResult;
+import javaslang.control.Try;
 
 /**
  *
@@ -37,7 +37,7 @@ public class TInferred<V> implements Task<V> {
     }
 
     @Override
-    public final TaskResult<V> result() {
+    public final Try<V> result() {
         return derivative.task().result();
     }
 }

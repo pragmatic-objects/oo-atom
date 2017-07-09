@@ -25,36 +25,32 @@ package oo.atom.anno.api.task;
 
 import java.util.function.BinaryOperator;
 import javaslang.collection.List;
-import oo.atom.anno.api.task.result.TaskResult;
-import oo.atom.anno.api.task.result.TrTransformed;
+import javaslang.control.Try;
 
 /**
  *
  * @author skapral
  */
 public class TTransformed<T> implements Task<T> {
-    private final TaskResult<T> defaultResult;
+    private final Try<T> defaultResult;
     private final BinaryOperator<T> combinationFunction;
     private final List<Task<T>> subtasks;
     
-    public TTransformed(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, List<Task<T>> subtasks) {
+    public TTransformed(Try<T> defaultResult, BinaryOperator<T> combinationFunction, List<Task<T>> subtasks) {
         this.defaultResult = defaultResult;
         this.combinationFunction = combinationFunction;
         this.subtasks = subtasks;
     }
     
-    public TTransformed(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, Task<T>... subtasks) {
+    public TTransformed(Try<T> defaultResult, BinaryOperator<T> combinationFunction, Task<T>... subtasks) {
         this(defaultResult, combinationFunction, List.of(subtasks));
     }
     
     @Override
-    public final TaskResult<T> result() {
-        return subtasks
+    public final Try<T> result() {
+        return subtasks.isEmpty() ? defaultResult : subtasks
                 .map(Task::result)
-                .transform(tr -> new TrTransformed<>(
-                        defaultResult,
-                        combinationFunction,
-                        tr
-                ));
+                .transform(Try::sequence)
+                .map(l -> l.reduce(combinationFunction));
     }
 }
