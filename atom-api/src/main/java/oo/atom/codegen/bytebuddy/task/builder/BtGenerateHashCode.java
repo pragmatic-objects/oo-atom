@@ -26,7 +26,6 @@ package oo.atom.codegen.bytebuddy.task.builder;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.task.equals.SmtEquals;
 import oo.atom.codegen.bytebuddy.task.hashcode.SmtHashCode;
 
 /**

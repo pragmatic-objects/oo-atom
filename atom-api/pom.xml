@@ -91,6 +91,7 @@ SOFTWARE.
                         <param>hashCode</param>
                         <param>toString</param>
                     </excludedMethods>
+                    <timestampedReports>false</timestampedReports>
                 </configuration>
             </plugin>
             <plugin>

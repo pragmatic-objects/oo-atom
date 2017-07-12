@@ -23,17 +23,14 @@
  */
 package oo.atom.anno.api.task;
 
-import javaslang.collection.List;
 import javaslang.control.Try;
-import oo.atom.anno.api.task.issue.Issue;
-import oo.atom.anno.api.task.issue.x.IssuesFoundException;
 
 /**
  *
  * @author skapral
  */
 public class TFail<T> extends TConst<T> implements Task<T> {
-    public TFail(List<Issue> issues) {
-        super(Try.failure(new IssuesFoundException(issues)));
+    public TFail(String message) {
+        super(Try.failure(new RuntimeException(message)));
     }
 }

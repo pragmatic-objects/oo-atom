@@ -25,20 +25,21 @@ package oo.atom.codegen.bytebuddy.task.equals;
 
 import static javaslang.API.*;
 import java.lang.reflect.Method;
-import javaslang.control.Try;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+import oo.atom.anno.api.task.TFail;
+import oo.atom.anno.api.task.TInferred;
+import oo.atom.anno.api.task.TSucceed;
 import oo.atom.anno.api.task.Task;
-import oo.atom.anno.api.task.issue.IPlainErrorMessage;
-import oo.atom.anno.api.task.issue.x.IssuesFoundException;
+import oo.atom.anno.api.task.TaskInference;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtBox implements Task<StackManipulation> {
+public class SmtBox extends TInferred<StackManipulation> implements Task<StackManipulation> {
 
     private static final Method BOOLEAN_VALUEOF;
     private static final Method BYTE_VALUEOF;
@@ -64,46 +65,42 @@ public class SmtBox implements Task<StackManipulation> {
         }
     }
 
-    private final TypeDescription type;
-
     public SmtBox(TypeDescription type) {
-        this.type = type;
-    }
-
-    @Override
-    public final Try<StackManipulation> result() {
-        return Match(type).<Try<StackManipulation>>of(
-                Case($(t -> t.represents(boolean.class)), Try.<StackManipulation>success(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
-                )),
-                Case($(t -> t.represents(byte.class)), Try.<StackManipulation>success(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
-                )),
-                Case($(t -> t.represents(char.class)), Try.<StackManipulation>success(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
-                )),
-                Case($(t -> t.represents(short.class)), Try.<StackManipulation>success(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
-                )),
-                Case($(t -> t.represents(int.class)), Try.<StackManipulation>success(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
-                )),
-                Case($(t -> t.represents(long.class)), Try.<StackManipulation>success(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
-                )),
-                Case($(t -> t.represents(float.class)), Try.<StackManipulation>success(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
-                )),
-                Case($(t -> t.represents(double.class)), Try.<StackManipulation>success(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
-                )),
-                Case($(), Try.<StackManipulation>failure(
-                        new IssuesFoundException(
-                                new IPlainErrorMessage(
-                                        String.format("Attempt to box non-primitive type %s", type)
-                                )
-                        )
-                ))
+        super(
+            new TaskInference<StackManipulation>() {
+                @Override
+                public Task<StackManipulation> task() {
+                    return Match(type).<Task<StackManipulation>>of(
+                            Case($(t -> t.represents(boolean.class)), new TSucceed<StackManipulation>(
+                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
+                            )),
+                            Case($(t -> t.represents(byte.class)), new TSucceed<StackManipulation>(
+                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
+                            )),
+                            Case($(t -> t.represents(char.class)), new TSucceed<StackManipulation>(
+                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
+                            )),
+                            Case($(t -> t.represents(short.class)), new TSucceed<StackManipulation>(
+                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
+                            )),
+                            Case($(t -> t.represents(int.class)), new TSucceed<StackManipulation>(
+                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                            )),
+                            Case($(t -> t.represents(long.class)), new TSucceed<StackManipulation>(
+                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
+                            )),
+                            Case($(t -> t.represents(float.class)), new TSucceed<StackManipulation>(
+                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
+                            )),
+                            Case($(t -> t.represents(double.class)), new TSucceed<StackManipulation>(
+                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
+                            )),
+                            Case($(), new TFail<StackManipulation>(
+                                            String.format("Attempt to box non-primitive type %s", type)
+                            ))
+                    );
+                }
+            }
         );
     }
 }
