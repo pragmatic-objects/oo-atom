@@ -39,7 +39,7 @@ public class SmtLoadReferenceTest {
         MethodVisitor methodVisitor = Mockito.mock(MethodVisitor.class);
         Implementation.Context implementationContext = Mockito.mock(Implementation.Context.class);
         
-        new SmtLoadReference(0).result().item().peek(sm -> sm.apply(methodVisitor, implementationContext));
+        new SmtLoadReference(0).result().peek(sm -> sm.apply(methodVisitor, implementationContext));
         Mockito.verify(methodVisitor).visitVarInsn(Opcodes.ALOAD, 0);
         Mockito.verifyNoMoreInteractions(methodVisitor);
     }
@@ -49,7 +49,7 @@ public class SmtLoadReferenceTest {
         MethodVisitor methodVisitor = Mockito.mock(MethodVisitor.class);
         Implementation.Context implementationContext = Mockito.mock(Implementation.Context.class);
         
-        new SmtLoadReference(5).result().item().peek(sm -> sm.apply(methodVisitor, implementationContext));
+        new SmtLoadReference(5).result().peek(sm -> sm.apply(methodVisitor, implementationContext));
         Mockito.verify(methodVisitor).visitVarInsn(Opcodes.ALOAD, 5);
         Mockito.verifyNoMoreInteractions(methodVisitor);
     }
