@@ -21,35 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.equals;
+package oo.atom.codegen.bytebuddy.task.utils;
 
-import net.bytebuddy.jar.asm.Opcodes;
-import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
-import org.junit.Test;
-import static org.mockito.Mockito.verify;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.anno.api.task.Task;
+import org.assertj.core.api.Assertions;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadReferenceTest {
-    @Test
-    public void loads0thArgumentOnStack() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(0), 
-                mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 0);
-                }
-        ).check();
-    }
+public class SmtAssumeTaskToFail {
+    private final Task<StackManipulation> task;
 
-    @Test
-    public void loads5thArgumentOnStack() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(5), 
-                mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 5);
-                }
-        ).check();
+    public SmtAssumeTaskToFail(Task<StackManipulation> task) {
+        this.task = task;
+    }
+    
+    public final void check() throws Exception {
+        Assertions.assertThatThrownBy(() -> task.result().get()).isNotNull();
     }
 }

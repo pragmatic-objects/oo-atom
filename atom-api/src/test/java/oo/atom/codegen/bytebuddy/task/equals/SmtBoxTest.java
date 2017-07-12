@@ -23,7 +23,11 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
+import java.lang.reflect.Method;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.jar.asm.Type;
+import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToFail;
 import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
 import org.junit.Test;
 import static org.mockito.Mockito.verify;
@@ -32,23 +36,41 @@ import static org.mockito.Mockito.verify;
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadReferenceTest {
+public class SmtBoxTest {
+    private static final Method INT_VALUEOF;
+
+    static {
+        try {
+            INT_VALUEOF = Integer.class.getMethod("valueOf", int.class);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    
     @Test
-    public void loads0thArgumentOnStack() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(0), 
-                mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 0);
-                }
+    public void boxNonPrimitive() throws Exception {
+        new SmtAssumeTaskToFail(
+                new SmtBox(
+                        new TypeDescription.ForLoadedType(Object.class)
+                )
         ).check();
     }
-
+    
     @Test
-    public void loads5thArgumentOnStack() throws Exception {
+    public void boxIntegerPrimitive() throws Exception {
         new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(5), 
+                new SmtBox(
+                        new TypeDescription.ForLoadedType(int.class)
+                ),
                 mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 5);
+                    verify(mv).visitMethodInsn(
+                            Opcodes.INVOKESTATIC, 
+                            Type.getInternalName(Integer.class), 
+                            "valueOf", 
+                            Type.getMethodDescriptor(INT_VALUEOF), 
+                            false
+                    );
                 }
         ).check();
     }

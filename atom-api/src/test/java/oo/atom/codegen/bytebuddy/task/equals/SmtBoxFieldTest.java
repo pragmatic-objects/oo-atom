@@ -23,32 +23,73 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
+import java.lang.reflect.Method;
+import net.bytebuddy.description.field.FieldDescription;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.jar.asm.Type;
 import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
 import org.junit.Test;
 import static org.mockito.Mockito.verify;
+
+
+
+class Foo {
+    private final Object nonPrimitive;
+    private final int primitive;
+
+    public Foo(Object nonPrimitive, int primitive) {
+        this.nonPrimitive = nonPrimitive;
+        this.primitive = primitive;
+    }
+}
+
+
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadReferenceTest {
+public class SmtBoxFieldTest {
+    
+    private static final Method INT_VALUEOF;
+    
+    static {
+        try {
+            INT_VALUEOF = Integer.class.getMethod("valueOf", int.class);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    
     @Test
-    public void loads0thArgumentOnStack() throws Exception {
+    public void doNothingWithNonPrimitiveFields() throws Exception {
         new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(0), 
-                mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 0);
-                }
+                new SmtBoxField(
+                        new FieldDescription.ForLoadedField(
+                                Foo.class.getDeclaredField("nonPrimitive")
+                        )
+                ),
+                mv -> {}
         ).check();
     }
-
+    
     @Test
-    public void loads5thArgumentOnStack() throws Exception {
+    public void boxesPrimitiveFields() throws Exception {
         new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(5), 
+                new SmtBoxField(
+                        new FieldDescription.ForLoadedField(
+                                Foo.class.getDeclaredField("primitive")
+                        )
+                ),
                 mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 5);
+                    verify(mv).visitMethodInsn(
+                            Opcodes.INVOKESTATIC, 
+                            Type.getInternalName(Integer.class), 
+                            "valueOf", 
+                            Type.getMethodDescriptor(INT_VALUEOF), 
+                            false
+                    );
                 }
         ).check();
     }

@@ -21,35 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.equals;
+package oo.atom.codegen.bytebuddy.task.utils;
 
-import net.bytebuddy.jar.asm.Opcodes;
-import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
-import org.junit.Test;
-import static org.mockito.Mockito.verify;
+import java.util.function.Consumer;
+import net.bytebuddy.implementation.Implementation;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.jar.asm.MethodVisitor;
+import oo.atom.anno.api.task.Task;
+import org.mockito.Mockito;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadReferenceTest {
-    @Test
-    public void loads0thArgumentOnStack() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(0), 
-                mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 0);
-                }
-        ).check();
+public class SmtAssumeTaskToGenerateBytecode {
+
+    private final Task<StackManipulation> task;
+    private final Consumer<MethodVisitor> methodVisitorScenario;
+
+    public SmtAssumeTaskToGenerateBytecode(Task<StackManipulation> task, Consumer<MethodVisitor> methodVisitorScenario) {
+        this.task = task;
+        this.methodVisitorScenario = methodVisitorScenario;
     }
 
-    @Test
-    public void loads5thArgumentOnStack() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(5), 
-                mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 5);
-                }
-        ).check();
+    public final void check() throws Exception {
+        MethodVisitor methodVisitor = Mockito.mock(MethodVisitor.class);
+        Implementation.Context implementationContext = Mockito.mock(Implementation.Context.class);
+
+        task.result().peek(sm -> sm.apply(methodVisitor, implementationContext));
+        methodVisitorScenario.accept(methodVisitor);
+        Mockito.verifyNoMoreInteractions(methodVisitor);
     }
 }
