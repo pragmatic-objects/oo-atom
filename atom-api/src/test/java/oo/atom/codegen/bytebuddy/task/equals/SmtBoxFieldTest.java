@@ -25,24 +25,14 @@ package oo.atom.codegen.bytebuddy.task.equals;
 
 import java.lang.reflect.Method;
 import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.jar.asm.Opcodes;
-import net.bytebuddy.jar.asm.Type;
+import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
 import org.junit.Test;
-import static org.mockito.Mockito.verify;
 
 
 
-class Foo {
-    private final Object nonPrimitive;
-    private final int primitive;
-
-    public Foo(Object nonPrimitive, int primitive) {
-        this.nonPrimitive = nonPrimitive;
-        this.primitive = primitive;
-    }
-}
 
 
 
@@ -70,7 +60,7 @@ public class SmtBoxFieldTest {
                                 Foo.class.getDeclaredField("nonPrimitive")
                         )
                 ),
-                mv -> {}
+                new StackManipulation.Compound()
         ).check();
     }
     
@@ -82,15 +72,7 @@ public class SmtBoxFieldTest {
                                 Foo.class.getDeclaredField("primitive")
                         )
                 ),
-                mv -> {
-                    verify(mv).visitMethodInsn(
-                            Opcodes.INVOKESTATIC, 
-                            Type.getInternalName(Integer.class), 
-                            "valueOf", 
-                            Type.getMethodDescriptor(INT_VALUEOF), 
-                            false
-                    );
-                }
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
         ).check();
     }
 }

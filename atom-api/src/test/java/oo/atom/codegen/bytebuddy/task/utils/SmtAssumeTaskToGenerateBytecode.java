@@ -23,33 +23,38 @@
  */
 package oo.atom.codegen.bytebuddy.task.utils;
 
-import java.util.function.Consumer;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import oo.atom.anno.api.task.Task;
-import org.mockito.Mockito;
+import org.easymock.EasyMock;
 
 /**
  *
  * @author Kapralov Sergey
  */
 public class SmtAssumeTaskToGenerateBytecode {
-
     private final Task<StackManipulation> task;
-    private final Consumer<MethodVisitor> methodVisitorScenario;
+    private final StackManipulation sample;
 
-    public SmtAssumeTaskToGenerateBytecode(Task<StackManipulation> task, Consumer<MethodVisitor> methodVisitorScenario) {
+    public SmtAssumeTaskToGenerateBytecode(Task<StackManipulation> task, StackManipulation sample) {
         this.task = task;
-        this.methodVisitorScenario = methodVisitorScenario;
+        this.sample = sample;
     }
 
     public final void check() throws Exception {
-        MethodVisitor methodVisitor = Mockito.mock(MethodVisitor.class);
-        Implementation.Context implementationContext = Mockito.mock(Implementation.Context.class);
-
+        MethodVisitor methodVisitor = EasyMock.createStrictMock(
+                MethodVisitor.class
+        );
+        Implementation.Context implementationContext = EasyMock.createMock(
+                Implementation.Context.class
+        );
+        
+        // Expect
+        sample.apply(methodVisitor, implementationContext);
+        EasyMock.replay(methodVisitor);
+        
         task.result().peek(sm -> sm.apply(methodVisitor, implementationContext));
-        methodVisitorScenario.accept(methodVisitor);
-        Mockito.verifyNoMoreInteractions(methodVisitor);
+        EasyMock.verify(methodVisitor);
     }
 }

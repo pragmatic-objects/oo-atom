@@ -23,10 +23,9 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
-import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
 import org.junit.Test;
-import static org.mockito.Mockito.verify;
 
 /**
  *
@@ -37,9 +36,7 @@ public class SmtLoadReferenceTest {
     public void loads0thArgumentOnStack() throws Exception {
         new SmtAssumeTaskToGenerateBytecode(
                 new SmtLoadReference(0), 
-                mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 0);
-                }
+                MethodVariableAccess.REFERENCE.loadFrom(0)
         ).check();
     }
 
@@ -47,9 +44,7 @@ public class SmtLoadReferenceTest {
     public void loads5thArgumentOnStack() throws Exception {
         new SmtAssumeTaskToGenerateBytecode(
                 new SmtLoadReference(5), 
-                mv -> {
-                    verify(mv).visitVarInsn(Opcodes.ALOAD, 5);
-                }
+                MethodVariableAccess.REFERENCE.loadFrom(5)
         ).check();
     }
 }

@@ -23,46 +23,18 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
-import java.lang.reflect.Method;
-import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToFail;
-import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
-import org.junit.Test;
-
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtBoxTest {
-    private static final Method INT_VALUEOF;
+class Foo {
+    
+    private final Object nonPrimitive;
+    private final int primitive;
 
-    static {
-        try {
-            INT_VALUEOF = Integer.class.getMethod("valueOf", int.class);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+    public Foo(Object nonPrimitive, int primitive) {
+        this.nonPrimitive = nonPrimitive;
+        this.primitive = primitive;
     }
     
-    
-    @Test
-    public void boxNonPrimitive() throws Exception {
-        new SmtAssumeTaskToFail(
-                new SmtBox(
-                        new TypeDescription.ForLoadedType(Object.class)
-                )
-        ).check();
-    }
-    
-    @Test
-    public void boxIntegerPrimitive() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
-                new SmtBox(
-                        new TypeDescription.ForLoadedType(int.class)
-                ),
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
-        ).check();
-    }
 }
