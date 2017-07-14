@@ -30,23 +30,31 @@ import oo.atom.anno.api.task.TInferred;
 import oo.atom.anno.api.task.Task;
 import oo.atom.anno.api.task.TaskInference;
 
+class SmtLoadArrayOfFieldsInference implements TaskInference<StackManipulation> {
+    private final TypeDescription type;
+
+    public SmtLoadArrayOfFieldsInference(TypeDescription type) {
+        this.type = type;
+    }
+
+    @Override
+    public final Task<StackManipulation> task() {
+        return new SmtArray(
+                List.of(type)
+                .flatMap(TypeDescription::getDeclaredFields)
+                .filter(f -> !f.isStatic())
+                .map(f -> new SmtLoadField(f))
+                .toJavaArray(SmtLoadField.class)
+        );
+    }
+}
+
 /**
  *
  * @author Kapralov Sergey
  */
 public class SmtLoadArrayOfFields extends TInferred<StackManipulation> {
     public SmtLoadArrayOfFields(TypeDescription type) {
-        super(new TaskInference<StackManipulation>() {
-            @Override
-            public final Task<StackManipulation> task() {
-                return new SmtArray(
-                        List.of(type)
-                            .flatMap(TypeDescription::getDeclaredFields)
-                            .filter(f -> !f.isStatic())
-                            .map(f -> new SmtLoadField(f))
-                            .toJavaArray(SmtLoadField.class)
-                );
-            }
-        });
+        super(new SmtLoadArrayOfFieldsInference(type));
     }
 }

@@ -21,25 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.builder;
+package oo.atom.codegen.bytebuddy.branching;
 
-import javaslang.control.Try;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.api.task.TChain;
-import oo.atom.anno.api.task.Task;
+import net.bytebuddy.jar.asm.Label;
 
+
+class BIfIcmpInference implements BranchingInference {
+    private final boolean equals;
+    private final Label label;
+
+    public BIfIcmpInference(boolean equals, Label label) {
+        this.equals = equals;
+        this.label = label;
+    }
+
+    @Override
+    public final Branching branching() {
+        return equals ? new BIfIcmpEq(label) : new BIfIcmpNe(label);
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
-    public BtApplyPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
-        super(
-                Try.success(builder),
-                b -> new BtGenerateEquals(b, td),
-                b -> new BtGenerateHashCode(b, td)
-        );
+public class BIfIcmp extends BInferred implements Branching {
+    
+    public BIfIcmp(boolean equals, Label label) {
+        super(new BIfIcmpInference(equals, label));
     }
+    
 }

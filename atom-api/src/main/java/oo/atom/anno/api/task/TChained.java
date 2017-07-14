@@ -23,7 +23,29 @@
  */
 package oo.atom.anno.api.task;
 
+import javaslang.collection.List;
 import javaslang.control.Option;
+
+class TChainedInference<T> implements TaskInference<T> {
+    private final Task<T> task;
+    private final List<TaskLink<T>> links;
+
+    public TChainedInference(Task<T> task, List<TaskLink<T>> links) {
+        this.task = task;
+        this.links = links;
+    }
+    
+    public TChainedInference(Task<T> task, TaskLink<T>... links) {
+        this(task, List.of(links));
+    }
+    
+    @Override
+    public final Task<T> task() {
+        return Option.of(task.result())
+                        .<Task<T>>map(i -> new TChain<>(i, links))
+                        .getOrElse(task);
+    }
+}
 
 /**
  *
@@ -31,13 +53,6 @@ import javaslang.control.Option;
  */
 public class TChained<T> extends TInferred<T> implements Task<T> {
     public TChained(Task<T> task, TaskLink<T>... links) {
-        super(new TaskInference<T>() {
-            @Override
-            public final Task<T> task() {
-                return Option.of(task.result())
-                        .<Task<T>>map(i -> new TChain<>(i, links))
-                        .getOrElse(task);
-            }
-        });
+        super(new TChainedInference(task, links));
     }
 }

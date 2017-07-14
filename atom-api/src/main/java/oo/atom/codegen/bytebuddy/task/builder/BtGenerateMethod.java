@@ -34,6 +34,39 @@ import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.anno.api.task.Task;
 
+class BtGenerateMethodBytecodeAppender implements ByteCodeAppender {
+    private final StackManipulation sm;
+
+    public BtGenerateMethodBytecodeAppender(StackManipulation sm) {
+        this.sm = sm;
+    }
+
+    @Override
+    public final ByteCodeAppender.Size apply(MethodVisitor mv, Implementation.Context ctx, MethodDescription method) {
+        StackManipulation.Size size = sm.apply(mv, ctx);
+        return new ByteCodeAppender.Size(size.getMaximalSize(), method.getStackSize());
+    }
+}
+
+class BtGenerateMethodImplementation implements Implementation {
+
+    private final StackManipulation sm;
+
+    public BtGenerateMethodImplementation(StackManipulation sm) {
+        this.sm = sm;
+    }
+
+    @Override
+    public final ByteCodeAppender appender(Implementation.Target implementationTarget) {
+        return new BtGenerateMethodBytecodeAppender(sm);
+    }
+
+    @Override
+    public final InstrumentedType prepare(InstrumentedType instrumentedType) {
+        return instrumentedType;
+    }
+}
+
 /**
  *
  * @author Kapralov Sergey
@@ -56,24 +89,7 @@ public class BtGenerateMethod implements Task<DynamicType.Builder<?>> {
         return result.map(sm -> {
             return builder
                     .method(elementMatcher)
-                    .intercept(new Implementation() {
-                        @Override
-                        public ByteCodeAppender appender(Implementation.Target implementationTarget) {
-                            return new ByteCodeAppender() {
-                                @Override
-                                public ByteCodeAppender.Size apply(MethodVisitor mv, Implementation.Context ctx, MethodDescription method) {
-                                    StackManipulation.Size size = sm.apply(mv, ctx);
-                                    return new ByteCodeAppender.Size(size.getMaximalSize(), method.getStackSize());
-                                }
-                            };
-                        }
-
-                        @Override
-                        public InstrumentedType prepare(InstrumentedType instrumentedType) {
-                            return instrumentedType;
-                        }
-                    });
+                    .intercept(new BtGenerateMethodImplementation(sm));
         });
     }
-
 }

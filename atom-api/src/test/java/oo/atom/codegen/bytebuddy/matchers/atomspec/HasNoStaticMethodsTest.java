@@ -1,0 +1,78 @@
+/*
+ * The MIT License
+ *
+ * Copyright 2017 Kapralov Sergey.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package oo.atom.codegen.bytebuddy.matchers.atomspec;
+
+import java.util.function.Supplier;
+import net.bytebuddy.description.type.TypeDescription;
+import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ *
+ * @author Kapralov Sergey
+ */
+public class HasNoStaticMethodsTest {
+
+    @Test
+    public void trueIfClassHasNoStaticMethods() {
+        assertThat(new HasNoStaticMethods().matches(
+                        new TypeDescription.ForLoadedType(Foo.class)
+                )
+        ).isTrue();
+    }
+    
+    @Test
+    public void matcherIgnoresLambdas() {
+        assertThat(new HasNoStaticMethods().matches(
+                        new TypeDescription.ForLoadedType(Baz.class)
+                )
+        ).isTrue();
+    }
+
+    @Test
+    public void falseIfClassHasAtLeastOneStaticMethod() {
+        assertThat(new HasNoStaticMethods().matches(
+                        new TypeDescription.ForLoadedType(Bar.class)
+                )
+        ).isFalse();
+    }
+
+    private static class Foo {
+
+        private static final Object item = new Object();
+    }
+
+    private static class Bar {
+        private static final Object item() {
+            return new Object();
+        }
+    }
+    
+    private static class Baz {
+        private final Object item() {
+            Supplier supplier = () -> new Object();
+            return supplier.get();
+        }
+    }
+}

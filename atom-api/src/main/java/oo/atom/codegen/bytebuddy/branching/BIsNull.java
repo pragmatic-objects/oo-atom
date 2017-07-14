@@ -21,25 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.builder;
+package oo.atom.codegen.bytebuddy.branching;
 
-import javaslang.control.Try;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.api.task.TChain;
-import oo.atom.anno.api.task.Task;
+import net.bytebuddy.jar.asm.Label;
 
+/**
+ * 
+ * @author Kapralov Sergey
+ */
+class BIsNullInference implements BranchingInference {
+    private final boolean isTrue;
+    private final Label label;
+
+    public BIsNullInference(boolean isTrue, Label label) {
+        this.isTrue = isTrue;
+        this.label = label;
+    }
+            
+    public final Branching branching() {
+        return isTrue ? new BIfNull(label) : new BIfNonNull(label);
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
-    public BtApplyPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
+public class BIsNull extends BInferred {
+    
+    public BIsNull(boolean isTrue, Label label) {
         super(
-                Try.success(builder),
-                b -> new BtGenerateEquals(b, td),
-                b -> new BtGenerateHashCode(b, td)
+            new BIsNullInference(
+                isTrue, 
+                label
+            )
         );
     }
+    
 }

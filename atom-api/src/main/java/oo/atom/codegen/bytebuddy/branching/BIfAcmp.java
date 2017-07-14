@@ -21,19 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.subject;
+package oo.atom.codegen.bytebuddy.branching;
 
-import oo.atom.anno.Atom;
+import net.bytebuddy.jar.asm.Label;
+
+/**
+ * 
+ * @author Kapralov Sergey
+ */
+class BIfAcmpInference implements BranchingInference {
+    private final boolean equals;
+    private final Label label;
+
+    public BIfAcmpInference(boolean equals, Label label) {
+        this.equals = equals;
+        this.label = label;
+    }
+
+    @Override
+    public final Branching branching() {
+        return equals ? new BIfAcmpEq(label) : new BIfAcmpNe(label);
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-@Atom
-public class LongHolder {
-    private long value;
-
-    public LongHolder(long value) {
-        this.value = value;
+public class BIfAcmp extends BInferred implements Branching {
+    public BIfAcmp(boolean equals, Label label) {
+        super(
+            new BIfAcmpInference(
+                equals, 
+                label
+            )
+        );
     }
 }

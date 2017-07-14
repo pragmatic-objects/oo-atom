@@ -21,18 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.matchers;
+package oo.atom.codegen.bytebuddy.matchers.atomspec;
 
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
+import static org.assertj.core.api.Assertions.*;
+import org.junit.Test;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsDerivedAtom implements ElementMatcher<TypeDescription> {
-    @Override
-    public boolean matches(TypeDescription target) {
-        return !target.getInterfaces().asErasures().filter(new IsExplicitAtom()).isEmpty();
+public class IsNotAbstractTest {
+    @Test
+    public void trueIfNotAbstract() {
+        assertThat(
+                new IsNotAbstract().matches(
+                        new TypeDescription.ForLoadedType(Foo.class)
+                )
+        ).isTrue();
+    }
+    
+    @Test
+    public void falseIfAbstract() {
+        assertThat(
+                new IsNotAbstract().matches(
+                        new TypeDescription.ForLoadedType(Bar.class)
+                )
+        ).isFalse();
+    }
+    
+    private static class Foo {
+    }
+    
+    private abstract static class Bar {
     }
 }

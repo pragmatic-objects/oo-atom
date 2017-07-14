@@ -31,14 +31,12 @@ import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.jar.asm.Label;
 import oo.atom.anno.api.task.TChained;
 import oo.atom.anno.api.task.Task;
-import oo.atom.codegen.bytebuddy.Branching;
+import oo.atom.codegen.bytebuddy.branching.BIsZero;
+import oo.atom.codegen.bytebuddy.branching.BMark;
 
-/**
- *
- * @author Kapralov Sergey
- */
-class SmtIfEqual extends TChained<StackManipulation> implements Task<StackManipulation> {
 
+
+class SmtIfEqualTask implements Task<StackManipulation> {
     private final static Method EQUALS;
 
     static {
@@ -48,20 +46,33 @@ class SmtIfEqual extends TChained<StackManipulation> implements Task<StackManipu
             throw new RuntimeException(ex);
         }
     }
+    
+    private final boolean isTrue;
+    private final StackManipulation sm;
 
+    public SmtIfEqualTask(boolean isTrue, StackManipulation sm) {
+        this.isTrue = isTrue;
+        this.sm = sm;
+    }
+    
+    public final Try<StackManipulation> result() {
+        final Label checkEnd = new Label();
+        return Try.success(new StackManipulation.Compound(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQUALS)),
+                        new BIsZero(!isTrue, checkEnd),
+                        sm,
+                        new BMark(checkEnd)
+                )
+        );
+    }
+}
+
+/**
+ *
+ * @author Kapralov Sergey
+ */
+class SmtIfEqual extends TChained<StackManipulation> implements Task<StackManipulation> {
     public SmtIfEqual(boolean isTrue, Task<StackManipulation> task) {
-        super(task, sm -> new Task() {
-            public Try<StackManipulation> result() {
-                final Label checkEnd = new Label();
-                return Try.success(
-                        new StackManipulation.Compound(
-                                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQUALS)),
-                                new Branching.IsZero(!isTrue, checkEnd),
-                                sm,
-                                new Branching.Mark(checkEnd)
-                        )
-                );
-            }
-        });
+        super(task, sm -> new SmtIfEqualTask(isTrue, sm));
     }
 }

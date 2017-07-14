@@ -31,14 +31,14 @@ import net.bytebuddy.matcher.ElementMatcher;
  * @author Kapralov Sergey
  */
 public class IsAtom implements ElementMatcher<TypeDescription> {
-    private static final ElementMatcher<TypeDescription> IS_DERIVED_ATOM = new IsDerivedAtom();
-    private static final ElementMatcher<TypeDescription> IS_EXPLICIT_ATOM = new IsExplicitAtom();
     private static final ElementMatcher<TypeDescription> IS_JAVA_ATOM = new IsJavaAtom();
+    private static final ElementMatcher<TypeDescription> IS_EXPLICIT_ATOM = new IsExplicitAtom();
+    private static final ElementMatcher<TypeDescription> FOLLOWS_SPEC = new FollowsAtomSpecification();
     
     @Override
     public final boolean matches(TypeDescription td) {
         return IS_JAVA_ATOM.matches(td)
                 || IS_EXPLICIT_ATOM.matches(td)
-                || IS_DERIVED_ATOM.matches(td);
+                || FOLLOWS_SPEC.matches(td);
     }
 }

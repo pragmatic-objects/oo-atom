@@ -21,48 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.subject;
+package oo.atom.codegen.bytebuddy.matchers.atomspec;
+
+import net.bytebuddy.description.field.FieldDescription;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public interface StringNode extends Node<String> {
+public class AllFieldsArePrivateFinal implements ElementMatcher<TypeDescription> {
     @Override
-    public StringNode put(String newValue);
-    
-    class Empty implements StringNode {
-        @Override
-        public final StringNode put(String newValue) {
-            return new Value(newValue);
-        }
-    }
-    
-    class Value implements StringNode {
-        private final String value;
-        private final StringNode left;
-        private final StringNode right;
-
-        public Value(String value) {
-            this(value, new Empty(), new Empty());
-        }
-
-        public Value(String value, StringNode left, StringNode right) {
-            this.value = value;
-            this.left = left;
-            this.right = right;
-        }
-
-        @Override
-        public final StringNode put(String newValue) {
-            int comparison = value.compareTo(value);
-            if(comparison == 0) {
-                return this;
-            } else if(comparison > 0) {
-                return new Value(value, left, right.put(newValue));
-            } else {
-                return new Value(value, left.put(newValue), right);
+    public final boolean matches(TypeDescription target) {
+        for(FieldDescription fd : target.getDeclaredFields()) {
+            if(!fd.isPrivate() || !fd.isFinal()) {
+                return false;
             }
         }
+        return true;
     }
 }

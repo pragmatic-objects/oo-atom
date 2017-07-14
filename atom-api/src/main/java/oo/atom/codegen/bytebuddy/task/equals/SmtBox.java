@@ -35,11 +35,7 @@ import oo.atom.anno.api.task.TSucceed;
 import oo.atom.anno.api.task.Task;
 import oo.atom.anno.api.task.TaskInference;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class SmtBox extends TInferred<StackManipulation> implements Task<StackManipulation> {
+class SmtBoxInference implements TaskInference<StackManipulation> {
 
     private static final Method BOOLEAN_VALUEOF;
     private static final Method BYTE_VALUEOF;
@@ -65,42 +61,55 @@ public class SmtBox extends TInferred<StackManipulation> implements Task<StackMa
         }
     }
 
+    private final TypeDescription type;
+
+    public SmtBoxInference(TypeDescription type) {
+        this.type = type;
+    }
+
+    @Override
+    public final Task<StackManipulation> task() {
+        return Match(type).<Task<StackManipulation>>of(
+                Case($(t -> t.represents(boolean.class)), new TSucceed<StackManipulation>(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
+                )),
+                Case($(t -> t.represents(byte.class)), new TSucceed<StackManipulation>(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
+                )),
+                Case($(t -> t.represents(char.class)), new TSucceed<StackManipulation>(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
+                )),
+                Case($(t -> t.represents(short.class)), new TSucceed<StackManipulation>(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
+                )),
+                Case($(t -> t.represents(int.class)), new TSucceed<StackManipulation>(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                )),
+                Case($(t -> t.represents(long.class)), new TSucceed<StackManipulation>(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
+                )),
+                Case($(t -> t.represents(float.class)), new TSucceed<StackManipulation>(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
+                )),
+                Case($(t -> t.represents(double.class)), new TSucceed<StackManipulation>(
+                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
+                )),
+                Case($(), new TFail<StackManipulation>(
+                        String.format("Attempt to box non-primitive type %s", type)
+                ))
+        );
+    }
+}
+
+/**
+ *
+ * @author Kapralov Sergey
+ */
+public class SmtBox extends TInferred<StackManipulation> implements Task<StackManipulation> {
+
     public SmtBox(TypeDescription type) {
         super(
-            new TaskInference<StackManipulation>() {
-                @Override
-                public Task<StackManipulation> task() {
-                    return Match(type).<Task<StackManipulation>>of(
-                            Case($(t -> t.represents(boolean.class)), new TSucceed<StackManipulation>(
-                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
-                            )),
-                            Case($(t -> t.represents(byte.class)), new TSucceed<StackManipulation>(
-                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
-                            )),
-                            Case($(t -> t.represents(char.class)), new TSucceed<StackManipulation>(
-                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
-                            )),
-                            Case($(t -> t.represents(short.class)), new TSucceed<StackManipulation>(
-                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
-                            )),
-                            Case($(t -> t.represents(int.class)), new TSucceed<StackManipulation>(
-                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
-                            )),
-                            Case($(t -> t.represents(long.class)), new TSucceed<StackManipulation>(
-                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
-                            )),
-                            Case($(t -> t.represents(float.class)), new TSucceed<StackManipulation>(
-                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
-                            )),
-                            Case($(t -> t.represents(double.class)), new TSucceed<StackManipulation>(
-                                    MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
-                            )),
-                            Case($(), new TFail<StackManipulation>(
-                                            String.format("Attempt to box non-primitive type %s", type)
-                            ))
-                    );
-                }
-            }
+                new SmtBoxInference(type)
         );
     }
 }

@@ -30,24 +30,32 @@ import oo.atom.anno.api.task.TInferred;
 import oo.atom.anno.api.task.Task;
 import oo.atom.anno.api.task.TaskInference;
 
+class SmtFieldsEqualityInference implements TaskInference<StackManipulation> {
+
+    private final TypeDescription type;
+
+    public SmtFieldsEqualityInference(TypeDescription type) {
+        this.type = type;
+    }
+
+    @Override
+    public final Task<StackManipulation> task() {
+        return new SmtCombined(
+                List.of(type)
+                .flatMap(TypeDescription::getDeclaredFields)
+                .filter(f -> !f.isStatic())
+                .map(f -> new SmtFieldEquality(type, f))
+                .toJavaArray(SmtFieldEquality.class)
+        );
+    }
+}
+
 /**
  *
  * @author Kapralov Sergey
  */
 public class SmtFieldsEquality extends TInferred<StackManipulation> {
-
     public SmtFieldsEquality(final TypeDescription type) {
-        super(new TaskInference<StackManipulation>() {
-            @Override
-            public Task<StackManipulation> task() {
-                return new SmtCombined(
-                        List.of(type)
-                            .flatMap(TypeDescription::getDeclaredFields)
-                            .filter(f -> !f.isStatic())
-                            .map(f -> new SmtFieldEquality(type, f))
-                            .toJavaArray(SmtFieldEquality.class)
-                );
-            }
-        });
+        super(new SmtFieldsEqualityInference(type));
     }
 }

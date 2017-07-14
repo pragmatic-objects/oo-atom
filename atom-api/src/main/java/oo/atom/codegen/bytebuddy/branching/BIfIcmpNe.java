@@ -21,25 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.builder;
+package oo.atom.codegen.bytebuddy.branching;
 
-import javaslang.control.Try;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.api.task.TChain;
-import oo.atom.anno.api.task.Task;
-
+import net.bytebuddy.jar.asm.Label;
+import net.bytebuddy.jar.asm.Opcodes;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
-    public BtApplyPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
-        super(
-                Try.success(builder),
-                b -> new BtGenerateEquals(b, td),
-                b -> new BtGenerateHashCode(b, td)
-        );
+public class BIfIcmpNe extends Base {
+    
+    public BIfIcmpNe(Label label) {
+        super(-2, 0, label, Opcodes.IF_ICMPNE);
     }
+    
 }

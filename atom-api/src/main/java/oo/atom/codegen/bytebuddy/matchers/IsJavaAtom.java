@@ -37,7 +37,7 @@ public class IsJavaAtom implements ElementMatcher<TypeDescription> {
     };
 
     @Override
-    public boolean matches(TypeDescription target) {
+    public final boolean matches(TypeDescription target) {
         return target.isPrimitive() || target.isPrimitiveWrapper() || anyOf(JAVA_ATOMS).matches(target);
     }
 }

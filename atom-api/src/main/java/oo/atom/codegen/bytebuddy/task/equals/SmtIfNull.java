@@ -28,26 +28,38 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
 import oo.atom.anno.api.task.TChained;
 import oo.atom.anno.api.task.Task;
-import oo.atom.codegen.bytebuddy.Branching;
+import oo.atom.codegen.bytebuddy.branching.Branching;
+import oo.atom.codegen.bytebuddy.branching.BIsNull;
+import oo.atom.codegen.bytebuddy.branching.BMark;
+
+class SmtIfNullTask implements Task<StackManipulation> {
+    private final boolean isTrue;
+    private final StackManipulation sm;
+
+    public SmtIfNullTask(boolean isTrue, StackManipulation sm) {
+        this.isTrue = isTrue;
+        this.sm = sm;
+    }
+
+    @Override
+    public final Try<StackManipulation> result() {
+        final Label checkEnd = new Label();
+        return Try.success(
+            new StackManipulation.Compound(
+                new BIsNull(isTrue, checkEnd),
+                sm,
+                new BMark(checkEnd)
+            )
+        );
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
 public class SmtIfNull extends TChained<StackManipulation> implements Task<StackManipulation> {
-
     public SmtIfNull(boolean isTrue, Task<StackManipulation> task) {
-        super(task, sm -> new Task() {
-            public Try<StackManipulation> result() {
-                final Label checkEnd = new Label();
-                return Try.success(
-                        new StackManipulation.Compound(
-                            new Branching.IsNull(isTrue, checkEnd),
-                            sm,
-                            new Branching.Mark(checkEnd)
-                        )
-                );
-            }
-        });
+        super(task, sm -> new SmtIfNullTask(isTrue, sm));
     }
 }

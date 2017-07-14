@@ -21,19 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.subject;
+package oo.atom.codegen.bytebuddy.branching;
 
-import oo.atom.anno.Atom;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
 
 /**
  *
  * @author Kapralov Sergey
  */
-@Atom
-public class Holder<T> {
-    private final T value;
-
-    public Holder(T value) {
-        this.value = value;
-    }
+public interface Branching extends StackManipulation {
 }

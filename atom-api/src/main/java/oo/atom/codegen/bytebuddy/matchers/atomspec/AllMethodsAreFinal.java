@@ -21,25 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.builder;
+package oo.atom.codegen.bytebuddy.matchers.atomspec;
 
-import javaslang.control.Try;
+import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.description.method.MethodList;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.api.task.TChain;
-import oo.atom.anno.api.task.Task;
-
+import net.bytebuddy.matcher.ElementMatcher;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
-    public BtApplyPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
-        super(
-                Try.success(builder),
-                b -> new BtGenerateEquals(b, td),
-                b -> new BtGenerateHashCode(b, td)
-        );
+public class AllMethodsAreFinal implements ElementMatcher<TypeDescription> {
+    @Override
+    public final boolean matches(TypeDescription target) {
+        MethodList<MethodDescription.InDefinedShape> methodsToCheck = target.getDeclaredMethods()
+                .filter(not(isConstructor()))
+                .filter(isPublic())
+                .filter(not(isBridge()))
+                .filter(not(named("equals")))
+                .filter(not(named("hashCode")))
+                .filter(not(named("toString")));
+        
+        for(MethodDescription md : methodsToCheck) {
+            if(!md.isFinal()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

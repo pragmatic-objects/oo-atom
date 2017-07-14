@@ -30,22 +30,32 @@ import oo.atom.anno.api.task.TInferred;
 import oo.atom.anno.api.task.Task;
 import oo.atom.anno.api.task.TaskInference;
 
+class SmtBoxFieldInference implements TaskInference<StackManipulation> {
+
+    private final FieldDescription field;
+
+    public SmtBoxFieldInference(FieldDescription field) {
+        this.field = field;
+    }
+
+    @Override
+    public final Task<StackManipulation> task() {
+        TypeDescription type = field.getType().asErasure();
+        if (type.isPrimitive()) {
+            return new SmtBox(type);
+        } else {
+            return new SmtDoNothing();
+        }
+    }
+}
+
 /**
  *
  * @author Kapralov Sergey
  */
 public class SmtBoxField extends TInferred<StackManipulation> implements Task<StackManipulation> {
+
     public SmtBoxField(FieldDescription field) {
-        super(new TaskInference<StackManipulation>() {
-            @Override
-            public Task<StackManipulation> task() {
-                TypeDescription type = field.getType().asErasure();
-                if(type.isPrimitive()) {
-                    return new SmtBox(type);
-                } else {
-                    return new SmtDoNothing();
-                }
-            }
-        });
+        super(new SmtBoxFieldInference(field));
     }
 }

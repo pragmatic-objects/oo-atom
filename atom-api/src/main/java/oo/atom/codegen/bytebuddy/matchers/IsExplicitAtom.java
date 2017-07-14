@@ -35,7 +35,7 @@ import oo.atom.anno.Atom;
  */
 public class IsExplicitAtom implements ElementMatcher<TypeDescription> {
     @Override
-    public boolean matches(TypeDescription target) {
+    public final boolean matches(TypeDescription target) {
         return hasAnnotation(annotationType(Atom.class)).matches(target);
     }
 }

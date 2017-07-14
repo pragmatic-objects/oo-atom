@@ -35,7 +35,7 @@ public class ShouldBeInstrumented implements ElementMatcher<TypeDescription> {
     private static final ElementMatcher<TypeDescription> IS_CLASS = not(isInterface().or(isAnnotation()));
     
     @Override
-    public boolean matches(TypeDescription target) {
+    public final boolean matches(TypeDescription target) {
         return IS_CLASS.matches(target);
     }
 }

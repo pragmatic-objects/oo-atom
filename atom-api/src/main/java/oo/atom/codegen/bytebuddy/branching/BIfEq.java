@@ -21,17 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom;
+package oo.atom.codegen.bytebuddy.branching;
+
+import net.bytebuddy.jar.asm.Label;
+import net.bytebuddy.jar.asm.Opcodes;
 
 /**
  *
  * @author Kapralov Sergey
  */
-@oo.atom.anno.Atom
-public interface Atom {
-    @Override
-    public boolean equals(Object obj);
-
-    @Override
-    public int hashCode();
+public class BIfEq extends Base {
+    
+    public BIfEq(Label label) {
+        super(-1, 0, label, Opcodes.IFEQ);
+    }
+    
 }

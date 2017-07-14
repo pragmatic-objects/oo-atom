@@ -28,6 +28,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
 import oo.atom.codegen.bytebuddy.task.builder.BtApplyPatch;
+import oo.atom.codegen.bytebuddy.task.builder.BtValidateAtom;
 
 
 /**
@@ -36,8 +37,11 @@ import oo.atom.codegen.bytebuddy.task.builder.BtApplyPatch;
  */
 public class AtomPlugin implements Plugin {
     @Override
-    public DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription td) {
-        return new BtApplyPatch(builder, td).result().get();
+    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription td) {
+        return new BtValidateAtom(
+                td, 
+                new BtApplyPatch(builder, td)
+        ).result().get();
     }
 
     @Override
