@@ -23,24 +23,37 @@
  */
 package oo.atom.codegen.bytebuddy.task.builder;
 
+import java.lang.annotation.Annotation;
 import javaslang.control.Try;
-import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.api.task.TChain;
+import oo.atom.anno.Atom;
 import oo.atom.anno.api.task.Task;
 
+class BtAnnotateAtom implements Atom {
+
+    @Override
+    public final Class<? extends Annotation> annotationType() {
+        return Atom.class;
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
-    public BtApplyPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
-        super(
-                Try.success(builder),
-                b -> new BtAnnotate(b),
-                b -> new BtGenerateEquals(b, td),
-                b -> new BtGenerateHashCode(b, td)
+public class BtAnnotate implements Task<DynamicType.Builder<?>> {
+    private final DynamicType.Builder<?> builder;
+
+    public BtAnnotate(DynamicType.Builder<?> builder) {
+        this.builder = builder;
+    }
+
+    @Override
+    public final Try<DynamicType.Builder<?>> result() {
+        return Try.success(
+                builder.annotateType(
+                        new BtAnnotateAtom()
+                )
         );
     }
 }

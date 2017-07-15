@@ -23,24 +23,27 @@
  */
 package oo.atom.codegen.bytebuddy.task.builder;
 
-import javaslang.control.Try;
-import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.api.task.TChain;
-import oo.atom.anno.api.task.Task;
-
+import oo.atom.anno.Atom;
+import static org.assertj.core.api.Assertions.*;
+import org.junit.Test;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
-    public BtApplyPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
-        super(
-                Try.success(builder),
-                b -> new BtAnnotate(b),
-                b -> new BtGenerateEquals(b, td),
-                b -> new BtGenerateHashCode(b, td)
-        );
+public class BtAnnotateTest {
+    @Test
+    public void annotatesType() throws Exception {
+        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(Foo.class);
+        final DynamicType.Unloaded<?> make = new BtAnnotate(subclass).result().get().make();
+        final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
+        assertThat(
+                clazz.getAnnotation(Atom.class)
+        ).isNotNull();
+    }
+    
+    private static class Foo {
     }
 }

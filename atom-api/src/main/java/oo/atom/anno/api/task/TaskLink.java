@@ -23,13 +23,10 @@
  */
 package oo.atom.anno.api.task;
 
-import oo.atom.anno.Atom;
-
 /**
  *
  * @author Kapralov Sergey
  */
-@Atom
 public interface TaskLink<V> {
     Task<V> task(V value);
 }
