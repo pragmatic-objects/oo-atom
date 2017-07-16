@@ -26,7 +26,6 @@ package oo.atom.codegen.bytebuddy.task.equals;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.anno.api.task.TTransformed;
 import oo.atom.anno.api.task.Task;
 
 /**

@@ -39,8 +39,8 @@ public class AtomPlugin implements Plugin {
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription td) {
         return new BtValidateAtom(
-                td, 
-                new BtApplyPatch(builder, td)
+            td, 
+            new BtApplyPatch(builder, td)
         ).result().get();
     }
 

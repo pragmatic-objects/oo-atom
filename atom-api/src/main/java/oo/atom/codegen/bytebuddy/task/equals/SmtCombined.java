@@ -36,15 +36,15 @@ import oo.atom.anno.api.task.Task;
 public class SmtCombined extends TTransformed<StackManipulation> implements Task<StackManipulation> {
     public SmtCombined(List<Task<StackManipulation>> subtasks) {
         super(
-                Try.success(new StackManipulation.Compound()),
-                (sm1, sm2) -> new StackManipulation.Compound(sm1, sm2),
-                subtasks
+            Try.success(new StackManipulation.Compound()),
+            ((sm1, sm2) -> new StackManipulation.Compound(sm1, sm2)),
+            subtasks
         );
     }
 
     public SmtCombined(Task<StackManipulation>... tasks) {
         this(
-                List.of(tasks)
+            List.of(tasks)
         );
     }
 }
