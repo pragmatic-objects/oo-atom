@@ -7,8 +7,9 @@ The project's purpose is to provide an alternate way of building applications an
 - [ ] All fields of atom are private final
 - [ ] All methods of atom are final.
 - [ ] Atom has only one primary constructor, aka constructor which does fields initialization
-- [ ] Atom may have additional constructors, but all of them must delegate to some other constructors, either from the same class or to the superclass
-- [ ] In non-primary constructors of atom, it is only allowed to create new objects with `new` operator, reference the constructor's arguments and delegate to another constructors. It is prohibited to do any method calls there.
+- [ ] Atom may have additional non-primary constructors
+- [ ] In primary constructor of atom, the only thing which is allowed is to do fields initialization from constructor arguments.
+- [ ] In non-primary constructors of atom, it is only allowed to create new objects with `new` operator, reference the constructor's arguments and delegate to another constructors.
 - [ ] Atoms may be extended, but sub-atoms are only allowed to declare the new constructors. Another term for such subclasses is "Alias" (TODO: describe in detail)
 - [ ] Atoms may have static fields, but they must always be private final. They can be initialized either inline, or using static initializers.
 - [ ] Static methods are prohibited in atoms.
