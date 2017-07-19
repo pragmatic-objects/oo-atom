@@ -49,8 +49,9 @@ SOFTWARE.
         </license>
     </licenses>
     
-    
     <modules>
         <module>atom-api</module>
+        <module>atom-codegen</module>
+        <module>atom-starter</module>
     </modules>
 </project>
