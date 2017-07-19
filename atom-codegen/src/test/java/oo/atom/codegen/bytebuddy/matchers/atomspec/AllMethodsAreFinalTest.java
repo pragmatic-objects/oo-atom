@@ -25,8 +25,6 @@ package oo.atom.codegen.bytebuddy.matchers.atomspec;
 
 import java.util.UUID;
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.codegen.bytebuddy.matchers.FollowsAtomSpecification;
-import oo.atom.codegen.bytebuddy.matchers.IsAtom;
 import static org.assertj.core.api.Assertions.*;
 import org.junit.Test;
 
@@ -54,10 +52,19 @@ public class AllMethodsAreFinalTest {
     }
     
     @Test
-    public void matcherIgnoresStaticInitializers() {
+    public void matcherIgnoresStaticMethods() {
         assertThat(
-                new IsAtom().matches(
-                        new TypeDescription.ForLoadedType(FollowsAtomSpecification.class)
+                new AllMethodsAreFinal().matches(
+                        new TypeDescription.ForLoadedType(Haz.class)
+                )
+        ).isTrue();
+    }
+    
+    @Test
+    public void matcherSupportsEnum() {
+        assertThat(
+                new AllMethodsAreFinal().matches(
+                        new TypeDescription.ForLoadedType(Faz.class)
                 )
         ).isTrue();
     }
@@ -91,5 +98,23 @@ public class AllMethodsAreFinalTest {
     private static class Baz implements G<UUID> {
         @Override
         public final void method(UUID value) {}
+    }
+    
+    private static enum Faz {
+        ONE(1), TWO(2), THREE(3);
+        
+        private final int origin;
+
+        private Faz(int origin) {
+            this.origin = origin;
+        }
+
+        public final int getOrigin() {
+            return origin;
+        }
+    }
+    
+    private static class Haz {
+        private static void method() {}
     }
 }

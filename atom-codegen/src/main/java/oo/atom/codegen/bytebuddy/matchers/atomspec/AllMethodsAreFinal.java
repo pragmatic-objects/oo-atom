@@ -39,6 +39,7 @@ public class AllMethodsAreFinal implements ElementMatcher<TypeDescription> {
         MethodList<MethodDescription.InDefinedShape> methodsToCheck = target.getDeclaredMethods()
                 .filter(not(isConstructor()))
                 .filter(isPublic())
+                .filter(not(isStatic()))
                 .filter(not(isBridge()))
                 .filter(not(named("equals")))
                 .filter(not(named("hashCode")))

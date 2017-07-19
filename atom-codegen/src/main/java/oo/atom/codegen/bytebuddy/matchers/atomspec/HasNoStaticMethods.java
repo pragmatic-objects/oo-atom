@@ -34,6 +34,10 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
 public class HasNoStaticMethods implements ElementMatcher<TypeDescription> {
     @Override
     public final boolean matches(TypeDescription target) {
+        if(target.isEnum()) {
+            return true;
+        }
+        
         return target.getDeclaredMethods()
                 .filter(isStatic())
                 .filter(not(nameStartsWith("lambda")))

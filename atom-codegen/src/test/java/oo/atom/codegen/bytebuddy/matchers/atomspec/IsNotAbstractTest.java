@@ -50,9 +50,33 @@ public class IsNotAbstractTest {
         ).isFalse();
     }
     
+    
+    @Test
+    public void matcherSupportsEnum() {
+        assertThat(
+                new IsNotAbstract().matches(
+                        new TypeDescription.ForLoadedType(Faz.class)
+                )
+        ).isTrue();
+    }
+    
     private static class Foo {
     }
     
     private abstract static class Bar {
+    }
+    
+    private static enum Faz {
+        ONE(1), TWO(2), THREE(3);
+        
+        private final int origin;
+
+        private Faz(int origin) {
+            this.origin = origin;
+        }
+
+        public final int getOrigin() {
+            return origin;
+        }
     }
 }

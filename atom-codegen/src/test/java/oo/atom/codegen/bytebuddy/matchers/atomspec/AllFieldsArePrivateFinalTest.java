@@ -68,6 +68,13 @@ public class AllFieldsArePrivateFinalTest {
         ).isFalse();
     }
     
+    public void matcherSupportsEnums() {
+        assertThat(
+                new AllFieldsArePrivateFinal().matches(
+                        new TypeDescription.ForLoadedType(Haz.class)
+                )
+        );
+    }
     
     private static class Foo {
         private final Object method1;
@@ -106,5 +113,19 @@ public class AllFieldsArePrivateFinalTest {
     }
     
     private static class Faz {
+    }
+    
+    private static enum Haz {
+        ONE(1), TWO(2), THREE(3);
+        
+        private final int origin;
+
+        private Haz(int origin) {
+            this.origin = origin;
+        }
+
+        public final int getOrigin() {
+            return origin;
+        }
     }
 }

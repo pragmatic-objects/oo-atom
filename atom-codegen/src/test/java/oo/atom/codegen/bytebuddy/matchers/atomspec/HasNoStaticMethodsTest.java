@@ -36,7 +36,8 @@ public class HasNoStaticMethodsTest {
 
     @Test
     public void trueIfClassHasNoStaticMethods() {
-        assertThat(new HasNoStaticMethods().matches(
+        assertThat(
+                new HasNoStaticMethods().matches(
                         new TypeDescription.ForLoadedType(Foo.class)
                 )
         ).isTrue();
@@ -46,6 +47,14 @@ public class HasNoStaticMethodsTest {
     public void matcherIgnoresLambdas() {
         assertThat(new HasNoStaticMethods().matches(
                         new TypeDescription.ForLoadedType(Baz.class)
+                )
+        ).isTrue();
+    }
+    
+    @Test
+    public void matcherIgnoresEnums() {
+        assertThat(new HasNoStaticMethods().matches(
+                        new TypeDescription.ForLoadedType(Faz.class)
                 )
         ).isTrue();
     }
@@ -73,6 +82,20 @@ public class HasNoStaticMethodsTest {
         private final Object item() {
             Supplier supplier = () -> new Object();
             return supplier.get();
+        }
+    }
+    
+    private static enum Faz {
+        ONE(1), TWO(2), THREE(3);
+        
+        private final int origin;
+
+        private Faz(int origin) {
+            this.origin = origin;
+        }
+
+        public final int getOrigin() {
+            return origin;
         }
     }
 }
