@@ -31,13 +31,14 @@ import org.assertj.core.api.Assertions;
  *
  * @author Kapralov Sergey
  */
-public class SmtAssumeTaskToFail {
+public class SmtAssumeTaskToFail implements Assumption {
     private final Task<StackManipulation> task;
 
     public SmtAssumeTaskToFail(Task<StackManipulation> task) {
         this.task = task;
     }
     
+    @Override
     public final void check() throws Exception {
         Assertions.assertThatThrownBy(() -> task.result().get()).isNotNull();
     }

@@ -23,34 +23,14 @@
  */
 package oo.atom.codegen.bytebuddy.task.utils;
 
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.Task;
-
-
-class SmtAssumeTaskToGenerateBytecodeInference implements Assumption.Inference {
-    private final Task<StackManipulation> task;
-    private final StackManipulation sample;
-
-    public SmtAssumeTaskToGenerateBytecodeInference(Task<StackManipulation> task, StackManipulation sample) {
-        this.task = task;
-        this.sample = sample;
-    }
-    
-    @Override
-    public final Assumption assumption() {
-        return new AssumeStackManipulationsAreSame(
-                task.result().get(), 
-                sample
-        );
-    }
-}
-
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtAssumeTaskToGenerateBytecode extends InferredAssumption {
-    public SmtAssumeTaskToGenerateBytecode(Task<StackManipulation> task, StackManipulation sample) {
-        super(new SmtAssumeTaskToGenerateBytecodeInference(task, sample));
+public interface Assumption {
+    interface Inference {
+        Assumption assumption();
     }
+    
+    void check() throws Exception;
 }
