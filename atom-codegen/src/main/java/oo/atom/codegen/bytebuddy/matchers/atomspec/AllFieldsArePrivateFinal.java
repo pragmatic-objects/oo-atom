@@ -35,6 +35,9 @@ public class AllFieldsArePrivateFinal implements ElementMatcher<TypeDescription>
     @Override
     public final boolean matches(TypeDescription target) {
         for(FieldDescription fd : target.getDeclaredFields()) {
+            if(fd.isEnum()) {
+                continue;
+            }
             if(!fd.isPrivate() || !fd.isFinal()) {
                 return false;
             }

@@ -68,12 +68,13 @@ public class AllFieldsArePrivateFinalTest {
         ).isFalse();
     }
     
+    @Test
     public void matcherSupportsEnums() {
         assertThat(
                 new AllFieldsArePrivateFinal().matches(
                         new TypeDescription.ForLoadedType(Haz.class)
                 )
-        );
+        ).isTrue();
     }
     
     private static class Foo {
