@@ -37,12 +37,24 @@ SOFTWARE.
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     
+    <name>oo-atom</name>
+    <description>A Java polyfill for better code design</description>
+    <url>https://github.com/project-avral/oo-atom</url>
+    
     <licenses>
         <license>
-            <name>MIT</name>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
     
+    <developers>
+        <developer>
+            <name>Kapralov Sergey</name>
+            <email>skapralov@mail.ru</email>
+            <timezone>UTC+03:00</timezone>
+        </developer>
+    </developers>
     
     <build>
         <pluginManagement>
