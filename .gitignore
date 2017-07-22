@@ -4,3 +4,4 @@
 **/nb-configuration.xml
 **/*.iml
 **/jacoco.exec
+**/*.versionsBackup
