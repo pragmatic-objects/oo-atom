@@ -15,10 +15,32 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+
+            <repositories>
+                <repository>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <id>bintray-snapshot</id>
+                    <url>https://project-avral.bintray.com/maven/</url>
+                </repository>
+                <repository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-release</id>
+                    <url>https://project-avral.bintray.com/maven/</url>
+                </repository>
+            </repositories>
             <dependencies>
                 <dependency>
                     <groupId>oo</groupId>
                     <artifactId>atom-api</artifactId>
+                    <version>${atom.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>oo</groupId>
+                    <artifactId>atom-codegen</artifactId>
                     <version>${atom.version}</version>
                 </dependency>
             </dependencies>
@@ -43,13 +65,6 @@
                                 </transformation>
                             </transformations>
                         </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>oo</groupId>
-                                <artifactId>atom-codegen</artifactId>
-                                <version>${atom.version}</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
@@ -59,13 +74,37 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            
+            <repositories>
+                <repository>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <id>bintray-snapshot</id>
+                    <url>https://project-avral.bintray.com/maven/</url>
+                </repository>
+                <repository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-release</id>
+                    <url>https://project-avral.bintray.com/maven/</url>
+                </repository>
+            </repositories>
+            
             <dependencies>
                 <dependency>
                     <groupId>oo</groupId>
                     <artifactId>atom-api</artifactId>
                     <version>${atom.version}</version>
                 </dependency>
+                <dependency>
+                    <groupId>oo</groupId>
+                    <artifactId>atom-codegen</artifactId>
+                    <version>${atom.version}</version>
+                </dependency>
             </dependencies>
+            
             <build>
                 <plugins>
                     <plugin>
@@ -87,13 +126,6 @@
                                 </transformation>
                             </transformations>
                         </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>oo</groupId>
-                                <artifactId>atom-codegen</artifactId>
-                                <version>${atom.version}</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
