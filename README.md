@@ -12,7 +12,7 @@ The project's purpose is to provide an alternate way of designing applications a
 - [ ] In non-primary constructors of atom, it is only allowed to create new objects with `new` operator, reference the constructor's arguments and delegate to another constructors.
 - [ ] Atoms may be extended, but sub-atoms are only allowed to declare the new constructors. Another term for such subclasses is "Alias" (TODO: describe in detail)
 - [ ] Atoms may have static fields, but they must always be private final. They can be initialized either inline, or using static initializers.
-- [ ] Static methods are prohibited in atoms. Exception from the rule are Java Enumerations.
+- [ ] Static methods are prohibited in atoms. Exception from the rule are Java Enumerations and other cases, when Java compiler generates static methods implicitly.
 - [ ] Atoms cannot be abstract classes
 
 ## Purpose
