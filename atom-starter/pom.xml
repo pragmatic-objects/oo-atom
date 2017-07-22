@@ -19,7 +19,7 @@
                 <dependency>
                     <groupId>oo</groupId>
                     <artifactId>atom-api</artifactId>
-                    <version>${project.version}</version>
+                    <version>${atom.version}</version>
                 </dependency>
             </dependencies>
             <build>
@@ -47,7 +47,7 @@
                             <dependency>
                                 <groupId>oo</groupId>
                                 <artifactId>atom-codegen</artifactId>
-                                <version>${project.version}</version>
+                                <version>${atom.version}</version>
                             </dependency>
                         </dependencies>
                     </plugin>
@@ -63,7 +63,7 @@
                 <dependency>
                     <groupId>oo</groupId>
                     <artifactId>atom-api</artifactId>
-                    <version>${project.version}</version>
+                    <version>${atom.version}</version>
                 </dependency>
             </dependencies>
             <build>
@@ -91,7 +91,7 @@
                             <dependency>
                                 <groupId>oo</groupId>
                                 <artifactId>atom-codegen</artifactId>
-                                <version>${project.version}</version>
+                                <version>${atom.version}</version>
                             </dependency>
                         </dependencies>
                     </plugin>
