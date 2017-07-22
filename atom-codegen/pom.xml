@@ -4,12 +4,17 @@
     <parent>
         <groupId>oo</groupId>
         <artifactId>oo-atom</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.2</version>
     </parent>
     <artifactId>atom-codegen</artifactId>
     <packaging>bundle</packaging>
     
     <dependencies>
+        <dependency>
+            <groupId>oo</groupId>
+            <artifactId>atom-api</artifactId>
+            <version>${atom.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.javaslang</groupId>
             <artifactId>javaslang</artifactId>
