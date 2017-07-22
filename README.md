@@ -1,5 +1,8 @@
 # oo-atom
 
+## Disclaimer
+The project is in early proof-of-concept stage. Everything may be changed at any time later.
+
 ## Introduction
 
 The project's purpose is to provide an alternate way of designing applications and libraries on Java. The concept is built around the term "Atom". Atom is a Java class which meets the following requirements:
