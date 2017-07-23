@@ -21,27 +21,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.matchers.aliasspec;
 
-import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.task.builder.BtApplyPatch;
-
+import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Test;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin implements Plugin {
-    @Override
-    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription td) {
-        return new BtApplyPatch(td, builder).result().get();
+public class NoFieldsTest {
+    @Test
+    public void trueIfNoFields() {
+        assertThat(
+                new NoFields().matches(
+                        new TypeDescription.ForLoadedType(Foo.class)
+                )
+        ).isTrue();
     }
+    
+    @Test
+    public void falseIfAtLeastOneField() {
+        assertThat(
+                new NoFields().matches(
+                        new TypeDescription.ForLoadedType(Bar.class)
+                )
+        ).isFalse();
+    }
+    
+    @Test
+    public void ignoresFieldsFromBaseClass() {
+        assertThat(
+                new NoFields().matches(
+                        new TypeDescription.ForLoadedType(Barr.class)
+                )
+        ).isTrue();
+    }
+    
+    private static class Foo {
+    }
+    
+    private static class Bar {
+        private final Object a;
 
-    @Override
-    public final boolean matches(TypeDescription td) {
-        return new ShouldBeInstrumented().matches(td);
+        public Bar(Object a) {
+            this.a = a;
+        }
+    }
+    
+    private static class Barr extends Bar {
+        public Barr() {
+            super(
+                new Object()
+            );
+        }
     }
 }

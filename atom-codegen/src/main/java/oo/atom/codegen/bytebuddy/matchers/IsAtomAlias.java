@@ -21,39 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it;
+package oo.atom.codegen.bytebuddy.matchers;
 
-import oo.atom.it.base.AssertAtomsAreEqual;
-import oo.atom.it.base.AssertAtomsAreNotEqual;
-import oo.atom.it.base.AssertionsSuite;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomsEqualityTest extends AssertionsSuite {
-    public AtomsEqualityTest() {
-        super(
-            new AssertAtomsAreEqual(
-                "different atom objects with same fields are equal", 
-                new Foo(4), 
-                new Foo(4)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atom objects with different fields are not equal", 
-                new Foo(4),
-                new Foo(5)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atoms of different types are not equal", 
-                new Foo(4),
-                new Bar(4)
-            ),
-            new AssertAtomsAreEqual(
-                "alias atom and basis atom with same constructor arguments are equal",
-                new Fooo(),
-                new Foo(42)
-            )
-        );
+public class IsAtomAlias implements ElementMatcher<TypeDescription> {
+    private static final ElementMatcher<TypeDescription> INHERITED_FROM_ATOM = new IsInheritedFromAtom();
+    private static final ElementMatcher<TypeDescription> FOLLOWS_SPEC = new FollowsAtomAliasSpecification();
+
+    @Override
+    public final boolean matches(TypeDescription t) {
+        return INHERITED_FROM_ATOM.matches(t) && FOLLOWS_SPEC.matches(t);
     }
 }

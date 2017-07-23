@@ -23,50 +23,24 @@
  */
 package oo.atom.codegen.bytebuddy.task.builder;
 
+import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.codegen.bytebuddy.matchers.IsAtom;
-import oo.atom.codegen.bytebuddy.matchers.IsAtomAlias;
-import oo.atom.task.TInferred;
+import oo.atom.task.TChain;
 import oo.atom.task.Task;
-import oo.atom.task.TaskInference;
 
-class BtApplyPatchInference implements TaskInference<DynamicType.Builder<?>> {
-    private final static ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
-    private final static ElementMatcher<TypeDescription> IS_ATOM_ALIAS = new IsAtomAlias();
-    
-    private final TypeDescription type;
-    private final DynamicType.Builder<?> builder;
-
-    public BtApplyPatchInference(TypeDescription type, DynamicType.Builder<?> builder) {
-        this.type = type;
-        this.builder = builder;
-    }
-    
-    @Override
-    public final Task<DynamicType.Builder<?>> task() {
-        if(IS_ATOM_ALIAS.matches(type)) {
-            return new BtApplyAtomAliasPatch(builder, type);
-        } else if(IS_ATOM.matches(type)) {
-            return new BtApplyAtomPatch(builder, type);
-        } else {
-            throw new IllegalStateException("%s is not atom");
-        }
-    }
-}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends TInferred<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
-    public BtApplyPatch(TypeDescription type, DynamicType.Builder<?> builder) {
+public class BtApplyAtomPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
+    public BtApplyAtomPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
         super(
-            new BtApplyPatchInference(
-                type,
-                builder
-            )
+            Try.success(builder),
+            (b -> new BtAnnotate(b)),
+            (b -> new BtGenerateEquals(b, td)),
+            (b -> new BtGenerateHashCode(b, td))
         );
     }
 }

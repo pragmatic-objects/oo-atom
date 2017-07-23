@@ -34,13 +34,13 @@ import oo.atom.codegen.bytebuddy.matchers.IsAtom;
  *
  * @author Kapralov Sergey
  */
-public class BtValidateAtom implements Task<DynamicType.Builder<?>> {
+public class BtDoIfClassIsAtom implements Task<DynamicType.Builder<?>> {
     private static final ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
     
     private final TypeDescription type;
     private final Task<DynamicType.Builder<?>> task;
 
-    public BtValidateAtom(TypeDescription type, Task<DynamicType.Builder<?>> task) {
+    public BtDoIfClassIsAtom(TypeDescription type, Task<DynamicType.Builder<?>> task) {
         this.type = type;
         this.task = task;
     }
@@ -55,7 +55,6 @@ public class BtValidateAtom implements Task<DynamicType.Builder<?>> {
                     String.format("%s is not atom", type.getName())
                 )
             );
-            /*return task.result();*/
         }
     }
 }

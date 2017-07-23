@@ -30,14 +30,14 @@ import javaslang.control.Try;
  * @author Kapralov Sergey
  */
 public class TInferred<V> implements Task<V> {
-    private final TaskInference<V> derivative;
+    private final TaskInference<V> inference;
 
-    public TInferred(TaskInference<V> derivative) {
-        this.derivative = derivative;
+    public TInferred(TaskInference<V> inference) {
+        this.inference = inference;
     }
 
     @Override
     public final Try<V> result() {
-        return derivative.task().result();
+        return inference.task().result();
     }
 }

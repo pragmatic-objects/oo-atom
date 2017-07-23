@@ -21,39 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it;
+package oo.atom.codegen.bytebuddy.matchers.aliasspec;
 
-import oo.atom.it.base.AssertAtomsAreEqual;
-import oo.atom.it.base.AssertAtomsAreNotEqual;
-import oo.atom.it.base.AssertionsSuite;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomsEqualityTest extends AssertionsSuite {
-    public AtomsEqualityTest() {
-        super(
-            new AssertAtomsAreEqual(
-                "different atom objects with same fields are equal", 
-                new Foo(4), 
-                new Foo(4)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atom objects with different fields are not equal", 
-                new Foo(4),
-                new Foo(5)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atoms of different types are not equal", 
-                new Foo(4),
-                new Bar(4)
-            ),
-            new AssertAtomsAreEqual(
-                "alias atom and basis atom with same constructor arguments are equal",
-                new Fooo(),
-                new Foo(42)
-            )
-        );
+public class NoFields implements ElementMatcher<TypeDescription> {
+    @Override
+    public final boolean matches(TypeDescription target) {
+        return target.getDeclaredFields()
+                .filter(not(isStatic()))
+                .isEmpty();
     }
 }

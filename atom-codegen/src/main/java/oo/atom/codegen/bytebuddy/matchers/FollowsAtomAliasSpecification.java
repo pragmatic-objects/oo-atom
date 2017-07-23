@@ -21,39 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it;
+package oo.atom.codegen.bytebuddy.matchers;
 
-import oo.atom.it.base.AssertAtomsAreEqual;
-import oo.atom.it.base.AssertAtomsAreNotEqual;
-import oo.atom.it.base.AssertionsSuite;
+import javaslang.collection.Stream;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoFields;
+import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoMethods;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.HasNoStaticMethods;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.IsNotAbstract;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomsEqualityTest extends AssertionsSuite {
-    public AtomsEqualityTest() {
-        super(
-            new AssertAtomsAreEqual(
-                "different atom objects with same fields are equal", 
-                new Foo(4), 
-                new Foo(4)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atom objects with different fields are not equal", 
-                new Foo(4),
-                new Foo(5)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atoms of different types are not equal", 
-                new Foo(4),
-                new Bar(4)
-            ),
-            new AssertAtomsAreEqual(
-                "alias atom and basis atom with same constructor arguments are equal",
-                new Fooo(),
-                new Foo(42)
-            )
-        );
+public class FollowsAtomAliasSpecification implements ElementMatcher<TypeDescription> {
+    private static final ElementMatcher<TypeDescription>[] SPECIFICATION = new ElementMatcher[] {
+        new NoFields(),
+        new NoMethods(),
+        new IsNotAbstract(),
+        new HasNoStaticMethods()
+    };
+    
+    
+    @Override
+    public final boolean matches(TypeDescription target) {
+        return Stream.of(SPECIFICATION)
+                .foldLeft(true, (sum, m) -> sum && m.matches(target));
     }
 }

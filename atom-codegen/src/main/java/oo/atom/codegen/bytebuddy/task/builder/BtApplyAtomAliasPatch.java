@@ -21,12 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.matchers;
+package oo.atom.codegen.bytebuddy.task.builder;
+
+import javaslang.control.Try;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
+import oo.atom.task.TChain;
+import oo.atom.task.Task;
+
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsInheritedAtom {
-    
+public class BtApplyAtomAliasPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
+    public BtApplyAtomAliasPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
+        super(
+            Try.success(builder),
+            (b -> new BtAnnotate(b))
+        );
+    }
 }

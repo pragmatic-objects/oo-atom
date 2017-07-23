@@ -21,39 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it;
+package oo.atom.codegen.bytebuddy.matchers.aliasspec;
 
-import oo.atom.it.base.AssertAtomsAreEqual;
-import oo.atom.it.base.AssertAtomsAreNotEqual;
-import oo.atom.it.base.AssertionsSuite;
+import net.bytebuddy.description.type.TypeDescription;
+import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Test;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomsEqualityTest extends AssertionsSuite {
-    public AtomsEqualityTest() {
-        super(
-            new AssertAtomsAreEqual(
-                "different atom objects with same fields are equal", 
-                new Foo(4), 
-                new Foo(4)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atom objects with different fields are not equal", 
-                new Foo(4),
-                new Foo(5)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atoms of different types are not equal", 
-                new Foo(4),
-                new Bar(4)
-            ),
-            new AssertAtomsAreEqual(
-                "alias atom and basis atom with same constructor arguments are equal",
-                new Fooo(),
-                new Foo(42)
-            )
-        );
+public class NoMethodsTest {
+    @Test
+    public void trueIfNoMethods() {
+        assertThat(
+                new NoMethods().matches(
+                        new TypeDescription.ForLoadedType(Foo.class)
+                )
+        ).isTrue();
+    }
+    
+    @Test
+    public void falseIfAtLeastOneMethod() {
+        assertThat(
+                new NoMethods().matches(
+                        new TypeDescription.ForLoadedType(Bar.class)
+                )
+        ).isFalse();
+    }
+    
+    @Test
+    public void ignoresMethodsFromBaseClass() {
+        assertThat(
+                new NoMethods().matches(
+                        new TypeDescription.ForLoadedType(Barr.class)
+                )
+        ).isTrue();
+    }
+    
+    private static class Foo {
+    }
+    
+    private static class Bar {
+        public final void method() {}
+    }
+    
+    private static class Barr extends Bar {
     }
 }
