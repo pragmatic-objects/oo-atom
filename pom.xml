@@ -246,5 +246,6 @@ SOFTWARE.
         <module>atom-api</module>
         <module>atom-codegen</module>
         <module>atom-starter</module>
+        <module>atom-it</module>
     </modules>
 </project>
