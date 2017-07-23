@@ -34,16 +34,12 @@ import oo.atom.task.Task;
 public class SmtEquals extends SmtCombined implements Task<StackManipulation> {
     public SmtEquals(TypeDescription type) {
         super(
-                new SmtLoadReference(0),
                 new SmtLoadReference(1),
-                new SmtIfEqualByReference(false, new SmtReturnInteger(1)),
-                new SmtLoadReference(1),
-                new SmtIfNull(false, new SmtReturnInteger(0)),
-                new SmtLoadReference(0),
-                new SmtGetClass(),
-                new SmtLoadReference(1),
-                new SmtGetClass(),
-                new SmtIfEqualByReference(true, new SmtReturnInteger(0)),
+                new SmtIfInstanceOf(
+                        type,
+                        false,
+                        new SmtReturnInteger(0)
+                ),
                 new SmtFieldsEquality(type),
                 new SmtReturnInteger(1)
         );
