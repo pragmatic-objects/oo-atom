@@ -38,7 +38,7 @@ public class BtApplyAtomPatch extends TChain<DynamicType.Builder<?>> implements 
     public BtApplyAtomPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
         super(
             Try.success(builder),
-            (b -> new BtAnnotate(b)),
+            (b -> new BtAnnotate(td, b)),
             (b -> new BtGenerateEquals(b, td)),
             (b -> new BtGenerateHashCode(b, td))
         );

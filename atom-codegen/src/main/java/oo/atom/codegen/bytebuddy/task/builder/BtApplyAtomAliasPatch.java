@@ -38,7 +38,7 @@ public class BtApplyAtomAliasPatch extends TChain<DynamicType.Builder<?>> implem
     public BtApplyAtomAliasPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
         super(
             Try.success(builder),
-            (b -> new BtAnnotate(b))
+            (b -> new BtAnnotate(td, b))
         );
     }
 }

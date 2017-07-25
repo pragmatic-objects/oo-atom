@@ -24,6 +24,7 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.anno.Atom;
 import static org.assertj.core.api.Assertions.*;
@@ -36,14 +37,31 @@ import org.junit.Test;
 public class BtAnnotateTest {
     @Test
     public void annotatesType() throws Exception {
+        final TypeDescription type = new TypeDescription.ForLoadedType(Foo.class);
         final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(Foo.class);
-        final DynamicType.Unloaded<?> make = new BtAnnotate(subclass).result().get().make();
+        final DynamicType.Unloaded<?> make = new BtAnnotate(type, subclass).result().get().make();
         final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
         assertThat(
-                clazz.getAnnotation(Atom.class)
+            clazz.getAnnotation(Atom.class)
         ).isNotNull();
     }
-    
+
+    @Test
+    public void preventsDuplicateAnnotation() throws Exception {
+        final TypeDescription type = new TypeDescription.ForLoadedType(Bar.class);
+        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(Bar.class);
+
+        assertThatCode(() -> {
+            final DynamicType.Unloaded<?> make = new BtAnnotate(type, subclass).result().get().make();
+            final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
+            final Atom annotation = clazz.getAnnotation(Atom.class);
+        }).doesNotThrowAnyException();
+    }
+
     private static class Foo {
+    }
+
+    @Atom
+    private static class Bar {
     }
 }

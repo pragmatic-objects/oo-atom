@@ -25,6 +25,7 @@ package oo.atom.codegen.bytebuddy.task.builder;
 
 import java.lang.annotation.Annotation;
 import javaslang.control.Try;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.anno.Atom;
 import oo.atom.task.Task;
@@ -42,15 +43,21 @@ class BtAnnotateAtom implements Atom {
  * @author Kapralov Sergey
  */
 public class BtAnnotate implements Task<DynamicType.Builder<?>> {
+    private final TypeDescription type;
     private final DynamicType.Builder<?> builder;
 
-    public BtAnnotate(DynamicType.Builder<?> builder) {
+    public BtAnnotate(TypeDescription type, DynamicType.Builder<?> builder) {
+        this.type = type;
         this.builder = builder;
     }
 
     @Override
     public final Try<DynamicType.Builder<?>> result() {
+        boolean annotationPresent = type.getDeclaredAnnotations().isAnnotationPresent(Atom.class);
+        
         return Try.success(
+            annotationPresent ?
+                builder :
                 builder.annotateType(
                         new BtAnnotateAtom()
                 )
