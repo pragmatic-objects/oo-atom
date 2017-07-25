@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2017 skapral.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it.base;
-
-/**
- *
- * @author Kapralov Sergey
- */
-public interface Assertion {
-    public String description();
-    public void check() throws Exception;
-}
+package oo.atom.tests;

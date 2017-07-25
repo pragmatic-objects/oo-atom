@@ -6,7 +6,7 @@
         <artifactId>oo-atom</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
-    <artifactId>atom-it</artifactId>
+    <artifactId>atom-tests</artifactId>
     <packaging>bundle</packaging>
     <repositories>
         <repository>
@@ -20,21 +20,31 @@
     </repositories>
     
     <dependencies>
-        <dependency>
-            <groupId>oo</groupId>
-            <artifactId>atom-api</artifactId>
+        <dependency> 
+            <groupId>oo</groupId> 
+            <artifactId>atom-api</artifactId> 
             <version>${atom.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>oo</groupId>
-            <artifactId>atom-tests</artifactId>
-            <version>${atom.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency> 
             <groupId>io.vavr</groupId> 
             <artifactId>vavr</artifactId> 
             <version>0.9.0</version>
+        </dependency>
+        <dependency> 
+            <groupId>com.github.kimble</groupId> 
+            <artifactId>junit-test-factory</artifactId> 
+            <version>4.12.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>3.4</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it.base;
+package oo.atom.tests;
 
 import com.github.kimble.FactoryRunner;
 import io.vavr.collection.List;

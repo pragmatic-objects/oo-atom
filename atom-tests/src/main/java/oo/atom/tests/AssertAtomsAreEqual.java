@@ -21,26 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it.base;
+package oo.atom.tests;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AssertIgnore implements Assertion {
-    private final Assertion assertion;
+public class AssertAtomsAreEqual implements Assertion {
+    private final String description;
+    private final Object atom1;
+    private final Object atom2;
 
-    public AssertIgnore(Assertion assertion) {
-        this.assertion = assertion;
+    public AssertAtomsAreEqual(String description, Object atom1, Object atom2) {
+        this.description = description;
+        this.atom1 = atom1;
+        this.atom2 = atom2;
     }
 
     @Override
     public final String description() {
-        return "[IGNORED] " + assertion.description();
+        return description;
     }
 
     @Override
     public final void check() throws Exception {
-        // DO NOTHING
+        assertThat(atom1).isEqualTo(atom2);
     }
 }
