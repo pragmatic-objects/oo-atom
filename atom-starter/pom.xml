@@ -9,47 +9,70 @@
     <artifactId>atom-starter</artifactId>
     <packaging>pom</packaging>
     
+    <dependencies>
+        <dependency>
+            <groupId>oo</groupId>
+            <artifactId>atom-api</artifactId>
+            <version>${atom.version}</version>
+        </dependency>
+    </dependencies>
+    
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>bintray-snapshot</id>
+            <url>https://project-avral.bintray.com/maven/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-release</id>
+            <url>https://project-avral.bintray.com/maven/</url>
+        </repository>
+    </repositories>
+    
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy-maven-plugin</artifactId>
+                    <version>1.7.1</version>
+                    <configuration>
+                        <skip>false</skip>
+                        <transformations>
+                            <transformation>
+                                <plugin>oo.atom.codegen.bytebuddy.plugin.AtomPlugin</plugin>
+                            </transformation>
+                        </transformations>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>oo</groupId>
+                            <artifactId>atom-codegen</artifactId>
+                            <version>${atom.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    
+    
     <profiles>
         <profile>
             <id>atomize</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-
-            <repositories>
-                <repository>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                    <id>bintray-snapshot</id>
-                    <url>https://project-avral.bintray.com/maven/</url>
-                </repository>
-                <repository>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                    <id>bintray-release</id>
-                    <url>https://project-avral.bintray.com/maven/</url>
-                </repository>
-            </repositories>
-            <dependencies>
-                <dependency>
-                    <groupId>oo</groupId>
-                    <artifactId>atom-api</artifactId>
-                    <version>${atom.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>oo</groupId>
-                    <artifactId>atom-codegen</artifactId>
-                    <version>${atom.version}</version>
-                </dependency>
-            </dependencies>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>net.bytebuddy</groupId>
                         <artifactId>byte-buddy-maven-plugin</artifactId>
-                        <version>1.7.1</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -57,14 +80,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <skip>false</skip>
-                            <transformations>
-                                <transformation>
-                                    <plugin>oo.atom.codegen.bytebuddy.plugin.AtomPlugin</plugin>
-                                </transformation>
-                            </transformations>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -74,43 +89,11 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            
-            <repositories>
-                <repository>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                    <id>bintray-snapshot</id>
-                    <url>https://project-avral.bintray.com/maven/</url>
-                </repository>
-                <repository>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                    <id>bintray-release</id>
-                    <url>https://project-avral.bintray.com/maven/</url>
-                </repository>
-            </repositories>
-            
-            <dependencies>
-                <dependency>
-                    <groupId>oo</groupId>
-                    <artifactId>atom-api</artifactId>
-                    <version>${atom.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>oo</groupId>
-                    <artifactId>atom-codegen</artifactId>
-                    <version>${atom.version}</version>
-                </dependency>
-            </dependencies>
-            
             <build>
                 <plugins>
                     <plugin>
                         <groupId>net.bytebuddy</groupId>
                         <artifactId>byte-buddy-maven-plugin</artifactId>
-                        <version>1.7.1</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -118,14 +101,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <skip>false</skip>
-                            <transformations>
-                                <transformation>
-                                    <plugin>oo.atom.codegen.bytebuddy.plugin.AtomPlugin</plugin>
-                                </transformation>
-                            </transformations>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
