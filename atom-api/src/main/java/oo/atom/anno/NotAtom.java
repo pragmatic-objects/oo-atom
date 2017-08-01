@@ -21,20 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.matchers;
+package oo.atom.anno;
 
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsAtomAlias extends ConjunctionMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
-    public IsAtomAlias() {
-        super(
-            new IsInheritedFromAtom(),
-            new FollowsAtomAliasSpecification()
-        );
-    }
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface NotAtom {
 }

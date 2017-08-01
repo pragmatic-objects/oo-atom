@@ -25,19 +25,17 @@ package oo.atom.codegen.bytebuddy.matchers;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import static net.bytebuddy.matcher.ElementMatchers.*;
+import static net.bytebuddy.matcher.ElementMatchers.hasAnnotation;
+import oo.atom.anno.Atom;
+import static net.bytebuddy.matcher.ElementMatchers.annotationType;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsJavaAtom implements ElementMatcher<TypeDescription> {
-    private static final Class<?>[] JAVA_ATOMS = new Class<?>[]{
-        String.class
-    };
-
+public class AnnotatedAtom implements ElementMatcher<TypeDescription> {
     @Override
     public final boolean matches(TypeDescription target) {
-        return target.isPrimitive() || target.isPrimitiveWrapper() || anyOf(JAVA_ATOMS).matches(target);
+        return hasAnnotation(annotationType(Atom.class)).matches(target);
     }
 }

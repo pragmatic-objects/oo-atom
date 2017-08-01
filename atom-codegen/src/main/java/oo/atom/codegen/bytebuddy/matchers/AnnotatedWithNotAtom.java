@@ -25,16 +25,17 @@ package oo.atom.codegen.bytebuddy.matchers;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
+import static net.bytebuddy.matcher.ElementMatchers.hasAnnotation;
+import oo.atom.anno.NotAtom;
+import static net.bytebuddy.matcher.ElementMatchers.annotationType;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsAtomAlias extends ConjunctionMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
-    public IsAtomAlias() {
-        super(
-            new IsInheritedFromAtom(),
-            new FollowsAtomAliasSpecification()
-        );
+public class AnnotatedWithNotAtom implements ElementMatcher<TypeDescription> {
+    @Override
+    public final boolean matches(TypeDescription target) {
+        return hasAnnotation(annotationType(NotAtom.class)).matches(target);
     }
 }

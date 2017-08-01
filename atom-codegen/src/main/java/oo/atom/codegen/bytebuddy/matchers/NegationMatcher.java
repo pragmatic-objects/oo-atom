@@ -23,18 +23,21 @@
  */
 package oo.atom.codegen.bytebuddy.matchers;
 
-import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsAtomAlias extends ConjunctionMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
-    public IsAtomAlias() {
-        super(
-            new IsInheritedFromAtom(),
-            new FollowsAtomAliasSpecification()
-        );
+public class NegationMatcher<T> implements ElementMatcher<T> {
+    private final ElementMatcher<T> matcher;
+
+    public NegationMatcher(ElementMatcher<T> matcher) {
+        this.matcher = matcher;
+    }
+    
+    @Override
+    public final boolean matches(T target) {
+        return !matcher.matches(target);
     }
 }

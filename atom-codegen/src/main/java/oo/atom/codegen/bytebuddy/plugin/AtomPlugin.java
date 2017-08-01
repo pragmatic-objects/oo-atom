@@ -28,20 +28,24 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
 import oo.atom.codegen.bytebuddy.task.builder.BtApplyPatch;
+import oo.atom.task.Task;
 
+class AtomPluginTaskSource implements TaskPlugin.TaskSource {
+    @Override
+    public final Task<DynamicType.Builder<?>> taskFromPluginArguments(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
+        return new BtApplyPatch(typeDescription, builder);
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin implements Plugin {
-    @Override
-    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription td) {
-        return new BtApplyPatch(td, builder).result().get();
-    }
-
-    @Override
-    public final boolean matches(TypeDescription td) {
-        return new ShouldBeInstrumented().matches(td);
+public class AtomPlugin extends TaskPlugin implements Plugin {
+    public AtomPlugin() {
+        super(
+            new ShouldBeInstrumented(), 
+            new AtomPluginTaskSource()
+        );
     }
 }

@@ -25,16 +25,19 @@ package oo.atom.codegen.bytebuddy.matchers;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsAtomAlias extends ConjunctionMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
-    public IsAtomAlias() {
-        super(
-            new IsInheritedFromAtom(),
-            new FollowsAtomAliasSpecification()
-        );
+public class NaturalJavaAtom implements ElementMatcher<TypeDescription> {
+    private static final Class<?>[] JAVA_ATOMS = new Class<?>[]{
+        String.class
+    };
+
+    @Override
+    public final boolean matches(TypeDescription target) {
+        return target.isPrimitive() || target.isPrimitiveWrapper() || anyOf(JAVA_ATOMS).matches(target);
     }
 }

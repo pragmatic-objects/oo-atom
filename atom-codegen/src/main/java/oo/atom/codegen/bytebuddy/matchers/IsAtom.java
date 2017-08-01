@@ -30,15 +30,14 @@ import net.bytebuddy.matcher.ElementMatcher;
  *
  * @author Kapralov Sergey
  */
-public class IsAtom implements ElementMatcher<TypeDescription> {
-    private static final ElementMatcher<TypeDescription> IS_JAVA_ATOM = new IsJavaAtom();
-    private static final ElementMatcher<TypeDescription> IS_EXPLICIT_ATOM = new IsExplicitAtom();
-    private static final ElementMatcher<TypeDescription> FOLLOWS_SPEC = new FollowsAtomSpecification();
-    
-    @Override
-    public final boolean matches(TypeDescription td) {
-        return IS_JAVA_ATOM.matches(td)
-                || IS_EXPLICIT_ATOM.matches(td)
-                || FOLLOWS_SPEC.matches(td);
+public class IsAtom extends WrappedMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
+    public IsAtom() {
+        super(
+            new DisjunctionMatcher<>(
+                new NaturalJavaAtom(),
+                new AnnotatedAtom(),
+                new FollowsAtomSpecification()
+            )
+        );
     }
 }

@@ -30,11 +30,17 @@ import net.bytebuddy.matcher.ElementMatcher;
  *
  * @author Kapralov Sergey
  */
-public class IsAtomAlias extends ConjunctionMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
-    public IsAtomAlias() {
+public class IsNotAtom extends WrappedMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
+    public IsNotAtom() {
         super(
-            new IsInheritedFromAtom(),
-            new FollowsAtomAliasSpecification()
+            new DisjunctionMatcher<>(
+                new AnnotatedWithNotAtom(),
+                new NegationMatcher<>(
+                    new DisjunctionMatcher<>(
+                        new IsAtom()
+                    )
+                )
+            )
         );
     }
 }

@@ -23,7 +23,6 @@
  */
 package oo.atom.codegen.bytebuddy.matchers;
 
-import javaslang.collection.Stream;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoFields;
@@ -35,18 +34,13 @@ import oo.atom.codegen.bytebuddy.matchers.atomspec.IsNotAbstract;
  *
  * @author Kapralov Sergey
  */
-public class FollowsAtomAliasSpecification implements ElementMatcher<TypeDescription> {
-    private static final ElementMatcher<TypeDescription>[] SPECIFICATION = new ElementMatcher[] {
-        new NoFields(),
-        new NoMethods(),
-        new IsNotAbstract(),
-        new HasNoStaticMethods()
-    };
-    
-    
-    @Override
-    public final boolean matches(TypeDescription target) {
-        return Stream.of(SPECIFICATION)
-                .foldLeft(true, (sum, m) -> sum && m.matches(target));
+public class FollowsAtomAliasSpecification extends ConjunctionMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
+    public FollowsAtomAliasSpecification() {
+        super(
+            new NoFields(),
+            new NoMethods(),
+            new IsNotAbstract(),
+            new HasNoStaticMethods()
+        );
     }
 }

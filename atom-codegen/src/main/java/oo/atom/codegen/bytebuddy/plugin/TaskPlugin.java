@@ -21,21 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.matchers;
+package oo.atom.codegen.bytebuddy.plugin;
 
+import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatcher;
-import static net.bytebuddy.matcher.ElementMatchers.annotationType;
-import static net.bytebuddy.matcher.ElementMatchers.hasAnnotation;
-import oo.atom.anno.Atom;
+import oo.atom.task.Task;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsExplicitAtom implements ElementMatcher<TypeDescription> {
+public class TaskPlugin implements Plugin {
+    @FunctionalInterface
+    public static interface TaskSource {
+        Task<DynamicType.Builder<?>> taskFromPluginArguments(DynamicType.Builder<?> builder, TypeDescription typeDescription);
+    }
+    
+    private final ElementMatcher<TypeDescription> matcher;
+    private final TaskSource taskSource;
+
+    public TaskPlugin(ElementMatcher<TypeDescription> matcher, TaskSource taskSource) {
+        this.matcher = matcher;
+        this.taskSource = taskSource;
+    }
+
+    @Override
+    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
+        return taskSource.taskFromPluginArguments(builder, typeDescription).result().get();
+    }
+
     @Override
     public final boolean matches(TypeDescription target) {
-        return hasAnnotation(annotationType(Atom.class)).matches(target);
+        return matcher.matches(target);
     }
 }
