@@ -23,11 +23,13 @@
  */
 package oo.atom.codegen.bytebuddy.plugin;
 
+import javaslang.collection.List;
 import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
 
 /**
  *
@@ -49,7 +51,14 @@ public class TaskPlugin implements Plugin {
 
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        return taskSource.taskFromPluginArguments(builder, typeDescription).result().get();
+        TaskResult<DynamicType.Builder<?>> result = taskSource.taskFromPluginArguments(builder, typeDescription).result();
+        List<String> issues = result.issues();
+        if(issues.isEmpty()) {
+            return result.outcome().get();
+        } else {
+            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
+            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
+        }
     }
 
     @Override

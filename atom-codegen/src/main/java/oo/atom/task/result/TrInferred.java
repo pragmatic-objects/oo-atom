@@ -21,23 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
+package oo.atom.task.result;
 
-import oo.atom.task.result.TaskResult;
+import javaslang.collection.List;
+import javaslang.control.Try;
 
 /**
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class TConst<V> implements Task<V> {
-    private final TaskResult<V> result;
+public class TrInferred<T> implements TaskResult<T> {
+    private final Inference<T> inference;
 
-    public TConst(TaskResult<V> result) {
-        this.result = result;
+    public TrInferred(Inference<T> inference) {
+        this.inference = inference;
     }
 
     @Override
-    public final TaskResult<V> result() {
-        return result;
+    public final Try<T> outcome() {
+        return inference.taskResult().outcome();
+    }
+
+    @Override
+    public final List<String> issues() {
+        return inference.taskResult().issues();
     }
 }

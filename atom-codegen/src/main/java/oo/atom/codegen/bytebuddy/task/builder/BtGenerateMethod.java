@@ -23,7 +23,6 @@
  */
 package oo.atom.codegen.bytebuddy.task.builder;
 
-import javaslang.control.Try;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.scaffold.InstrumentedType;
@@ -33,6 +32,9 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrBind;
+import oo.atom.task.result.TrSuccess;
 
 class BtGenerateMethodBytecodeAppender implements ByteCodeAppender {
     private final StackManipulation sm;
@@ -84,12 +86,14 @@ public class BtGenerateMethod implements Task<DynamicType.Builder<?>> {
     }
 
     @Override
-    public final Try<DynamicType.Builder<?>> result() {
-        final Try<StackManipulation> result = methodBodyTask.result();
-        return result.map(sm -> {
-            return builder
+    public final TaskResult<DynamicType.Builder<?>> result() {
+        final TaskResult<StackManipulation> result = methodBodyTask.result();
+        return new TrBind<>(result, sm -> {
+            return new TrSuccess<>(
+                builder
                     .method(elementMatcher)
-                    .intercept(new BtGenerateMethodImplementation(sm));
+                    .intercept(new BtGenerateMethodImplementation(sm))
+            );
         });
     }
 }

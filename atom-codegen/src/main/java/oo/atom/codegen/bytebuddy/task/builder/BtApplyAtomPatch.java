@@ -23,11 +23,11 @@
  */
 package oo.atom.codegen.bytebuddy.task.builder;
 
-import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.task.TChain;
 import oo.atom.task.Task;
+import oo.atom.task.result.TrSuccess;
 
 
 /**
@@ -37,7 +37,7 @@ import oo.atom.task.Task;
 public class BtApplyAtomPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
     public BtApplyAtomPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
         super(
-            Try.success(builder),
+            new TrSuccess<>(builder),
             (b -> new BtAnnotate(td, b)),
             (b -> new BtGenerateEquals(b, td)),
             (b -> new BtGenerateHashCode(b, td))

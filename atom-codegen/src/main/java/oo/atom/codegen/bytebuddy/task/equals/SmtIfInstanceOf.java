@@ -23,7 +23,6 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
-import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
@@ -34,6 +33,8 @@ import oo.atom.codegen.bytebuddy.branching.BIsZero;
 import oo.atom.codegen.bytebuddy.branching.BMark;
 import oo.atom.task.TChained;
 import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrSuccess;
 
 
 class InstanceOfStackManipulation implements StackManipulation {
@@ -67,9 +68,9 @@ class SmtIfInstanceOfTask implements Task<StackManipulation> {
     }
 
     @Override
-    public final Try<StackManipulation> result() {
+    public final TaskResult<StackManipulation> result() {
         final Label checkEnd = new Label();
-        return Try.success(
+        return new TrSuccess<>(
             new StackManipulation.Compound(
                 new InstanceOfStackManipulation(type),
                 new BIsZero(isTrue, checkEnd),

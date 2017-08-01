@@ -200,7 +200,6 @@ SOFTWARE.
                                             <module name="FileTabCharacter"/>
                                             
                                             <module name="TreeWalker">
-                                                <module name="Indentation"/>
                                                 <module name="CyclomaticComplexity"/>
                                                 <module name="NPathComplexity"/>
                                                 <module name="JavaNCSS"/>

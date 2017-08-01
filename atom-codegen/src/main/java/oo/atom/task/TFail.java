@@ -23,7 +23,7 @@
  */
 package oo.atom.task;
 
-import javaslang.control.Try;
+import oo.atom.task.result.TrFailure;
 
 /**
  *
@@ -31,6 +31,8 @@ import javaslang.control.Try;
  */
 public class TFail<T> extends TConst<T> implements Task<T> {
     public TFail(String message) {
-        super(Try.failure(new RuntimeException(message)));
+        super(
+            new TrFailure<>(message)
+        );
     }
 }

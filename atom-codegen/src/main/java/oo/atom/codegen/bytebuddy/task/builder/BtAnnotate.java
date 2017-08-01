@@ -24,11 +24,12 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import java.lang.annotation.Annotation;
-import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.anno.Atom;
 import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrSuccess;
 
 class BtAnnotateAtom implements Atom {
 
@@ -52,10 +53,10 @@ public class BtAnnotate implements Task<DynamicType.Builder<?>> {
     }
 
     @Override
-    public final Try<DynamicType.Builder<?>> result() {
+    public final TaskResult<DynamicType.Builder<?>> result() {
         boolean annotationPresent = type.getDeclaredAnnotations().isAnnotationPresent(Atom.class);
         
-        return Try.success(
+        return new TrSuccess<>(
             annotationPresent ?
                 builder :
                 builder.annotateType(

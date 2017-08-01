@@ -24,30 +24,32 @@
 package oo.atom.task;
 
 import javaslang.collection.List;
-import javaslang.control.Try;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrBind;
 
 /**
  *
  * @author Kapralov Sergey
  */
 public class TChain<V> implements Task<V> {
-    private final Try<V> value;
+    private final TaskResult<V> value;
     private final List<TaskLink<V>> links;
 
-    public TChain(Try<V> value, List<TaskLink<V>> links) {
+    public TChain(TaskResult<V> value, List<TaskLink<V>> links) {
         this.value = value;
         this.links = links;
     }
     
-    public TChain(Try<V> value, TaskLink<V>... links) {
+    public TChain(TaskResult<V> value, TaskLink<V>... links) {
         this(value, List.of(links));
     }
 
     @Override
-    public final Try<V> result() {
+    public final TaskResult<V> result() {
         return links.foldLeft(value, (smtr, smtl) -> {
-            Try<Task<V>> taskOpt = smtr.map(smtl::task);
-            return taskOpt.map(Task::result).getOrElse(smtr);
+            return new TrBind<V, V>(smtr, r -> {
+                return smtl.task(r).result();
+            });
         });
     }
 }

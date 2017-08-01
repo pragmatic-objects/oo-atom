@@ -23,13 +23,14 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
-import javaslang.control.Try;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
 import oo.atom.task.TChained;
 import oo.atom.task.Task;
 import oo.atom.codegen.bytebuddy.branching.BIfAcmp;
 import oo.atom.codegen.bytebuddy.branching.BMark;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrSuccess;
 
 class SmtIfEqualByReferenceTask implements Task<StackManipulation> {
 
@@ -42,14 +43,14 @@ class SmtIfEqualByReferenceTask implements Task<StackManipulation> {
     }
 
     @Override
-    public final Try<StackManipulation> result() {
+    public final TaskResult<StackManipulation> result() {
         final Label checkEnd = new Label();
-        return Try.success(
-                new StackManipulation.Compound(
-                        new BIfAcmp(equals, checkEnd),
-                        sm,
-                        new BMark(checkEnd)
-                )
+        return new TrSuccess<>(
+            new StackManipulation.Compound(
+                new BIfAcmp(equals, checkEnd),
+                sm,
+                new BMark(checkEnd)
+            )
         );
     }
 }

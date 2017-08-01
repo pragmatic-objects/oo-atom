@@ -21,23 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
-
-import oo.atom.task.result.TaskResult;
-
-/**
- *
- * @author skapral
- */
-public class TConst<V> implements Task<V> {
-    private final TaskResult<V> result;
-
-    public TConst(TaskResult<V> result) {
-        this.result = result;
-    }
-
-    @Override
-    public final TaskResult<V> result() {
-        return result;
-    }
-}
+package oo.atom.task.result;

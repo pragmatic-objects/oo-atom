@@ -23,12 +23,13 @@
  */
 package oo.atom.codegen.bytebuddy.task.builder;
 
-import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.task.Task;
 import oo.atom.codegen.bytebuddy.matchers.IsAtom;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrFailure;
 
 /**
  *
@@ -46,14 +47,12 @@ public class BtDoIfClassIsAtom implements Task<DynamicType.Builder<?>> {
     }
     
     @Override
-    public final Try<DynamicType.Builder<?>> result() {
+    public final TaskResult<DynamicType.Builder<?>> result() {
         if(IS_ATOM.matches(type)) {
             return task.result();
         } else {
-            return Try.failure(
-                new RuntimeException(
-                    String.format("%s is not atom", type.getName())
-                )
+            return new TrFailure(
+                String.format("%s is not atom", type.getName())
             );
         }
     }

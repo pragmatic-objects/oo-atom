@@ -24,11 +24,12 @@
 package oo.atom.codegen.bytebuddy.task.hashcode;
 
 import javaslang.collection.List;
-import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
 import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrTransformed;
 
 /**
  *
@@ -47,15 +48,15 @@ public class SmtArray implements Task<StackManipulation> {
     }
 
     @Override
-    public final Try<StackManipulation> result() {
-        Try<StackManipulation> result = members
+    public final TaskResult<StackManipulation> result() {
+        return members
                 .map(Task::result)
-                .transform(Try::sequence)
-                .map(seq -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
-                            seq.toJavaList()
+                .transform(seq -> new TrTransformed<>(
+                        seq, 
+                        list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
+                            list.toJavaList()
+                        )
                     )
                 );
-        
-        return result;
     }
 }

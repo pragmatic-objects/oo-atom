@@ -23,12 +23,12 @@
  */
 package oo.atom.task;
 
-import javaslang.control.Try;
+import oo.atom.task.result.TaskResult;
 
 /**
  *
  * @author Kapralov Sergey
  */
 public interface Task<V> {
-    Try<V> result();
+    TaskResult<V> result();
 }

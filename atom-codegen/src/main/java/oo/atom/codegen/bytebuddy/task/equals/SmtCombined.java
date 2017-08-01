@@ -24,19 +24,19 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import javaslang.collection.List;
-import javaslang.control.Try;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.TTransformed;
+import oo.atom.task.TCombined;
 import oo.atom.task.Task;
+import oo.atom.task.result.TrSuccess;
 
 /**
  *
  * @author skapral
  */
-public class SmtCombined extends TTransformed<StackManipulation> implements Task<StackManipulation> {
+public class SmtCombined extends TCombined<StackManipulation> implements Task<StackManipulation> {
     public SmtCombined(List<Task<StackManipulation>> subtasks) {
         super(
-            Try.success(new StackManipulation.Compound()),
+            new TrSuccess<>(new StackManipulation.Compound()),
             ((sm1, sm2) -> new StackManipulation.Compound(sm1, sm2)),
             subtasks
         );

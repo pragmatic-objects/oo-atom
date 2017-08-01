@@ -39,7 +39,7 @@ class SmtAssumeTaskToGenerateBytecodeInference implements Assumption.Inference {
     @Override
     public final Assumption assumption() {
         return new AssumeStackManipulationsAreSame(
-                task.result().get(), 
+                task.result().outcome().get(), 
                 sample
         );
     }

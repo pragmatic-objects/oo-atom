@@ -39,7 +39,7 @@ public class BtAnnotateTest {
     public void annotatesType() throws Exception {
         final TypeDescription type = new TypeDescription.ForLoadedType(Foo.class);
         final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(Foo.class);
-        final DynamicType.Unloaded<?> make = new BtAnnotate(type, subclass).result().get().make();
+        final DynamicType.Unloaded<?> make = new BtAnnotate(type, subclass).result().outcome().get().make();
         final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
         assertThat(
             clazz.getAnnotation(Atom.class)
@@ -52,7 +52,7 @@ public class BtAnnotateTest {
         final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(Bar.class);
 
         assertThatCode(() -> {
-            final DynamicType.Unloaded<?> make = new BtAnnotate(type, subclass).result().get().make();
+            final DynamicType.Unloaded<?> make = new BtAnnotate(type, subclass).result().outcome().get().make();
             final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
             final Atom annotation = clazz.getAnnotation(Atom.class);
         }).doesNotThrowAnyException();

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
+package oo.atom.task.result;
 
 import java.util.function.BinaryOperator;
 import javaslang.collection.List;
@@ -29,28 +29,36 @@ import javaslang.control.Try;
 
 /**
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class TTransformed<T> implements Task<T> {
-    private final Try<T> defaultResult;
-    private final BinaryOperator<T> combinationFunction;
-    private final List<Task<T>> subtasks;
+public class TrCombined<T> implements TaskResult<T> {
+    private final List<TaskResult<T>> taskResults;
+    private final BinaryOperator<T> combineOperator;
     
-    public TTransformed(Try<T> defaultResult, BinaryOperator<T> combinationFunction, List<Task<T>> subtasks) {
-        this.defaultResult = defaultResult;
-        this.combinationFunction = combinationFunction;
-        this.subtasks = subtasks;
-    }
-    
-    public TTransformed(Try<T> defaultResult, BinaryOperator<T> combinationFunction, Task<T>... subtasks) {
-        this(defaultResult, combinationFunction, List.of(subtasks));
+    public TrCombined(List<TaskResult<T>> taskResults, BinaryOperator<T> combineOperator) {
+        this.taskResults = taskResults;
+        this.combineOperator = combineOperator;
     }
     
     @Override
-    public final Try<T> result() {
-        return subtasks.isEmpty() ? defaultResult : subtasks
-                .map(Task::result)
-                .transform(Try::sequence)
-                .map(l -> l.reduce(combinationFunction));
+    public final Try<T> outcome() {
+        return taskResults.map(TaskResult::outcome)
+                .reduce((t1, t2) -> {
+                    if(t1.isFailure() || t2.isFailure()) {
+                        return Try.failure(
+                            new RuntimeException(
+                                String.join("\r\n", issues())
+                            )
+                        );
+                    }
+                    return Try.success(
+                        combineOperator.apply(t1.get(), t2.get())
+                    );
+                });
+    }
+    
+    @Override
+    public final List<String> issues() {
+        return taskResults.flatMap(TaskResult::issues);
     }
 }

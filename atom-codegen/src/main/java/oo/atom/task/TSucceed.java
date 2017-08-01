@@ -23,7 +23,7 @@
  */
 package oo.atom.task;
 
-import javaslang.control.Try;
+import oo.atom.task.result.TrSuccess;
 
 /**
  *
@@ -31,6 +31,8 @@ import javaslang.control.Try;
  */
 public class TSucceed<T> extends TConst<T> implements Task<T> {
     public TSucceed(T value) {
-        super(Try.success(value));
+        super(
+            new TrSuccess<>(value)
+        );
     }
 }

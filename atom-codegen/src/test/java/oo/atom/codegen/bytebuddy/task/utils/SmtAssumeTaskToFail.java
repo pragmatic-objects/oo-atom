@@ -40,6 +40,6 @@ public class SmtAssumeTaskToFail implements Assumption {
     
     @Override
     public final void check() throws Exception {
-        Assertions.assertThatThrownBy(() -> task.result().get()).isNotNull();
+        Assertions.assertThatThrownBy(() -> task.result().outcome().get()).isNotNull();
     }
 }

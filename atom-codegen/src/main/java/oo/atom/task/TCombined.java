@@ -21,45 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.equals;
+package oo.atom.task;
 
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.Label;
-import oo.atom.task.TChained;
-import oo.atom.task.Task;
-import oo.atom.codegen.bytebuddy.branching.BIsNull;
-import oo.atom.codegen.bytebuddy.branching.BMark;
+import java.util.function.BinaryOperator;
+import javaslang.collection.List;
 import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrSuccess;
-
-class SmtIfNullTask implements Task<StackManipulation> {
-    private final boolean isTrue;
-    private final StackManipulation sm;
-
-    public SmtIfNullTask(boolean isTrue, StackManipulation sm) {
-        this.isTrue = isTrue;
-        this.sm = sm;
-    }
-
-    @Override
-    public final TaskResult<StackManipulation> result() {
-        final Label checkEnd = new Label();
-        return new TrSuccess<>(
-            new StackManipulation.Compound(
-                new BIsNull(isTrue, checkEnd),
-                sm,
-                new BMark(checkEnd)
-            )
-        );
-    }
-}
+import oo.atom.task.result.TrCombined;
 
 /**
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class SmtIfNull extends TChained<StackManipulation> implements Task<StackManipulation> {
-    public SmtIfNull(boolean isTrue, Task<StackManipulation> task) {
-        super(task, sm -> new SmtIfNullTask(isTrue, sm));
+public class TCombined<T> implements Task<T> {
+    private final TaskResult<T> defaultResult;
+    private final BinaryOperator<T> combinationFunction;
+    private final List<Task<T>> subtasks;
+    
+    public TCombined(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, List<Task<T>> subtasks) {
+        this.defaultResult = defaultResult;
+        this.combinationFunction = combinationFunction;
+        this.subtasks = subtasks;
+    }
+    
+    public TCombined(TaskResult<T> defaultResult, BinaryOperator<T> combinationFunction, Task<T>... subtasks) {
+        this(defaultResult, combinationFunction, List.of(subtasks));
+    }
+    
+    @Override
+    public final TaskResult<T> result() {
+        return subtasks.isEmpty() ? defaultResult : subtasks
+                .map(Task::result)
+                .transform(trs -> new TrCombined<>(trs, combinationFunction));
     }
 }

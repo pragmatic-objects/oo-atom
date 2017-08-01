@@ -23,7 +23,7 @@
  */
 package oo.atom.task;
 
-import javaslang.control.Try;
+import oo.atom.task.result.TaskResult;
 
 /**
  *
@@ -37,7 +37,7 @@ public class TInferred<V> implements Task<V> {
     }
 
     @Override
-    public final Try<V> result() {
+    public final TaskResult<V> result() {
         return inference.task().result();
     }
 }

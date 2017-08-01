@@ -24,7 +24,6 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import java.lang.reflect.Method;
-import javaslang.control.Try;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
@@ -33,6 +32,8 @@ import oo.atom.task.TChained;
 import oo.atom.task.Task;
 import oo.atom.codegen.bytebuddy.branching.BIsZero;
 import oo.atom.codegen.bytebuddy.branching.BMark;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrSuccess;
 
 
 
@@ -55,14 +56,15 @@ class SmtIfEqualTask implements Task<StackManipulation> {
         this.sm = sm;
     }
     
-    public final Try<StackManipulation> result() {
+    public final TaskResult<StackManipulation> result() {
         final Label checkEnd = new Label();
-        return Try.success(new StackManipulation.Compound(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQUALS)),
-                        new BIsZero(!isTrue, checkEnd),
-                        sm,
-                        new BMark(checkEnd)
-                )
+        return new TrSuccess<>(
+            new StackManipulation.Compound(
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQUALS)),
+                new BIsZero(!isTrue, checkEnd),
+                sm,
+                new BMark(checkEnd)
+            )
         );
     }
 }

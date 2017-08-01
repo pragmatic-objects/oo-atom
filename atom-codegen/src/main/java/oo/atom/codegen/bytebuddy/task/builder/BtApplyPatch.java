@@ -28,6 +28,7 @@ import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.codegen.bytebuddy.matchers.IsAtom;
 import oo.atom.codegen.bytebuddy.matchers.IsAtomAlias;
+import oo.atom.task.TFail;
 import oo.atom.task.TInferred;
 import oo.atom.task.Task;
 import oo.atom.task.TaskInference;
@@ -51,7 +52,9 @@ class BtApplyPatchInference implements TaskInference<DynamicType.Builder<?>> {
         } else if(IS_ATOM.matches(type)) {
             return new BtApplyAtomPatch(builder, type);
         } else {
-            throw new IllegalStateException("%s is not atom");
+            return new TFail<>(
+                String.format("%s is not atom", type.getName())
+            );
         }
     }
 }
