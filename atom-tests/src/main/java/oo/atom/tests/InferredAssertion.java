@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2017 skapral.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,48 +23,24 @@
  */
 package oo.atom.tests;
 
-import java.util.Objects;
-import static org.assertj.core.api.Assertions.*;
-
 /**
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class AssertAtomsAreNotEqual implements Assertion {
-    private final String description;
-    private final Object atom1;
-    private final Object atom2;
+public class InferredAssertion implements Assertion {
+    private final Inference inference;
 
-    public AssertAtomsAreNotEqual(String description, Object atom1, Object atom2) {
-        this.description = description;
-        this.atom1 = atom1;
-        this.atom2 = atom2;
+    public InferredAssertion(Inference inference) {
+        this.inference = inference;
     }
     
     @Override
     public final String description() {
-        return description;
+        return inference.assertion().description();
     }
 
     @Override
     public final void check() throws Exception {
-        assertThat(atom1).isNotEqualTo(atom2);
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if(o instanceof AssertAtomsAreNotEqual) {
-            AssertAtomsAreNotEqual that = (AssertAtomsAreNotEqual)o;
-            return Objects.equals(description, that.description) &&
-                Objects.equals(atom1, that.atom1) &&
-                Objects.equals(atom2, that.atom2);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(description, atom1, atom2);
+        inference.assertion().check();
     }
 }

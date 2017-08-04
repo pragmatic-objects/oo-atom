@@ -25,46 +25,38 @@ package oo.atom.codegen.bytebuddy.matchers.atomspec;
 
 import java.util.function.Supplier;
 import net.bytebuddy.description.type.TypeDescription;
-import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class HasNoStaticMethodsTest {
-
-    @Test
-    public void trueIfClassHasNoStaticMethods() {
-        assertThat(
-                new HasNoStaticMethods().matches(
-                        new TypeDescription.ForLoadedType(Foo.class)
-                )
-        ).isTrue();
-    }
-    
-    @Test
-    public void matcherIgnoresLambdas() {
-        assertThat(new HasNoStaticMethods().matches(
-                        new TypeDescription.ForLoadedType(Baz.class)
-                )
-        ).isTrue();
-    }
-    
-    @Test
-    public void matcherIgnoresEnums() {
-        assertThat(new HasNoStaticMethods().matches(
-                        new TypeDescription.ForLoadedType(Faz.class)
-                )
-        ).isTrue();
-    }
-
-    @Test
-    public void falseIfClassHasAtLeastOneStaticMethod() {
-        assertThat(new HasNoStaticMethods().matches(
-                        new TypeDescription.ForLoadedType(Bar.class)
-                )
-        ).isFalse();
+public class HasNoStaticMethodsTest extends AssertionsSuite {
+    public HasNoStaticMethodsTest() {
+        super(
+            new AssertThatTypeMatches(
+                "match type with no static methods",
+                new TypeDescription.ForLoadedType(Foo.class),
+                new HasNoStaticMethods()
+            ),
+            new AssertThatTypeMatches(
+                "match type with lambdas",
+                new TypeDescription.ForLoadedType(Baz.class),
+                new HasNoStaticMethods()
+            ),
+            new AssertThatTypeMatches(
+                "match enumeration types",
+                new TypeDescription.ForLoadedType(Faz.class),
+                new HasNoStaticMethods()
+            ),
+            new AssertThatTypeDoesNotMatch(
+                "mismatch type with at least one static method",
+                new TypeDescription.ForLoadedType(Bar.class),
+                new HasNoStaticMethods()
+            )
+        );
     }
 
     private static class Foo {

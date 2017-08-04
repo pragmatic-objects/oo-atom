@@ -61,39 +61,6 @@
                 <version>3.3.0</version>
                 <extensions>true</extensions>
             </plugin>
-            <plugin>
-                <groupId>net.bytebuddy</groupId>
-                <artifactId>byte-buddy-maven-plugin</artifactId>
-                <version>1.7.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>transform</goal>
-                            <goal>transform-test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <skip>false</skip>
-                    <transformations>
-                        <transformation>
-                            <plugin>oo.atom.codegen.bytebuddy.plugin.AtomPlugin</plugin>
-                        </transformation>
-                    </transformations>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>oo</groupId>
-                        <artifactId>atom-api</artifactId>
-                        <version>${atom.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>oo</groupId>
-                        <artifactId>atom-codegen</artifactId>
-                        <version>${atom.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
         </plugins>
     </build>
 </project>

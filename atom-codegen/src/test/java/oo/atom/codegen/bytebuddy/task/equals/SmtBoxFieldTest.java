@@ -23,56 +23,55 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
-import org.junit.Test;
-
-
-
-
-
+import oo.atom.codegen.bytebuddy.task.utils.AssertTaskToGenerateBytecode;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtBoxFieldTest {
-    
+public class SmtBoxFieldTest extends AssertionsSuite {
+
     private static final Method INT_VALUEOF;
-    
+    private static final Field NON_PRIMITIVE_FIELD;
+    private static final Field PRIMITIVE_FIELD;
+
     static {
         try {
             INT_VALUEOF = Integer.class.getMethod("valueOf", int.class);
+            NON_PRIMITIVE_FIELD = Foo.class.getDeclaredField("nonPrimitive");
+            PRIMITIVE_FIELD = Foo.class.getDeclaredField("primitive");
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
-    
-    @Test
-    public void doNothingWithNonPrimitiveFields() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
+
+    public SmtBoxFieldTest() {
+        super(
+            new AssertTaskToGenerateBytecode(
+                "generates no bytecode for non-primitive fields",
                 new SmtBoxField(
-                        new FieldDescription.ForLoadedField(
-                                Foo.class.getDeclaredField("nonPrimitive")
-                        )
+                    new FieldDescription.ForLoadedField(
+                        NON_PRIMITIVE_FIELD
+                    )
                 ),
                 new StackManipulation.Compound()
-        ).check();
-    }
-    
-    @Test
-    public void boxesPrimitiveFields() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
+            ),
+            new AssertTaskToGenerateBytecode(
+                "boxes primitive fields",
                 new SmtBoxField(
-                        new FieldDescription.ForLoadedField(
-                                Foo.class.getDeclaredField("primitive")
-                        )
+                    new FieldDescription.ForLoadedField(
+                        PRIMITIVE_FIELD
+                    )
                 ),
                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
-        ).check();
+            )
+        );
     }
 }

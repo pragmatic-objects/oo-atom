@@ -27,15 +27,15 @@ import java.lang.reflect.Method;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToFail;
-import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
-import org.junit.Test;
+import oo.atom.codegen.bytebuddy.task.utils.AssertTaskToFail;
+import oo.atom.codegen.bytebuddy.task.utils.AssertTaskToGenerateBytecode;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtBoxTest {
+public class SmtBoxTest extends AssertionsSuite {
     private static final Method INT_VALUEOF;
 
     static {
@@ -46,23 +46,21 @@ public class SmtBoxTest {
         }
     }
     
-    
-    @Test
-    public void boxNonPrimitive() throws Exception {
-        new SmtAssumeTaskToFail(
+    public SmtBoxTest() {
+        super(
+            new AssertTaskToFail(
+                "attempt to box non-primitive must fail",
                 new SmtBox(
                         new TypeDescription.ForLoadedType(Object.class)
                 )
-        ).check();
-    }
-    
-    @Test
-    public void boxIntegerPrimitive() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
+            ),
+            new AssertTaskToGenerateBytecode(
+                "can box integer primitive", 
                 new SmtBox(
                         new TypeDescription.ForLoadedType(int.class)
                 ),
                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
-        ).check();
+            )
+        );
     }
 }

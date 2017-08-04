@@ -23,34 +23,46 @@
  */
 package oo.atom.codegen.bytebuddy.task.utils;
 
+import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.Task;
-
-
-class SmtAssumeTaskToGenerateBytecodeInference implements Assumption.Inference {
-    private final Task<StackManipulation> task;
-    private final StackManipulation sample;
-
-    public SmtAssumeTaskToGenerateBytecodeInference(Task<StackManipulation> task, StackManipulation sample) {
-        this.task = task;
-        this.sample = sample;
-    }
-    
-    @Override
-    public final Assumption assumption() {
-        return new AssumeStackManipulationsAreSame(
-                task.result().outcome().get(), 
-                sample
-        );
-    }
-}
+import net.bytebuddy.jar.asm.MethodVisitor;
+import oo.atom.tests.Assertion;
+import org.easymock.EasyMock;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtAssumeTaskToGenerateBytecode extends InferredAssumption {
-    public SmtAssumeTaskToGenerateBytecode(Task<StackManipulation> task, StackManipulation sample) {
-        super(new SmtAssumeTaskToGenerateBytecodeInference(task, sample));
+public class AssertStackManipulationsAreSame implements Assertion {
+    private final String description;
+    private final StackManipulation entity;
+    private final StackManipulation pattern;
+
+    public AssertStackManipulationsAreSame(String description, StackManipulation entity, StackManipulation pattern) {
+        this.description = description;
+        this.entity = entity;
+        this.pattern = pattern;
+    }
+
+    @Override
+    public final String description() {
+        return description;
+    }
+    
+    @Override
+    public final void check() throws Exception {
+        MethodVisitor methodVisitor = EasyMock.createStrictMock(
+                MethodVisitor.class
+        );
+        Implementation.Context implementationContext = EasyMock.createMock(
+                Implementation.Context.class
+        );
+        
+        // Expect
+        pattern.apply(methodVisitor, implementationContext);
+        EasyMock.replay(methodVisitor);
+        
+        entity.apply(methodVisitor, implementationContext);
+        EasyMock.verify(methodVisitor);
     }
 }

@@ -24,27 +24,26 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
-import oo.atom.codegen.bytebuddy.task.utils.SmtAssumeTaskToGenerateBytecode;
-import org.junit.Test;
+import oo.atom.codegen.bytebuddy.task.utils.AssertTaskToGenerateBytecode;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadReferenceTest {
-    @Test
-    public void loads0thArgumentOnStack() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(0), 
+public class SmtLoadReferenceTest extends AssertionsSuite {
+    public SmtLoadReferenceTest() {
+        super(
+            new AssertTaskToGenerateBytecode(
+                "can load 0th argument on stack",
+                new SmtLoadReference(0),
                 MethodVariableAccess.REFERENCE.loadFrom(0)
-        ).check();
-    }
-
-    @Test
-    public void loads5thArgumentOnStack() throws Exception {
-        new SmtAssumeTaskToGenerateBytecode(
-                new SmtLoadReference(5), 
+            ),
+            new AssertTaskToGenerateBytecode(
+                "can load 5th argument on stack",
+                new SmtLoadReference(5),
                 MethodVariableAccess.REFERENCE.loadFrom(5)
-        ).check();
+            )
+        );
     }
 }

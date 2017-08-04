@@ -28,6 +28,10 @@ package oo.atom.tests;
  * @author Kapralov Sergey
  */
 public interface Assertion {
+    interface Inference {
+        Assertion assertion();
+    }
+    
     public String description();
     public void check() throws Exception;
 }

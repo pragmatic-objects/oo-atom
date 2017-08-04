@@ -25,35 +25,30 @@ package oo.atom.codegen.bytebuddy.matchers;
 
 import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.anno.Atom;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Test;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsInheritedFromAtomTest {
-
-    @Test
-    public void trueIfSuperClassIsAtom() {
-        assertThat(
-            new IsInheritedFromAtom().matches(
+public class IsInheritedFromAtomTest extends AssertionsSuite {
+    public IsInheritedFromAtomTest() {
+        super(
+            new AssertThatTypeMatches(
+                "matches types inherited from atom", 
                 new TypeDescription.ForLoadedType(
                     Bar.class
-                )
-            )
-        ).isTrue();
-    }
-
-    @Test
-    public void falseIfSuperClassIsNotAtom() {
-        assertThat(
-            new IsInheritedFromAtom().matches(
+                ), 
+                new IsInheritedFromAtom()
+            ),
+            new AssertThatTypeDoesNotMatch(
+                "mismatch atoms", 
                 new TypeDescription.ForLoadedType(
                     Foo.class
-                )
+                ), 
+                new IsInheritedFromAtom()
             )
-        ).isFalse();
+        );
     }
 
     @Atom

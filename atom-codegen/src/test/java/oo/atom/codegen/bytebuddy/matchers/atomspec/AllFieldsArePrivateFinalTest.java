@@ -24,57 +24,43 @@
 package oo.atom.codegen.bytebuddy.matchers.atomspec;
 
 import net.bytebuddy.description.type.TypeDescription;
-import static org.assertj.core.api.Assertions.*;
-import org.junit.Test;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AllFieldsArePrivateFinalTest {
-    @Test
-    public void trueIfAllFieldsArePrivateFinal() {
-        assertThat(
-                new AllFieldsArePrivateFinal().matches(
-                        new TypeDescription.ForLoadedType(Foo.class)
-                )
-        ).isTrue();
-    }
-    
-    @Test
-    public void trueIfClassHasNoFields() {
-        assertThat(
-                new AllFieldsArePrivateFinal().matches(
-                        new TypeDescription.ForLoadedType(Faz.class)
-                )
-        ).isTrue();
-    }
-    
-    @Test
-    public void falseIfAtLeastOneFieldIsNonFinal() {
-        assertThat(
-                new AllFieldsArePrivateFinal().matches(
-                        new TypeDescription.ForLoadedType(Bar.class)
-                )
-        ).isFalse();
-    }
-    
-    @Test
-    public void falseIfAtLeastOneFieldIsNonPrivate() {
-        assertThat(
-                new AllFieldsArePrivateFinal().matches(
-                        new TypeDescription.ForLoadedType(Baz.class)
-                )
-        ).isFalse();
-    }
-    
-    @Test
-    public void matcherSupportsEnums() {
-        assertThat(
-                new AllFieldsArePrivateFinal().matches(
-                        new TypeDescription.ForLoadedType(Haz.class)
-                )
-        ).isTrue();
+public class AllFieldsArePrivateFinalTest extends AssertionsSuite {
+    public AllFieldsArePrivateFinalTest() {
+        super(
+            new AssertThatTypeMatches(
+                "match type with private final fields only",
+                new TypeDescription.ForLoadedType(Foo.class),
+                new AllFieldsArePrivateFinal()
+            ),
+            new AssertThatTypeMatches(
+                "match type with no fields",
+                new TypeDescription.ForLoadedType(Faz.class),
+                new AllFieldsArePrivateFinal()
+            ),
+            new AssertThatTypeDoesNotMatch(
+                "mismatch type when at least one field is non-final",
+                new TypeDescription.ForLoadedType(Bar.class),
+                new AllFieldsArePrivateFinal()
+            ),
+            new AssertThatTypeDoesNotMatch(
+                "mismatch type when at least one field is non-private",
+                new TypeDescription.ForLoadedType(Baz.class),
+                new AllFieldsArePrivateFinal()
+            ),
+            new AssertThatTypeMatches(
+                "match enumeration type",
+                new TypeDescription.ForLoadedType(Haz.class),
+                new AllFieldsArePrivateFinal()
+            )
+        );
     }
     
     private static class Foo {

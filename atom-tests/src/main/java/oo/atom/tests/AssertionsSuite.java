@@ -25,9 +25,11 @@ package oo.atom.tests;
 
 import com.github.kimble.FactoryRunner;
 import io.vavr.collection.List;
+import java.util.Objects;
+import oo.atom.anno.Atom;
 import org.junit.runner.RunWith;
 
-
+@Atom
 class AssertionTest implements FactoryRunner.Test {
     private final Assertion assertion;
 
@@ -39,6 +41,21 @@ class AssertionTest implements FactoryRunner.Test {
     public final void execute() throws Throwable {
         assertion.check();
     }
+
+    @Override
+    public final boolean equals(Object o) {
+        if(o instanceof AssertionTest) {
+            AssertionTest that = (AssertionTest)o;
+            return Objects.equals(assertion, that.assertion);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(assertion);
+    }
 }
 
 
@@ -46,6 +63,7 @@ class AssertionTest implements FactoryRunner.Test {
  *
  * @author Kapralov Sergey
  */
+@Atom
 @RunWith(FactoryRunner.class)
 public class AssertionsSuite implements FactoryRunner.Producer {
     private final List<Assertion> assertions;
@@ -69,5 +87,19 @@ public class AssertionsSuite implements FactoryRunner.Producer {
             );
         }
     }
-    
+
+    @Override
+    public final boolean equals(Object o) {
+        if(o instanceof AssertionsSuite) {
+            AssertionsSuite that = (AssertionsSuite)o;
+            return Objects.equals(assertions, that.assertions);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(assertions);
+    }
 }

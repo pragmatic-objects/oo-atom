@@ -24,48 +24,44 @@
 package oo.atom.codegen.bytebuddy.matchers.aliasspec;
 
 import net.bytebuddy.description.type.TypeDescription;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Test;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class NoMethodsTest {
-    @Test
-    public void trueIfNoMethods() {
-        assertThat(
-                new NoMethods().matches(
-                        new TypeDescription.ForLoadedType(Foo.class)
-                )
-        ).isTrue();
+public class NoMethodsTest extends AssertionsSuite {
+
+    public NoMethodsTest() {
+        super(
+            new AssertThatTypeMatches(
+                "match type with no methods",
+                new TypeDescription.ForLoadedType(Foo.class),
+                new NoMethods()
+            ),
+            new AssertThatTypeDoesNotMatch(
+                "mismatch type with at least one method",
+                new TypeDescription.ForLoadedType(Bar.class),
+                new NoMethods()
+            ),
+            new AssertThatTypeMatches(
+                "match type ignoring methods declared in base class",
+                new TypeDescription.ForLoadedType(Barr.class),
+                new NoMethods()
+            )
+        );
     }
-    
-    @Test
-    public void falseIfAtLeastOneMethod() {
-        assertThat(
-                new NoMethods().matches(
-                        new TypeDescription.ForLoadedType(Bar.class)
-                )
-        ).isFalse();
-    }
-    
-    @Test
-    public void ignoresMethodsFromBaseClass() {
-        assertThat(
-                new NoMethods().matches(
-                        new TypeDescription.ForLoadedType(Barr.class)
-                )
-        ).isTrue();
-    }
-    
+
     private static class Foo {
     }
-    
+
     private static class Bar {
-        public final void method() {}
+        public final void method() {
+        }
     }
-    
+
     private static class Barr extends Bar {
     }
 }

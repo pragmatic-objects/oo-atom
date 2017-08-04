@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2017 skapral.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.task.utils;
+package oo.atom.codegen.bytebuddy.matchers;
+
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+import oo.atom.tests.Assertion;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public interface Assumption {
-    interface Inference {
-        Assumption assumption();
+public class AssertThatTypeMatches implements Assertion {
+    private final String description;
+    private final TypeDescription typeDescription;
+    private final ElementMatcher<TypeDescription> matcher;
+
+    public AssertThatTypeMatches(String description, TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
+        this.description = description;
+        this.typeDescription = typeDescription;
+        this.matcher = matcher;
     }
-    
-    void check() throws Exception;
+
+    @Override
+    public final String description() {
+        return description;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        assertThat(matcher.matches(typeDescription)).isTrue();
+    }
 }

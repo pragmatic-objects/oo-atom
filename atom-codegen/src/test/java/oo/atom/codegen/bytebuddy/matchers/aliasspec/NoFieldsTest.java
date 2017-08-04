@@ -24,39 +24,34 @@
 package oo.atom.codegen.bytebuddy.matchers.aliasspec;
 
 import net.bytebuddy.description.type.TypeDescription;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Test;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class NoFieldsTest {
-    @Test
-    public void trueIfNoFields() {
-        assertThat(
-                new NoFields().matches(
-                        new TypeDescription.ForLoadedType(Foo.class)
-                )
-        ).isTrue();
-    }
+public class NoFieldsTest extends AssertionsSuite {
     
-    @Test
-    public void falseIfAtLeastOneField() {
-        assertThat(
-                new NoFields().matches(
-                        new TypeDescription.ForLoadedType(Bar.class)
-                )
-        ).isFalse();
-    }
-    
-    @Test
-    public void ignoresFieldsFromBaseClass() {
-        assertThat(
-                new NoFields().matches(
-                        new TypeDescription.ForLoadedType(Barr.class)
-                )
-        ).isTrue();
+    public NoFieldsTest() {
+        super(
+            new AssertThatTypeMatches(
+                "match type with no fields", 
+                new TypeDescription.ForLoadedType(Foo.class),
+                new NoFields()
+            ),
+            new AssertThatTypeDoesNotMatch(
+                "mismatch type with at least one field",
+                new TypeDescription.ForLoadedType(Bar.class),
+                new NoFields()
+            ),
+            new AssertThatTypeMatches(
+                "match type ignoring fields from the base class",
+                new TypeDescription.ForLoadedType(Barr.class),
+                new NoFields()
+            )
+        );
     }
     
     private static class Foo {

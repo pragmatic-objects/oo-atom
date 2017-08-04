@@ -23,38 +23,45 @@
  */
 package oo.atom.codegen.bytebuddy.task.utils;
 
-import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.MethodVisitor;
-import org.easymock.EasyMock;
+import oo.atom.task.Task;
+import oo.atom.tests.Assertion;
+import oo.atom.tests.InferredAssertion;
+
+class AssertTaskToGenerateBytecodeInference implements Assertion.Inference {
+    private final String description;
+    private final Task<StackManipulation> task;
+    private final StackManipulation sample;
+
+    public AssertTaskToGenerateBytecodeInference(String description, Task<StackManipulation> task, StackManipulation sample) {
+        this.description = description;
+        this.task = task;
+        this.sample = sample;
+    }
+
+    @Override
+
+    public final Assertion assertion() {
+        return new AssertStackManipulationsAreSame(
+            description,
+            task.result().outcome().get(),
+            sample
+        );
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AssumeStackManipulationsAreSame implements Assumption {
-    private final StackManipulation entity;
-    private final StackManipulation pattern;
-
-    public AssumeStackManipulationsAreSame(StackManipulation entity, StackManipulation pattern) {
-        this.entity = entity;
-        this.pattern = pattern;
-    }
-    
-    @Override
-    public final void check() throws Exception {
-        MethodVisitor methodVisitor = EasyMock.createStrictMock(
-                MethodVisitor.class
+public class AssertTaskToGenerateBytecode extends InferredAssertion implements Assertion {
+    public AssertTaskToGenerateBytecode(String description, Task<StackManipulation> task, StackManipulation sample) {
+        super(
+            new AssertTaskToGenerateBytecodeInference(
+                description,
+                task,
+                sample
+            )
         );
-        Implementation.Context implementationContext = EasyMock.createMock(
-                Implementation.Context.class
-        );
-        
-        // Expect
-        pattern.apply(methodVisitor, implementationContext);
-        EasyMock.replay(methodVisitor);
-        
-        entity.apply(methodVisitor, implementationContext);
-        EasyMock.verify(methodVisitor);
     }
 }

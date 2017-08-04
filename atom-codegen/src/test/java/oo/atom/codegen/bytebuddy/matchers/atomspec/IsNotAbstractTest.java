@@ -24,6 +24,9 @@
 package oo.atom.codegen.bytebuddy.matchers.atomspec;
 
 import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
+import oo.atom.tests.AssertionsSuite;
 import static org.assertj.core.api.Assertions.*;
 import org.junit.Test;
 
@@ -31,33 +34,25 @@ import org.junit.Test;
  *
  * @author Kapralov Sergey
  */
-public class IsNotAbstractTest {
-    @Test
-    public void trueIfNotAbstract() {
-        assertThat(
-                new IsNotAbstract().matches(
-                        new TypeDescription.ForLoadedType(Foo.class)
-                )
-        ).isTrue();
-    }
-    
-    @Test
-    public void falseIfAbstract() {
-        assertThat(
-                new IsNotAbstract().matches(
-                        new TypeDescription.ForLoadedType(Bar.class)
-                )
-        ).isFalse();
-    }
-    
-    
-    @Test
-    public void matcherSupportsEnum() {
-        assertThat(
-                new IsNotAbstract().matches(
-                        new TypeDescription.ForLoadedType(Faz.class)
-                )
-        ).isTrue();
+public class IsNotAbstractTest extends AssertionsSuite {
+    public IsNotAbstractTest() {
+        super(
+            new AssertThatTypeMatches(
+                "match non-abstract classes",
+                new TypeDescription.ForLoadedType(Foo.class),
+                new IsNotAbstract()
+            ),
+            new AssertThatTypeDoesNotMatch(
+                "mismatch abstract classes",
+                new TypeDescription.ForLoadedType(Bar.class),
+                new IsNotAbstract()
+            ),
+            new AssertThatTypeMatches(
+                "match enumeration types",
+                new TypeDescription.ForLoadedType(Faz.class),
+                new IsNotAbstract()
+            )
+        );
     }
     
     private static class Foo {

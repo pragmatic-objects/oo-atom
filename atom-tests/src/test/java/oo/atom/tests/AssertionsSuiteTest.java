@@ -24,6 +24,7 @@
 package oo.atom.tests;
 
 import com.github.kimble.FactoryRunner;
+import oo.atom.anno.Atom;
 import org.easymock.EasyMock;
 import org.easymock.MockType;
 import org.junit.Test;
@@ -53,6 +54,7 @@ public class AssertionsSuiteTest {
         }
     }
 
+    @Atom
     private static class AssertFoo implements Assertion {
         @Override
         public final String description() {
@@ -63,8 +65,19 @@ public class AssertionsSuiteTest {
         public final void check() throws Exception {
             //DO NOTHING
         }
+
+        @Override
+        public final boolean equals(Object o) {
+            return o instanceof AssertFoo;
+        }
+
+        @Override
+        public final int hashCode() {
+            return 42;
+        }
     }
     
+    @Atom
     private static class FooTest extends AssertionTest {
         public FooTest() {
             super(new AssertFoo());

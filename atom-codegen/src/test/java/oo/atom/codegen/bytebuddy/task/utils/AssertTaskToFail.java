@@ -25,17 +25,25 @@ package oo.atom.codegen.bytebuddy.task.utils;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.task.Task;
+import oo.atom.tests.Assertion;
 import org.assertj.core.api.Assertions;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtAssumeTaskToFail implements Assumption {
+public class AssertTaskToFail implements Assertion {
+    private final String description;
     private final Task<StackManipulation> task;
 
-    public SmtAssumeTaskToFail(Task<StackManipulation> task) {
+    public AssertTaskToFail(String description, Task<StackManipulation> task) {
+        this.description = description;
         this.task = task;
+    }
+
+    @Override
+    public final String description() {
+        return description;
     }
     
     @Override

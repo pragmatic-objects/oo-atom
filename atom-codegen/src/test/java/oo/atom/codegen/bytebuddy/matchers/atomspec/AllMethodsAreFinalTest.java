@@ -25,6 +25,9 @@ package oo.atom.codegen.bytebuddy.matchers.atomspec;
 
 import java.util.UUID;
 import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
+import oo.atom.tests.AssertAtomsAreNotEqual;
+import oo.atom.tests.AssertionsSuite;
 import static org.assertj.core.api.Assertions.*;
 import org.junit.Test;
 
@@ -32,52 +35,36 @@ import org.junit.Test;
  *
  * @author Kapralov Sergey
  */
-public class AllMethodsAreFinalTest {
-    @Test
-    public void trueIfTypeContainsNoNonFinalMethods() {
-        assertThat(
-                new AllMethodsAreFinal().matches(
-                        new TypeDescription.ForLoadedType(Foo.class)
-                )
-        ).isTrue();
+public class AllMethodsAreFinalTest extends AssertionsSuite {
+    public AllMethodsAreFinalTest() {
+        super(
+            new AssertThatTypeMatches(
+                "match type with final methods only",
+                new TypeDescription.ForLoadedType(Foo.class),
+                new AllMethodsAreFinal()
+            ),
+            new AssertThatTypeMatches(
+                "match type ignoring bridge methods",
+                new TypeDescription.ForLoadedType(Baz.class),
+                new AllMethodsAreFinal()
+            ),
+            new AssertThatTypeMatches(
+                "match type ignoring static methods",
+                new TypeDescription.ForLoadedType(Haz.class),
+                new AllMethodsAreFinal()
+            ),
+            new AssertThatTypeMatches(
+                "match enumeration types",
+                new TypeDescription.ForLoadedType(Faz.class),
+                new AllMethodsAreFinal()
+            ),
+            new AssertAtomsAreNotEqual(
+                "mismatch type with at least one non final method",
+                new TypeDescription.ForLoadedType(Bar.class),
+                new AllMethodsAreFinal()
+            )
+        );
     }
-    
-    @Test
-    public void matcherIgnoresBridgeMethods() {
-        assertThat(
-                new AllMethodsAreFinal().matches(
-                        new TypeDescription.ForLoadedType(Baz.class)
-                )
-        ).isTrue();
-    }
-    
-    @Test
-    public void matcherIgnoresStaticMethods() {
-        assertThat(
-                new AllMethodsAreFinal().matches(
-                        new TypeDescription.ForLoadedType(Haz.class)
-                )
-        ).isTrue();
-    }
-    
-    @Test
-    public void matcherSupportsEnum() {
-        assertThat(
-                new AllMethodsAreFinal().matches(
-                        new TypeDescription.ForLoadedType(Faz.class)
-                )
-        ).isTrue();
-    }
-    
-    @Test
-    public void falseIfTypeContainsAtLeastOneNonFinalMethod() {
-        assertThat(
-                new AllMethodsAreFinal().matches(
-                        new TypeDescription.ForLoadedType(Bar.class)
-                )
-        ).isFalse();
-    }
-    
     
     private static class Foo {
         public final void method1() {}
