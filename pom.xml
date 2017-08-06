@@ -29,13 +29,13 @@ SOFTWARE.
     
     <groupId>oo</groupId>
     <artifactId>oo-atom</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
     <packaging>pom</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <atom.version>0.0.4-SNAPSHOT</atom.version>
+        <atom.version>0.0.4</atom.version>
     </properties>
     
     <name>oo-atom</name>
@@ -69,11 +69,12 @@ SOFTWARE.
         </pluginManagement>
     </build>
     
-    <distributionManagement>
+    <distributionManagement> 
         <repository>
-            <id>bintray</id>
-            <url>https://api.bintray.com/maven/project-avral/maven/oo-atom;publish=1</url>
-        </repository>
+            <id>bintray-skapral-oo-maven</id> 
+            <name>skapral-oo-maven</name> 
+            <url>https://api.bintray.com/maven/skapral/oo-maven/oo-atom/;publish=1</url> 
+        </repository> 
     </distributionManagement>
     
     <profiles>

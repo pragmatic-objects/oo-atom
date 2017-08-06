@@ -4,7 +4,7 @@
     <parent>
         <groupId>oo</groupId>
         <artifactId>oo-atom</artifactId>
-        <version>0.0.4-SNAPSHOT</version>
+        <version>0.0.4</version>
     </parent>
     <artifactId>atom-starter</artifactId>
     <packaging>pom</packaging>
@@ -20,20 +20,24 @@
     <repositories>
         <repository>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
-            <id>bintray-snapshot</id>
-            <url>https://project-avral.bintray.com/maven/</url>
+            <id>bintray-skapral-oo-maven</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/skapral/oo-maven</url>
         </repository>
-        <repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>bintray-release</id>
-            <url>https://project-avral.bintray.com/maven/</url>
-        </repository>
-    </repositories>
-    
+            <id>bintray-skapral-oo-maven</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/skapral/oo-maven</url>
+        </pluginRepository>
+    </pluginRepositories>
+            
     <build>
         <pluginManagement>
             <plugins>
