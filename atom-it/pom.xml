@@ -23,18 +23,15 @@
         <dependency>
             <groupId>oo</groupId>
             <artifactId>atom-api</artifactId>
-            <version>${atom.version}</version>
         </dependency>
         <dependency>
             <groupId>oo</groupId>
             <artifactId>atom-tests</artifactId>
-            <version>${atom.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency> 
             <groupId>io.vavr</groupId> 
-            <artifactId>vavr</artifactId> 
-            <version>0.9.0</version>
+            <artifactId>vavr</artifactId>
         </dependency>
     </dependencies>
     
@@ -43,13 +40,11 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>3.3.0</version>
                 <extensions>true</extensions>
             </plugin>
             <plugin>
                 <groupId>net.bytebuddy</groupId>
                 <artifactId>byte-buddy-maven-plugin</artifactId>
-                <version>1.7.1</version>
                 <executions>
                     <execution>
                         <goals>

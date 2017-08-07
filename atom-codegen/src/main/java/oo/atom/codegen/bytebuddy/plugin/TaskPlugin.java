@@ -23,7 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.plugin;
 
-import javaslang.collection.List;
+import io.vavr.collection.List;
 import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;

@@ -57,9 +57,60 @@ SOFTWARE.
         </developer>
     </developers>
     
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>oo</groupId>
+                <artifactId>atom-api</artifactId>
+                <version>${atom.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>oo</groupId>
+                <artifactId>atom-tests</artifactId>
+                <version>${atom.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency> 
+                <groupId>io.vavr</groupId> 
+                <artifactId>vavr</artifactId> 
+                <version>0.9.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.8.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>1.7.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.easymock</groupId>
+                <artifactId>easymock</artifactId>
+                <version>3.4</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy-maven-plugin</artifactId>
+                    <version>1.7.1</version>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>

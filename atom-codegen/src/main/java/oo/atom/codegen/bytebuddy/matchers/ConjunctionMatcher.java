@@ -23,7 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.matchers;
 
-import javaslang.collection.List;
+import io.vavr.collection.List;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**

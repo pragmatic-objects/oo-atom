@@ -24,8 +24,8 @@
 package oo.atom.task.result;
 
 import java.util.function.BinaryOperator;
-import javaslang.collection.List;
-import javaslang.control.Try;
+import io.vavr.collection.List;
+import io.vavr.control.Try;
 
 /**
  *

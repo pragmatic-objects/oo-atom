@@ -20,35 +20,30 @@
     </repositories>
     
     <dependencies>
-        <dependency> 
-            <groupId>oo</groupId> 
-            <artifactId>atom-api</artifactId> 
-            <version>${atom.version}</version>
+        <dependency>
+            <groupId>oo</groupId>
+            <artifactId>atom-api</artifactId>
         </dependency>
-        <dependency> 
-            <groupId>io.vavr</groupId> 
-            <artifactId>vavr</artifactId> 
-            <version>0.9.0</version>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
         </dependency>
-        <dependency> 
-            <groupId>com.github.kimble</groupId> 
-            <artifactId>junit-test-factory</artifactId> 
+        <dependency>
+            <groupId>com.github.kimble</groupId>
+            <artifactId>junit-test-factory</artifactId>
             <version>4.12.6</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.8.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
         </dependency>
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
-            <version>3.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

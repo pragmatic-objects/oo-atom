@@ -23,7 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
-import static javaslang.API.*;
+import static io.vavr.API.*;
 import java.lang.reflect.Method;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;

@@ -23,7 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
-import javaslang.collection.List;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.task.result.TaskResult;

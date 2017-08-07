@@ -23,7 +23,7 @@
  */
 package oo.atom.task.result;
 
-import javaslang.collection.List;
+import io.vavr.collection.List;
 
 
 class TrBindInference<X, T> implements TaskResult.Inference<T> {

@@ -23,7 +23,7 @@
  */
 package oo.atom.task.result;
 
-import javaslang.control.Try;
+import io.vavr.control.Try;
 import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.assertThat;
 

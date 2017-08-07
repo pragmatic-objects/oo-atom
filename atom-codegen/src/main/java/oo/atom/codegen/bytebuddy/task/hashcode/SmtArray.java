@@ -23,7 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.task.hashcode;
 
-import javaslang.collection.List;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;

@@ -24,7 +24,7 @@
 package oo.atom.task.result;
 
 import java.util.function.BinaryOperator;
-import javaslang.collection.List;
+import io.vavr.collection.List;
 
 class TrCombineOrDefaultInference<T> implements TaskResult.Inference<T> {
     private final BinaryOperator<T> combineOperator;

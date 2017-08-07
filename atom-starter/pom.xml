@@ -13,7 +13,6 @@
         <dependency>
             <groupId>oo</groupId>
             <artifactId>atom-api</artifactId>
-            <version>${atom.version}</version>
         </dependency>
     </dependencies>
     
@@ -44,7 +43,6 @@
                 <plugin>
                     <groupId>net.bytebuddy</groupId>
                     <artifactId>byte-buddy-maven-plugin</artifactId>
-                    <version>1.7.1</version>
                     <configuration>
                         <skip>false</skip>
                         <transformations>
