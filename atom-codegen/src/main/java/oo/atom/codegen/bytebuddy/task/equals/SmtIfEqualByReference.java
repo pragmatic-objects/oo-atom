@@ -23,39 +23,32 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
-import javaslang.collection.List;
-import javaslang.control.Try;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
 import oo.atom.codegen.bytebuddy.branching.BIfAcmp;
 import oo.atom.codegen.bytebuddy.branching.BMark;
 import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TaskResultTransition;
 import oo.atom.task.result.TrBind;
+import oo.atom.task.result.TrSuccess;
 
-class SmtIfEqualByReferenceTaskResult implements TaskResult<StackManipulation> {
+class TrtIfEqualByReference implements TaskResultTransition<StackManipulation, StackManipulation> {
     private final boolean equals;
-    private final StackManipulation sm;
 
-    public SmtIfEqualByReferenceTaskResult(boolean equals, StackManipulation sm) {
+    public TrtIfEqualByReference(boolean equals) {
         this.equals = equals;
-        this.sm = sm;
     }
 
     @Override
-    public final Try<StackManipulation> outcome() {
+    public final TaskResult<StackManipulation> transitionResult(StackManipulation sm) {
         final Label checkEnd = new Label();
-        return Try.success(
+        return new TrSuccess<>(
             new StackManipulation.Compound(
                 new BIfAcmp(equals, checkEnd),
                 sm,
                 new BMark(checkEnd)
             )
         );
-    }
-
-    @Override
-    public final List<String> issues() {
-        return List.empty();
     }
 }
 
@@ -65,6 +58,9 @@ class SmtIfEqualByReferenceTaskResult implements TaskResult<StackManipulation> {
  */
 public class SmtIfEqualByReference extends TrBind<StackManipulation, StackManipulation> {
     public SmtIfEqualByReference(boolean equals, TaskResult<StackManipulation> task) {
-        super(task, sm -> new SmtIfEqualByReferenceTaskResult(equals, sm));
+        super(
+            task,
+            new TrtIfEqualByReference(equals)
+        );
     }
 }

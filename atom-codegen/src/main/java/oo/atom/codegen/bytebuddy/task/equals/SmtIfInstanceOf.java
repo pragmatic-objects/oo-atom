@@ -23,8 +23,6 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
-import javaslang.collection.List;
-import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
@@ -34,9 +32,14 @@ import net.bytebuddy.jar.asm.Opcodes;
 import oo.atom.codegen.bytebuddy.branching.BIsZero;
 import oo.atom.codegen.bytebuddy.branching.BMark;
 import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TaskResultTransition;
 import oo.atom.task.result.TrBind;
+import oo.atom.task.result.TrSuccess;
 
-
+/**
+ * 
+ * @author Kapralov Sergey
+ */
 class InstanceOfStackManipulation implements StackManipulation {
     private final TypeDescription type;
 
@@ -56,21 +59,23 @@ class InstanceOfStackManipulation implements StackManipulation {
     }
 }
 
-class SmtIfInstanceOfTaskResult implements TaskResult<StackManipulation> {
+/**
+ * 
+ * @author Kapralov Sergey
+ */
+class TrtIfInstanceOf implements TaskResultTransition<StackManipulation, StackManipulation>  {
     private final TypeDescription type;
     private final boolean isTrue;
-    private final StackManipulation sm;
 
-    public SmtIfInstanceOfTaskResult(TypeDescription type, boolean isTrue, StackManipulation sm) {
+    public TrtIfInstanceOf(TypeDescription type, boolean isTrue) {
         this.type = type;
         this.isTrue = isTrue;
-        this.sm = sm;
     }
 
     @Override
-    public final Try<StackManipulation> outcome() {
+    public final TaskResult<StackManipulation> transitionResult(StackManipulation sm) {
         final Label checkEnd = new Label();
-        return Try.success(
+        return new TrSuccess<>(
             new StackManipulation.Compound(
                 new InstanceOfStackManipulation(type),
                 new BIsZero(isTrue, checkEnd),
@@ -78,11 +83,6 @@ class SmtIfInstanceOfTaskResult implements TaskResult<StackManipulation> {
                 new BMark(checkEnd)
             )
         );
-    }
-
-    @Override
-    public final List<String> issues() {
-        return List.empty();
     }
 }
 
@@ -92,6 +92,6 @@ class SmtIfInstanceOfTaskResult implements TaskResult<StackManipulation> {
  */
 public class SmtIfInstanceOf extends TrBind<StackManipulation, StackManipulation> {
     public SmtIfInstanceOf(TypeDescription type, boolean isTrue, TaskResult<StackManipulation> task) {
-        super(task, sm -> new SmtIfInstanceOfTaskResult(type, isTrue, sm));
+        super(task, new TrtIfInstanceOf(type, isTrue));
     }
 }

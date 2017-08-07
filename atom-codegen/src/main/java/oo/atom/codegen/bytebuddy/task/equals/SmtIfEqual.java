@@ -24,8 +24,6 @@
 package oo.atom.codegen.bytebuddy.task.equals;
 
 import java.lang.reflect.Method;
-import javaslang.collection.List;
-import javaslang.control.Try;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
@@ -33,9 +31,11 @@ import net.bytebuddy.jar.asm.Label;
 import oo.atom.codegen.bytebuddy.branching.BIsZero;
 import oo.atom.codegen.bytebuddy.branching.BMark;
 import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TaskResultTransition;
 import oo.atom.task.result.TrBind;
+import oo.atom.task.result.TrSuccess;
 
-class SmtIfEqualTaskResult implements TaskResult<StackManipulation> {
+class TrtIfEqual implements TaskResultTransition<StackManipulation, StackManipulation> {
     private final static Method EQUALS;
 
     static {
@@ -45,19 +45,17 @@ class SmtIfEqualTaskResult implements TaskResult<StackManipulation> {
             throw new RuntimeException(ex);
         }
     }
-    
-    private final boolean isTrue;
-    private final StackManipulation sm;
 
-    public SmtIfEqualTaskResult(boolean isTrue, StackManipulation sm) {
+    private final boolean isTrue;
+
+    public TrtIfEqual(boolean isTrue) {
         this.isTrue = isTrue;
-        this.sm = sm;
     }
 
     @Override
-    public final Try<StackManipulation> outcome() {
+    public final TaskResult<StackManipulation> transitionResult(StackManipulation sm) {
         final Label checkEnd = new Label();
-        return Try.success(
+        return new TrSuccess<>(
             new StackManipulation.Compound(
                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQUALS)),
                 new BIsZero(!isTrue, checkEnd),
@@ -65,11 +63,6 @@ class SmtIfEqualTaskResult implements TaskResult<StackManipulation> {
                 new BMark(checkEnd)
             )
         );
-    }
-
-    @Override
-    public final List<String> issues() {
-        return List.empty();
     }
 }
 
@@ -79,6 +72,9 @@ class SmtIfEqualTaskResult implements TaskResult<StackManipulation> {
  */
 class SmtIfEqual extends TrBind<StackManipulation, StackManipulation> {
     public SmtIfEqual(boolean isTrue, TaskResult<StackManipulation> task) {
-        super(task, sm -> new SmtIfEqualTaskResult(isTrue, sm));
+        super(
+            task,
+            new TrtIfEqual(isTrue)
+        );
     }
 }

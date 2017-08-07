@@ -23,40 +23,33 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
-import javaslang.collection.List;
-import javaslang.control.Try;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
 import oo.atom.codegen.bytebuddy.branching.BIsNull;
 import oo.atom.codegen.bytebuddy.branching.BMark;
 import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TaskResultTransition;
 import oo.atom.task.result.TrBind;
+import oo.atom.task.result.TrSuccess;
 
-class SmtIfNullTaskResult implements TaskResult<StackManipulation> {
+class TrtIfNull implements TaskResultTransition<StackManipulation, StackManipulation> {
 
     private final boolean isTrue;
-    private final StackManipulation sm;
 
-    public SmtIfNullTaskResult(boolean isTrue, StackManipulation sm) {
+    public TrtIfNull(boolean isTrue) {
         this.isTrue = isTrue;
-        this.sm = sm;
     }
-    
+
     @Override
-    public final Try<StackManipulation> outcome() {
+    public final TaskResult<StackManipulation> transitionResult(StackManipulation sm) {
         final Label checkEnd = new Label();
-        return Try.success(
+        return new TrSuccess<>(
             new StackManipulation.Compound(
                 new BIsNull(isTrue, checkEnd),
                 sm,
                 new BMark(checkEnd)
             )
         );
-    }
-
-    @Override
-    public final List<String> issues() {
-        return List.empty();
     }
 }
 
@@ -66,8 +59,9 @@ class SmtIfNullTaskResult implements TaskResult<StackManipulation> {
  */
 public class SmtIfNull extends TrBind<StackManipulation, StackManipulation> {
     public SmtIfNull(boolean isTrue, TaskResult<StackManipulation> task) {
-        super(task, 
-            sm -> new SmtIfNullTaskResult(isTrue, sm)
+        super(
+            task, 
+            new TrtIfNull(isTrue)
         );
     }
 }
