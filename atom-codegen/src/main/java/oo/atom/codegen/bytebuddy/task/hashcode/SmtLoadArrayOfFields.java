@@ -26,11 +26,10 @@ package oo.atom.codegen.bytebuddy.task.hashcode;
 import javaslang.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.TInferred;
-import oo.atom.task.Task;
-import oo.atom.task.TaskInference;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
 
-class SmtLoadArrayOfFieldsInference implements TaskInference<StackManipulation> {
+class SmtLoadArrayOfFieldsInference implements TaskResult.Inference<StackManipulation> {
     private final TypeDescription type;
 
     public SmtLoadArrayOfFieldsInference(TypeDescription type) {
@@ -38,7 +37,7 @@ class SmtLoadArrayOfFieldsInference implements TaskInference<StackManipulation> 
     }
 
     @Override
-    public final Task<StackManipulation> task() {
+    public final TaskResult<StackManipulation> taskResult() {
         return new SmtArray(
                 List.of(type)
                 .flatMap(TypeDescription::getDeclaredFields)
@@ -53,7 +52,7 @@ class SmtLoadArrayOfFieldsInference implements TaskInference<StackManipulation> 
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadArrayOfFields extends TInferred<StackManipulation> {
+public class SmtLoadArrayOfFields extends TrInferred<StackManipulation> {
     public SmtLoadArrayOfFields(TypeDescription type) {
         super(new SmtLoadArrayOfFieldsInference(type));
     }

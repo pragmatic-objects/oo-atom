@@ -24,16 +24,16 @@
 package oo.atom.codegen.bytebuddy.task.utils;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
 import oo.atom.tests.Assertion;
 import oo.atom.tests.InferredAssertion;
 
 class AssertTaskToGenerateBytecodeInference implements Assertion.Inference {
     private final String description;
-    private final Task<StackManipulation> task;
+    private final TaskResult<StackManipulation> task;
     private final StackManipulation sample;
 
-    public AssertTaskToGenerateBytecodeInference(String description, Task<StackManipulation> task, StackManipulation sample) {
+    public AssertTaskToGenerateBytecodeInference(String description, TaskResult<StackManipulation> task, StackManipulation sample) {
         this.description = description;
         this.task = task;
         this.sample = sample;
@@ -44,7 +44,7 @@ class AssertTaskToGenerateBytecodeInference implements Assertion.Inference {
     public final Assertion assertion() {
         return new AssertStackManipulationsAreSame(
             description,
-            task.result().outcome().get(),
+            task.outcome().get(),
             sample
         );
     }
@@ -55,7 +55,7 @@ class AssertTaskToGenerateBytecodeInference implements Assertion.Inference {
  * @author Kapralov Sergey
  */
 public class AssertTaskToGenerateBytecode extends InferredAssertion implements Assertion {
-    public AssertTaskToGenerateBytecode(String description, Task<StackManipulation> task, StackManipulation sample) {
+    public AssertTaskToGenerateBytecode(String description, TaskResult<StackManipulation> task, StackManipulation sample) {
         super(
             new AssertTaskToGenerateBytecodeInference(
                 description,

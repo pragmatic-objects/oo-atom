@@ -21,12 +21,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
+package oo.atom.task.result;
+
+import io.vavr.collection.List;
+import oo.atom.tests.Assertion;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public interface TaskLink<V> {
-    Task<V> task(V value);
+public class AssertTaskResultIsErroneous implements Assertion {
+    private final String description;
+    private final TaskResult<?> taskResult;
+    private final List<String> issues;
+    
+    public AssertTaskResultIsErroneous(String description, TaskResult<?> taskResult, List<String> issues) {
+        this.description = description;
+        this.taskResult = taskResult;
+        this.issues = issues;
+    }
+
+    public AssertTaskResultIsErroneous(String description, TaskResult<?> taskResult, String... issues) {
+        this(
+            description,
+            taskResult,
+            List.of(issues)
+        );
+    }
+
+    @Override
+    public final String description() {
+        return description;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        assertThatThrownBy(() -> {
+            taskResult.outcome().get();
+        }).isInstanceOf(RuntimeException.class);
+        assertThat(taskResult.issues())
+                .containsExactlyElementsOf(issues);
+    }
+    
 }

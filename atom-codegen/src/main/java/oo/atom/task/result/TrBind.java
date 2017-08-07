@@ -23,15 +23,14 @@
  */
 package oo.atom.task.result;
 
-import java.util.function.Function;
 import javaslang.collection.List;
 
 
 class TrBindInference<X, T> implements TaskResult.Inference<T> {
     private final TaskResult<X> source;
-    private final Function<X, TaskResult<T>> bindFunction;
+    private final TaskResultTransition<X, T> bindFunction;
 
-    public TrBindInference(TaskResult<X> source, Function<X, TaskResult<T>> bindFunction) {
+    public TrBindInference(TaskResult<X> source, TaskResultTransition<X, T> bindFunction) {
         this.source = source;
         this.bindFunction = bindFunction;
     }
@@ -42,7 +41,7 @@ class TrBindInference<X, T> implements TaskResult.Inference<T> {
         if(!issues.isEmpty()) {
             return new TrFailure<T>(issues);
         } else {
-            return bindFunction.apply(source.outcome().get());
+            return bindFunction.transitionResult(source.outcome().get());
         }
     }
 }
@@ -52,7 +51,7 @@ class TrBindInference<X, T> implements TaskResult.Inference<T> {
  * @author Kapralov Sergey
  */
 public class TrBind<X, T> extends TrInferred<T> implements TaskResult<T> {
-    public TrBind(TaskResult<X> source, Function<X, TaskResult<T>> bindFunction) {
+    public TrBind(TaskResult<X> source, TaskResultTransition<X, T> bindFunction) {
         super(
             new TrBindInference<>(source, bindFunction)
         );

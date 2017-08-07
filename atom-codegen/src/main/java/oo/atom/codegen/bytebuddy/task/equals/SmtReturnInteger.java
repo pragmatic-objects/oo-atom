@@ -26,21 +26,38 @@ package oo.atom.codegen.bytebuddy.task.equals;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import oo.atom.task.TSucceed;
-import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
+import oo.atom.task.result.TrSuccess;
+
+class SmtReturnIntegerInference implements TaskResult.Inference<StackManipulation> {
+    private final Integer index;
+
+    public SmtReturnIntegerInference(Integer index) {
+        this.index = index;
+    }
+
+    @Override
+    public final TaskResult<StackManipulation> taskResult() {
+        return new TrSuccess<>(
+            new StackManipulation.Compound(
+                IntegerConstant.forValue(index),
+                MethodReturn.INTEGER
+            )
+        );
+    }
+    
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtReturnInteger extends TSucceed<StackManipulation> implements Task<StackManipulation> {
+public class SmtReturnInteger extends TrInferred<StackManipulation> {
 
-    public SmtReturnInteger(Integer integer) {
+    public SmtReturnInteger(Integer index) {
         super(
-                new StackManipulation.Compound(
-                        IntegerConstant.forValue(integer),
-                        MethodReturn.INTEGER
-                )
+            new SmtReturnIntegerInference(index)
         );
     }
 

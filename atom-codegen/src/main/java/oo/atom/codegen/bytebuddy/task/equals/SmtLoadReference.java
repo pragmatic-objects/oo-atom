@@ -25,17 +25,34 @@ package oo.atom.codegen.bytebuddy.task.equals;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
-import oo.atom.task.TSucceed;
-import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
+import oo.atom.task.result.TrSuccess;
+
+
+class SmtLoadReferenceInference implements TaskResult.Inference<StackManipulation> {
+    private final Integer index;
+
+    public SmtLoadReferenceInference(Integer index) {
+        this.index = index;
+    }
+    
+    @Override
+    public final TaskResult<StackManipulation> taskResult() {
+        return new TrSuccess<>(
+            MethodVariableAccess.REFERENCE.loadFrom(index)
+        );
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadReference extends TSucceed<StackManipulation> implements Task<StackManipulation> {
+public class SmtLoadReference extends TrInferred<StackManipulation> {
     public SmtLoadReference(int index) {
         super(
-                MethodVariableAccess.REFERENCE.loadFrom(index)
+            new SmtLoadReferenceInference(index)
         );
     }
 }

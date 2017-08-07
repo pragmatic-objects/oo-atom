@@ -21,12 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
+package oo.atom.task.result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public interface TaskInference<V> {
-    Task<V> task();
+public class TrtChain<X, S, T> implements TaskResultTransition<X, T> {
+    private final TaskResultTransition<X, S> first;
+    private final TaskResultTransition<S, T> second;
+
+    public TrtChain(TaskResultTransition<X, S> first, TaskResultTransition<S, T> second) {
+        this.first = first;
+        this.second = second;
+    }
+    
+    @Override
+    public final TaskResult<T> transitionResult(X source) {
+        return new TrBind<>(
+            first.transitionResult(source),
+            second
+        );
+    }
 }

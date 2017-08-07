@@ -23,6 +23,8 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
+import javaslang.collection.List;
+import javaslang.control.Try;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
@@ -31,10 +33,8 @@ import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
 import oo.atom.codegen.bytebuddy.branching.BIsZero;
 import oo.atom.codegen.bytebuddy.branching.BMark;
-import oo.atom.task.TChained;
-import oo.atom.task.Task;
 import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.task.result.TrBind;
 
 
 class InstanceOfStackManipulation implements StackManipulation {
@@ -56,21 +56,21 @@ class InstanceOfStackManipulation implements StackManipulation {
     }
 }
 
-class SmtIfInstanceOfTask implements Task<StackManipulation> {
+class SmtIfInstanceOfTaskResult implements TaskResult<StackManipulation> {
     private final TypeDescription type;
     private final boolean isTrue;
     private final StackManipulation sm;
 
-    public SmtIfInstanceOfTask(TypeDescription type, boolean isTrue, StackManipulation sm) {
+    public SmtIfInstanceOfTaskResult(TypeDescription type, boolean isTrue, StackManipulation sm) {
         this.type = type;
         this.isTrue = isTrue;
         this.sm = sm;
     }
 
     @Override
-    public final TaskResult<StackManipulation> result() {
+    public final Try<StackManipulation> outcome() {
         final Label checkEnd = new Label();
-        return new TrSuccess<>(
+        return Try.success(
             new StackManipulation.Compound(
                 new InstanceOfStackManipulation(type),
                 new BIsZero(isTrue, checkEnd),
@@ -79,14 +79,19 @@ class SmtIfInstanceOfTask implements Task<StackManipulation> {
             )
         );
     }
+
+    @Override
+    public final List<String> issues() {
+        return List.empty();
+    }
 }
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtIfInstanceOf extends TChained<StackManipulation> implements Task<StackManipulation> {
-    public SmtIfInstanceOf(TypeDescription type, boolean isTrue, Task<StackManipulation> task) {
-        super(task, sm -> new SmtIfInstanceOfTask(type, isTrue, sm));
+public class SmtIfInstanceOf extends TrBind<StackManipulation, StackManipulation> {
+    public SmtIfInstanceOf(TypeDescription type, boolean isTrue, TaskResult<StackManipulation> task) {
+        super(task, sm -> new SmtIfInstanceOfTaskResult(type, isTrue, sm));
     }
 }

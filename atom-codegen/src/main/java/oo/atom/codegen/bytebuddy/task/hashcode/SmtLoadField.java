@@ -24,8 +24,6 @@
 package oo.atom.codegen.bytebuddy.task.hashcode;
 
 import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.Task;
 import oo.atom.codegen.bytebuddy.task.equals.SmtBoxField;
 import oo.atom.codegen.bytebuddy.task.equals.SmtCombined;
 import oo.atom.codegen.bytebuddy.task.equals.SmtGetField;
@@ -35,12 +33,12 @@ import oo.atom.codegen.bytebuddy.task.equals.SmtLoadReference;
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadField extends SmtCombined implements Task<StackManipulation> {
+public class SmtLoadField extends SmtCombined {
     public SmtLoadField(FieldDescription field) {
         super(
-                new SmtLoadReference(0),
-                new SmtGetField(field),
-                new SmtBoxField(field)
+            new SmtLoadReference(0),
+            new SmtGetField(field),
+            new SmtBoxField(field)
         );
     }
 }

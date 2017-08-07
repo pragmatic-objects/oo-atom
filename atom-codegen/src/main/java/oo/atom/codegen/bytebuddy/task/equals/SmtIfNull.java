@@ -23,28 +23,29 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
+import javaslang.collection.List;
+import javaslang.control.Try;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
-import oo.atom.task.TChained;
-import oo.atom.task.Task;
 import oo.atom.codegen.bytebuddy.branching.BIsNull;
 import oo.atom.codegen.bytebuddy.branching.BMark;
 import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.task.result.TrBind;
 
-class SmtIfNullTask implements Task<StackManipulation> {
+class SmtIfNullTaskResult implements TaskResult<StackManipulation> {
+
     private final boolean isTrue;
     private final StackManipulation sm;
 
-    public SmtIfNullTask(boolean isTrue, StackManipulation sm) {
+    public SmtIfNullTaskResult(boolean isTrue, StackManipulation sm) {
         this.isTrue = isTrue;
         this.sm = sm;
     }
-
+    
     @Override
-    public final TaskResult<StackManipulation> result() {
+    public final Try<StackManipulation> outcome() {
         final Label checkEnd = new Label();
-        return new TrSuccess<>(
+        return Try.success(
             new StackManipulation.Compound(
                 new BIsNull(isTrue, checkEnd),
                 sm,
@@ -52,14 +53,21 @@ class SmtIfNullTask implements Task<StackManipulation> {
             )
         );
     }
+
+    @Override
+    public final List<String> issues() {
+        return List.empty();
+    }
 }
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtIfNull extends TChained<StackManipulation> implements Task<StackManipulation> {
-    public SmtIfNull(boolean isTrue, Task<StackManipulation> task) {
-        super(task, sm -> new SmtIfNullTask(isTrue, sm));
+public class SmtIfNull extends TrBind<StackManipulation, StackManipulation> {
+    public SmtIfNull(boolean isTrue, TaskResult<StackManipulation> task) {
+        super(task, 
+            sm -> new SmtIfNullTaskResult(isTrue, sm)
+        );
     }
 }

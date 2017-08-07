@@ -26,17 +26,33 @@ package oo.atom.codegen.bytebuddy.task.equals;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.FieldAccess;
-import oo.atom.task.TSucceed;
-import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
+import oo.atom.task.result.TrSuccess;
+
+class SmtGetFieldInference implements TaskResult.Inference<StackManipulation> {
+    private final FieldDescription field;
+
+    public SmtGetFieldInference(FieldDescription field) {
+        this.field = field;
+    }
+
+    @Override
+    public final TaskResult<StackManipulation> taskResult() {
+        return new TrSuccess<>(
+            FieldAccess.forField(field).read()
+        );
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtGetField extends TSucceed<StackManipulation> implements Task<StackManipulation> {
+public class SmtGetField extends TrInferred<StackManipulation> {
     public SmtGetField(FieldDescription field) {
         super(
-                FieldAccess.forField(field).read()
+            new SmtGetFieldInference(field)
         );
     }
 }

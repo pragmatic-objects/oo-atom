@@ -32,7 +32,6 @@ import javaslang.control.Try;
  * @author Kapralov Sergey
  */
 public class TrTransformed<X, T> implements TaskResult<T> {
-
     private final List<TaskResult<X>> taskResults;
     private final Function<? super List<X>, ? extends T> transformFunction;
 

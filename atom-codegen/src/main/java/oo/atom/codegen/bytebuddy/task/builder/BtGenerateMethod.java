@@ -24,15 +24,15 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.dynamic.scaffold.InstrumentedType;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.task.Task;
 import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TaskResultTransition;
 import oo.atom.task.result.TrBind;
 import oo.atom.task.result.TrSuccess;
 
@@ -73,24 +73,20 @@ class BtGenerateMethodImplementation implements Implementation {
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateMethod implements Task<DynamicType.Builder<?>> {
-
-    private final DynamicType.Builder<?> builder;
+public class BtGenerateMethod implements TaskResultTransition<Builder<?>, Builder<?>> {
     private final ElementMatcher<? super MethodDescription> elementMatcher;
-    private final Task<StackManipulation> methodBodyTask;
+    private final TaskResult<StackManipulation> methodBodyTask;
 
-    public BtGenerateMethod(DynamicType.Builder<?> builder, ElementMatcher<? super MethodDescription> elementMatcher, Task<StackManipulation> methodBodyTask) {
-        this.builder = builder;
+    public BtGenerateMethod(ElementMatcher<? super MethodDescription> elementMatcher, TaskResult<StackManipulation> methodBodyTask) {
         this.elementMatcher = elementMatcher;
         this.methodBodyTask = methodBodyTask;
     }
 
     @Override
-    public final TaskResult<DynamicType.Builder<?>> result() {
-        final TaskResult<StackManipulation> result = methodBodyTask.result();
-        return new TrBind<>(result, sm -> {
+    public final TaskResult<Builder<?>> transitionResult(Builder<?> source) {
+        return new TrBind<>(methodBodyTask, sm -> {
             return new TrSuccess<>(
-                builder
+                source
                     .method(elementMatcher)
                     .intercept(new BtGenerateMethodImplementation(sm))
             );

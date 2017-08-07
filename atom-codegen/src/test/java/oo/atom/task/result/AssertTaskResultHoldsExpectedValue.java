@@ -21,23 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
+package oo.atom.task.result;
 
-import oo.atom.task.result.TaskResult;
+import javaslang.control.Try;
+import oo.atom.tests.Assertion;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class TConst<V> implements Task<V> {
-    private final TaskResult<V> result;
+public class AssertTaskResultHoldsExpectedValue<T> implements Assertion {
+    private final String description;
+    private final TaskResult<T> taskResult;
+    private final T value;
 
-    public TConst(TaskResult<V> result) {
-        this.result = result;
+    public AssertTaskResultHoldsExpectedValue(String description, TaskResult<T> taskResult, T value) {
+        this.description = description;
+        this.taskResult = taskResult;
+        this.value = value;
     }
 
     @Override
-    public final TaskResult<V> result() {
-        return result;
+    public final String description() {
+        return description;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        assertThat(taskResult.outcome()).isEqualTo(Try.success(value));
     }
 }

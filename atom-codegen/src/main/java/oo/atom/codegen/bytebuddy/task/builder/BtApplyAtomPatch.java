@@ -25,22 +25,19 @@ package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.task.TChain;
-import oo.atom.task.Task;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.task.result.TrtSequence;
 
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyAtomPatch extends TChain<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
-    public BtApplyAtomPatch(final DynamicType.Builder<?> builder, final TypeDescription td) {
+public class BtApplyAtomPatch extends TrtSequence<DynamicType.Builder<?>> {
+    public BtApplyAtomPatch(final TypeDescription td) {
         super(
-            new TrSuccess<>(builder),
-            (b -> new BtAnnotate(td, b)),
-            (b -> new BtGenerateEquals(b, td)),
-            (b -> new BtGenerateHashCode(b, td))
+            new BtAnnotate(td),
+            new BtGenerateEquals(td),
+            new BtGenerateHashCode(td)
         );
     }
 }

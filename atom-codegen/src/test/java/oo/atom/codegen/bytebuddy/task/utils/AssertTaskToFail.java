@@ -24,7 +24,7 @@
 package oo.atom.codegen.bytebuddy.task.utils;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.Task;
+import oo.atom.task.result.TaskResult;
 import oo.atom.tests.Assertion;
 import org.assertj.core.api.Assertions;
 
@@ -34,9 +34,9 @@ import org.assertj.core.api.Assertions;
  */
 public class AssertTaskToFail implements Assertion {
     private final String description;
-    private final Task<StackManipulation> task;
+    private final TaskResult<StackManipulation> task;
 
-    public AssertTaskToFail(String description, Task<StackManipulation> task) {
+    public AssertTaskToFail(String description, TaskResult<StackManipulation> task) {
         this.description = description;
         this.task = task;
     }
@@ -48,6 +48,6 @@ public class AssertTaskToFail implements Assertion {
     
     @Override
     public final void check() throws Exception {
-        Assertions.assertThatThrownBy(() -> task.result().outcome().get()).isNotNull();
+        Assertions.assertThatThrownBy(() -> task.outcome().get()).isNotNull();
     }
 }

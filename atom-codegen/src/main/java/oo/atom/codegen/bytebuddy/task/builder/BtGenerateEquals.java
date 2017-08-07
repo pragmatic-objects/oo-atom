@@ -24,7 +24,6 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 import oo.atom.codegen.bytebuddy.task.equals.SmtEquals;
 
@@ -33,10 +32,10 @@ import oo.atom.codegen.bytebuddy.task.equals.SmtEquals;
  * @author Kapralov Sergey
  */
 public class BtGenerateEquals extends BtGenerateMethod {
-    public BtGenerateEquals(DynamicType.Builder<?> builder, TypeDescription td) {
-        super(builder,
-                named("equals"),
-                new SmtEquals(td)
+    public BtGenerateEquals(TypeDescription td) {
+        super(
+            named("equals"),
+            new SmtEquals(td)
         );
     }
 }

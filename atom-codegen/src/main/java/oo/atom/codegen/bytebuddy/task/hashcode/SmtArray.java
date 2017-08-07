@@ -27,36 +27,41 @@ import javaslang.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
-import oo.atom.task.Task;
 import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
 import oo.atom.task.result.TrTransformed;
+
+class SmtArrayInference implements TaskResult.Inference {
+    private final List<TaskResult<StackManipulation>> members;
+
+    public SmtArrayInference(List<TaskResult<StackManipulation>> members) {
+        this.members = members;
+    }
+
+    @Override
+    public final TaskResult<StackManipulation> taskResult() {
+        return new TrTransformed<>(
+            members, 
+            list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
+                list.toJavaList()
+            )
+        );
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtArray implements Task<StackManipulation> {
-
-    private final List<Task<StackManipulation>> members;
-
-    public SmtArray(List<Task<StackManipulation>> members) {
-        this.members = members;
+public class SmtArray extends TrInferred<StackManipulation> {
+    public SmtArray(List<TaskResult<StackManipulation>> members) {
+        super(
+            new SmtArrayInference(members)
+        );
     }
 
-    public SmtArray(Task<StackManipulation>... members) {
+    public SmtArray(TaskResult<StackManipulation>... members) {
         this(List.of(members));
     }
 
-    @Override
-    public final TaskResult<StackManipulation> result() {
-        return members
-                .map(Task::result)
-                .transform(seq -> new TrTransformed<>(
-                        seq, 
-                        list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
-                            list.toJavaList()
-                        )
-                    )
-                );
-    }
 }

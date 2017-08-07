@@ -24,20 +24,18 @@
 package oo.atom.codegen.bytebuddy.task.hashcode;
 
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.Task;
 import oo.atom.codegen.bytebuddy.task.equals.SmtCombined;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtHashCode extends SmtCombined implements Task<StackManipulation> {
+public class SmtHashCode extends SmtCombined {
 
     public SmtHashCode(TypeDescription type) {
         super(
-                new SmtLoadArrayOfFields(type),
-                new SmtInvokeObjectsHash()
+            new SmtLoadArrayOfFields(type),
+            new SmtInvokeObjectsHash()
         );
     }
 

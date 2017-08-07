@@ -23,29 +23,28 @@
  */
 package oo.atom.codegen.bytebuddy.task.equals;
 
+import javaslang.collection.List;
+import javaslang.control.Try;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
-import oo.atom.task.TChained;
-import oo.atom.task.Task;
 import oo.atom.codegen.bytebuddy.branching.BIfAcmp;
 import oo.atom.codegen.bytebuddy.branching.BMark;
 import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.task.result.TrBind;
 
-class SmtIfEqualByReferenceTask implements Task<StackManipulation> {
-
+class SmtIfEqualByReferenceTaskResult implements TaskResult<StackManipulation> {
     private final boolean equals;
     private final StackManipulation sm;
 
-    public SmtIfEqualByReferenceTask(boolean equals, StackManipulation sm) {
+    public SmtIfEqualByReferenceTaskResult(boolean equals, StackManipulation sm) {
         this.equals = equals;
         this.sm = sm;
     }
 
     @Override
-    public final TaskResult<StackManipulation> result() {
+    public final Try<StackManipulation> outcome() {
         final Label checkEnd = new Label();
-        return new TrSuccess<>(
+        return Try.success(
             new StackManipulation.Compound(
                 new BIfAcmp(equals, checkEnd),
                 sm,
@@ -53,14 +52,19 @@ class SmtIfEqualByReferenceTask implements Task<StackManipulation> {
             )
         );
     }
+
+    @Override
+    public final List<String> issues() {
+        return List.empty();
+    }
 }
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtIfEqualByReference extends TChained<StackManipulation> implements Task<StackManipulation> {
-    public SmtIfEqualByReference(boolean equals, Task<StackManipulation> task) {
-        super(task, sm -> new SmtIfEqualByReferenceTask(equals, sm));
+public class SmtIfEqualByReference extends TrBind<StackManipulation, StackManipulation> {
+    public SmtIfEqualByReference(boolean equals, TaskResult<StackManipulation> task) {
+        super(task, sm -> new SmtIfEqualByReferenceTaskResult(equals, sm));
     }
 }

@@ -21,23 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
+package oo.atom.task.result;
 
-import oo.atom.task.result.TaskResult;
+import javaslang.collection.List;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TInferred<V> implements Task<V> {
-    private final TaskInference<V> inference;
+public class TrtSequence<T> implements TaskResultTransition<T, T> {
+    private final List<TaskResultTransition<T, T>> transitions;
 
-    public TInferred(TaskInference<V> inference) {
-        this.inference = inference;
+    public TrtSequence(List<TaskResultTransition<T, T>> transitions) {
+        this.transitions = transitions;
+    }
+    
+    public TrtSequence(TaskResultTransition<T, T>... transitions) {
+        this(List.of(transitions));
     }
 
     @Override
-    public final TaskResult<V> result() {
-        return inference.task().result();
+    public final TaskResult<T> transitionResult(T source) {
+        return transitions.foldLeft(
+            new TrSuccess<>(source),
+            TrBind<T, T>::new
+        );
     }
 }

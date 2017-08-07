@@ -27,19 +27,19 @@ import java.lang.reflect.Method;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.task.TSucceed;
-import oo.atom.task.Task;
+import oo.atom.task.result.TrSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtGetClass extends TSucceed<StackManipulation> implements Task<StackManipulation> {
-    private final static Method GETCLASS;
+public class SmtGetClass extends TrSuccess<StackManipulation> {
+    private final static StackManipulation STACK_MANIPULATION;
 
     static {
         try {
-            GETCLASS = Object.class.getMethod("getClass");
+            Method GETCLASS = Object.class.getMethod("getClass");
+            STACK_MANIPULATION = MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(GETCLASS));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -47,7 +47,7 @@ public class SmtGetClass extends TSucceed<StackManipulation> implements Task<Sta
 
     public SmtGetClass() {
         super(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(GETCLASS))
+            STACK_MANIPULATION
         );
     }
 }

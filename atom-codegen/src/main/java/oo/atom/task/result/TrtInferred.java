@@ -21,35 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
-
-import javaslang.collection.List;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrBind;
+package oo.atom.task.result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TChain<V> implements Task<V> {
-    private final TaskResult<V> value;
-    private final List<TaskLink<V>> links;
+public class TrtInferred<X, T> implements TaskResultTransition<X, T> {
+    private final Inference<X, T> inference;
 
-    public TChain(TaskResult<V> value, List<TaskLink<V>> links) {
-        this.value = value;
-        this.links = links;
-    }
-    
-    public TChain(TaskResult<V> value, TaskLink<V>... links) {
-        this(value, List.of(links));
+    public TrtInferred(Inference<X, T> inference) {
+        this.inference = inference;
     }
 
     @Override
-    public final TaskResult<V> result() {
-        return links.foldLeft(value, (smtr, smtl) -> {
-            return new TrBind<V, V>(smtr, r -> {
-                return smtl.task(r).result();
-            });
-        });
+    public final TaskResult<T> transitionResult(X source) {
+        return inference.taskResultTransition().transitionResult(source);
     }
 }

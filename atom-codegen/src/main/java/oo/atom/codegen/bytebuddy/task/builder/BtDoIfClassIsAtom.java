@@ -24,32 +24,32 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.task.Task;
 import oo.atom.codegen.bytebuddy.matchers.IsAtom;
 import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TaskResultTransition;
 import oo.atom.task.result.TrFailure;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtDoIfClassIsAtom implements Task<DynamicType.Builder<?>> {
+public class BtDoIfClassIsAtom implements TaskResultTransition<Builder<?>, Builder<?>> {
     private static final ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
     
     private final TypeDescription type;
-    private final Task<DynamicType.Builder<?>> task;
+    private final TaskResultTransition<Builder<?>, Builder<?>> task;
 
-    public BtDoIfClassIsAtom(TypeDescription type, Task<DynamicType.Builder<?>> task) {
+    public BtDoIfClassIsAtom(TypeDescription type, TaskResultTransition<Builder<?>, Builder<?>> task) {
         this.type = type;
         this.task = task;
     }
-    
+
     @Override
-    public final TaskResult<DynamicType.Builder<?>> result() {
+    public final TaskResult<Builder<?>> transitionResult(Builder<?> source) {
         if(IS_ATOM.matches(type)) {
-            return task.result();
+            return task.transitionResult(source);
         } else {
             return new TrFailure(
                 String.format("%s is not atom", type.getName())

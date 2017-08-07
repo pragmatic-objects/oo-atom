@@ -27,9 +27,10 @@ import javaslang.collection.List;
 import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.task.Task;
 import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TaskResultTransition;
 
 /**
  *
@@ -38,7 +39,7 @@ import oo.atom.task.result.TaskResult;
 public class TaskPlugin implements Plugin {
     @FunctionalInterface
     public static interface TaskSource {
-        Task<DynamicType.Builder<?>> taskFromPluginArguments(DynamicType.Builder<?> builder, TypeDescription typeDescription);
+        TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription);
     }
     
     private final ElementMatcher<TypeDescription> matcher;
@@ -51,7 +52,9 @@ public class TaskPlugin implements Plugin {
 
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        TaskResult<DynamicType.Builder<?>> result = taskSource.taskFromPluginArguments(builder, typeDescription).result();
+        TaskResult<DynamicType.Builder<?>> result = taskSource
+                .taskFromPluginArguments(builder, typeDescription)
+                .transitionResult(builder);
         List<String> issues = result.issues();
         if(issues.isEmpty()) {
             return result.outcome().get();

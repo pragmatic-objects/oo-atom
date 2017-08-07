@@ -21,18 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
+package oo.atom.task.result;
 
-import oo.atom.task.result.TrFailure;
+import oo.atom.tests.Assertion;
+import org.assertj.core.api.Assertions;
 
 /**
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class TFail<T> extends TConst<T> implements Task<T> {
-    public TFail(String message) {
-        super(
-            new TrFailure<>(message)
-        );
+public class AssertTaskResultIsMalformed implements Assertion {
+    private final String description;
+    private final TaskResult<?> taskResult;
+
+    public AssertTaskResultIsMalformed(String description, TaskResult<?> taskResult) {
+        this.description = description;
+        this.taskResult = taskResult;
+    }
+
+    @Override
+    public final String description() {
+        return description;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        Assertions.assertThatThrownBy(() -> taskResult.outcome()).isNotNull();
+        Assertions.assertThatThrownBy(() -> taskResult.issues()).isNotNull();
     }
 }

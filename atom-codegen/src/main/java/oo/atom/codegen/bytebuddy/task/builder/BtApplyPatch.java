@@ -24,36 +24,37 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.codegen.bytebuddy.matchers.IsAtom;
 import oo.atom.codegen.bytebuddy.matchers.IsAtomAlias;
-import oo.atom.task.TFail;
-import oo.atom.task.TInferred;
-import oo.atom.task.Task;
-import oo.atom.task.TaskInference;
+import oo.atom.task.result.TaskResultTransition;
+import oo.atom.task.result.TrFailure;
+import oo.atom.task.result.TrtConstant;
+import oo.atom.task.result.TrtInferred;
 
-class BtApplyPatchInference implements TaskInference<DynamicType.Builder<?>> {
+class BtApplyPatchInference implements TaskResultTransition.Inference<Builder<?>, Builder<?>> {
+
     private final static ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
     private final static ElementMatcher<TypeDescription> IS_ATOM_ALIAS = new IsAtomAlias();
-    
-    private final TypeDescription type;
-    private final DynamicType.Builder<?> builder;
 
-    public BtApplyPatchInference(TypeDescription type, DynamicType.Builder<?> builder) {
+    private final TypeDescription type;
+
+    public BtApplyPatchInference(TypeDescription type) {
         this.type = type;
-        this.builder = builder;
     }
-    
+
     @Override
-    public final Task<DynamicType.Builder<?>> task() {
-        if(IS_ATOM_ALIAS.matches(type)) {
-            return new BtApplyAtomAliasPatch(builder, type);
-        } else if(IS_ATOM.matches(type)) {
-            return new BtApplyAtomPatch(builder, type);
+    public final TaskResultTransition<Builder<?>, Builder<?>> taskResultTransition() {
+        if (IS_ATOM_ALIAS.matches(type)) {
+            return new BtApplyAtomAliasPatch(type);
+        } else if (IS_ATOM.matches(type)) {
+            return new BtApplyAtomPatch(type);
         } else {
-            return new TFail<>(
-                String.format("%s is not atom", type.getName())
+            return new TrtConstant<>(
+                new TrFailure<>(
+                    String.format("%s is not atom", type.getName())
+                )
             );
         }
     }
@@ -63,12 +64,12 @@ class BtApplyPatchInference implements TaskInference<DynamicType.Builder<?>> {
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends TInferred<DynamicType.Builder<?>> implements Task<DynamicType.Builder<?>> {
-    public BtApplyPatch(TypeDescription type, DynamicType.Builder<?> builder) {
+public class BtApplyPatch extends TrtInferred<Builder<?>, Builder<?>> {
+
+    public BtApplyPatch(TypeDescription type) {
         super(
             new BtApplyPatchInference(
-                type,
-                builder
+                type
             )
         );
     }

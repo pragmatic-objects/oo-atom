@@ -26,11 +26,10 @@ package oo.atom.codegen.bytebuddy.task.equals;
 import javaslang.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.TInferred;
-import oo.atom.task.Task;
-import oo.atom.task.TaskInference;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
 
-class SmtFieldsEqualityInference implements TaskInference<StackManipulation> {
+class SmtFieldsEqualityInference implements TaskResult.Inference<StackManipulation> {
 
     private final TypeDescription type;
 
@@ -39,9 +38,9 @@ class SmtFieldsEqualityInference implements TaskInference<StackManipulation> {
     }
 
     @Override
-    public final Task<StackManipulation> task() {
+    public final TaskResult<StackManipulation> taskResult() {
         return new SmtCombined(
-                List.of(type)
+            List.of(type)
                 .flatMap(TypeDescription::getDeclaredFields)
                 .filter(f -> !f.isStatic())
                 .map(f -> new SmtFieldEquality(type, f))
@@ -54,7 +53,7 @@ class SmtFieldsEqualityInference implements TaskInference<StackManipulation> {
  *
  * @author Kapralov Sergey
  */
-public class SmtFieldsEquality extends TInferred<StackManipulation> {
+public class SmtFieldsEquality extends TrInferred<StackManipulation> {
     public SmtFieldsEquality(final TypeDescription type) {
         super(new SmtFieldsEqualityInference(type));
     }

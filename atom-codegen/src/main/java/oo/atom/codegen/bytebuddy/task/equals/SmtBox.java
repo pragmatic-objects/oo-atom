@@ -29,13 +29,12 @@ import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.task.TFail;
-import oo.atom.task.TInferred;
-import oo.atom.task.TSucceed;
-import oo.atom.task.Task;
-import oo.atom.task.TaskInference;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrFailure;
+import oo.atom.task.result.TrInferred;
+import oo.atom.task.result.TrSuccess;
 
-class SmtBoxInference implements TaskInference<StackManipulation> {
+class SmtBoxInference implements TaskResult.Inference<StackManipulation> {
 
     private static final Method BOOLEAN_VALUEOF;
     private static final Method BYTE_VALUEOF;
@@ -68,33 +67,33 @@ class SmtBoxInference implements TaskInference<StackManipulation> {
     }
 
     @Override
-    public final Task<StackManipulation> task() {
-        return Match(type).<Task<StackManipulation>>of(
-                Case($(t -> t.represents(boolean.class)), new TSucceed<StackManipulation>(
+    public final TaskResult<StackManipulation> taskResult() {
+        return Match(type).<TaskResult<StackManipulation>>of(
+                Case($(t -> t.represents(boolean.class)), new TrSuccess<StackManipulation>(
                         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
                 )),
-                Case($(t -> t.represents(byte.class)), new TSucceed<StackManipulation>(
+                Case($(t -> t.represents(byte.class)), new TrSuccess<StackManipulation>(
                         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
                 )),
-                Case($(t -> t.represents(char.class)), new TSucceed<StackManipulation>(
+                Case($(t -> t.represents(char.class)), new TrSuccess<StackManipulation>(
                         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
                 )),
-                Case($(t -> t.represents(short.class)), new TSucceed<StackManipulation>(
+                Case($(t -> t.represents(short.class)), new TrSuccess<StackManipulation>(
                         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
                 )),
-                Case($(t -> t.represents(int.class)), new TSucceed<StackManipulation>(
+                Case($(t -> t.represents(int.class)), new TrSuccess<StackManipulation>(
                         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
                 )),
-                Case($(t -> t.represents(long.class)), new TSucceed<StackManipulation>(
+                Case($(t -> t.represents(long.class)), new TrSuccess<StackManipulation>(
                         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
                 )),
-                Case($(t -> t.represents(float.class)), new TSucceed<StackManipulation>(
+                Case($(t -> t.represents(float.class)), new TrSuccess<StackManipulation>(
                         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
                 )),
-                Case($(t -> t.represents(double.class)), new TSucceed<StackManipulation>(
+                Case($(t -> t.represents(double.class)), new TrSuccess<StackManipulation>(
                         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
                 )),
-                Case($(), new TFail<StackManipulation>(
+                Case($(), new TrFailure<StackManipulation>(
                         String.format("Attempt to box non-primitive type %s", type)
                 ))
         );
@@ -105,7 +104,7 @@ class SmtBoxInference implements TaskInference<StackManipulation> {
  *
  * @author Kapralov Sergey
  */
-public class SmtBox extends TInferred<StackManipulation> implements Task<StackManipulation> {
+public class SmtBox extends TrInferred<StackManipulation> {
 
     public SmtBox(TypeDescription type) {
         super(

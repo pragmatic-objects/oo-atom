@@ -21,4 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task;
+package oo.atom.task.result;
+
+/**
+ *
+ * @author Kapralov Sergey
+ */
+public interface TaskResultTransition<X, T> {
+    interface Inference<X, T> {
+        TaskResultTransition<X, T> taskResultTransition();
+    }
+    
+    TaskResult<T> transitionResult(X source);
+}

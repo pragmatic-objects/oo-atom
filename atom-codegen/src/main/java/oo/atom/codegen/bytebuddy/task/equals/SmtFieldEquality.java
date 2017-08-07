@@ -25,14 +25,12 @@ package oo.atom.codegen.bytebuddy.task.equals;
 
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.Task;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtFieldEquality extends SmtCombined implements Task<StackManipulation> {
+public class SmtFieldEquality extends SmtCombined {
     public SmtFieldEquality(final TypeDescription type, final FieldDescription field) {
         super(
                 new SmtLoadPairOfFields(type, field),

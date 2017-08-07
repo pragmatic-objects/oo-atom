@@ -24,7 +24,6 @@
 package oo.atom.codegen.bytebuddy.task.builder;
 
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 import oo.atom.codegen.bytebuddy.task.hashcode.SmtHashCode;
 
@@ -33,11 +32,10 @@ import oo.atom.codegen.bytebuddy.task.hashcode.SmtHashCode;
  * @author Kapralov Sergey
  */
 public class BtGenerateHashCode extends BtGenerateMethod {
-    public BtGenerateHashCode(DynamicType.Builder<?> builder, TypeDescription td) {
+    public BtGenerateHashCode(TypeDescription td) {
         super(
-                builder,
-                named("hashCode"),
-                new SmtHashCode(td)
+            named("hashCode"),
+            new SmtHashCode(td)
         );
     }
 }

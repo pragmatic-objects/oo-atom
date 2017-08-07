@@ -25,24 +25,23 @@ package oo.atom.codegen.bytebuddy.task.equals;
 
 import javaslang.collection.List;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.TCombined;
-import oo.atom.task.Task;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrCombineOrDefault;
 
 /**
  *
  * @author skapral
  */
-public class SmtCombined extends TCombined<StackManipulation> implements Task<StackManipulation> {
-    public SmtCombined(List<Task<StackManipulation>> subtasks) {
+public class SmtCombined extends TrCombineOrDefault<StackManipulation> {
+    public SmtCombined(List<TaskResult<StackManipulation>> subtasks) {
         super(
-            new TrSuccess<>(new StackManipulation.Compound()),
             ((sm1, sm2) -> new StackManipulation.Compound(sm1, sm2)),
+            new StackManipulation.Compound(),
             subtasks
         );
     }
 
-    public SmtCombined(Task<StackManipulation>... tasks) {
+    public SmtCombined(TaskResult<StackManipulation>... tasks) {
         this(
             List.of(tasks)
         );

@@ -25,15 +25,15 @@ package oo.atom.codegen.bytebuddy.plugin;
 
 import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Builder;
 import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
 import oo.atom.codegen.bytebuddy.task.builder.BtApplyPatch;
-import oo.atom.task.Task;
+import oo.atom.task.result.TaskResultTransition;
 
 class AtomPluginTaskSource implements TaskPlugin.TaskSource {
     @Override
-    public final Task<DynamicType.Builder<?>> taskFromPluginArguments(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription, builder);
+    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
+        return new BtApplyPatch(typeDescription);
     }
 }
 
