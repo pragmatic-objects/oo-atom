@@ -21,19 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
+class SmtLoadArrayOfFieldsInference implements TaskResult.Inference<StackManipulation> {
+    private final TypeDescription type;
+
+    public SmtLoadArrayOfFieldsInference(TypeDescription type) {
+        this.type = type;
+    }
+
     @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
+    public final TaskResult<StackManipulation> taskResult() {
+        return new SmtArray(
+                List.of(type)
+                .flatMap(TypeDescription::getDeclaredFields)
+                .filter(f -> !f.isStatic())
+                .map(f -> new SmtLoadField(f))
+                .toJavaArray(SmtLoadField.class)
+        );
     }
 }
 
@@ -41,11 +52,8 @@ class AtomPluginTaskSource implements TaskPlugin.TaskSource {
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
-        super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
-        );
+public class SmtLoadArrayOfFields extends TrInferred<StackManipulation> {
+    public SmtLoadArrayOfFields(TypeDescription type) {
+        super(new SmtLoadArrayOfFieldsInference(type));
     }
 }

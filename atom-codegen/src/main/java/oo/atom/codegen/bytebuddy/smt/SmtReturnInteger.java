@@ -21,31 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
+import net.bytebuddy.implementation.bytecode.member.MethodReturn;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
+import oo.atom.task.result.TrSuccess;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
-    @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
+class SmtReturnIntegerInference implements TaskResult.Inference<StackManipulation> {
+    private final Integer index;
+
+    public SmtReturnIntegerInference(Integer index) {
+        this.index = index;
     }
+
+    @Override
+    public final TaskResult<StackManipulation> taskResult() {
+        return new TrSuccess<>(
+            new StackManipulation.Compound(
+                IntegerConstant.forValue(index),
+                MethodReturn.INTEGER
+            )
+        );
+    }
+    
 }
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class SmtReturnInteger extends TrInferred<StackManipulation> {
+
+    public SmtReturnInteger(Integer index) {
         super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+            new SmtReturnIntegerInference(index)
         );
     }
+
 }

@@ -21,19 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.jar.asm.Label;
+import oo.atom.codegen.bytebuddy.branching.BIfAcmp;
+import oo.atom.codegen.bytebuddy.branching.BMark;
+import oo.atom.task.result.TaskResult;
 import oo.atom.task.result.TaskResultTransition;
+import oo.atom.task.result.TrBind;
+import oo.atom.task.result.TrSuccess;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
+class TrtIfEqualByReference implements TaskResultTransition<StackManipulation, StackManipulation> {
+    private final boolean equals;
+
+    public TrtIfEqualByReference(boolean equals) {
+        this.equals = equals;
+    }
+
     @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
+    public final TaskResult<StackManipulation> transitionResult(StackManipulation sm) {
+        final Label checkEnd = new Label();
+        return new TrSuccess<>(
+            new StackManipulation.Compound(
+                new BIfAcmp(equals, checkEnd),
+                sm,
+                new BMark(checkEnd)
+            )
+        );
     }
 }
 
@@ -41,11 +56,11 @@ class AtomPluginTaskSource implements TaskPlugin.TaskSource {
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class SmtIfEqualByReference extends TrBind<StackManipulation, StackManipulation> {
+    public SmtIfEqualByReference(boolean equals, TaskResult<StackManipulation> task) {
         super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+            task,
+            new TrtIfEqualByReference(equals)
         );
     }
 }

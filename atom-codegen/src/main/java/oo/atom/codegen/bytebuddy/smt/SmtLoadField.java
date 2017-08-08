@@ -21,31 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
-
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
-    @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
-    }
-}
+import net.bytebuddy.description.field.FieldDescription;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class SmtLoadField extends SmtCombined {
+    public SmtLoadField(FieldDescription field) {
         super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+            new SmtLoadReference(0),
+            new SmtGetField(field),
+            new SmtBoxField(field)
         );
     }
 }

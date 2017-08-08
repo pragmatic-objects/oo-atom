@@ -21,19 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.bt;
 
-import net.bytebuddy.build.Plugin;
+import java.lang.annotation.Annotation;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
+import oo.atom.anno.Atom;
+import oo.atom.task.result.TaskResult;
 import oo.atom.task.result.TaskResultTransition;
+import oo.atom.task.result.TrSuccess;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
+class BtAnnotateAtom implements Atom {
+
     @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
+    public final Class<? extends Annotation> annotationType() {
+        return Atom.class;
     }
 }
 
@@ -41,11 +43,23 @@ class AtomPluginTaskSource implements TaskPlugin.TaskSource {
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
-        super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+public class BtAnnotate implements TaskResultTransition<Builder<?>, Builder<?>> {
+    private final TypeDescription type;
+
+    public BtAnnotate(TypeDescription type) {
+        this.type = type;
+    }
+
+    @Override
+    public final TaskResult<Builder<?>> transitionResult(Builder<?> source) {
+        boolean annotationPresent = type.getDeclaredAnnotations().isAnnotationPresent(Atom.class);
+        
+        return new TrSuccess<>(
+            annotationPresent ?
+                source :
+                source.annotateType(
+                        new BtAnnotateAtom()
+                )
         );
     }
 }

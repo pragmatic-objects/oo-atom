@@ -21,31 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
-
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
-    @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
-    }
-}
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.task.result.TaskResult;
+import oo.atom.tests.Assertion;
+import org.assertj.core.api.Assertions;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
-        super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
-        );
+public class AssertTaskToFail implements Assertion {
+    private final String description;
+    private final TaskResult<StackManipulation> task;
+
+    public AssertTaskToFail(String description, TaskResult<StackManipulation> task) {
+        this.description = description;
+        this.task = task;
+    }
+
+    @Override
+    public final String description() {
+        return description;
+    }
+    
+    @Override
+    public final void check() throws Exception {
+        Assertions.assertThatThrownBy(() -> task.outcome().get()).isNotNull();
     }
 }

@@ -21,19 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
+import oo.atom.task.result.TrTransformed;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
+class SmtArrayInference implements TaskResult.Inference {
+    private final List<TaskResult<StackManipulation>> members;
+
+    public SmtArrayInference(List<TaskResult<StackManipulation>> members) {
+        this.members = members;
+    }
+
     @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
+    public final TaskResult<StackManipulation> taskResult() {
+        return new TrTransformed<>(
+            members, 
+            list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
+                list.toJavaList()
+            )
+        );
     }
 }
 
@@ -41,11 +53,15 @@ class AtomPluginTaskSource implements TaskPlugin.TaskSource {
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class SmtArray extends TrInferred<StackManipulation> {
+    public SmtArray(List<TaskResult<StackManipulation>> members) {
         super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+            new SmtArrayInference(members)
         );
     }
+
+    public SmtArray(TaskResult<StackManipulation>... members) {
+        this(List.of(members));
+    }
+
 }

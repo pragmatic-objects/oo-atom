@@ -21,19 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
+import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
+class SmtBoxFieldInference implements TaskResult.Inference<StackManipulation> {
+
+    private final FieldDescription field;
+
+    public SmtBoxFieldInference(FieldDescription field) {
+        this.field = field;
+    }
+
     @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
+    public final TaskResult<StackManipulation> taskResult() {
+        TypeDescription type = field.getType().asErasure();
+        if (type.isPrimitive()) {
+            return new SmtBox(type);
+        } else {
+            return new SmtDoNothing();
+        }
     }
 }
 
@@ -41,11 +52,11 @@ class AtomPluginTaskSource implements TaskPlugin.TaskSource {
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class SmtBoxField extends TrInferred<StackManipulation> {
+
+    public SmtBoxField(FieldDescription field) {
         super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+                new SmtBoxFieldInference(field)
         );
     }
 }

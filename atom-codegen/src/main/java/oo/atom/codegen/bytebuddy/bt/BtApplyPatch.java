@@ -21,19 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.bt;
 
-import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
+import net.bytebuddy.matcher.ElementMatcher;
+import oo.atom.codegen.bytebuddy.matchers.IsAtom;
+import oo.atom.codegen.bytebuddy.matchers.IsAtomAlias;
 import oo.atom.task.result.TaskResultTransition;
+import oo.atom.task.result.TrFailure;
+import oo.atom.task.result.TrtConstant;
+import oo.atom.task.result.TrtInferred;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
+class BtApplyPatchInference implements TaskResultTransition.Inference<Builder<?>, Builder<?>> {
+
+    private final static ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
+    private final static ElementMatcher<TypeDescription> IS_ATOM_ALIAS = new IsAtomAlias();
+
+    private final TypeDescription type;
+
+    public BtApplyPatchInference(TypeDescription type) {
+        this.type = type;
+    }
+
     @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
+    public final TaskResultTransition<Builder<?>, Builder<?>> taskResultTransition() {
+        if (IS_ATOM_ALIAS.matches(type)) {
+            return new BtApplyAtomAliasPatch(type);
+        } else if (IS_ATOM.matches(type)) {
+            return new BtApplyAtomPatch(type);
+        } else {
+            return new TrtConstant<>(
+                new TrFailure<>(
+                    String.format("%s is not atom", type.getName())
+                )
+            );
+        }
     }
 }
 
@@ -41,11 +64,13 @@ class AtomPluginTaskSource implements TaskPlugin.TaskSource {
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class BtApplyPatch extends TrtInferred<Builder<?>, Builder<?>> {
+
+    public BtApplyPatch(TypeDescription type) {
         super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+            new BtApplyPatchInference(
+                type
+            )
         );
     }
 }

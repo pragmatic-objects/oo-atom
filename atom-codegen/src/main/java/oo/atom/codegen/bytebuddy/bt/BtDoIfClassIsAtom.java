@@ -21,31 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.bt;
 
-import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
+import net.bytebuddy.matcher.ElementMatcher;
+import oo.atom.codegen.bytebuddy.matchers.IsAtom;
+import oo.atom.task.result.TaskResult;
 import oo.atom.task.result.TaskResultTransition;
-
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
-    @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
-    }
-}
+import oo.atom.task.result.TrFailure;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
-        super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
-        );
+public class BtDoIfClassIsAtom implements TaskResultTransition<Builder<?>, Builder<?>> {
+    private static final ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
+    
+    private final TypeDescription type;
+    private final TaskResultTransition<Builder<?>, Builder<?>> task;
+
+    public BtDoIfClassIsAtom(TypeDescription type, TaskResultTransition<Builder<?>, Builder<?>> task) {
+        this.type = type;
+        this.task = task;
+    }
+
+    @Override
+    public final TaskResult<Builder<?>> transitionResult(Builder<?> source) {
+        if(IS_ATOM.matches(type)) {
+            return task.transitionResult(source);
+        } else {
+            return new TrFailure(
+                String.format("%s is not atom", type.getName())
+            );
+        }
     }
 }

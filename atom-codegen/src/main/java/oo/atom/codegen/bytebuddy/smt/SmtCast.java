@@ -21,19 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
+import oo.atom.task.result.TrSuccess;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
+class SmtCastInference implements TaskResult.Inference<StackManipulation> {
+    private final TypeDescription typeDescription;
+
+    public SmtCastInference(TypeDescription typeDescription) {
+        this.typeDescription = typeDescription;
+    }
+
     @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
+    public final TaskResult<StackManipulation> taskResult() {
+        return new TrSuccess<>(TypeCasting.to(typeDescription));
     }
 }
 
@@ -41,11 +47,10 @@ class AtomPluginTaskSource implements TaskPlugin.TaskSource {
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class SmtCast extends TrInferred<StackManipulation> {
+    public SmtCast(TypeDescription type) {
         super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+            new SmtCastInference(type)
         );
     }
 }

@@ -21,19 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
+import oo.atom.task.result.TaskResult;
+import oo.atom.task.result.TrInferred;
+import oo.atom.task.result.TrSuccess;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
+
+class SmtLoadReferenceInference implements TaskResult.Inference<StackManipulation> {
+    private final Integer index;
+
+    public SmtLoadReferenceInference(Integer index) {
+        this.index = index;
+    }
+    
     @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
+    public final TaskResult<StackManipulation> taskResult() {
+        return new TrSuccess<>(
+            MethodVariableAccess.REFERENCE.loadFrom(index)
+        );
     }
 }
 
@@ -41,11 +49,10 @@ class AtomPluginTaskSource implements TaskPlugin.TaskSource {
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class SmtLoadReference extends TrInferred<StackManipulation> {
+    public SmtLoadReference(int index) {
         super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+            new SmtLoadReferenceInference(index)
         );
     }
 }

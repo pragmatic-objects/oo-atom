@@ -21,31 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.build.Plugin;
+import java.lang.reflect.Method;
+import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
-import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
-
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
-    @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
-    }
-}
+import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class SmtBoxTest extends AssertionsSuite {
+    private static final Method INT_VALUEOF;
+
+    static {
+        try {
+            INT_VALUEOF = Integer.class.getMethod("valueOf", int.class);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    public SmtBoxTest() {
         super(
-            new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+            new AssertTaskToFail(
+                "attempt to box non-primitive must fail",
+                new SmtBox(
+                        new TypeDescription.ForLoadedType(Object.class)
+                )
+            ),
+            new AssertTaskToGenerateBytecode(
+                "can box integer primitive", 
+                new SmtBox(
+                        new TypeDescription.ForLoadedType(int.class)
+                ),
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+            )
         );
     }
 }
