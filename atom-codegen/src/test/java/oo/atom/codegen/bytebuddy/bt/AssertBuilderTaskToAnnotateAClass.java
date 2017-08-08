@@ -24,42 +24,42 @@
 package oo.atom.codegen.bytebuddy.bt;
 
 import java.lang.annotation.Annotation;
-import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.anno.Atom;
-import oo.atom.task.result.TaskResult;
 import oo.atom.task.result.TaskResultTransition;
-import oo.atom.task.result.TrSuccess;
-
-class BtAnnotateAtom implements Atom {
-
-    @Override
-    public final Class<? extends Annotation> annotationType() {
-        return Atom.class;
-    }
-}
+import oo.atom.tests.Assertion;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotate implements TaskResultTransition<Builder<?>, Builder<?>> {
-    private final TypeDescription type;
+public class AssertBuilderTaskToAnnotateAClass implements Assertion {
+    private final String description;
+    private final TaskResultTransition<Builder<?>, Builder<?>> builderTask;
+    private final Class<?> type;
+    private final Class<? extends Annotation> annotation;
 
-    public BtAnnotate(TypeDescription type) {
+    public AssertBuilderTaskToAnnotateAClass(String description, TaskResultTransition<Builder<?>, Builder<?>> builderTask, Class<?> type, Class<? extends Annotation> annotation) {
+        this.description = description;
+        this.builderTask = builderTask;
         this.type = type;
+        this.annotation = annotation;
     }
 
     @Override
-    public final TaskResult<Builder<?>> transitionResult(Builder<?> source) {
-        boolean annotationPresent = type.getDeclaredAnnotations().isAnnotationPresent(Atom.class);
-        
-        return new TrSuccess<>(
-            annotationPresent ?
-                source :
-                source.annotateType(
-                    new BtAnnotateAtom()
-                )
-        );
+    public final String description() {
+        return description;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
+        final DynamicType.Unloaded<?> make = builderTask.transitionResult(subclass).outcome().get().make();
+        final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
+        assertThat(
+            clazz.getAnnotation(annotation)
+        ).isNotNull();
     }
 }

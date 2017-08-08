@@ -23,40 +23,34 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import oo.atom.codegen.bytebuddy.bt.BtAnnotate;
-import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.anno.Atom;
-import static org.assertj.core.api.Assertions.*;
-import org.junit.Test;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotateTest {
-    @Test
-    public void annotatesType() throws Exception {
-        final TypeDescription type = new TypeDescription.ForLoadedType(Foo.class);
-        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(Foo.class);
-        final DynamicType.Unloaded<?> make = new BtAnnotate(type).transitionResult(subclass).outcome().get().make();
-        final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
-        assertThat(
-            clazz.getAnnotation(Atom.class)
-        ).isNotNull();
-    }
-
-    @Test
-    public void preventsDuplicateAnnotation() throws Exception {
-        final TypeDescription type = new TypeDescription.ForLoadedType(Bar.class);
-        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(Bar.class);
-
-        assertThatCode(() -> {
-            final DynamicType.Unloaded<?> make = new BtAnnotate(type).transitionResult(subclass).outcome().get().make();
-            final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
-            final Atom annotation = clazz.getAnnotation(Atom.class);
-        }).doesNotThrowAnyException();
+public class BtAnnotateTest extends AssertionsSuite {
+    
+    public BtAnnotateTest() {
+        super(
+            new AssertBuilderTaskToAnnotateAClass(
+                "annotates class with @Atom annotation",
+                new BtAnnotate(
+                    new TypeDescription.ForLoadedType(Foo.class)
+                ),
+                Foo.class,
+                Atom.class
+            ),
+            new AssertBuilderTaskIsNotCorruptingAClass(
+                "prevents duplicate annotations", 
+                new BtAnnotate(
+                    new TypeDescription.ForLoadedType(Bar.class)
+                ), 
+                Bar.class
+            )
+        );
     }
 
     private static class Foo {
