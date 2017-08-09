@@ -28,49 +28,26 @@ import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.codegen.bytebuddy.matchers.IsAtom;
 import oo.atom.codegen.bytebuddy.matchers.IsAtomAlias;
-import oo.atom.task.result.TaskResultTransition;
-import oo.atom.task.result.TrFailure;
-import oo.atom.task.result.TrtConstant;
-import oo.atom.task.result.TrtInferred;
-
-class BtApplyPatchInference implements TaskResultTransition.Inference<Builder<?>, Builder<?>> {
-
-    private final static ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
-    private final static ElementMatcher<TypeDescription> IS_ATOM_ALIAS = new IsAtomAlias();
-
-    private final TypeDescription type;
-
-    public BtApplyPatchInference(TypeDescription type) {
-        this.type = type;
-    }
-
-    @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskResultTransition() {
-        if (IS_ATOM_ALIAS.matches(type)) {
-            return new BtApplyAtomAliasPatch(type);
-        } else if (IS_ATOM.matches(type)) {
-            return new BtApplyAtomPatch(type);
-        } else {
-            return new TrtConstant<>(
-                new TrFailure<>(
-                    String.format("%s is not atom", type.getName())
-                )
-            );
-        }
-    }
-}
+import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch extends TrtInferred<Builder<?>, Builder<?>> {
+public class BtApplyPatch implements BuilderTransition {
+    private final static ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
+    private final static ElementMatcher<TypeDescription> IS_ATOM_ALIAS = new IsAtomAlias();
 
-    public BtApplyPatch(TypeDescription type) {
-        super(
-            new BtApplyPatchInference(
-                type
-            )
-        );
+    @Override
+    public Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription type) {
+        if (IS_ATOM_ALIAS.matches(type)) {
+            return new BtApplyAtomAliasPatch().transitionResult(source, type);
+        } else if (IS_ATOM.matches(type)) {
+            return new BtApplyAtomPatch().transitionResult(source, type);
+        } else {
+            return new BtFail(
+                    String.format("%s is not atom", type.getName())
+            ).transitionResult(source, type);
+        }
     }
 }

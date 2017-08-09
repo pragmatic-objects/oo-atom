@@ -30,12 +30,12 @@ import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.jar.asm.Label;
 import oo.atom.codegen.bytebuddy.branching.BIsZero;
 import oo.atom.codegen.bytebuddy.branching.BMark;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TaskResultTransition;
-import oo.atom.task.result.TrBind;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RBind;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
+import oo.atom.r.ResultTransition;
 
-class TrtIfEqual implements TaskResultTransition<StackManipulation, StackManipulation> {
+class TrtIfEqual implements ResultTransition<StackManipulation, StackManipulation> {
     private final static Method EQUALS;
 
     static {
@@ -53,9 +53,9 @@ class TrtIfEqual implements TaskResultTransition<StackManipulation, StackManipul
     }
 
     @Override
-    public final TaskResult<StackManipulation> transitionResult(StackManipulation sm) {
+    public final Result<StackManipulation> transitionResult(StackManipulation sm) {
         final Label checkEnd = new Label();
-        return new TrSuccess<>(
+        return new RSuccess<>(
             new StackManipulation.Compound(
                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQUALS)),
                 new BIsZero(!isTrue, checkEnd),
@@ -70,10 +70,10 @@ class TrtIfEqual implements TaskResultTransition<StackManipulation, StackManipul
  *
  * @author Kapralov Sergey
  */
-class SmtIfEqual extends TrBind<StackManipulation, StackManipulation> {
-    public SmtIfEqual(boolean isTrue, TaskResult<StackManipulation> task) {
+class SmtIfEqual extends RBind<StackManipulation, StackManipulation> implements StackManipulationToken  {
+    public SmtIfEqual(boolean isTrue, StackManipulationToken smt) {
         super(
-            task,
+            smt,
             new TrtIfEqual(isTrue)
         );
     }

@@ -21,29 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.codegen.bytebuddy.bt;
 
-import io.vavr.collection.List;
-import io.vavr.control.Try;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType.Builder;
+import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrInferred<T> implements TaskResult<T> {
-    private final Inference<T> inference;
+public class BtInferred implements BuilderTransition {
+    private final BuilderTransition builderTransition;
 
-    public TrInferred(Inference<T> inference) {
-        this.inference = inference;
+    public BtInferred(BuilderTransition builderTransition) {
+        this.builderTransition = builderTransition;
     }
 
     @Override
-    public final Try<T> outcome() {
-        return inference.taskResult().outcome();
-    }
-
-    @Override
-    public final List<String> issues() {
-        return inference.taskResult().issues();
+    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
+        return builderTransition.transitionResult(source, typeDescription);
     }
 }

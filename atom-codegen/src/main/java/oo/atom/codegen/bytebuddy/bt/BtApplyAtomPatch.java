@@ -23,21 +23,16 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.task.result.TrtSequence;
-
-
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyAtomPatch extends TrtSequence<DynamicType.Builder<?>> {
-    public BtApplyAtomPatch(final TypeDescription td) {
+public class BtApplyAtomPatch extends BtSequence {
+    public BtApplyAtomPatch() {
         super(
-            new BtAnnotate(td),
-            new BtGenerateEquals(td),
-            new BtGenerateHashCode(td)
+            new BtAnnotate(),
+            new BtGenerateEquals(),
+            new BtGenerateHashCode()
         );
     }
 }

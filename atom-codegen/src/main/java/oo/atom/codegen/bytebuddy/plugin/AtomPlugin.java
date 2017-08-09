@@ -24,18 +24,9 @@
 package oo.atom.codegen.bytebuddy.plugin;
 
 import net.bytebuddy.build.Plugin;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
 import oo.atom.codegen.bytebuddy.matchers.ShouldBeInstrumented;
 import oo.atom.codegen.bytebuddy.bt.BtApplyPatch;
-import oo.atom.task.result.TaskResultTransition;
 
-class AtomPluginTaskSource implements TaskPlugin.TaskSource {
-    @Override
-    public final TaskResultTransition<Builder<?>, Builder<?>> taskFromPluginArguments(Builder<?> builder, TypeDescription typeDescription) {
-        return new BtApplyPatch(typeDescription);
-    }
-}
 
 /**
  *
@@ -45,7 +36,7 @@ public class AtomPlugin extends TaskPlugin implements Plugin {
     public AtomPlugin() {
         super(
             new ShouldBeInstrumented(), 
-            new AtomPluginTaskSource()
+            new BtApplyPatch()
         );
     }
 }

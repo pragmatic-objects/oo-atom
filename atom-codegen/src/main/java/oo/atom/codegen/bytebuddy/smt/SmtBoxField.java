@@ -26,10 +26,10 @@ package oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrInferred;
+import oo.atom.r.RInferred;
+import oo.atom.r.Result;
 
-class SmtBoxFieldInference implements TaskResult.Inference<StackManipulation> {
+class SmtBoxFieldInference implements Result.Inference<StackManipulation> {
 
     private final FieldDescription field;
 
@@ -38,7 +38,7 @@ class SmtBoxFieldInference implements TaskResult.Inference<StackManipulation> {
     }
 
     @Override
-    public final TaskResult<StackManipulation> taskResult() {
+    public final Result<StackManipulation> taskResult() {
         TypeDescription type = field.getType().asErasure();
         if (type.isPrimitive()) {
             return new SmtBox(type);
@@ -52,8 +52,7 @@ class SmtBoxFieldInference implements TaskResult.Inference<StackManipulation> {
  *
  * @author Kapralov Sergey
  */
-public class SmtBoxField extends TrInferred<StackManipulation> {
-
+public class SmtBoxField extends RInferred<StackManipulation> implements StackManipulationToken {
     public SmtBoxField(FieldDescription field) {
         super(
                 new SmtBoxFieldInference(field)

@@ -31,10 +31,10 @@ import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
 import oo.atom.codegen.bytebuddy.branching.BIsZero;
 import oo.atom.codegen.bytebuddy.branching.BMark;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TaskResultTransition;
-import oo.atom.task.result.TrBind;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RBind;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
+import oo.atom.r.ResultTransition;
 
 /**
  * 
@@ -63,7 +63,7 @@ class InstanceOfStackManipulation implements StackManipulation {
  * 
  * @author Kapralov Sergey
  */
-class TrtIfInstanceOf implements TaskResultTransition<StackManipulation, StackManipulation>  {
+class TrtIfInstanceOf implements ResultTransition<StackManipulation, StackManipulation>  {
     private final TypeDescription type;
     private final boolean isTrue;
 
@@ -73,9 +73,9 @@ class TrtIfInstanceOf implements TaskResultTransition<StackManipulation, StackMa
     }
 
     @Override
-    public final TaskResult<StackManipulation> transitionResult(StackManipulation sm) {
+    public final Result<StackManipulation> transitionResult(StackManipulation sm) {
         final Label checkEnd = new Label();
-        return new TrSuccess<>(
+        return new RSuccess<>(
             new StackManipulation.Compound(
                 new InstanceOfStackManipulation(type),
                 new BIsZero(isTrue, checkEnd),
@@ -90,8 +90,8 @@ class TrtIfInstanceOf implements TaskResultTransition<StackManipulation, StackMa
  *
  * @author Kapralov Sergey
  */
-public class SmtIfInstanceOf extends TrBind<StackManipulation, StackManipulation> {
-    public SmtIfInstanceOf(TypeDescription type, boolean isTrue, TaskResult<StackManipulation> task) {
-        super(task, new TrtIfInstanceOf(type, isTrue));
+public class SmtIfInstanceOf extends RBind<StackManipulation, StackManipulation> implements StackManipulationToken {
+    public SmtIfInstanceOf(TypeDescription type, boolean isTrue, StackManipulationToken smt) {
+        super(smt, new TrtIfInstanceOf(type, isTrue));
     }
 }

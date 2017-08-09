@@ -21,35 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.r;
 
+import io.vavr.collection.List;
 import io.vavr.control.Try;
-import oo.atom.tests.Assertion;
-import static org.assertj.core.api.Assertions.assertThat;
-
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AssertTaskResultHoldsExpectedValue<T> implements Assertion {
-    private final String description;
-    private final TaskResult<T> taskResult;
-    private final T value;
+public class RFailure<T> implements Result<T> {
+    private final List<String> issues;
 
-    public AssertTaskResultHoldsExpectedValue(String description, TaskResult<T> taskResult, T value) {
-        this.description = description;
-        this.taskResult = taskResult;
-        this.value = value;
+    public RFailure(List<String> issues) {
+        this.issues = issues;
+    }
+    
+    public RFailure(String... issues) {
+        this(List.of(issues));
+    }
+    
+    @Override
+    public final Try<T> outcome() {
+        return Try.failure(
+            new RuntimeException(
+                String.join("\r\n", issues)
+            )
+        );
     }
 
     @Override
-    public final String description() {
-        return description;
-    }
-
-    @Override
-    public final void check() throws Exception {
-        assertThat(taskResult.outcome()).isEqualTo(Try.success(value));
+    public final List<String> issues() {
+        return issues;
     }
 }

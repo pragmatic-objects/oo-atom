@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.r;
 
 import oo.atom.tests.AssertionsSuite;
 
@@ -29,70 +29,70 @@ import oo.atom.tests.AssertionsSuite;
  *
  * @author Kapralov Sergey
  */
-public class TrCombinedTest extends AssertionsSuite {
-    public TrCombinedTest() {
+public class RCombinedTest extends AssertionsSuite {
+    public RCombinedTest() {
         super(
-            new AssertTaskResultIsMalformed(
+            new AssertResultIsMalformed(
                 "empty combination is prohibited", 
-                new TrCombined<Integer>(
+                new RCombined<Integer>(
                     (a, b) -> a + b
                 )
             ),
-            new AssertTaskResultHoldsExpectedValue(
+            new AssertResultHoldsExpectedValue(
                 "combines two results into one", 
-                new TrCombined<>(
+                new RCombined<>(
                     (a, b) -> a + b,
-                    new TrSuccess<>(2), 
-                    new TrSuccess<>(2)
+                    new RSuccess<>(2), 
+                    new RSuccess<>(2)
                 ),
                 4
             ),
-            new AssertTaskResultHoldsExpectedValue(
+            new AssertResultHoldsExpectedValue(
                 "combines a series of results into one", 
-                new TrCombined<>(
+                new RCombined<>(
                     (a, b) -> a + b,
-                    new TrSuccess<>(1), 
-                    new TrSuccess<>(2),
-                    new TrSuccess<>(3),
-                    new TrSuccess<>(4)
+                    new RSuccess<>(1), 
+                    new RSuccess<>(2),
+                    new RSuccess<>(3),
+                    new RSuccess<>(4)
                 ),
                 10
             ),
-            new AssertTaskResultHoldsExpectedValue(
+            new AssertResultHoldsExpectedValue(
                 "supports sequence of one result", 
-                new TrCombined<>(
+                new RCombined<>(
                     (a, b) -> a + b,
-                    new TrSuccess<>(2)
+                    new RSuccess<>(2)
                 ),
                 2
             ),
-            new AssertTaskResultIsErroneous(
+            new AssertResultIsErroneous(
                 "supports sequence of one failure", 
-                new TrCombined<>(
+                new RCombined<>(
                     (a, b) -> a + b,
-                    new TrFailure<Integer>("error")
+                    new RFailure<Integer>("error")
                 ),
                 "error"
             ),
-            new AssertTaskResultIsErroneous(
+            new AssertResultIsErroneous(
                 "combines a series of results with error", 
-                new TrCombined<>(
+                new RCombined<>(
                     (a, b) -> a + b,
-                    new TrSuccess<>(1), 
-                    new TrFailure<Integer>("error"),
-                    new TrSuccess<>(3),
-                    new TrSuccess<>(4)
+                    new RSuccess<>(1), 
+                    new RFailure<Integer>("error"),
+                    new RSuccess<>(3),
+                    new RSuccess<>(4)
                 ),
                 "error"
             ),
-            new AssertTaskResultIsErroneous(
+            new AssertResultIsErroneous(
                 "combines a series of errors", 
-                new TrCombined<>(
+                new RCombined<>(
                     (a, b) -> a + b,
-                    new TrFailure<Integer>("error"),
-                    new TrFailure<Integer>("error2"),
-                    new TrFailure<Integer>("error3"),
-                    new TrFailure<Integer>("error4")
+                    new RFailure<Integer>("error"),
+                    new RFailure<Integer>("error2"),
+                    new RFailure<Integer>("error3"),
+                    new RFailure<Integer>("error4")
                 ),
                 "error",
                 "error2",

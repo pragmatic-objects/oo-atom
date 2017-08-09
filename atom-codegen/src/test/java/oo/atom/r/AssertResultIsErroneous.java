@@ -21,29 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.r;
 
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.anno.Atom;
-import oo.atom.task.result.TaskResultTransition;
+import oo.atom.r.Result;
+import io.vavr.collection.List;
 import oo.atom.tests.Assertion;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AssertBuilderTaskIsNotCorruptingAClass implements Assertion {
+public class AssertResultIsErroneous implements Assertion {
     private final String description;
-    private final TaskResultTransition<Builder<?>, Builder<?>> builderTask;
-    private final Class<?> type;
-
-    public AssertBuilderTaskIsNotCorruptingAClass(String description, TaskResultTransition<Builder<?>, Builder<?>> builderTask, Class<?> type) {
+    private final Result<?> taskResult;
+    private final List<String> issues;
+    
+    public AssertResultIsErroneous(String description, Result<?> taskResult, List<String> issues) {
         this.description = description;
-        this.builderTask = builderTask;
-        this.type = type;
+        this.taskResult = taskResult;
+        this.issues = issues;
+    }
+
+    public AssertResultIsErroneous(String description, Result<?> taskResult, String... issues) {
+        this(
+            description,
+            taskResult,
+            List.of(issues)
+        );
     }
 
     @Override
@@ -53,12 +58,11 @@ public class AssertBuilderTaskIsNotCorruptingAClass implements Assertion {
 
     @Override
     public final void check() throws Exception {
-        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
-
-        assertThatCode(() -> {
-            final DynamicType.Unloaded<?> make = builderTask.transitionResult(subclass).outcome().get().make();
-            final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
-            final Atom annotation = clazz.getAnnotation(Atom.class);
-        }).doesNotThrowAnyException();
-    }    
+        assertThatThrownBy(() -> {
+            taskResult.outcome().get();
+        }).isInstanceOf(RuntimeException.class);
+        assertThat(taskResult.issues())
+                .containsExactlyElementsOf(issues);
+    }
+    
 }

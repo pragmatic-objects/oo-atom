@@ -26,11 +26,11 @@ package oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrInferred;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RInferred;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
 
-class SmtCastInference implements TaskResult.Inference<StackManipulation> {
+class SmtCastInference implements Result.Inference<StackManipulation> {
     private final TypeDescription typeDescription;
 
     public SmtCastInference(TypeDescription typeDescription) {
@@ -38,8 +38,8 @@ class SmtCastInference implements TaskResult.Inference<StackManipulation> {
     }
 
     @Override
-    public final TaskResult<StackManipulation> taskResult() {
-        return new TrSuccess<>(TypeCasting.to(typeDescription));
+    public final Result<StackManipulation> taskResult() {
+        return new RSuccess<>(TypeCasting.to(typeDescription));
     }
 }
 
@@ -47,7 +47,7 @@ class SmtCastInference implements TaskResult.Inference<StackManipulation> {
  *
  * @author Kapralov Sergey
  */
-public class SmtCast extends TrInferred<StackManipulation> {
+public class SmtCast extends RInferred<StackManipulation> implements StackManipulationToken {
     public SmtCast(TypeDescription type) {
         super(
             new SmtCastInference(type)

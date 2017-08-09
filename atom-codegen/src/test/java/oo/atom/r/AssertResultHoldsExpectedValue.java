@@ -21,46 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.r;
 
-import io.vavr.collection.List;
-import net.bytebuddy.build.Plugin;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
 import oo.atom.r.Result;
+import io.vavr.control.Try;
+import oo.atom.tests.Assertion;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TaskPlugin implements Plugin {
-    private final ElementMatcher<TypeDescription> matcher;
-    private final BuilderTransition bt;
+public class AssertResultHoldsExpectedValue<T> implements Assertion {
+    private final String description;
+    private final Result<T> taskResult;
+    private final T value;
 
-    public TaskPlugin(ElementMatcher<TypeDescription> matcher, BuilderTransition bt) {
-        this.matcher = matcher;
-        this.bt = bt;
-    }
-
-    
-
-    @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.outcome().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+    public AssertResultHoldsExpectedValue(String description, Result<T> taskResult, T value) {
+        this.description = description;
+        this.taskResult = taskResult;
+        this.value = value;
     }
 
     @Override
-    public final boolean matches(TypeDescription target) {
-        return matcher.matches(target);
+    public final String description() {
+        return description;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        assertThat(taskResult.outcome()).isEqualTo(Try.success(value));
     }
 }

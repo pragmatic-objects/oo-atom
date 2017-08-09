@@ -21,16 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.r;
+
+import io.vavr.collection.List;
+import io.vavr.control.Try;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public interface TaskResultTransition<X, T> {
-    interface Inference<X, T> {
-        TaskResultTransition<X, T> taskResultTransition();
+public class RInferred<T> implements Result<T> {
+    private final Inference<T> inference;
+
+    public RInferred(Inference<T> inference) {
+        this.inference = inference;
     }
-    
-    TaskResult<T> transitionResult(X source);
+
+    @Override
+    public final Try<T> outcome() {
+        return inference.taskResult().outcome();
+    }
+
+    @Override
+    public final List<String> issues() {
+        return inference.taskResult().issues();
+    }
 }

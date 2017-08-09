@@ -21,4 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.r;
+
+import io.vavr.collection.List;
+import io.vavr.control.Try;
+
+/**
+ *
+ * @author Kapralov Sergey
+ */
+public interface Result<T> {
+    interface Inference<T> {
+        Result<T> taskResult();
+    }
+    
+    Try<T> outcome();
+    List<String> issues();
+}

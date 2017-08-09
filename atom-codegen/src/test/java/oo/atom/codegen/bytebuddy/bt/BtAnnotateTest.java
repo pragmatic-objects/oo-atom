@@ -23,7 +23,6 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.anno.Atom;
 import oo.atom.tests.AssertionsSuite;
 
@@ -35,19 +34,15 @@ public class BtAnnotateTest extends AssertionsSuite {
     
     public BtAnnotateTest() {
         super(
-            new AssertBuilderTaskToAnnotateAClass(
+            new AssertBuilderTransitionToAnnotateAClass(
                 "annotates class with @Atom annotation",
-                new BtAnnotate(
-                    new TypeDescription.ForLoadedType(Foo.class)
-                ),
+                new BtAnnotate(),
                 Foo.class,
                 Atom.class
             ),
-            new AssertBuilderTaskIsNotCorruptingAClass(
+            new AssertBuilderTransitionIsNotCorruptingClass(
                 "prevents duplicate annotations", 
-                new BtAnnotate(
-                    new TypeDescription.ForLoadedType(Bar.class)
-                ), 
+                new BtAnnotate(), 
                 Bar.class
             )
         );

@@ -26,10 +26,10 @@ package oo.atom.codegen.bytebuddy.smt;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrInferred;
+import oo.atom.r.RInferred;
+import oo.atom.r.Result;
 
-class SmtLoadArrayOfFieldsInference implements TaskResult.Inference<StackManipulation> {
+class SmtLoadArrayOfFieldsInference implements Result.Inference<StackManipulation> {
     private final TypeDescription type;
 
     public SmtLoadArrayOfFieldsInference(TypeDescription type) {
@@ -37,7 +37,7 @@ class SmtLoadArrayOfFieldsInference implements TaskResult.Inference<StackManipul
     }
 
     @Override
-    public final TaskResult<StackManipulation> taskResult() {
+    public final Result<StackManipulation> taskResult() {
         return new SmtArray(
                 List.of(type)
                 .flatMap(TypeDescription::getDeclaredFields)
@@ -52,7 +52,7 @@ class SmtLoadArrayOfFieldsInference implements TaskResult.Inference<StackManipul
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadArrayOfFields extends TrInferred<StackManipulation> {
+public class SmtLoadArrayOfFields extends RInferred<StackManipulation> implements StackManipulationToken {
     public SmtLoadArrayOfFields(TypeDescription type) {
         super(new SmtLoadArrayOfFieldsInference(type));
     }

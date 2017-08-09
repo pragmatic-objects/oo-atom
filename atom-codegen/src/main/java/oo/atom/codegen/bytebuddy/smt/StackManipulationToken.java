@@ -21,42 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.codegen.bytebuddy.smt;
 
-import java.util.function.Function;
-import io.vavr.collection.List;
-import io.vavr.control.Try;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrTransformed<X, T> implements TaskResult<T> {
-    private final List<TaskResult<X>> taskResults;
-    private final Function<? super List<X>, ? extends T> transformFunction;
-
-    public TrTransformed(List<TaskResult<X>> taskResults, Function<? super List<X>, ? extends T> transformFunction) {
-        this.taskResults = taskResults;
-        this.transformFunction = transformFunction;
-    }
-
-    @Override
-    public final Try<T> outcome() {
-        List<Try<X>> outcomes = taskResults.map(TaskResult::outcome);
-        if (!outcomes.filter(Try::isFailure).isEmpty()) {
-            return Try.failure(
-                    new RuntimeException(
-                            String.join("\r\n", issues())
-                    )
-            );
-        }
-        return Try.success(
-            outcomes.map(Try::get).transform(transformFunction)
-        );
-    }
-
-    @Override
-    public final List<String> issues() {
-        return taskResults.flatMap(TaskResult::issues);
-    }
+public interface StackManipulationToken extends Result<StackManipulation> {
 }

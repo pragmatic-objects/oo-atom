@@ -26,11 +26,11 @@ package oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.FieldAccess;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrInferred;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RInferred;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
 
-class SmtGetFieldInference implements TaskResult.Inference<StackManipulation> {
+class SmtGetFieldInference implements Result.Inference<StackManipulation> {
     private final FieldDescription field;
 
     public SmtGetFieldInference(FieldDescription field) {
@@ -38,8 +38,8 @@ class SmtGetFieldInference implements TaskResult.Inference<StackManipulation> {
     }
 
     @Override
-    public final TaskResult<StackManipulation> taskResult() {
-        return new TrSuccess<>(
+    public final Result<StackManipulation> taskResult() {
+        return new RSuccess<>(
             FieldAccess.forField(field).read()
         );
     }
@@ -49,7 +49,7 @@ class SmtGetFieldInference implements TaskResult.Inference<StackManipulation> {
  *
  * @author Kapralov Sergey
  */
-public class SmtGetField extends TrInferred<StackManipulation> {
+public class SmtGetField extends RInferred<StackManipulation> implements StackManipulationToken {
     public SmtGetField(FieldDescription field) {
         super(
             new SmtGetFieldInference(field)

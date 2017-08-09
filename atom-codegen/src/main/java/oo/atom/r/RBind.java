@@ -21,21 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.r;
+
+import io.vavr.collection.List;
+
+
+class TrBindInference<X, T> implements Result.Inference<T> {
+    private final Result<X> source;
+    private final ResultTransition<X, T> bindFunction;
+
+    public TrBindInference(Result<X> source, ResultTransition<X, T> bindFunction) {
+        this.source = source;
+        this.bindFunction = bindFunction;
+    }
+
+    @Override
+    public final Result<T> taskResult() {
+        List<String> issues = source.issues();
+        if(!issues.isEmpty()) {
+            return new RFailure<T>(issues);
+        } else {
+            return bindFunction.transitionResult(source.outcome().get());
+        }
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrtInferred<X, T> implements TaskResultTransition<X, T> {
-    private final Inference<X, T> inference;
-
-    public TrtInferred(Inference<X, T> inference) {
-        this.inference = inference;
-    }
-
-    @Override
-    public final TaskResult<T> transitionResult(X source) {
-        return inference.taskResultTransition().transitionResult(source);
+public class RBind<X, T> extends RInferred<T> implements Result<T> {
+    public RBind(Result<X> source, ResultTransition<X, T> bindFunction) {
+        super(
+            new TrBindInference<>(source, bindFunction)
+        );
     }
 }

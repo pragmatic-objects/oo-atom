@@ -25,12 +25,12 @@ package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrInferred;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RInferred;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
 
 
-class SmtLoadReferenceInference implements TaskResult.Inference<StackManipulation> {
+class SmtLoadReferenceInference implements Result.Inference<StackManipulation> {
     private final Integer index;
 
     public SmtLoadReferenceInference(Integer index) {
@@ -38,8 +38,8 @@ class SmtLoadReferenceInference implements TaskResult.Inference<StackManipulatio
     }
     
     @Override
-    public final TaskResult<StackManipulation> taskResult() {
-        return new TrSuccess<>(
+    public final Result<StackManipulation> taskResult() {
+        return new RSuccess<>(
             MethodVariableAccess.REFERENCE.loadFrom(index)
         );
     }
@@ -49,7 +49,7 @@ class SmtLoadReferenceInference implements TaskResult.Inference<StackManipulatio
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadReference extends TrInferred<StackManipulation> {
+public class SmtLoadReference extends RInferred<StackManipulation> implements StackManipulationToken{
     public SmtLoadReference(int index) {
         super(
             new SmtLoadReferenceInference(index)

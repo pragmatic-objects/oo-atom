@@ -25,29 +25,29 @@ package oo.atom.codegen.bytebuddy.bt;
 
 import java.lang.annotation.Annotation;
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.task.result.TaskResultTransition;
 import oo.atom.tests.Assertion;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AssertBuilderTaskToAnnotateAClass implements Assertion {
+public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
     private final String description;
-    private final TaskResultTransition<Builder<?>, Builder<?>> builderTask;
+    private final BuilderTransition builderTransition;
     private final Class<?> type;
     private final Class<? extends Annotation> annotation;
 
-    public AssertBuilderTaskToAnnotateAClass(String description, TaskResultTransition<Builder<?>, Builder<?>> builderTask, Class<?> type, Class<? extends Annotation> annotation) {
+    public AssertBuilderTransitionToAnnotateAClass(String description, BuilderTransition builderTransition, Class<?> type, Class<? extends Annotation> annotation) {
         this.description = description;
-        this.builderTask = builderTask;
+        this.builderTransition = builderTransition;
         this.type = type;
         this.annotation = annotation;
     }
-
+    
     @Override
     public final String description() {
         return description;
@@ -55,8 +55,13 @@ public class AssertBuilderTaskToAnnotateAClass implements Assertion {
 
     @Override
     public final void check() throws Exception {
+        final TypeDescription typeDescription = new TypeDescription.ForLoadedType(type);
         final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
-        final DynamicType.Unloaded<?> make = builderTask.transitionResult(subclass).outcome().get().make();
+        final DynamicType.Unloaded<?> make = builderTransition
+                .transitionResult(subclass, typeDescription)
+                .outcome()
+                .get()
+                .make();
         final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
         assertThat(
             clazz.getAnnotation(annotation)

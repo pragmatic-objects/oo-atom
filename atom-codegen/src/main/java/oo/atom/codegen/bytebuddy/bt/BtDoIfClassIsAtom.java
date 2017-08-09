@@ -27,31 +27,31 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.codegen.bytebuddy.matchers.IsAtom;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TaskResultTransition;
-import oo.atom.task.result.TrFailure;
+import oo.atom.r.RFailure;
+import oo.atom.r.Result;
+import oo.atom.r.ResultTransition;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtDoIfClassIsAtom implements TaskResultTransition<Builder<?>, Builder<?>> {
+public class BtDoIfClassIsAtom implements ResultTransition<Builder<?>, Builder<?>> {
     private static final ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
     
     private final TypeDescription type;
-    private final TaskResultTransition<Builder<?>, Builder<?>> task;
+    private final ResultTransition<Builder<?>, Builder<?>> task;
 
-    public BtDoIfClassIsAtom(TypeDescription type, TaskResultTransition<Builder<?>, Builder<?>> task) {
+    public BtDoIfClassIsAtom(TypeDescription type, ResultTransition<Builder<?>, Builder<?>> task) {
         this.type = type;
         this.task = task;
     }
 
     @Override
-    public final TaskResult<Builder<?>> transitionResult(Builder<?> source) {
+    public final Result<Builder<?>> transitionResult(Builder<?> source) {
         if(IS_ATOM.matches(type)) {
             return task.transitionResult(source);
         } else {
-            return new TrFailure(
+            return new RFailure(
                 String.format("%s is not atom", type.getName())
             );
         }

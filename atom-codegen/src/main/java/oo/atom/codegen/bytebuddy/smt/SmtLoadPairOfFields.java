@@ -30,7 +30,7 @@ import net.bytebuddy.description.type.TypeDescription;
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadPairOfFields extends SmtCombined  {
+public class SmtLoadPairOfFields extends SmtCombined {
     public SmtLoadPairOfFields(TypeDescription type, FieldDescription field) {
         super(
                 new SmtLoadReference(0),

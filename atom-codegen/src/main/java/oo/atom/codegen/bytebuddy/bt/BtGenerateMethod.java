@@ -24,6 +24,7 @@
 package oo.atom.codegen.bytebuddy.bt;
 
 import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.dynamic.scaffold.InstrumentedType;
 import net.bytebuddy.implementation.Implementation;
@@ -31,10 +32,10 @@ import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TaskResultTransition;
-import oo.atom.task.result.TrBind;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.codegen.bytebuddy.smt.StackManipulationToken;
+import oo.atom.r.RBind;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
 
 class BtGenerateMethodBytecodeAppender implements ByteCodeAppender {
     private final StackManipulation sm;
@@ -73,19 +74,25 @@ class BtGenerateMethodImplementation implements Implementation {
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateMethod implements TaskResultTransition<Builder<?>, Builder<?>> {
-    private final ElementMatcher<? super MethodDescription> elementMatcher;
-    private final TaskResult<StackManipulation> methodBodyTask;
-
-    public BtGenerateMethod(ElementMatcher<? super MethodDescription> elementMatcher, TaskResult<StackManipulation> methodBodyTask) {
-        this.elementMatcher = elementMatcher;
-        this.methodBodyTask = methodBodyTask;
+public class BtGenerateMethod implements BuilderTransition {
+    interface StackManipulationTokenByTypeDescription {
+        StackManipulationToken token(TypeDescription type);
     }
+    
+    
+    private final ElementMatcher<? super MethodDescription> elementMatcher;
+    private final StackManipulationTokenByTypeDescription methodBodySmt;
 
+    public BtGenerateMethod(ElementMatcher<? super MethodDescription> elementMatcher, StackManipulationTokenByTypeDescription methodBodySmt) {
+        this.elementMatcher = elementMatcher;
+        this.methodBodySmt = methodBodySmt;
+    }
+    
     @Override
-    public final TaskResult<Builder<?>> transitionResult(Builder<?> source) {
-        return new TrBind<>(methodBodyTask, sm -> {
-            return new TrSuccess<>(
+    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
+        final StackManipulationToken token = methodBodySmt.token(typeDescription);
+        return new RBind<>(token, sm -> {
+            return new RSuccess<>(
                 source
                     .method(elementMatcher)
                     .intercept(new BtGenerateMethodImplementation(sm))

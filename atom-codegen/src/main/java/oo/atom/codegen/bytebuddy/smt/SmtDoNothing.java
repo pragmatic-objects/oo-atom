@@ -24,13 +24,13 @@
 package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RSuccess;
 
 /**
  *
  * @author skapral
  */
-public class SmtDoNothing extends TrSuccess<StackManipulation> {
+public class SmtDoNothing extends RSuccess<StackManipulation> implements StackManipulationToken {
     private static final StackManipulation EMPTY = new StackManipulation.Compound();
     
     public SmtDoNothing() {

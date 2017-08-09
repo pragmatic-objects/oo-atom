@@ -21,29 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
-
-import io.vavr.collection.List;
-import io.vavr.control.Try;
+package oo.atom.r;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrSuccess<T> implements TaskResult<T> {
-    private final T outcome;
+public class RtChain<X, S, T> implements ResultTransition<X, T> {
+    private final ResultTransition<X, S> first;
+    private final ResultTransition<S, T> second;
 
-    public TrSuccess(T outcome) {
-        this.outcome = outcome;
+    public RtChain(ResultTransition<X, S> first, ResultTransition<S, T> second) {
+        this.first = first;
+        this.second = second;
     }
-
+    
     @Override
-    public final Try<T> outcome() {
-        return Try.success(outcome);
-    }
-
-    @Override
-    public final List<String> issues() {
-        return List.empty();
+    public final Result<T> transitionResult(X source) {
+        return new RBind<>(
+            first.transitionResult(source),
+            second
+        );
     }
 }

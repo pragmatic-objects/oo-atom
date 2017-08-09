@@ -21,47 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.codegen.bytebuddy.bt;
 
-import io.vavr.collection.List;
-import oo.atom.tests.Assertion;
-import static org.assertj.core.api.Assertions.*;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType.Builder;
+import oo.atom.r.Result;
+import oo.atom.r.ResultTransition;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AssertTaskResultIsErroneous implements Assertion {
-    private final String description;
-    private final TaskResult<?> taskResult;
-    private final List<String> issues;
-    
-    public AssertTaskResultIsErroneous(String description, TaskResult<?> taskResult, List<String> issues) {
-        this.description = description;
-        this.taskResult = taskResult;
-        this.issues = issues;
-    }
+public class RtFromBuilderTransitionAdapter implements ResultTransition<Builder<?>, Builder<?>> {
+    private final BuilderTransition builderTransition;
+    private final TypeDescription typeDescription;
 
-    public AssertTaskResultIsErroneous(String description, TaskResult<?> taskResult, String... issues) {
-        this(
-            description,
-            taskResult,
-            List.of(issues)
-        );
-    }
-
-    @Override
-    public final String description() {
-        return description;
-    }
-
-    @Override
-    public final void check() throws Exception {
-        assertThatThrownBy(() -> {
-            taskResult.outcome().get();
-        }).isInstanceOf(RuntimeException.class);
-        assertThat(taskResult.issues())
-                .containsExactlyElementsOf(issues);
+    public RtFromBuilderTransitionAdapter(BuilderTransition builderTransition, TypeDescription typeDescription) {
+        this.builderTransition = builderTransition;
+        this.typeDescription = typeDescription;
     }
     
+    @Override
+    public final Result<Builder<?>> transitionResult(Builder<?> source) {
+        return builderTransition.transitionResult(source, typeDescription);
+    }
 }

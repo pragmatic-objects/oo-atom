@@ -21,21 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.r;
+
+import io.vavr.collection.List;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrtConstant<X, T> implements TaskResultTransition<X, T> {
-    private final TaskResult<T> constant;
+public class RtSequence<T> implements ResultTransition<T, T> {
+    private final List<ResultTransition<T, T>> transitions;
 
-    public TrtConstant(TaskResult<T> constant) {
-        this.constant = constant;
+    public RtSequence(List<ResultTransition<T, T>> transitions) {
+        this.transitions = transitions;
+    }
+    
+    public RtSequence(ResultTransition<T, T>... transitions) {
+        this(List.of(transitions));
     }
 
     @Override
-    public final TaskResult<T> transitionResult(X source) {
-        return constant;
+    public final Result<T> transitionResult(T source) {
+        return transitions.foldLeft(
+            new RSuccess<>(source),
+            RBind<T, T>::new
+        );
     }
 }

@@ -21,32 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
-
-import oo.atom.tests.Assertion;
-import org.assertj.core.api.Assertions;
+package oo.atom.r;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AssertTaskResultIsMalformed implements Assertion {
-    private final String description;
-    private final TaskResult<?> taskResult;
+public class RtOverriden<X, T> implements ResultTransition<X, T> {
+    private final Result<T> constant;
 
-    public AssertTaskResultIsMalformed(String description, TaskResult<?> taskResult) {
-        this.description = description;
-        this.taskResult = taskResult;
+    public RtOverriden(Result<T> constant) {
+        this.constant = constant;
     }
 
     @Override
-    public final String description() {
-        return description;
-    }
-
-    @Override
-    public final void check() throws Exception {
-        Assertions.assertThatThrownBy(() -> taskResult.outcome()).isNotNull();
-        Assertions.assertThatThrownBy(() -> taskResult.issues()).isNotNull();
+    public final Result<T> transitionResult(X source) {
+        return constant;
     }
 }

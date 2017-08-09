@@ -29,12 +29,12 @@ import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrFailure;
-import oo.atom.task.result.TrInferred;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RFailure;
+import oo.atom.r.RInferred;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
 
-class SmtBoxInference implements TaskResult.Inference<StackManipulation> {
+class SmtBoxInference implements Result.Inference<StackManipulation> {
 
     private static final Method BOOLEAN_VALUEOF;
     private static final Method BYTE_VALUEOF;
@@ -67,35 +67,34 @@ class SmtBoxInference implements TaskResult.Inference<StackManipulation> {
     }
 
     @Override
-    public final TaskResult<StackManipulation> taskResult() {
-        return Match(type).<TaskResult<StackManipulation>>of(
-                Case($(t -> t.represents(boolean.class)), new TrSuccess<StackManipulation>(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
-                )),
-                Case($(t -> t.represents(byte.class)), new TrSuccess<StackManipulation>(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
-                )),
-                Case($(t -> t.represents(char.class)), new TrSuccess<StackManipulation>(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
-                )),
-                Case($(t -> t.represents(short.class)), new TrSuccess<StackManipulation>(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
-                )),
-                Case($(t -> t.represents(int.class)), new TrSuccess<StackManipulation>(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
-                )),
-                Case($(t -> t.represents(long.class)), new TrSuccess<StackManipulation>(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
-                )),
-                Case($(t -> t.represents(float.class)), new TrSuccess<StackManipulation>(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
-                )),
-                Case($(t -> t.represents(double.class)), new TrSuccess<StackManipulation>(
-                        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
-                )),
-                Case($(), new TrFailure<StackManipulation>(
-                        String.format("Attempt to box non-primitive type %s", type)
-                ))
+    public final Result<StackManipulation> taskResult() {
+        return Match(type).<Result<StackManipulation>>of(Case($(t -> t.represents(boolean.class)), new RSuccess<StackManipulation>(
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
+            )),
+            Case($(t -> t.represents(byte.class)), new RSuccess<StackManipulation>(
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
+            )),
+            Case($(t -> t.represents(char.class)), new RSuccess<StackManipulation>(
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
+            )),
+            Case($(t -> t.represents(short.class)), new RSuccess<StackManipulation>(
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
+            )),
+            Case($(t -> t.represents(int.class)), new RSuccess<StackManipulation>(
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+            )),
+            Case($(t -> t.represents(long.class)), new RSuccess<StackManipulation>(
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
+            )),
+            Case($(t -> t.represents(float.class)), new RSuccess<StackManipulation>(
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
+            )),
+            Case($(t -> t.represents(double.class)), new RSuccess<StackManipulation>(
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
+            )),
+            Case($(), new RFailure<StackManipulation>(
+                String.format("Attempt to box non-primitive type %s", type)
+            ))
         );
     }
 }
@@ -104,7 +103,7 @@ class SmtBoxInference implements TaskResult.Inference<StackManipulation> {
  *
  * @author Kapralov Sergey
  */
-public class SmtBox extends TrInferred<StackManipulation> {
+public class SmtBox extends RInferred<StackManipulation> implements StackManipulationToken {
 
     public SmtBox(TypeDescription type) {
         super(

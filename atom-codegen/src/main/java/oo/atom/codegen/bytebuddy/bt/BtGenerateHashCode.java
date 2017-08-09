@@ -23,7 +23,6 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import net.bytebuddy.description.type.TypeDescription;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 import oo.atom.codegen.bytebuddy.smt.SmtHashCode;
 
@@ -32,10 +31,10 @@ import oo.atom.codegen.bytebuddy.smt.SmtHashCode;
  * @author Kapralov Sergey
  */
 public class BtGenerateHashCode extends BtGenerateMethod {
-    public BtGenerateHashCode(TypeDescription td) {
+    public BtGenerateHashCode() {
         super(
             named("hashCode"),
-            new SmtHashCode(td)
+            type -> new SmtHashCode(type)
         );
     }
 }

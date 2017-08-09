@@ -21,30 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.codegen.bytebuddy.bt;
 
-import io.vavr.collection.List;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType.Builder;
+import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrtSequence<T> implements TaskResultTransition<T, T> {
-    private final List<TaskResultTransition<T, T>> transitions;
-
-    public TrtSequence(List<TaskResultTransition<T, T>> transitions) {
-        this.transitions = transitions;
+public interface BuilderTransition {
+    interface Inference {
+        BuilderTransition builderTransition();
     }
     
-    public TrtSequence(TaskResultTransition<T, T>... transitions) {
-        this(List.of(transitions));
-    }
-
-    @Override
-    public final TaskResult<T> transitionResult(T source) {
-        return transitions.foldLeft(
-            new TrSuccess<>(source),
-            TrBind<T, T>::new
-        );
-    }
+    Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription);
 }

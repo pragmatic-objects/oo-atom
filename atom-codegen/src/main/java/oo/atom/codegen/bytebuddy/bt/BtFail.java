@@ -21,46 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.bt;
 
-import io.vavr.collection.List;
-import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
-import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
+import oo.atom.r.RFailure;
 import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TaskPlugin implements Plugin {
-    private final ElementMatcher<TypeDescription> matcher;
-    private final BuilderTransition bt;
+public class BtFail implements BuilderTransition {
+    private final String errorMessage;
 
-    public TaskPlugin(ElementMatcher<TypeDescription> matcher, BuilderTransition bt) {
-        this.matcher = matcher;
-        this.bt = bt;
-    }
-
-    
-
-    @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.outcome().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+    public BtFail(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     @Override
-    public final boolean matches(TypeDescription target) {
-        return matcher.matches(target);
+    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
+        return new RFailure<>(errorMessage);
     }
 }

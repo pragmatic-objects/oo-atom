@@ -27,12 +27,10 @@ import java.lang.annotation.Annotation;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
 import oo.atom.anno.Atom;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TaskResultTransition;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
 
 class BtAnnotateAtom implements Atom {
-
     @Override
     public final Class<? extends Annotation> annotationType() {
         return Atom.class;
@@ -43,18 +41,12 @@ class BtAnnotateAtom implements Atom {
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotate implements TaskResultTransition<Builder<?>, Builder<?>> {
-    private final TypeDescription type;
-
-    public BtAnnotate(TypeDescription type) {
-        this.type = type;
-    }
-
+public class BtAnnotate implements BuilderTransition {
     @Override
-    public final TaskResult<Builder<?>> transitionResult(Builder<?> source) {
+    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription type) {
         boolean annotationPresent = type.getDeclaredAnnotations().isAnnotationPresent(Atom.class);
         
-        return new TrSuccess<>(
+        return new RSuccess<>(
             annotationPresent ?
                 source :
                 source.annotateType(

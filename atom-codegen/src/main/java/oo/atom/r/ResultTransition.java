@@ -21,20 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
-
-import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.smt.SmtEquals;
+package oo.atom.r;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateEquals extends BtGenerateMethod {
-    public BtGenerateEquals() {
-        super(
-            named("equals"),
-            type -> new SmtEquals(type)
-        );
+public interface ResultTransition<X, T> {
+    interface Inference<X, T> {
+        ResultTransition<X, T> taskResultTransition();
     }
+    
+    Result<T> transitionResult(X source);
 }

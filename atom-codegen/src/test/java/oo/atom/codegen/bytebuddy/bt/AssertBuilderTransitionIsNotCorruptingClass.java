@@ -21,46 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.codegen.bytebuddy.bt;
 
-import io.vavr.collection.List;
-import net.bytebuddy.build.Plugin;
+import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
+import net.bytebuddy.dynamic.DynamicType;
+import oo.atom.anno.Atom;
+import oo.atom.tests.Assertion;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TaskPlugin implements Plugin {
-    private final ElementMatcher<TypeDescription> matcher;
+public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
+    private final String description;
     private final BuilderTransition bt;
+    private final Class<?> type;
 
-    public TaskPlugin(ElementMatcher<TypeDescription> matcher, BuilderTransition bt) {
-        this.matcher = matcher;
+    public AssertBuilderTransitionIsNotCorruptingClass(String description, BuilderTransition bt, Class<?> type) {
+        this.description = description;
         this.bt = bt;
-    }
-
-    
-
-    @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.outcome().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+        this.type = type;
     }
 
     @Override
-    public final boolean matches(TypeDescription target) {
-        return matcher.matches(target);
+    public final String description() {
+        return description;
     }
+
+    @Override
+    public final void check() throws Exception {
+        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
+        final TypeDescription typeDescription = new TypeDescription.ForLoadedType(type);
+        assertThatCode(() -> {
+            final DynamicType.Unloaded<?> make = bt
+                    .transitionResult(subclass, typeDescription)
+                    .outcome()
+                    .get().make();
+            final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
+            final Atom annotation = clazz.getAnnotation(Atom.class);
+        }).doesNotThrowAnyException();
+    }    
 }

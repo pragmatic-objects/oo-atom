@@ -21,46 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+package oo.atom.r;
 
+import java.util.function.Function;
 import io.vavr.collection.List;
-import net.bytebuddy.build.Plugin;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
+import io.vavr.control.Try;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TaskPlugin implements Plugin {
-    private final ElementMatcher<TypeDescription> matcher;
-    private final BuilderTransition bt;
+public class RTransformed<X, T> implements Result<T> {
+    private final List<Result<X>> taskResults;
+    private final Function<? super List<X>, ? extends T> transformFunction;
 
-    public TaskPlugin(ElementMatcher<TypeDescription> matcher, BuilderTransition bt) {
-        this.matcher = matcher;
-        this.bt = bt;
+    public RTransformed(List<Result<X>> taskResults, Function<? super List<X>, ? extends T> transformFunction) {
+        this.taskResults = taskResults;
+        this.transformFunction = transformFunction;
     }
 
-    
-
     @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.outcome().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
+    public final Try<T> outcome() {
+        List<Try<X>> outcomes = taskResults.map(Result::outcome);
+        if (!outcomes.filter(Try::isFailure).isEmpty()) {
+            return Try.failure(
+                    new RuntimeException(
+                            String.join("\r\n", issues())
+                    )
+            );
         }
+        return Try.success(
+            outcomes.map(Try::get).transform(transformFunction)
+        );
     }
 
     @Override
-    public final boolean matches(TypeDescription target) {
-        return matcher.matches(target);
+    public final List<String> issues() {
+        return taskResults.flatMap(Result::issues);
     }
 }

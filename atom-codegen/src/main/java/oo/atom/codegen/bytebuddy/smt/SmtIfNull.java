@@ -27,12 +27,12 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
 import oo.atom.codegen.bytebuddy.branching.BIsNull;
 import oo.atom.codegen.bytebuddy.branching.BMark;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TaskResultTransition;
-import oo.atom.task.result.TrBind;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RBind;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
+import oo.atom.r.ResultTransition;
 
-class TrtIfNull implements TaskResultTransition<StackManipulation, StackManipulation> {
+class TrtIfNull implements ResultTransition<StackManipulation, StackManipulation> {
 
     private final boolean isTrue;
 
@@ -41,9 +41,9 @@ class TrtIfNull implements TaskResultTransition<StackManipulation, StackManipula
     }
 
     @Override
-    public final TaskResult<StackManipulation> transitionResult(StackManipulation sm) {
+    public final Result<StackManipulation> transitionResult(StackManipulation sm) {
         final Label checkEnd = new Label();
-        return new TrSuccess<>(
+        return new RSuccess<>(
             new StackManipulation.Compound(
                 new BIsNull(isTrue, checkEnd),
                 sm,
@@ -57,10 +57,10 @@ class TrtIfNull implements TaskResultTransition<StackManipulation, StackManipula
  *
  * @author Kapralov Sergey
  */
-public class SmtIfNull extends TrBind<StackManipulation, StackManipulation> {
-    public SmtIfNull(boolean isTrue, TaskResult<StackManipulation> task) {
+public class SmtIfNull extends RBind<StackManipulation, StackManipulation> implements StackManipulationToken {
+    public SmtIfNull(boolean isTrue, StackManipulationToken smt) {
         super(
-            task, 
+            smt, 
             new TrtIfNull(isTrue)
         );
     }

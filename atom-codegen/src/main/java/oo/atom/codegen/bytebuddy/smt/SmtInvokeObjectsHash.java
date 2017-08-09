@@ -29,13 +29,13 @@ import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtInvokeObjectsHash extends TrSuccess<StackManipulation> {
+public class SmtInvokeObjectsHash extends RSuccess<StackManipulation> implements StackManipulationToken {
     private static final Method OBJECTS_HASH;
 
     static {

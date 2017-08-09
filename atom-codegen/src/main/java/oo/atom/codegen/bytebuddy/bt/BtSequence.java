@@ -21,26 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.codegen.bytebuddy.bt;
+
+import io.vavr.collection.List;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType.Builder;
+import oo.atom.r.RBind;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrtChain<X, S, T> implements TaskResultTransition<X, T> {
-    private final TaskResultTransition<X, S> first;
-    private final TaskResultTransition<S, T> second;
+public class BtSequence implements BuilderTransition {
+    private final List<BuilderTransition> transitions;
 
-    public TrtChain(TaskResultTransition<X, S> first, TaskResultTransition<S, T> second) {
-        this.first = first;
-        this.second = second;
+    public BtSequence(List<BuilderTransition> transitions) {
+        this.transitions = transitions;
     }
-    
+
+    public BtSequence(BuilderTransition... transitions) {
+        this(List.of(transitions));
+    }
+
     @Override
-    public final TaskResult<T> transitionResult(X source) {
-        return new TrBind<>(
-            first.transitionResult(source),
-            second
+    public Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
+        return transitions.<Result<Builder<?>>>foldLeft(
+            new RSuccess<>(source),
+            (state, transition) -> new RBind<>(
+                state,
+                new RtFromBuilderTransitionAdapter(transition, typeDescription)
+            )
         );
     }
+    
 }

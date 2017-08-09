@@ -21,54 +21,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.r;
 
 import java.util.function.BinaryOperator;
 import io.vavr.collection.List;
-import io.vavr.control.Try;
+
+class TrCombineOrDefaultInference<T> implements Result.Inference<T> {
+    private final BinaryOperator<T> combineOperator;
+    private final T defaultValue;
+    private final List<Result<T>> taskResults;
+
+    public TrCombineOrDefaultInference(BinaryOperator<T> combineOperator, T defaultValue, List<Result<T>> taskResults) {
+        this.combineOperator = combineOperator;
+        this.defaultValue = defaultValue;
+        this.taskResults = taskResults;
+    }
+
+    @Override
+    public final Result<T> taskResult() {
+        if(taskResults.isEmpty()) {
+            return new RSuccess<>(defaultValue);
+        } else {
+            return new RCombined<>(combineOperator, taskResults);
+        }
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrCombined<T> implements TaskResult<T> {
-    private final List<TaskResult<T>> taskResults;
-    private final BinaryOperator<T> combineOperator;
-
-    public TrCombined(BinaryOperator<T> combineOperator, List<TaskResult<T>> taskResults) {
-        this.taskResults = taskResults;
-        this.combineOperator = combineOperator;
-    }
-
-    public TrCombined(BinaryOperator<T> combineOperator, TaskResult<T>... taskResults) {
-        this(combineOperator, List.of(taskResults));
-    }
-
-    @Override
-    public final Try<T> outcome() {
-        if(taskResults.isEmpty()) {
-            throw new IllegalArgumentException("Attempt to combine an empty set");
-        }
-        return taskResults.map(TaskResult::outcome)
-                .reduce((t1, t2) -> {
-                    if(t1.isFailure() || t2.isFailure()) {
-                        return Try.failure(
-                            new RuntimeException(
-                                String.join("\r\n", issues())
-                            )
-                        );
-                    }
-                    return Try.success(
-                        combineOperator.apply(t1.get(), t2.get())
-                    );
-                });
+public class RCombinedOrDefault<T> extends RInferred<T> {
+    public RCombinedOrDefault(BinaryOperator<T> combineOperator, T defaultValue, List<Result<T>> taskResults) {
+        super(
+            new TrCombineOrDefaultInference(
+                combineOperator,
+                defaultValue,
+                taskResults
+            )
+        );
     }
     
-    @Override
-    public final List<String> issues() {
-        if(taskResults.isEmpty()) {
-            throw new IllegalArgumentException("Attempt to combine an empty set");
-        }
-        return taskResults.flatMap(TaskResult::issues);
+    public RCombinedOrDefault(BinaryOperator<T> combineOperator, T defaultValue, Result<T>... taskResults) {
+        this(
+            combineOperator,
+            defaultValue,
+            List.of(taskResults)
+        );
     }
 }

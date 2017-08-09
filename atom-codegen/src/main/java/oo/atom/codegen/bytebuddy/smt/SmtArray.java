@@ -27,20 +27,20 @@ import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrInferred;
-import oo.atom.task.result.TrTransformed;
+import oo.atom.r.RInferred;
+import oo.atom.r.RTransformed;
+import oo.atom.r.Result;
 
-class SmtArrayInference implements TaskResult.Inference {
-    private final List<TaskResult<StackManipulation>> members;
+class SmtArrayInference implements Result.Inference {
+    private final List<Result<StackManipulation>> members;
 
-    public SmtArrayInference(List<TaskResult<StackManipulation>> members) {
+    public SmtArrayInference(List<Result<StackManipulation>> members) {
         this.members = members;
     }
 
     @Override
-    public final TaskResult<StackManipulation> taskResult() {
-        return new TrTransformed<>(
+    public final Result<StackManipulation> taskResult() {
+        return new RTransformed<>(
             members, 
             list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
                 list.toJavaList()
@@ -53,14 +53,14 @@ class SmtArrayInference implements TaskResult.Inference {
  *
  * @author Kapralov Sergey
  */
-public class SmtArray extends TrInferred<StackManipulation> {
-    public SmtArray(List<TaskResult<StackManipulation>> members) {
+public class SmtArray extends RInferred<StackManipulation> implements StackManipulationToken {
+    public SmtArray(List<Result<StackManipulation>> members) {
         super(
             new SmtArrayInference(members)
         );
     }
 
-    public SmtArray(TaskResult<StackManipulation>... members) {
+    public SmtArray(Result<StackManipulation>... members) {
         this(List.of(members));
     }
 

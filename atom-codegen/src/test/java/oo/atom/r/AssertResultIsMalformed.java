@@ -21,37 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
+package oo.atom.r;
 
-import io.vavr.collection.List;
-import io.vavr.control.Try;
+import oo.atom.r.Result;
+import oo.atom.tests.Assertion;
+import org.assertj.core.api.Assertions;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrFailure<T> implements TaskResult<T> {
-    private final List<String> issues;
+public class AssertResultIsMalformed implements Assertion {
+    private final String description;
+    private final Result<?> taskResult;
 
-    public TrFailure(List<String> issues) {
-        this.issues = issues;
-    }
-    
-    public TrFailure(String... issues) {
-        this(List.of(issues));
-    }
-    
-    @Override
-    public final Try<T> outcome() {
-        return Try.failure(
-            new RuntimeException(
-                String.join("\r\n", issues)
-            )
-        );
+    public AssertResultIsMalformed(String description, Result<?> taskResult) {
+        this.description = description;
+        this.taskResult = taskResult;
     }
 
     @Override
-    public final List<String> issues() {
-        return issues;
+    public final String description() {
+        return description;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        Assertions.assertThatThrownBy(() -> taskResult.outcome()).isNotNull();
+        Assertions.assertThatThrownBy(() -> taskResult.issues()).isNotNull();
     }
 }

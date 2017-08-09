@@ -26,11 +26,11 @@ package oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import oo.atom.task.result.TaskResult;
-import oo.atom.task.result.TrInferred;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RInferred;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
 
-class SmtReturnIntegerInference implements TaskResult.Inference<StackManipulation> {
+class SmtReturnIntegerInference implements Result.Inference<StackManipulation> {
     private final Integer index;
 
     public SmtReturnIntegerInference(Integer index) {
@@ -38,8 +38,8 @@ class SmtReturnIntegerInference implements TaskResult.Inference<StackManipulatio
     }
 
     @Override
-    public final TaskResult<StackManipulation> taskResult() {
-        return new TrSuccess<>(
+    public final Result<StackManipulation> taskResult() {
+        return new RSuccess<>(
             new StackManipulation.Compound(
                 IntegerConstant.forValue(index),
                 MethodReturn.INTEGER
@@ -53,12 +53,10 @@ class SmtReturnIntegerInference implements TaskResult.Inference<StackManipulatio
  *
  * @author Kapralov Sergey
  */
-public class SmtReturnInteger extends TrInferred<StackManipulation> {
-
+public class SmtReturnInteger extends RInferred<StackManipulation> implements StackManipulationToken {
     public SmtReturnInteger(Integer index) {
         super(
             new SmtReturnIntegerInference(index)
         );
     }
-
 }

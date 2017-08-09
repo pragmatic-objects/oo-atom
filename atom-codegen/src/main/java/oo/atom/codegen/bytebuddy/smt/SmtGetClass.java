@@ -27,13 +27,13 @@ import java.lang.reflect.Method;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.task.result.TrSuccess;
+import oo.atom.r.RSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtGetClass extends TrSuccess<StackManipulation> {
+public class SmtGetClass extends RSuccess<StackManipulation> implements StackManipulationToken {
     private final static StackManipulation STACK_MANIPULATION;
 
     static {

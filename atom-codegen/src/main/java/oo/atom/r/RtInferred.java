@@ -21,39 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.task.result;
-
-import io.vavr.collection.List;
-
-
-class TrBindInference<X, T> implements TaskResult.Inference<T> {
-    private final TaskResult<X> source;
-    private final TaskResultTransition<X, T> bindFunction;
-
-    public TrBindInference(TaskResult<X> source, TaskResultTransition<X, T> bindFunction) {
-        this.source = source;
-        this.bindFunction = bindFunction;
-    }
-
-    @Override
-    public final TaskResult<T> taskResult() {
-        List<String> issues = source.issues();
-        if(!issues.isEmpty()) {
-            return new TrFailure<T>(issues);
-        } else {
-            return bindFunction.transitionResult(source.outcome().get());
-        }
-    }
-}
+package oo.atom.r;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class TrBind<X, T> extends TrInferred<T> implements TaskResult<T> {
-    public TrBind(TaskResult<X> source, TaskResultTransition<X, T> bindFunction) {
-        super(
-            new TrBindInference<>(source, bindFunction)
-        );
+public class RtInferred<X, T> implements ResultTransition<X, T> {
+    private final Inference<X, T> inference;
+
+    public RtInferred(Inference<X, T> inference) {
+        this.inference = inference;
+    }
+
+    @Override
+    public final Result<T> transitionResult(X source) {
+        return inference.taskResultTransition().transitionResult(source);
     }
 }
