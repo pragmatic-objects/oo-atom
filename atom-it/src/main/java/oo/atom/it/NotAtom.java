@@ -27,8 +27,6 @@ package oo.atom.it;
  *
  * @author Kapralov Sergey
  */
-public class Fooo extends Foo {
-    public Fooo() {
-        super(42);
-    }
+@oo.atom.anno.NotAtom
+public class NotAtom {
 }

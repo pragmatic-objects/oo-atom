@@ -33,9 +33,10 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
  */
 public class ShouldBeInstrumented implements ElementMatcher<TypeDescription> {
     private static final ElementMatcher<TypeDescription> IS_CLASS = not(isInterface().or(isAnnotation()));
+    private static final ElementMatcher<TypeDescription> IS_NOT_EXPLICIT_NONATOM = not(new IsNotAtom());
     
     @Override
     public final boolean matches(TypeDescription target) {
-        return IS_CLASS.matches(target);
+        return IS_CLASS.matches(target) && IS_NOT_EXPLICIT_NONATOM.matches(target);
     }
 }
