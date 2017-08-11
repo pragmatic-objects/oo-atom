@@ -62,6 +62,9 @@
                 </executions>
                 <configuration>
                     <skip>false</skip>
+                    <initialization>
+                        <entryPoint>REDEFINE</entryPoint>
+                    </initialization>
                     <transformations>
                         <transformation>
                             <plugin>oo.atom.codegen.bytebuddy.plugin.AtomPlugin</plugin>

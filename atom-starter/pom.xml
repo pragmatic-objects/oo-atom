@@ -45,6 +45,9 @@
                     <artifactId>byte-buddy-maven-plugin</artifactId>
                     <configuration>
                         <skip>false</skip>
+                        <initialization>
+                            <entryPoint>REDEFINE</entryPoint>
+                        </initialization>
                         <transformations>
                             <transformation>
                                 <plugin>oo.atom.codegen.bytebuddy.plugin.AtomPlugin</plugin>
