@@ -26,6 +26,7 @@ package oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
+import oo.atom.codegen.bytebuddy.smt.bp.BytecodePattern;
 import oo.atom.tests.Assertion;
 import org.easymock.EasyMock;
 
@@ -36,9 +37,9 @@ import org.easymock.EasyMock;
 public class AssertStackManipulationsAreSame implements Assertion {
     private final String description;
     private final StackManipulation entity;
-    private final StackManipulation pattern;
+    private final BytecodePattern pattern;
 
-    public AssertStackManipulationsAreSame(String description, StackManipulation entity, StackManipulation pattern) {
+    public AssertStackManipulationsAreSame(String description, StackManipulation entity, BytecodePattern pattern) {
         this.description = description;
         this.entity = entity;
         this.pattern = pattern;
@@ -59,7 +60,7 @@ public class AssertStackManipulationsAreSame implements Assertion {
         );
         
         // Expect
-        pattern.apply(methodVisitor, implementationContext);
+        pattern.stackManipulation().apply(methodVisitor, implementationContext);
         EasyMock.replay(methodVisitor);
         
         entity.apply(methodVisitor, implementationContext);

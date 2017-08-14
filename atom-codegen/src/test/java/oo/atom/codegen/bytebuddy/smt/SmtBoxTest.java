@@ -57,7 +57,7 @@ public class SmtBoxTest extends AssertionsSuite {
                 new SmtBox(
                         new TypeDescription.ForLoadedType(int.class)
                 ),
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                () -> MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
             )
         );
     }

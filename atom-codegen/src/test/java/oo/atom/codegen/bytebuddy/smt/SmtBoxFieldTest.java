@@ -60,7 +60,7 @@ public class SmtBoxFieldTest extends AssertionsSuite {
                         NON_PRIMITIVE_FIELD
                     )
                 ),
-                new StackManipulation.Compound()
+                () -> new StackManipulation.Compound()
             ),
             new AssertTaskToGenerateBytecode(
                 "boxes primitive fields",
@@ -69,8 +69,19 @@ public class SmtBoxFieldTest extends AssertionsSuite {
                         PRIMITIVE_FIELD
                     )
                 ),
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                () -> MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
             )
         );
+    }
+
+    private static class Foo {
+
+        private final Object nonPrimitive;
+        private final int primitive;
+
+        public Foo(Object nonPrimitive, int primitive) {
+            this.nonPrimitive = nonPrimitive;
+            this.primitive = primitive;
+        }
     }
 }
