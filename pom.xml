@@ -259,10 +259,6 @@ SOFTWARE.
                                                 <module name="IllegalImport"/>
                                                 <module name="RedundantImport"/>
                                                 <module name="UnusedImports"/>
-                                                
-                                                <module name="TodoComment">
-                                                    <property name="format" value="(TODO)|(FIXME)"/>
-                                                </module>
                                             </module>
                                         </module>
                                     </checkstyleRules>

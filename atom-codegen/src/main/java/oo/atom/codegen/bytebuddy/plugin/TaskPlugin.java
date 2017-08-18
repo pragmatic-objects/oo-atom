@@ -44,8 +44,6 @@ public class TaskPlugin implements Plugin {
         this.bt = bt;
     }
 
-    
-
     @Override
     public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
         Result<Builder<?>> result = bt
