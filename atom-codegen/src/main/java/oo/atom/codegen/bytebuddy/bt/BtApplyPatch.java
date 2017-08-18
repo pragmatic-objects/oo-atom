@@ -46,7 +46,9 @@ public class BtApplyPatch implements BuilderTransition {
             return new BtApplyAtomPatch().transitionResult(source, type);
         } else {
             return new BtFail(
-                    String.format("%s is not atom", type.getName())
+                // @todo #1 put more information the logs, about the cause of
+                // the patch failure
+                String.format("%s is not atom", type.getName())
             ).transitionResult(source, type);
         }
     }
