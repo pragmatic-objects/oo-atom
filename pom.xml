@@ -110,6 +110,9 @@ SOFTWARE.
                     <groupId>net.bytebuddy</groupId>
                     <artifactId>byte-buddy-maven-plugin</artifactId>
                     <version>1.7.1</version>
+                    <!--
+                    @todo #10 upgrade this plugin after fix for https://github.com/raphw/byte-buddy/issues/331 released
+                    -->
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
