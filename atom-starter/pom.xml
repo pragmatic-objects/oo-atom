@@ -11,13 +11,6 @@
     <artifactId>atom-starter</artifactId>
     <packaging>pom</packaging>
     
-    <dependencies>
-        <dependency>
-            <groupId>oo</groupId>
-            <artifactId>atom-api</artifactId>
-        </dependency>
-    </dependencies>
-    
     <repositories>
         <repository>
             <snapshots>
@@ -57,6 +50,11 @@
                         </transformations>
                     </configuration>
                     <dependencies>
+                        <dependency>
+                            <groupId>oo</groupId>
+                            <artifactId>atom-api</artifactId>
+                            <version>${atom.version}</version>
+                        </dependency>
                         <dependency>
                             <groupId>oo</groupId>
                             <artifactId>atom-codegen</artifactId>
