@@ -21,22 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.matchers;
+package oo.atom.codegen.validator;
 
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
+import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoFields;
+import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoMethods;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsAtom extends WrappedMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
-    public IsAtom() {
+public class ValAtomAlias extends ValComplex {
+    public ValAtomAlias() {
         super(
-            new DisjunctionMatcher<>(
-                new NaturalJavaAtom(),
-                new AnnotatedAtom(),
-                new FollowsAtomSpecification()
+            new ValSingle(
+                new NoFields(), "Atom alias contains new fields, while it shouldn't"
+            ),
+            new ValSingle(
+                new NoMethods(), "Atom alias contains new declared methods, while it shouldn't"
             )
         );
     }

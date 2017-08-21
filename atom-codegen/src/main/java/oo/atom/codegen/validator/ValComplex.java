@@ -21,22 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.matchers;
+package oo.atom.codegen.validator;
 
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-import static net.bytebuddy.matcher.ElementMatchers.*;
+import oo.atom.r.RtCombined;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class ShouldBeInstrumented implements ElementMatcher<TypeDescription> {
-    private static final ElementMatcher<TypeDescription> IS_CLASS = not(isInterface().or(isAnnotation()));
-    private static final ElementMatcher<TypeDescription> IS_NOT_EXPLICIT_NONATOM = not(new IsNotAtom());
+public class ValComplex extends RtCombined<TypeDescription, TypeDescription> implements Validator {
+    public ValComplex(List<Validator> validators) {
+        super(
+            List.narrow(validators),
+            (r1, r2) -> r1
+        );
+    }
     
-    @Override
-    public final boolean matches(TypeDescription target) {
-        return IS_CLASS.matches(target) && IS_NOT_EXPLICIT_NONATOM.matches(target);
+    public ValComplex(Validator... validators) {
+        this(
+            List.of(validators)
+        );
     }
 }

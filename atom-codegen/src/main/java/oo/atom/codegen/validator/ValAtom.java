@@ -21,39 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.codegen.validator;
 
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.codegen.bytebuddy.matchers.IsAtom;
-import oo.atom.r.RFailure;
-import oo.atom.r.Result;
-import oo.atom.r.ResultTransition;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.AllFieldsArePrivateFinal;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.AllMethodsAreFinal;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.HasNoStaticMethods;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.IsNotAbstract;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtDoIfClassIsAtom implements ResultTransition<Builder<?>, Builder<?>> {
-    private static final ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
-    
-    private final TypeDescription type;
-    private final ResultTransition<Builder<?>, Builder<?>> task;
-
-    public BtDoIfClassIsAtom(TypeDescription type, ResultTransition<Builder<?>, Builder<?>> task) {
-        this.type = type;
-        this.task = task;
-    }
-
-    @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source) {
-        if(IS_ATOM.matches(type)) {
-            return task.transitionResult(source);
-        } else {
-            return new RFailure(
-                String.format("%s is not atom", type.getName())
-            );
-        }
+public class ValAtom extends ValComplex {
+    public ValAtom() {
+        super(
+            new ValSingle(new AllFieldsArePrivateFinal(), "All Atom's fields must be private final"),
+            new ValSingle(new AllMethodsAreFinal(), "All Atom's methods must be private final"),
+            new ValSingle(new HasNoStaticMethods(), "Atom shouldn't have static methods"),
+            new ValSingle(new IsNotAbstract(), "Atoms can't be abstract")
+        );
     }
 }

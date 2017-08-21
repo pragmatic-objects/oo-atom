@@ -23,6 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.matchers;
 
+import io.vavr.control.Option;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
@@ -30,11 +31,20 @@ import net.bytebuddy.matcher.ElementMatcher;
  *
  * @author Kapralov Sergey
  */
-public class IsAtomAlias extends ConjunctionMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
-    public IsAtomAlias() {
-        super(
-            new IsInheritedFromAtom(),
-            new FollowsAtomAliasSpecification()
-        );
+public class Extending implements ElementMatcher<TypeDescription> {
+    private final ElementMatcher<TypeDescription> superClassMatcher;
+
+    public Extending(ElementMatcher<TypeDescription> superClassMatcher) {
+        this.superClassMatcher = superClassMatcher;
+    }
+
+    @Override
+    public final boolean matches(TypeDescription target) {
+        Option<TypeDescription> optSuperClass = Option
+                .of(target.getSuperClass())
+                .map(TypeDescription.Generic::asErasure);
+        return optSuperClass
+                .map(sc -> superClassMatcher.matches(sc))
+                .getOrElse(Boolean.FALSE);
     }
 }

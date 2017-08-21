@@ -21,21 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.matchers;
+package oo.atom.codegen.validator;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
+import oo.atom.r.RFailure;
+import oo.atom.r.RSuccess;
+import oo.atom.r.ResultTransition;
+import oo.atom.r.RtInferred;
+
+
+class ValSingleInference implements ResultTransition.Inference<TypeDescription, TypeDescription> {
+    private final ElementMatcher<TypeDescription> matcher;
+    private final String errorMessage;
+
+    public ValSingleInference(ElementMatcher<TypeDescription> matcher, String errorMessage) {
+        this.matcher = matcher;
+        this.errorMessage = errorMessage;
+    }
+
+    @Override
+    public final ResultTransition<TypeDescription, TypeDescription> taskResultTransition() {
+        return (type) -> {
+            if(matcher.matches(type)) {
+                return new RSuccess<>(type);
+            } else {
+                return new RFailure<>(errorMessage);
+            }
+        };
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsInheritedFromAtom implements ElementMatcher<TypeDescription> {
-    private static final ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
-    
-    @Override
-    public final boolean matches(TypeDescription t) {
-        TypeDescription superClass = t.getSuperClass().asErasure();
-        return IS_ATOM.matches(superClass);
+public class ValSingle extends RtInferred<TypeDescription, TypeDescription> implements Validator {
+    public ValSingle(ElementMatcher<TypeDescription> matcher, String errorMessage) {
+        super(
+            new ValSingleInference(matcher, errorMessage)
+        );
     }
 }

@@ -21,21 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.matchers;
+package oo.atom.codegen.bytebuddy.bt;
 
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-import static net.bytebuddy.matcher.ElementMatchers.hasAnnotation;
-import oo.atom.anno.NotAtom;
-import static net.bytebuddy.matcher.ElementMatchers.annotationType;
+import net.bytebuddy.dynamic.DynamicType;
+import oo.atom.codegen.validator.Validator;
+import oo.atom.r.RFailure;
+import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AnnotatedWithNotAtom implements ElementMatcher<TypeDescription> {
+public class BtValidated implements BuilderTransition {
+    private final Validator validator;
+    private final BuilderTransition delegate;
+
+    public BtValidated(Validator validator, BuilderTransition delegate) {
+        this.validator = validator;
+        this.delegate = delegate;
+    }
+
     @Override
-    public final boolean matches(TypeDescription target) {
-        return hasAnnotation(annotationType(NotAtom.class)).matches(target);
+    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
+        final Result<TypeDescription> validateResult = validator.transitionResult(typeDescription);
+        final List<String> issues = validateResult.issues();
+        if(issues.isEmpty()) {
+            return delegate.transitionResult(source, typeDescription);
+        } else {
+            return new RFailure<>(issues);
+        }
     }
 }

@@ -23,10 +23,8 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.r.RBind;
+import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
@@ -34,26 +32,9 @@ import oo.atom.r.Result;
  *
  * @author Kapralov Sergey
  */
-public class BtSequence implements BuilderTransition {
-    private final List<BuilderTransition> transitions;
-
-    public BtSequence(List<BuilderTransition> transitions) {
-        this.transitions = transitions;
-    }
-
-    public BtSequence(BuilderTransition... transitions) {
-        this(List.of(transitions));
-    }
-
+public class BtNop implements BuilderTransition {
     @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
-        return transitions.<Result<Builder<?>>>foldLeft(
-            new RSuccess<>(source),
-            (state, transition) -> new RBind<>(
-                state,
-                new RtFromBuilderTransitionAdapter(transition, typeDescription)
-            )
-        );
+    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
+        return new RSuccess<>(source);
     }
-    
 }

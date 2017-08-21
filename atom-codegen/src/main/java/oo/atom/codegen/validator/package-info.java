@@ -21,26 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.matchers;
-
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class IsNotAtom extends WrappedMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
-    public IsNotAtom() {
-        super(
-            new DisjunctionMatcher<>(
-                new AnnotatedWithNotAtom(),
-                new NegationMatcher<>(
-                    new DisjunctionMatcher<>(
-                        new IsAtom()
-                    )
-                )
-            )
-        );
-    }
-}
+package oo.atom.codegen.validator;
