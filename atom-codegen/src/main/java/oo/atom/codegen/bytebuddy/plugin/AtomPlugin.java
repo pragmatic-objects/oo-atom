@@ -24,12 +24,14 @@
 package oo.atom.codegen.bytebuddy.plugin;
 
 import net.bytebuddy.build.Plugin;
-import static net.bytebuddy.matcher.ElementMatchers.isInterface;
-import static net.bytebuddy.matcher.ElementMatchers.not;
+import net.bytebuddy.description.type.TypeDescription;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 import oo.atom.codegen.bytebuddy.bt.BtApplyAtomAliasPatch;
 import oo.atom.codegen.bytebuddy.bt.BtApplyAtomPatch;
 import oo.atom.codegen.bytebuddy.bt.BtApplyIfMatches;
 import oo.atom.codegen.bytebuddy.bt.BtConditional;
+import oo.atom.codegen.bytebuddy.matchers.AnnotatedNonAtom;
+import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 import oo.atom.codegen.bytebuddy.matchers.ExtendingAnythingButObject;
 
 
@@ -41,7 +43,10 @@ public class AtomPlugin extends TaskPlugin implements Plugin {
     public AtomPlugin() {
         super(
             new BtApplyIfMatches(
-                not(isInterface()),
+                new ConjunctionMatcher<TypeDescription>(
+                    not(new AnnotatedNonAtom()),
+                    not(isInterface())
+                ),
                 new BtConditional(
                     new ExtendingAnythingButObject(),
                     new BtApplyAtomAliasPatch(),
