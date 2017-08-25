@@ -5,5 +5,5 @@ decrypt:
 release:
   script: |
     mvn versions:set "-DnewVersion=${tag}"
-    git commit -am "${tag}"
+    git commit -am "[release] oo-atom-${tag}"
     mvn clean deploy -Poo-atom --settings /home/r/settings.xml
