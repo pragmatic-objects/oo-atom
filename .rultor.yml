@@ -1,0 +1,11 @@
+decrypt:
+  settings.xml: "repo/settings.xml.asc"
+  pubring.gpg: "repo/pubring.gpg.asc"
+  secring.gpg: "repo/secring.gpg.asc"
+merge:
+  script: mvn clean install
+release:
+  script: |
+    mvn versions:set "-DnewVersion=${tag}"
+    git commit -am "[release] oo-atom-${tag}"
+    mvn clean deploy -Poo-atom --settings /home/r/settings.xml
