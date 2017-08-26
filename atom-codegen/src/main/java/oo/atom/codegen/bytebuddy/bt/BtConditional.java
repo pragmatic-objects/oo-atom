@@ -24,32 +24,31 @@
 package oo.atom.codegen.bytebuddy.bt;
 
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
+import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.codegen.bytebuddy.matchers.IsAtom;
-import oo.atom.codegen.bytebuddy.matchers.IsAtomAlias;
 import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyPatch implements BuilderTransition {
-    private final static ElementMatcher<TypeDescription> IS_ATOM = new IsAtom();
-    private final static ElementMatcher<TypeDescription> IS_ATOM_ALIAS = new IsAtomAlias();
+public class BtConditional implements BuilderTransition {
+    private final ElementMatcher<TypeDescription> matcher;
+    private final BuilderTransition matchBranch;
+    private final BuilderTransition mismatchBranch;
+
+    public BtConditional(ElementMatcher<TypeDescription> matcher, BuilderTransition matchBranch, BuilderTransition mismatchBranch) {
+        this.matcher = matcher;
+        this.matchBranch = matchBranch;
+        this.mismatchBranch = mismatchBranch;
+    }
 
     @Override
-    public Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription type) {
-        if (IS_ATOM_ALIAS.matches(type)) {
-            return new BtApplyAtomAliasPatch().transitionResult(source, type);
-        } else if (IS_ATOM.matches(type)) {
-            return new BtApplyAtomPatch().transitionResult(source, type);
+    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
+        if(matcher.matches(typeDescription)) {
+            return matchBranch.transitionResult(source, typeDescription);
         } else {
-            return new BtFail(
-                // @todo #1 put more information the logs, about the cause of
-                //  the patch failure
-                String.format("%s is not atom", type.getName())
-            ).transitionResult(source, type);
+            return mismatchBranch.transitionResult(source, typeDescription);
         }
     }
 }

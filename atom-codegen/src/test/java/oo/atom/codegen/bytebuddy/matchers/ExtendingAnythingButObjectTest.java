@@ -21,39 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.codegen.bytebuddy.matchers;
 
-import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.r.RBind;
-import oo.atom.r.RSuccess;
-import oo.atom.r.Result;
+import oo.atom.codegen.bytebuddy.bt.BtAnnotate;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtSequence implements BuilderTransition {
-    private final List<BuilderTransition> transitions;
-
-    public BtSequence(List<BuilderTransition> transitions) {
-        this.transitions = transitions;
-    }
-
-    public BtSequence(BuilderTransition... transitions) {
-        this(List.of(transitions));
-    }
-
-    @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
-        return transitions.<Result<Builder<?>>>foldLeft(
-            new RSuccess<>(source),
-            (state, transition) -> new RBind<>(
-                state,
-                new RtFromBuilderTransitionAdapter(transition, typeDescription)
+public class ExtendingAnythingButObjectTest extends AssertionsSuite {
+    public ExtendingAnythingButObjectTest() {
+        super(
+            new AssertThatTypeDoesNotMatch(
+                "mismatch base types",
+                new TypeDescription.ForLoadedType(
+                    Foo.class
+                ),
+                new ExtendingAnythingButObject()
+            ),
+            new AssertThatTypeMatches(
+                "match inherited types",
+                new TypeDescription.ForLoadedType(
+                    Bar.class
+                ),
+                new ExtendingAnythingButObject()
+            ),
+            new AssertThatTypeDoesNotMatch(
+                "mismatch java.lang.Object",
+                new TypeDescription.ForLoadedType(
+                    Object.class
+                ),
+                new ExtendingAnythingButObject()
             )
         );
     }
     
+    private static class Foo {
+    }
+
+    private static class Bar extends Foo {
+    }
 }

@@ -21,39 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.codegen.bytebuddy.matchers;
 
-import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.r.RBind;
-import oo.atom.r.RSuccess;
-import oo.atom.r.Result;
+import net.bytebuddy.matcher.ElementMatcher;
+import static net.bytebuddy.matcher.ElementMatchers.hasAnnotation;
+import oo.atom.anno.NotAtom;
+import static net.bytebuddy.matcher.ElementMatchers.annotationType;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtSequence implements BuilderTransition {
-    private final List<BuilderTransition> transitions;
-
-    public BtSequence(List<BuilderTransition> transitions) {
-        this.transitions = transitions;
-    }
-
-    public BtSequence(BuilderTransition... transitions) {
-        this(List.of(transitions));
-    }
-
+public class AnnotatedNonAtom implements ElementMatcher<TypeDescription> {
     @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
-        return transitions.<Result<Builder<?>>>foldLeft(
-            new RSuccess<>(source),
-            (state, transition) -> new RBind<>(
-                state,
-                new RtFromBuilderTransitionAdapter(transition, typeDescription)
-            )
-        );
+    public final boolean matches(TypeDescription target) {
+        return hasAnnotation(annotationType(NotAtom.class)).matches(target);
     }
-    
 }

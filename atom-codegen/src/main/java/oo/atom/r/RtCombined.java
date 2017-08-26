@@ -21,39 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.r;
 
 import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.r.RBind;
-import oo.atom.r.RSuccess;
-import oo.atom.r.Result;
+import java.util.function.BinaryOperator;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtSequence implements BuilderTransition {
-    private final List<BuilderTransition> transitions;
+public class RtCombined<X, T> implements ResultTransition<X, T> {
+    private final List<ResultTransition<X, T>> transitions;
+    private final BinaryOperator<T> combinationFunction;
 
-    public BtSequence(List<BuilderTransition> transitions) {
+    public RtCombined(List<ResultTransition<X, T>> transitions, BinaryOperator<T> combinationFunction) {
         this.transitions = transitions;
-    }
-
-    public BtSequence(BuilderTransition... transitions) {
-        this(List.of(transitions));
+        this.combinationFunction = combinationFunction;
     }
 
     @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
-        return transitions.<Result<Builder<?>>>foldLeft(
-            new RSuccess<>(source),
-            (state, transition) -> new RBind<>(
-                state,
-                new RtFromBuilderTransitionAdapter(transition, typeDescription)
-            )
-        );
+    public final Result<T> transitionResult(X source) {
+        return transitions.map(tr -> tr.transitionResult(source))
+                .transform(rlist -> new RCombined<>(combinationFunction, rlist));
     }
-    
 }
