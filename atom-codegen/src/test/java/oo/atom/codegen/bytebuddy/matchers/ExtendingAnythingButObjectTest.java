@@ -24,7 +24,6 @@
 package oo.atom.codegen.bytebuddy.matchers;
 
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.codegen.bytebuddy.bt.BtAnnotate;
 import oo.atom.tests.AssertionsSuite;
 
 /**
@@ -54,6 +53,13 @@ public class ExtendingAnythingButObjectTest extends AssertionsSuite {
                     Object.class
                 ),
                 new ExtendingAnythingButObject()
+            ),
+            new AssertThatTypeDoesNotMatch(
+                "mismatch enumerations",
+                new TypeDescription.ForLoadedType(
+                    Far.class
+                ),
+                new ExtendingAnythingButObject()
             )
         );
     }
@@ -62,5 +68,9 @@ public class ExtendingAnythingButObjectTest extends AssertionsSuite {
     }
 
     private static class Bar extends Foo {
+    }
+    
+    private static enum Far {
+        ONE, TWO, THREE
     }
 }
