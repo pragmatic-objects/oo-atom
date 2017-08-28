@@ -32,7 +32,7 @@ import oo.atom.codegen.bytebuddy.bt.BtApplyIfMatches;
 import oo.atom.codegen.bytebuddy.bt.BtConditional;
 import oo.atom.codegen.bytebuddy.matchers.AnnotatedNonAtom;
 import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
-import oo.atom.codegen.bytebuddy.matchers.ExtendingAnythingButObject;
+import oo.atom.codegen.bytebuddy.matchers.ExplicitlyExtendingAnything;
 
 
 /**
@@ -48,7 +48,7 @@ public class AtomPlugin extends TaskPlugin implements Plugin {
                     not(isInterface())
                 ),
                 new BtConditional(
-                    new ExtendingAnythingButObject(),
+                    new ExplicitlyExtendingAnything(),
                     new BtApplyAtomAliasPatch(),
                     new BtApplyAtomPatch()
                 )

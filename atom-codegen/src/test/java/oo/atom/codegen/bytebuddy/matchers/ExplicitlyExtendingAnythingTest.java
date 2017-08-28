@@ -30,36 +30,36 @@ import oo.atom.tests.AssertionsSuite;
  *
  * @author Kapralov Sergey
  */
-public class ExtendingAnythingButObjectTest extends AssertionsSuite {
-    public ExtendingAnythingButObjectTest() {
+public class ExplicitlyExtendingAnythingTest extends AssertionsSuite {
+    public ExplicitlyExtendingAnythingTest() {
         super(
             new AssertThatTypeDoesNotMatch(
                 "mismatch base types",
                 new TypeDescription.ForLoadedType(
                     Foo.class
                 ),
-                new ExtendingAnythingButObject()
+                new ExplicitlyExtendingAnything()
             ),
             new AssertThatTypeMatches(
                 "match inherited types",
                 new TypeDescription.ForLoadedType(
                     Bar.class
                 ),
-                new ExtendingAnythingButObject()
+                new ExplicitlyExtendingAnything()
             ),
             new AssertThatTypeDoesNotMatch(
                 "mismatch java.lang.Object",
                 new TypeDescription.ForLoadedType(
                     Object.class
                 ),
-                new ExtendingAnythingButObject()
+                new ExplicitlyExtendingAnything()
             ),
             new AssertThatTypeDoesNotMatch(
                 "mismatch enumerations",
                 new TypeDescription.ForLoadedType(
                     Far.class
                 ),
-                new ExtendingAnythingButObject()
+                new ExplicitlyExtendingAnything()
             )
         );
     }

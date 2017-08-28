@@ -29,10 +29,10 @@ import net.bytebuddy.matcher.ElementMatchers;
  *
  * @author Kapralov Sergey
  */
-public class ExtendingAnythingButObject extends Extending {
-    public ExtendingAnythingButObject() {
+public class ExplicitlyExtendingAnything extends Extending {
+    public ExplicitlyExtendingAnything() {
         super(
-            ElementMatchers.noneOf(Object.class)
+            ElementMatchers.noneOf(Object.class, Enum.class)
         );
     }
 }
