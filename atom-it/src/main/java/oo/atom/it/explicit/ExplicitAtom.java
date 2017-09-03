@@ -21,40 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it;
+package oo.atom.it.explicit;
 
-import oo.atom.tests.AssertAtomsAreEqual;
-import oo.atom.tests.AssertAtomsAreNotEqual;
-import oo.atom.tests.AssertionsSuite;
-
+import java.util.Objects;
+import oo.atom.anno.Atom;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomsEqualityTest extends AssertionsSuite {
-    public AtomsEqualityTest() {
-        super(
-            new AssertAtomsAreEqual(
-                "different atom objects with same fields are equal", 
-                new Foo(4), 
-                new Foo(4)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atom objects with different fields are not equal", 
-                new Foo(4),
-                new Foo(5)
-            ),
-            new AssertAtomsAreNotEqual(
-                "atoms of different types are not equal", 
-                new Foo(4),
-                new Bar(4)
-            ),
-            new AssertAtomsAreEqual(
-                "alias atom and basis atom with same constructor arguments are equal",
-                new FooAlias(),
-                new Foo(42)
-            )
-        );
+@Atom
+public class ExplicitAtom {
+    private final int a;
+    private final int b;
+
+    public ExplicitAtom(int a, int b) {
+        this.a = a;
+        this.b = b;
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        if(obj instanceof ExplicitAtom) {
+            ExplicitAtom atom = (ExplicitAtom) obj;
+            return Objects.equals(atom.a + atom.b, a + b);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(a + b);
     }
 }
