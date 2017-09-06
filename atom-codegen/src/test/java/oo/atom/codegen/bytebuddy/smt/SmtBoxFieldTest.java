@@ -27,16 +27,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import oo.atom.tests.AssertionsSuite;
 
 /**
- *
+ * Tests suite for {@link oo.atom.codegen.bytebuddy.smt.SmtBoxField}
+ * 
  * @author Kapralov Sergey
  */
 public class SmtBoxFieldTest extends AssertionsSuite {
-
     private static final Method INT_VALUEOF;
     private static final Field NON_PRIMITIVE_FIELD;
     private static final Field PRIMITIVE_FIELD;
@@ -53,16 +52,16 @@ public class SmtBoxFieldTest extends AssertionsSuite {
 
     public SmtBoxFieldTest() {
         super(
-            new AssertTaskToGenerateBytecode(
+            new AssertTokensToRepresentIdenticalBytecode(
                 "generates no bytecode for non-primitive fields",
                 new SmtBoxField(
                     new FieldDescription.ForLoadedField(
                         NON_PRIMITIVE_FIELD
                     )
                 ),
-                () -> new StackManipulation.Compound()
+                new SmtDoNothing()
             ),
-            new AssertTaskToGenerateBytecode(
+            new AssertTokenToRepresentExpectedStackManipulation(
                 "boxes primitive fields",
                 new SmtBoxField(
                     new FieldDescription.ForLoadedField(

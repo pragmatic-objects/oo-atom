@@ -23,46 +23,62 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.codegen.bytebuddy.smt.bp.BytecodePattern;
 import oo.atom.tests.Assertion;
 import oo.atom.tests.InferredAssertion;
-import oo.atom.r.Result;
 
-class AssertTaskToGenerateBytecodeInference implements Assertion.Inference {
+/**
+ * Inference for {@link oo.atom.codegen.bytebuddy.smt.AssertTokensToRepresentIdenticalBytecode} assertion
+ * 
+ * @author Kapralov Sergey
+ */
+class AssertTokensToRepresentIdenticalBytecodeInference implements Assertion.Inference {
     private final String description;
-    private final Result<StackManipulation> task;
-    private final BytecodePattern sample;
+    private final StackManipulationToken smt;
+    private final StackManipulationToken smt2;
 
-    public AssertTaskToGenerateBytecodeInference(String description, Result<StackManipulation> task, BytecodePattern sample) {
+    /**
+     * Ctor.
+     * 
+     * @param description assertion description
+     * @param smt stack manipulation token to assert on
+     * @param smt2 stack manipulation token to compare
+     */
+    public AssertTokensToRepresentIdenticalBytecodeInference(String description, StackManipulationToken smt, StackManipulationToken smt2) {
         this.description = description;
-        this.task = task;
-        this.sample = sample;
+        this.smt = smt;
+        this.smt2 = smt2;
     }
 
     @Override
-
     public final Assertion assertion() {
         return new AssertStackManipulationsAreSame(
             description,
-            task.outcome().get(),
-            sample
+            smt.outcome().get(),
+            smt2.outcome().get()
         );
     }
 }
 
+
 /**
- *
+ * Asserts that two stack manipulation tokens represent the same bytecode sequence.
+ * 
  * @author Kapralov Sergey
  */
-public class AssertTaskToGenerateBytecode extends InferredAssertion implements Assertion {
-
-    public AssertTaskToGenerateBytecode(String description, Result<StackManipulation> task, BytecodePattern sample) {
+public class AssertTokensToRepresentIdenticalBytecode extends InferredAssertion {
+    /**
+     * Ctor.
+     * 
+     * @param description assertion description
+     * @param smt stack manipulation token to assert on
+     * @param smt2 stack manipulation token to compare
+     */
+    public AssertTokensToRepresentIdenticalBytecode(String description, StackManipulationToken smt, StackManipulationToken smt2) {
         super(
-            new AssertTaskToGenerateBytecodeInference(
+            new AssertTokensToRepresentIdenticalBytecodeInference(
                 description,
-                task,
-                sample
+                smt,
+                smt2
             )
         );
     }
