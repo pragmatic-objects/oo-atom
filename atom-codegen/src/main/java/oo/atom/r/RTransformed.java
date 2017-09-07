@@ -28,21 +28,30 @@ import io.vavr.collection.List;
 import io.vavr.control.Try;
 
 /**
- *
+ * Represents a result, transformed from several source results. In case when one or
+ * more of the results are erroneous, represents erroneous result with a combined set 
+ * of issues.
+ * 
  * @author Kapralov Sergey
  */
 public class RTransformed<X, T> implements Result<T> {
-    private final List<Result<X>> taskResults;
+    private final List<Result<X>> results;
     private final Function<? super List<X>, ? extends T> transformFunction;
 
-    public RTransformed(List<Result<X>> taskResults, Function<? super List<X>, ? extends T> transformFunction) {
-        this.taskResults = taskResults;
+    /**
+     * Ctor.
+     * 
+     * @param results Results to transform.
+     * @param transformFunction Transformation function.
+     */
+    public RTransformed(List<Result<X>> results, Function<? super List<X>, ? extends T> transformFunction) {
+        this.results = results;
         this.transformFunction = transformFunction;
     }
 
     @Override
-    public final Try<T> outcome() {
-        List<Try<X>> outcomes = taskResults.map(Result::outcome);
+    public final Try<T> value() {
+        List<Try<X>> outcomes = results.map(Result::value);
         if (!outcomes.filter(Try::isFailure).isEmpty()) {
             return Try.failure(
                     new RuntimeException(
@@ -57,6 +66,6 @@ public class RTransformed<X, T> implements Result<T> {
 
     @Override
     public final List<String> issues() {
-        return taskResults.flatMap(Result::issues);
+        return results.flatMap(Result::issues);
     }
 }

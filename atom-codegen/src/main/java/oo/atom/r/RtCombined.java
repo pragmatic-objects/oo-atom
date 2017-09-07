@@ -27,13 +27,20 @@ import io.vavr.collection.List;
 import java.util.function.BinaryOperator;
 
 /**
- *
+ * Transitions the result value independently through a list of transitions,
+ * then combines output results together.
+ * 
  * @author Kapralov Sergey
  */
 public class RtCombined<X, T> implements ResultTransition<X, T> {
     private final List<ResultTransition<X, T>> transitions;
     private final BinaryOperator<T> combinationFunction;
 
+    /**
+     * Ctor.
+     * @param transitions Transitions
+     * @param combinationFunction Combination function.
+     */
     public RtCombined(List<ResultTransition<X, T>> transitions, BinaryOperator<T> combinationFunction) {
         this.transitions = transitions;
         this.combinationFunction = combinationFunction;

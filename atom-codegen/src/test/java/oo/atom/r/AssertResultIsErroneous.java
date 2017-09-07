@@ -23,7 +23,6 @@
  */
 package oo.atom.r;
 
-import oo.atom.r.Result;
 import io.vavr.collection.List;
 import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.*;
@@ -74,7 +73,7 @@ public class AssertResultIsErroneous implements Assertion {
     @Override
     public final void check() throws Exception {
         assertThatThrownBy(() -> {
-            result.outcome().get();
+            result.value().get();
         }).isInstanceOf(RuntimeException.class);
         assertThat(result.issues())
                 .containsOnlyElementsOf(issues);

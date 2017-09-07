@@ -38,7 +38,7 @@ class SmtBoxFieldInference implements Result.Inference<StackManipulation> {
     }
 
     @Override
-    public final Result<StackManipulation> taskResult() {
+    public final Result<StackManipulation> result() {
         TypeDescription type = field.getType().asErasure();
         if (type.isPrimitive()) {
             return new SmtBox(type);

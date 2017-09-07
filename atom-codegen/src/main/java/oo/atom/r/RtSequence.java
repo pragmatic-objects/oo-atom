@@ -26,16 +26,26 @@ package oo.atom.r;
 import io.vavr.collection.List;
 
 /**
- *
+ * A set of transitions, chained into a linear sequence.
+ * 
  * @author Kapralov Sergey
+ * @see RtChain
  */
 public class RtSequence<T> implements ResultTransition<T, T> {
     private final List<ResultTransition<T, T>> transitions;
 
+    /**
+     * Ctor.
+     * @param transitions Transitions.
+     */
     public RtSequence(List<ResultTransition<T, T>> transitions) {
         this.transitions = transitions;
     }
-    
+
+    /**
+     * Ctor.
+     * @param transitions Transitions.
+     */
     public RtSequence(ResultTransition<T, T>... transitions) {
         this(List.of(transitions));
     }

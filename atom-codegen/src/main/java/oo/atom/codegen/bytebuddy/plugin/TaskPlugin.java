@@ -48,7 +48,7 @@ public class TaskPlugin implements Plugin {
                 .transitionResult(builder, typeDescription);
         List<String> issues = result.issues();
         if(issues.isEmpty()) {
-            return result.outcome().get();
+            return result.value().get();
         } else {
             issues.map(str -> "ERROR: " + str).forEach(System.err::println);
             throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");

@@ -25,35 +25,54 @@ package oo.atom.r;
 
 import io.vavr.collection.List;
 
-
-class TrBindInference<X, T> implements Result.Inference<T> {
+/**
+ * Inference for {@link RBind}
+ * 
+ * @author Kapralov Sergey
+ * @param <X> Source type
+ * @param <T> Transition type
+ */
+class RBindInference<X, T> implements Result.Inference<T> {
     private final Result<X> source;
     private final ResultTransition<X, T> bindFunction;
 
-    public TrBindInference(Result<X> source, ResultTransition<X, T> bindFunction) {
+    /**
+     * Ctor.
+     * @param source Source result
+     * @param bindFunction Transition function
+     */
+    public RBindInference(Result<X> source, ResultTransition<X, T> bindFunction) {
         this.source = source;
         this.bindFunction = bindFunction;
     }
 
     @Override
-    public final Result<T> taskResult() {
+    public final Result<T> result() {
         List<String> issues = source.issues();
         if(!issues.isEmpty()) {
             return new RFailure<T>(issues);
         } else {
-            return bindFunction.transitionResult(source.outcome().get());
+            return bindFunction.transitionResult(source.value().get());
         }
     }
 }
 
 /**
- *
+ * Represents monadic transition on source result.
+ * If source result is successful, represents a result after applying transition to its value.
+ * Propagates issues in case of erroneous result.
+ * 
  * @author Kapralov Sergey
  */
 public class RBind<X, T> extends RInferred<T> implements Result<T> {
+    /**
+     * Ctor.
+     * @param source Source result
+     * @param bindFunction Transition function
+     */
     public RBind(Result<X> source, ResultTransition<X, T> bindFunction) {
         super(
-            new TrBindInference<>(source, bindFunction)
+            new RBindInference<>(source, bindFunction)
         );
     }
 }

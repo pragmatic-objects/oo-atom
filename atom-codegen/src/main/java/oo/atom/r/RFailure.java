@@ -27,22 +27,33 @@ import io.vavr.collection.List;
 import io.vavr.control.Try;
 
 /**
- *
+ * Represents erroneous result with a list of issues.
+ * 
  * @author Kapralov Sergey
  */
 public class RFailure<T> implements Result<T> {
     private final List<String> issues;
 
+    /**
+     * Ctor.
+     * 
+     * @param issues Issues
+     */
     public RFailure(List<String> issues) {
         this.issues = issues;
     }
-    
+
+    /**
+     * Ctor.
+     * 
+     * @param issues Issues
+     */
     public RFailure(String... issues) {
         this(List.of(issues));
     }
     
     @Override
-    public final Try<T> outcome() {
+    public final Try<T> value() {
         return Try.failure(
             new RuntimeException(
                 String.join("\r\n", issues)

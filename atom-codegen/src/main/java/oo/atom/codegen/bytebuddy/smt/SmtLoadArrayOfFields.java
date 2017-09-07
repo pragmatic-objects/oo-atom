@@ -37,7 +37,7 @@ class SmtLoadArrayOfFieldsInference implements Result.Inference<StackManipulatio
     }
 
     @Override
-    public final Result<StackManipulation> taskResult() {
+    public final Result<StackManipulation> result() {
         return new SmtArray(
                 List.of(type)
                 .flatMap(TypeDescription::getDeclaredFields)

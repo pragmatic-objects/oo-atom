@@ -23,32 +23,16 @@
  */
 package oo.atom.r;
 
-import io.vavr.collection.List;
-import io.vavr.control.Try;
+import oo.atom.tests.AssertionsSuite;
 
 /**
- * Represents successful result, which holds some value.
+ * Tests suite for {@link RInferred}
  * 
  * @author Kapralov Sergey
+ * @todo #8:15m Improve test coverage and mutation coverage for {@link RInferred}
  */
-public class RSuccess<T> implements Result<T> {
-    private final T value;
-
-    /**
-     * Ctor.
-     * @param value Value
-     */
-    public RSuccess(T value) {
-        this.value = value;
-    }
-
-    @Override
-    public final Try<T> value() {
-        return Try.success(value);
-    }
-
-    @Override
-    public final List<String> issues() {
-        return List.empty();
+public class RInferredTest extends AssertionsSuite {
+    public RInferredTest() {
+        super();
     }
 }
