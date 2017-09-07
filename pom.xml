@@ -169,6 +169,9 @@ SOFTWARE.
         </profile>
         <profile>
             <id>mutations</id>
+            <properties>
+                <pitest.target.tests>*</pitest.target.tests>
+            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -192,6 +195,7 @@ SOFTWARE.
                                     </excludedMethods>
                                     <timestampedReports>false</timestampedReports>
                                     <failWhenNoMutations>false</failWhenNoMutations>
+                                    <targetTests>${pitest.target.tests}</targetTests>
                                 </configuration>
                             </execution>
                         </executions>
