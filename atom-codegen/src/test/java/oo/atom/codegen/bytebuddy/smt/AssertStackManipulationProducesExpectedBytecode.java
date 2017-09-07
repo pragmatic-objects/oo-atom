@@ -34,8 +34,8 @@ import org.easymock.EasyMock;
 
 /**
  * Asserts that the stack manipulation produces the expected bytecode sequence. 
- * More strictly saying, asserts that the call `apply` on stack sequence causes 
- * the same invocations on ASM's {@link net.bytebuddy.jar.asm.MethodVisitor} as 
+ * More strictly saying, asserts that the call {@link net.bytebuddy.implementation.bytecode.StackManipulation#apply(net.bytebuddy.jar.asm.MethodVisitor, net.bytebuddy.implementation.Implementation.Context)}
+ * causes the same invocations on ASM's {@link net.bytebuddy.jar.asm.MethodVisitor} as 
  * in the pre-defined pattern.
  * 
  * @author Kapralov Sergey
