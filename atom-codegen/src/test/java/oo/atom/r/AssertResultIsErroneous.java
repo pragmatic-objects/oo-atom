@@ -29,20 +29,35 @@ import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.*;
 
 /**
- *
+ * Asserts that the {@link oo.atom.r.Result} represents an issue with expected set of messages.
+ * 
  * @author Kapralov Sergey
  */
 public class AssertResultIsErroneous implements Assertion {
     private final String description;
-    private final Result<?> taskResult;
+    private final Result<?> result;
     private final List<String> issues;
     
-    public AssertResultIsErroneous(String description, Result<?> taskResult, List<String> issues) {
+    /**
+     * Ctor.
+     * 
+     * @param description Assertion description.
+     * @param result Result to assert on
+     * @param issues A set of issue messages to expect
+     */
+    public AssertResultIsErroneous(String description, Result<?> result, List<String> issues) {
         this.description = description;
-        this.taskResult = taskResult;
+        this.result = result;
         this.issues = issues;
     }
 
+    /**
+     * Ctor.
+     * 
+     * @param description Assertion description.
+     * @param result Result to assert on
+     * @param issues A set of issue messages to expect
+     */
     public AssertResultIsErroneous(String description, Result<?> taskResult, String... issues) {
         this(
             description,
@@ -59,10 +74,10 @@ public class AssertResultIsErroneous implements Assertion {
     @Override
     public final void check() throws Exception {
         assertThatThrownBy(() -> {
-            taskResult.outcome().get();
+            result.outcome().get();
         }).isInstanceOf(RuntimeException.class);
-        assertThat(taskResult.issues())
-                .containsExactlyElementsOf(issues);
+        assertThat(result.issues())
+                .containsOnlyElementsOf(issues);
     }
     
 }

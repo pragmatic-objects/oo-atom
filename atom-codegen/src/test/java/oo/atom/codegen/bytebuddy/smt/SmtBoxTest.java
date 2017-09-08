@@ -27,10 +27,11 @@ import java.lang.reflect.Method;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+import oo.atom.r.AssertResultIsErroneous;
 import oo.atom.tests.AssertionsSuite;
 
 /**
- *
+ * Tests suite for {@link oo.atom.codegen.bytebuddy.smt.SmtBoxTest}
  * @author Kapralov Sergey
  */
 public class SmtBoxTest extends AssertionsSuite {
@@ -46,13 +47,14 @@ public class SmtBoxTest extends AssertionsSuite {
     
     public SmtBoxTest() {
         super(
-            new AssertTaskToFail(
+            new AssertResultIsErroneous(
                 "attempt to box non-primitive must fail",
                 new SmtBox(
                         new TypeDescription.ForLoadedType(Object.class)
-                )
+                ),
+                "Attempt to box non-primitive type java.lang.Object"
             ),
-            new AssertTaskToGenerateBytecode(
+            new AssertTokenToRepresentExpectedStackManipulation(
                 "can box integer primitive", 
                 new SmtBox(
                         new TypeDescription.ForLoadedType(int.class)

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it;
+package oo.atom.it.explicit;
 
 /**
  *
@@ -29,4 +29,11 @@ package oo.atom.it;
  */
 @oo.atom.anno.NotAtom
 public class NotAtom {
+    private final int a;
+    private final int b;
+
+    public NotAtom(int a, int b) {
+        this.a = a;
+        this.b = b;
+    }
 }

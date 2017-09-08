@@ -30,6 +30,7 @@ import oo.atom.codegen.bytebuddy.bt.BtApplyAtomAliasPatch;
 import oo.atom.codegen.bytebuddy.bt.BtApplyAtomPatch;
 import oo.atom.codegen.bytebuddy.bt.BtApplyIfMatches;
 import oo.atom.codegen.bytebuddy.bt.BtConditional;
+import oo.atom.codegen.bytebuddy.matchers.AnnotatedAtom;
 import oo.atom.codegen.bytebuddy.matchers.AnnotatedNonAtom;
 import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 import oo.atom.codegen.bytebuddy.matchers.ExplicitlyExtendingAnything;
@@ -45,6 +46,7 @@ public class AtomPlugin extends TaskPlugin implements Plugin {
             new BtApplyIfMatches(
                 new ConjunctionMatcher<TypeDescription>(
                     not(new AnnotatedNonAtom()),
+                    not(new AnnotatedAtom()),
                     not(isInterface())
                 ),
                 new BtConditional(

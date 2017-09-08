@@ -26,44 +26,32 @@ package oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
-import oo.atom.codegen.bytebuddy.smt.bp.BytecodePattern;
 import oo.atom.tests.Assertion;
 import org.easymock.EasyMock;
 
 /**
- *
+ * Asserts that both stack manipulations produces the same bytecode. More strictly saying,
+ * asserts that the stack manipulations do the similar set of calls on ASM's {@link net.bytebuddy.jar.asm.MethodVisitor}
+ * on {@link StackManipulation#apply(net.bytebuddy.jar.asm.MethodVisitor, net.bytebuddy.implementation.Implementation.Context)} is invoked.
+ * 
  * @author Kapralov Sergey
  */
-public class AssertStackManipulationsAreSame implements Assertion {
-    private final String description;
-    private final StackManipulation entity;
-    private final BytecodePattern pattern;
-
-    public AssertStackManipulationsAreSame(String description, StackManipulation entity, BytecodePattern pattern) {
-        this.description = description;
-        this.entity = entity;
-        this.pattern = pattern;
-    }
-
-    @Override
-    public final String description() {
-        return description;
-    }
-    
-    @Override
-    public final void check() throws Exception {
-        MethodVisitor methodVisitor = EasyMock.createStrictMock(
-                MethodVisitor.class
+public class AssertStackManipulationsAreSame extends AssertStackManipulationProducesExpectedBytecode implements Assertion {
+    /**
+     * Ctor.
+     * 
+     * @param description Assertion description
+     * @param sm Stack manipulation to assert on.
+     * @param sm2 Stack manipulation to compare with
+     */
+    public AssertStackManipulationsAreSame(String description, StackManipulation sm, StackManipulation sm2) {
+        super(
+            description,
+            sm,
+            mv -> {
+                Implementation.Context ctx = EasyMock.mock(Implementation.Context.class);
+                sm2.apply(mv, ctx);
+            }
         );
-        Implementation.Context implementationContext = EasyMock.createMock(
-                Implementation.Context.class
-        );
-        
-        // Expect
-        pattern.stackManipulation().apply(methodVisitor, implementationContext);
-        EasyMock.replay(methodVisitor);
-        
-        entity.apply(methodVisitor, implementationContext);
-        EasyMock.verify(methodVisitor);
     }
 }

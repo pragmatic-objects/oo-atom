@@ -21,33 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
+package oo.atom.codegen.bytebuddy.branching;
 
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.tests.Assertion;
-import org.assertj.core.api.Assertions;
-import oo.atom.r.Result;
+import net.bytebuddy.jar.asm.Label;
+import net.bytebuddy.jar.asm.Opcodes;
+import oo.atom.codegen.bytebuddy.smt.AssertStackManipulationProducesExpectedBytecode;
+import oo.atom.tests.AssertionsSuite;
 
 /**
- *
+ * Tests suite for {@link oo.atom.codegen.bytebuddy.branching.BIfAcmp}
+ * 
  * @author Kapralov Sergey
  */
-public class AssertTaskToFail implements Assertion {
-    private final String description;
-    private final Result<StackManipulation> task;
+public class BIfAcmpTest extends AssertionsSuite {
 
-    public AssertTaskToFail(String description, Result<StackManipulation> task) {
-        this.description = description;
-        this.task = task;
-    }
-
-    @Override
-    public final String description() {
-        return description;
-    }
-    
-    @Override
-    public final void check() throws Exception {
-        Assertions.assertThatThrownBy(() -> task.outcome().get()).isNotNull();
+    public BIfAcmpTest() {
+        super(
+            new AssertStackManipulationProducesExpectedBytecode(
+                "puts IF_ACMPEQ bytecode",
+                new BIfAcmp(true, new Label()),
+                mv -> {
+                    mv.visitJumpInsn(Opcodes.IF_ACMPEQ, new Label());
+                }
+            )
+        );
     }
 }
