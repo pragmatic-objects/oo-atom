@@ -21,19 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.branching;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.jar.asm.Label;
-import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+import oo.atom.codegen.bytebuddy.smt.c.Condition;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BIfEq extends BImpl {
+class SmtIfNotEqualByValue extends SmtCombined implements StackManipulationToken  {
+    private static final StackManipulation INVOKE_EQUALS;
     
-    public BIfEq(Label label) {
-        super(-1, 0, label, Opcodes.IFEQ);
+    static {
+        try {
+            INVOKE_EQUALS = MethodInvocation.invoke(
+                new MethodDescription.ForLoadedMethod(
+                    Object.class.getMethod("equals", Object.class)
+                )
+            );
+        } catch(Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
     
+    public SmtIfNotEqualByValue(StackManipulationToken smt) {
+        super(
+            new SmtStatic(INVOKE_EQUALS),
+            new SmtIf(
+                Condition.IS_FALSE,
+                smt
+            )
+        );
+    }
 }

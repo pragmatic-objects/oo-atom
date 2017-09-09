@@ -23,44 +23,19 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.Label;
-import oo.atom.codegen.bytebuddy.branching.BIfAcmp;
-import oo.atom.codegen.bytebuddy.branching.BMark;
-import oo.atom.r.RBind;
-import oo.atom.r.RSuccess;
-import oo.atom.r.Result;
-import oo.atom.r.ResultTransition;
-
-class TrtIfEqualByReference implements ResultTransition<StackManipulation, StackManipulation> {
-    private final boolean equals;
-
-    public TrtIfEqualByReference(boolean equals) {
-        this.equals = equals;
-    }
-
-    @Override
-    public final Result<StackManipulation> transitionResult(StackManipulation sm) {
-        final Label checkEnd = new Label();
-        return new RSuccess<>(
-            new StackManipulation.Compound(
-                new BIfAcmp(equals, checkEnd),
-                sm,
-                new BMark(checkEnd)
-            )
-        );
-    }
-}
+import net.bytebuddy.description.type.TypeDescription;
+import org.assertj.core.api.Assertions;
+import org.junit.Test;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtIfEqualByReference extends RBind<StackManipulation, StackManipulation> implements StackManipulationToken {
-    public SmtIfEqualByReference(boolean equals, StackManipulationToken smt) {
-        super(
-            smt,
-            new TrtIfEqualByReference(equals)
-        );
+public class ProbaTest {
+    
+    
+    @Test
+    public void test() {
+        Assertions.assertThat(new TypeDescription.ForLoadedType(Object[].class).isArray()).isTrue();
     }
 }

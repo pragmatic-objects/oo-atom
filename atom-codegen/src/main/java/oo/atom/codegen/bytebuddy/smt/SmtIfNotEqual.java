@@ -21,31 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.branching;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.jar.asm.Label;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.r.RInferred;
+import oo.atom.r.Result;
 
-class BIsZeroInference implements BranchingInference {
-    private final boolean isTrue;
-    private final Label label;
+class SmtIfNotEqualInference implements Result.Inference<StackManipulation> {
+    private final TypeDescription type;
+    private final StackManipulationToken smt;
 
-    public BIsZeroInference(boolean isTrue, Label label) {
-        this.isTrue = isTrue;
-        this.label = label;
+    public SmtIfNotEqualInference(TypeDescription type, StackManipulationToken smt) {
+        this.type = type;
+        this.smt = smt;
     }
 
     @Override
-    public final Branching branching() {
-        return isTrue ? new BIfEq(label) : new BIfNe(label);
-    }    
+    public final Result<StackManipulation> taskResult() {
+        if(type.isArray()) {
+            return new SmtIfNotDeeplyEqual(smt);
+        } else {
+            return new SmtIfNotEqualByValue(smt);
+        }
+    }
 }
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BIsZero extends BInferred implements Branching {
-    public BIsZero(boolean isTrue, Label label) {
-        super(new BIsZeroInference(isTrue, label));
+public class SmtIfNotEqual extends RInferred<StackManipulation> implements StackManipulationToken {
+    public SmtIfNotEqual(TypeDescription type, StackManipulationToken smt) {
+        super(
+            new SmtIfNotEqualInference(
+                type,
+                smt
+            )
+        );
     }
 }

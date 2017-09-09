@@ -23,53 +23,20 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
-import net.bytebuddy.jar.asm.MethodVisitor;
-import net.bytebuddy.jar.asm.Opcodes;
-import oo.atom.codegen.bytebuddy.branching.BIsZero;
+import oo.atom.codegen.bytebuddy.branching.BIfAcmp;
 import oo.atom.codegen.bytebuddy.branching.BMark;
 import oo.atom.r.RBind;
 import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 import oo.atom.r.ResultTransition;
 
-/**
- * 
- * @author Kapralov Sergey
- */
-class InstanceOfStackManipulation implements StackManipulation {
-    private final TypeDescription type;
+class RtIfEqualByReference implements ResultTransition<StackManipulation, StackManipulation> {
+    private final boolean equals;
 
-    public InstanceOfStackManipulation(TypeDescription type) {
-        this.type = type;
-    }
-    
-    @Override
-    public final boolean isValid() {
-        return true;
-    }
-
-    @Override
-    public final StackManipulation.Size apply(MethodVisitor mv, Implementation.Context cntxt) {
-        mv.visitTypeInsn(Opcodes.INSTANCEOF, type.getInternalName());
-        return new StackManipulation.Size(0, 0);
-    }
-}
-
-/**
- * 
- * @author Kapralov Sergey
- */
-class TrtIfInstanceOf implements ResultTransition<StackManipulation, StackManipulation>  {
-    private final TypeDescription type;
-    private final boolean isTrue;
-
-    public TrtIfInstanceOf(TypeDescription type, boolean isTrue) {
-        this.type = type;
-        this.isTrue = isTrue;
+    public RtIfEqualByReference(boolean equals) {
+        this.equals = equals;
     }
 
     @Override
@@ -77,8 +44,7 @@ class TrtIfInstanceOf implements ResultTransition<StackManipulation, StackManipu
         final Label checkEnd = new Label();
         return new RSuccess<>(
             new StackManipulation.Compound(
-                new InstanceOfStackManipulation(type),
-                new BIsZero(isTrue, checkEnd),
+                new BIfAcmp(equals, checkEnd),
                 sm,
                 new BMark(checkEnd)
             )
@@ -90,8 +56,10 @@ class TrtIfInstanceOf implements ResultTransition<StackManipulation, StackManipu
  *
  * @author Kapralov Sergey
  */
-public class SmtIfInstanceOf extends RBind<StackManipulation, StackManipulation> implements StackManipulationToken {
-    public SmtIfInstanceOf(TypeDescription type, boolean isTrue, StackManipulationToken smt) {
-        super(smt, new TrtIfInstanceOf(type, isTrue));
+public class SmtIfNotEqualByReference extends RBind<StackManipulation, StackManipulation> implements StackManipulationToken {
+    public SmtIfNotEqualByReference(boolean equals, StackManipulationToken smt) {
+        super(smt,
+            new RtIfEqualByReference(equals)
+        );
     }
 }

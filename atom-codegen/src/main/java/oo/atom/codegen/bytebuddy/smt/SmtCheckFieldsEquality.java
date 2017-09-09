@@ -21,25 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.branching;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.jar.asm.Label;
+import io.vavr.collection.List;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.r.RInferred;
+import oo.atom.r.Result;
 
-/**
- * 
- * @author Kapralov Sergey
- */
-class BIsNullInference implements BranchingInference {
-    private final boolean isTrue;
-    private final Label label;
+class SmtFieldsEqualityInference implements Result.Inference<StackManipulation> {
 
-    public BIsNullInference(boolean isTrue, Label label) {
-        this.isTrue = isTrue;
-        this.label = label;
+    private final TypeDescription type;
+
+    public SmtFieldsEqualityInference(TypeDescription type) {
+        this.type = type;
     }
-            
-    public final Branching branching() {
-        return isTrue ? new BIfNull(label) : new BIfNonNull(label);
+
+    @Override
+    public final Result<StackManipulation> taskResult() {
+        return new SmtCombined(
+            List.of(type)
+                .flatMap(TypeDescription::getDeclaredFields)
+                .filter(f -> !f.isStatic())
+                .map(f -> new SmtCheckFieldEquality(type, f))
+                .toJavaArray(SmtCheckFieldEquality.class)
+        );
     }
 }
 
@@ -47,15 +53,8 @@ class BIsNullInference implements BranchingInference {
  *
  * @author Kapralov Sergey
  */
-public class BIsNull extends BInferred {
-    
-    public BIsNull(boolean isTrue, Label label) {
-        super(
-            new BIsNullInference(
-                isTrue, 
-                label
-            )
-        );
+public class SmtCheckFieldsEquality extends RInferred<StackManipulation> implements StackManipulationToken {
+    public SmtCheckFieldsEquality(final TypeDescription type) {
+        super(new SmtFieldsEqualityInference(type));
     }
-    
 }

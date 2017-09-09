@@ -23,58 +23,47 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import java.lang.reflect.Method;
-import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.jar.asm.Label;
-import oo.atom.codegen.bytebuddy.branching.BIsZero;
 import oo.atom.codegen.bytebuddy.branching.BMark;
-import oo.atom.r.RBind;
-import oo.atom.r.RSuccess;
+import oo.atom.codegen.bytebuddy.smt.c.Condition;
+import oo.atom.r.RInferred;
 import oo.atom.r.Result;
-import oo.atom.r.ResultTransition;
 
-class TrtIfEqual implements ResultTransition<StackManipulation, StackManipulation> {
-    private final static Method EQUALS;
 
-    static {
-        try {
-            EQUALS = Object.class.getMethod("equals", Object.class);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
+class SmtIfInference implements Result.Inference<StackManipulation> {
+        
+    private final Condition condition;
+    private final StackManipulationToken successBranch;
 
-    private final boolean isTrue;
-
-    public TrtIfEqual(boolean isTrue) {
-        this.isTrue = isTrue;
-    }
+    public SmtIfInference(Condition condition, StackManipulationToken successBranch) {
+        this.condition = condition;
+        this.successBranch = successBranch;
+    }    
 
     @Override
-    public final Result<StackManipulation> transitionResult(StackManipulation sm) {
-        final Label checkEnd = new Label();
-        return new RSuccess<>(
-            new StackManipulation.Compound(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQUALS)),
-                new BIsZero(!isTrue, checkEnd),
-                sm,
-                new BMark(checkEnd)
-            )
+    public final Result<StackManipulation> taskResult() {
+        Label label = new Label();
+        return new SmtCombined(
+            new SmtStatic(condition.branching(label)),
+            successBranch,
+            new SmtStatic(new BMark(label))
         );
     }
 }
+
 
 /**
  *
  * @author Kapralov Sergey
  */
-class SmtIfEqual extends RBind<StackManipulation, StackManipulation> implements StackManipulationToken  {
-    public SmtIfEqual(boolean isTrue, StackManipulationToken smt) {
+public class SmtIf extends RInferred<StackManipulation> implements StackManipulationToken {
+    public SmtIf(Condition condition, StackManipulationToken successBranch) {
         super(
-            smt,
-            new TrtIfEqual(isTrue)
+            new SmtIfInference(
+                condition,
+                successBranch
+            )
         );
     }
 }

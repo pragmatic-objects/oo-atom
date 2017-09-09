@@ -30,7 +30,7 @@ import net.bytebuddy.jar.asm.Opcodes;
  *
  * @author Kapralov Sergey
  */
-public class BIfIcmpEq extends Base {
+public class BIfIcmpEq extends BImpl {
     
     public BIfIcmpEq(Label label) {
         super(-2, 0, label, Opcodes.IF_ICMPEQ);

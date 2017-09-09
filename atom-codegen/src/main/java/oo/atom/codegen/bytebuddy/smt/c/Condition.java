@@ -21,20 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
+package oo.atom.codegen.bytebuddy.smt.c;
 
-import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.type.TypeDescription;
+import java.util.function.Function;
+import net.bytebuddy.jar.asm.Label;
+import oo.atom.codegen.bytebuddy.branching.BIfAcmpEq;
+import oo.atom.codegen.bytebuddy.branching.BIfAcmpNe;
+import oo.atom.codegen.bytebuddy.branching.BIfEq;
+import oo.atom.codegen.bytebuddy.branching.BIfNe;
+import oo.atom.codegen.bytebuddy.branching.Branching;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtFieldEquality extends SmtCombined {
-    public SmtFieldEquality(final TypeDescription type, final FieldDescription field) {
-        super(
-                new SmtLoadPairOfFields(type, field),
-                new SmtIfEqual(true, new SmtReturnInteger(0))
-        );
+ public enum Condition {
+    IS_TRUE(l -> new BIfEq(l)),
+    IS_FALSE(l -> new BIfNe(l)),
+    IS_REF_EQUAL(l -> new BIfAcmpEq(l)),
+    IS_REF_NOT_EQUAL(l -> new BIfAcmpNe(l));
+
+    private final Function<Label, Branching> branchingByLabel;
+
+    private Condition(Function<Label, Branching> branchingByLabel) {
+        this.branchingByLabel = branchingByLabel;
+    }
+
+    public final Branching branching(Label label) {
+        return branchingByLabel.apply(label);
     }
 }

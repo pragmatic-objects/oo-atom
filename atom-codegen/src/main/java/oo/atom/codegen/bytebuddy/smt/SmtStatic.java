@@ -21,19 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.branching;
+package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.jar.asm.Label;
-import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.r.RSuccess;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BIfEq extends BImpl {
-    
-    public BIfEq(Label label) {
-        super(-1, 0, label, Opcodes.IFEQ);
+public class SmtStatic extends RSuccess<StackManipulation> implements StackManipulationToken {
+    public SmtStatic(StackManipulation outcome) {
+        super(outcome);
     }
-    
 }

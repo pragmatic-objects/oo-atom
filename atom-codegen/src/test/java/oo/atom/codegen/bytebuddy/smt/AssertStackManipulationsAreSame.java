@@ -25,7 +25,6 @@ package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.MethodVisitor;
 import oo.atom.tests.Assertion;
 import org.easymock.EasyMock;
 

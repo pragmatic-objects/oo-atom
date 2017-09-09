@@ -83,9 +83,11 @@ public class AssertStackManipulationProducesExpectedBytecode implements Assertio
         final MethodVisitorRecorder actualMvr = new MethodVisitorRecorder();
         
         pattern.accept(patternMvr);
+        System.out.println("Expectation:");
         patternMvr.trace();
         
         sm.apply(actualMvr, implementationContext);
+        System.out.println("Reality:");
         actualMvr.trace();
         
         assertThat(actualMvr).isEqualTo(patternMvr);

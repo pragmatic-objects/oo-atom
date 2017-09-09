@@ -23,17 +23,38 @@
  */
 package oo.atom.codegen.bytebuddy.branching;
 
+import net.bytebuddy.implementation.Implementation;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
-import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.jar.asm.MethodVisitor;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BIfEq extends BImpl {
+public class BImpl implements Branching {
     
-    public BIfEq(Label label) {
-        super(-1, 0, label, Opcodes.IFEQ);
+    private final int sizeImpact;
+    private final int maxSize;
+    private final Label label;
+    private final int opcode;
+
+    public BImpl(int sizeImpact, int maxSize, Label label, int opcode) {
+        this.sizeImpact = sizeImpact;
+        this.maxSize = maxSize;
+        this.label = label;
+        this.opcode = opcode;
+    }
+
+    @Override
+    public final StackManipulation.Size apply(MethodVisitor mv, Implementation.Context ctx) {
+        mv.visitJumpInsn(opcode, label);
+        return new StackManipulation.Size(sizeImpact, maxSize);
+    }
+
+    @Override
+    public final boolean isValid() {
+        return true;
     }
     
 }

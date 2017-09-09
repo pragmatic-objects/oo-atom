@@ -33,12 +33,11 @@ public class SmtEquals extends SmtCombined {
     public SmtEquals(TypeDescription type) {
         super(
                 new SmtLoadReference(1),
-                new SmtIfInstanceOf(
+                new SmtIfNotInstanceOf(
                         type,
-                        false,
                         new SmtReturnInteger(0)
                 ),
-                new SmtFieldsEquality(type),
+                new SmtCheckFieldsEquality(type),
                 new SmtReturnInteger(1)
         );
     }

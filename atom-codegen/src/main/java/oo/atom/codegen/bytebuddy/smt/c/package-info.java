@@ -21,40 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.branching;
-
-import net.bytebuddy.implementation.Implementation;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.Label;
-import net.bytebuddy.jar.asm.MethodVisitor;
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class Base implements Branching {
-    
-    private final int sizeImpact;
-    private final int maxSize;
-    private final Label label;
-    private final int opcode;
-
-    public Base(int sizeImpact, int maxSize, Label label, int opcode) {
-        this.sizeImpact = sizeImpact;
-        this.maxSize = maxSize;
-        this.label = label;
-        this.opcode = opcode;
-    }
-
-    @Override
-    public final StackManipulation.Size apply(MethodVisitor mv, Implementation.Context ctx) {
-        mv.visitJumpInsn(opcode, label);
-        return new StackManipulation.Size(sizeImpact, maxSize);
-    }
-
-    @Override
-    public final boolean isValid() {
-        return true;
-    }
-    
-}
+package oo.atom.codegen.bytebuddy.smt.c;

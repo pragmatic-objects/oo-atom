@@ -23,45 +23,36 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.Label;
-import oo.atom.codegen.bytebuddy.branching.BIsNull;
-import oo.atom.codegen.bytebuddy.branching.BMark;
-import oo.atom.r.RBind;
-import oo.atom.r.RSuccess;
-import oo.atom.r.Result;
-import oo.atom.r.ResultTransition;
-
-class TrtIfNull implements ResultTransition<StackManipulation, StackManipulation> {
-
-    private final boolean isTrue;
-
-    public TrtIfNull(boolean isTrue) {
-        this.isTrue = isTrue;
-    }
-
-    @Override
-    public final Result<StackManipulation> transitionResult(StackManipulation sm) {
-        final Label checkEnd = new Label();
-        return new RSuccess<>(
-            new StackManipulation.Compound(
-                new BIsNull(isTrue, checkEnd),
-                sm,
-                new BMark(checkEnd)
-            )
-        );
-    }
-}
+import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtIfNull extends RBind<StackManipulation, StackManipulation> implements StackManipulationToken {
-    public SmtIfNull(boolean isTrue, StackManipulationToken smt) {
+public class SmtIfNotEqualTest extends AssertionsSuite {
+    public SmtIfNotEqualTest() {
         super(
-            smt, 
-            new TrtIfNull(isTrue)
+            new AssertTokensToRepresentIdenticalBytecode(
+                "arrays are compared using deep equality",
+                new SmtIfNotEqual(
+                    new TypeDescription.ForLoadedType(Object[].class),
+                    new SmtReturnInteger(42)
+                ),
+                new SmtIfNotDeeplyEqual(
+                    new SmtReturnInteger(42)
+                )
+            ),
+            new AssertTokensToRepresentIdenticalBytecode(
+                "single values are compared using value equality",
+                new SmtIfNotEqual(
+                    new TypeDescription.ForLoadedType(Object.class),
+                    new SmtReturnInteger(42)
+                ),
+                new SmtIfNotEqualByValue(
+                    new SmtReturnInteger(42)
+                )
+            )
         );
     }
 }

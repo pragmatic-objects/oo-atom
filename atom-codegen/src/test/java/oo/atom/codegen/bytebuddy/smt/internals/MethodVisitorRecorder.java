@@ -62,6 +62,10 @@ public final class MethodVisitorRecorder extends MethodVisitor {
     private final Long resolveLabel(Label lbl) {
         return labelsTable.computeIfAbsent(lbl, k -> random.nextLong());
     }
+    
+    private final <T> List<T> listFromArray(T[] array) {
+        return array == null ? List.empty() : List.of(array);
+    }
 
     @Override
     public AnnotationVisitor visitAnnotation(String string, boolean bln) {
@@ -112,9 +116,9 @@ public final class MethodVisitorRecorder extends MethodVisitor {
         recordedCalls.add(List.of(
                 "visitFrame",
                 i, i1,
-                List.of(os),
+                listFromArray(os),
                 i2,
-                List.of(os1)
+                listFromArray(os1)
         ));
         super.visitFrame(i, i1, os, i2, os1);
     }
@@ -160,7 +164,7 @@ public final class MethodVisitorRecorder extends MethodVisitor {
     public void visitInvokeDynamicInsn(String string, String string1, Handle handle, Object... os) {
         recordedCalls.add(List.of(
                 "visitInvokeDynamicInsn",
-                string, string1, handle, List.of(os)
+                string, string1, handle, listFromArray(os)
         ));
         super.visitInvokeDynamicInsn(string, string1, handle, os);
     }
@@ -218,8 +222,8 @@ public final class MethodVisitorRecorder extends MethodVisitor {
         recordedCalls.add(List.of(
                 "visitLocalVariableAnnotation",
                 tp.toString(),
-                List.of(labels).map(this::resolveLabel),
-                List.of(labels1).map(this::resolveLabel),
+                listFromArray(labels).map(this::resolveLabel),
+                listFromArray(labels1).map(this::resolveLabel),
                 List.of(ints),
                 string, bln
         ));
@@ -232,7 +236,7 @@ public final class MethodVisitorRecorder extends MethodVisitor {
                 "visitLookupSwitchInsn",
                 resolveLabel(label),
                 List.of(ints),
-                List.of(labels).map(this::resolveLabel)
+                listFromArray(labels).map(this::resolveLabel)
         ));
         super.visitLookupSwitchInsn(label, ints, labels);
     }
@@ -297,7 +301,7 @@ public final class MethodVisitorRecorder extends MethodVisitor {
         recordedCalls.add(List.of(
                 "visitTableSwitchInsn",
                 i, i1, resolveLabel(label),
-                List.of(labels).map(this::resolveLabel)
+                listFromArray(labels).map(this::resolveLabel)
         ));
         super.visitTableSwitchInsn(i, i1, label, labels);
     }
