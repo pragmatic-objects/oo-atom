@@ -38,7 +38,7 @@ class SmtLoadReferenceInference implements Result.Inference<StackManipulation> {
     }
     
     @Override
-    public final Result<StackManipulation> taskResult() {
+    public final Result<StackManipulation> result() {
         return new RSuccess<>(
             MethodVariableAccess.REFERENCE.loadFrom(index)
         );

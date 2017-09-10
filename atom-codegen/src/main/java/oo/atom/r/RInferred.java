@@ -27,23 +27,28 @@ import io.vavr.collection.List;
 import io.vavr.control.Try;
 
 /**
- *
+ * Inferred result
+ * 
  * @author Kapralov Sergey
  */
 public class RInferred<T> implements Result<T> {
     private final Inference<T> inference;
 
+    /**
+     * Ctor.
+     * @param inference Inference
+     */
     public RInferred(Inference<T> inference) {
         this.inference = inference;
     }
 
     @Override
-    public final Try<T> outcome() {
-        return inference.taskResult().outcome();
+    public final Try<T> value() {
+        return inference.result().value();
     }
 
     @Override
     public final List<String> issues() {
-        return inference.taskResult().issues();
+        return inference.result().issues();
     }
 }

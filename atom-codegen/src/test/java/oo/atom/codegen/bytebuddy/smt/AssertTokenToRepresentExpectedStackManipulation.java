@@ -55,7 +55,7 @@ class AssertTokenToRepresentExpectedStackManipulationInference implements Assert
     public final Assertion assertion() {
         return new AssertStackManipulationsAreSame(
             description,
-            smt.outcome().get(),
+            smt.value().get(),
             pattern.get()
         );
     }

@@ -26,10 +26,14 @@ package oo.atom.r;
 import oo.atom.tests.AssertionsSuite;
 
 /**
- *
+ * Tests suite for {@link oo.atom.r.RCombined}
+ * 
  * @author Kapralov Sergey
  */
 public class RCombinedTest extends AssertionsSuite {
+    /**
+     * Ctor.
+     */
     public RCombinedTest() {
         super(
             new AssertResultIsMalformed(

@@ -57,7 +57,7 @@ public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
         assertThatCode(() -> {
             final DynamicType.Unloaded<?> make = bt
                     .transitionResult(subclass, typeDescription)
-                    .outcome()
+                    .value()
                     .get().make();
             final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
             final Atom annotation = clazz.getAnnotation(Atom.class);

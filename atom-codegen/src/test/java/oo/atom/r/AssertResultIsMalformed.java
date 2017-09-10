@@ -28,16 +28,23 @@ import oo.atom.tests.Assertion;
 import org.assertj.core.api.Assertions;
 
 /**
- *
+ * Asserts that result represents inconsistent state.
+ * 
  * @author Kapralov Sergey
  */
 public class AssertResultIsMalformed implements Assertion {
     private final String description;
     private final Result<?> taskResult;
 
-    public AssertResultIsMalformed(String description, Result<?> taskResult) {
+    /**
+     * Ctor.
+     * 
+     * @param description Assertion description
+     * @param result A result to assert on 
+     */
+    public AssertResultIsMalformed(String description, Result<?> result) {
         this.description = description;
-        this.taskResult = taskResult;
+        this.taskResult = result;
     }
 
     @Override
@@ -47,7 +54,7 @@ public class AssertResultIsMalformed implements Assertion {
 
     @Override
     public final void check() throws Exception {
-        Assertions.assertThatThrownBy(() -> taskResult.outcome()).isNotNull();
-        Assertions.assertThatThrownBy(() -> taskResult.issues()).isNotNull();
+        Assertions.assertThatThrownBy(() -> taskResult.value()).isInstanceOf(IllegalStateException.class);
+        Assertions.assertThatThrownBy(() -> taskResult.issues()).isInstanceOf(IllegalStateException.class);
     }
 }

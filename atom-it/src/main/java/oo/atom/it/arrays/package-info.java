@@ -21,34 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.r;
-
-import io.vavr.collection.List;
-import io.vavr.control.Try;
-
-/**
- * Represents successful result, which holds some value.
- * 
- * @author Kapralov Sergey
- */
-public class RSuccess<T> implements Result<T> {
-    private final T value;
-
-    /**
-     * Ctor.
-     * @param value Value
-     */
-    public RSuccess(T value) {
-        this.value = value;
-    }
-
-    @Override
-    public final Try<T> value() {
-        return Try.success(value);
-    }
-
-    @Override
-    public final List<String> issues() {
-        return List.empty();
-    }
-}
+package oo.atom.it.arrays;

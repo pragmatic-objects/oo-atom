@@ -24,13 +24,24 @@
 package oo.atom.r;
 
 /**
- *
+ * Monad-like transition function for {@link Result}
+ * 
  * @author Kapralov Sergey
+ * @see RBind
  */
 public interface ResultTransition<X, T> {
+    /**
+     * Inference for {@link ResultTransition}
+     * @param <X> Source type
+     * @param <T> Transition type
+     */
     interface Inference<X, T> {
         ResultTransition<X, T> taskResultTransition();
     }
     
+    /**
+     * @param source Source
+     * @return Result after transition is applied
+     */
     Result<T> transitionResult(X source);
 }

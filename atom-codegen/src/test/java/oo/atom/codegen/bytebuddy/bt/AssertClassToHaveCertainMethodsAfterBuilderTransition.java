@@ -30,6 +30,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
@@ -68,7 +69,7 @@ public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements As
         final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(clazz);
         final DynamicType.Unloaded<?> make = bt
                 .transitionResult(subclass, typeDescription)
-                .outcome()
+                .value()
                 .get()
                 .make();
         final Class<?> newClazz = make.load(new ClassLoader() {}).getLoaded();

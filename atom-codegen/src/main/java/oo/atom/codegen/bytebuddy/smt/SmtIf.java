@@ -42,7 +42,7 @@ class SmtIfInference implements Result.Inference<StackManipulation> {
     }    
 
     @Override
-    public final Result<StackManipulation> taskResult() {
+    public final Result<StackManipulation> result() {
         Label label = new Label();
         return new SmtCombined(
             new SmtStatic(condition.branching(label)),

@@ -30,6 +30,8 @@ import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
@@ -59,7 +61,7 @@ public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
         final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
         final DynamicType.Unloaded<?> make = builderTransition
                 .transitionResult(subclass, typeDescription)
-                .outcome()
+                .value()
                 .get()
                 .make();
         final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();

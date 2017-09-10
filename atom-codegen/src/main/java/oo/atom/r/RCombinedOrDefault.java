@@ -26,47 +26,105 @@ package oo.atom.r;
 import java.util.function.BinaryOperator;
 import io.vavr.collection.List;
 
-class TrCombineOrDefaultInference<T> implements Result.Inference<T> {
+/**
+ * Inference for {@link RCombinedOrDefault}
+ * @author Kapralov Sergey
+ * @param <T> 
+ */
+class RCombinedOrDefaultInference<T> implements Result.Inference<T> {
     private final BinaryOperator<T> combineOperator;
-    private final T defaultValue;
-    private final List<Result<T>> taskResults;
+    private final Result<T> defaultResult;
+    private final List<Result<T>> results;
 
-    public TrCombineOrDefaultInference(BinaryOperator<T> combineOperator, T defaultValue, List<Result<T>> taskResults) {
+    /**
+     * Ctor.
+     * @param combineOperator Combination function
+     * @param defaultResult A result to fallback in case of empty result set.
+     * @param results Results to combine
+     */
+    public RCombinedOrDefaultInference(BinaryOperator<T> combineOperator, Result<T> defaultResult, List<Result<T>> results) {
         this.combineOperator = combineOperator;
-        this.defaultValue = defaultValue;
-        this.taskResults = taskResults;
+        this.defaultResult = defaultResult;
+        this.results = results;
     }
 
     @Override
-    public final Result<T> taskResult() {
-        if(taskResults.isEmpty()) {
-            return new RSuccess<>(defaultValue);
+    public final Result<T> result() {
+        if(results.isEmpty()) {
+            return defaultResult;
         } else {
-            return new RCombined<>(combineOperator, taskResults);
+            return new RCombined<>(combineOperator, results);
         }
     }
 }
 
 /**
- *
+ * Represents result, combined from a set of results, or some predefined result
+ * if results set is empty.
+ * 
  * @author Kapralov Sergey
+ * @see RCombined
  */
 public class RCombinedOrDefault<T> extends RInferred<T> {
-    public RCombinedOrDefault(BinaryOperator<T> combineOperator, T defaultValue, List<Result<T>> taskResults) {
+    /**
+     * Ctor.
+     * 
+     * @param combineOperator Combination function
+     * @param defaultResult A result to fallback in case of empty result set.
+     * @param results Results to combine
+     */
+    public RCombinedOrDefault(BinaryOperator<T> combineOperator, Result<T> defaultResult, List<Result<T>> results) {
         super(
-            new TrCombineOrDefaultInference(
+            new RCombinedOrDefaultInference(
                 combineOperator,
-                defaultValue,
-                taskResults
+                defaultResult,
+                results
             )
         );
     }
-    
-    public RCombinedOrDefault(BinaryOperator<T> combineOperator, T defaultValue, Result<T>... taskResults) {
+
+    /**
+     * Ctor.
+     * 
+     * @param combineOperator Combination function
+     * @param defaultValue a value for default result
+     * @param results Results to combine
+     */
+    public RCombinedOrDefault(BinaryOperator<T> combineOperator, T defaultValue, List<Result<T>> results) {
+        this(
+            combineOperator,
+            new RSuccess<>(defaultValue),
+            results
+        );
+    }
+
+    /**
+     * Ctor.
+     * 
+     * @param combineOperator Combination function
+     * @param defaultResult A result to fallback in case of empty result set.
+     * @param results Results to combine
+     */
+    public RCombinedOrDefault(BinaryOperator<T> combineOperator, Result<T> defaultResult, Result<T>... results) {
+        this(
+            combineOperator,
+            defaultResult,
+            List.of(results)
+        );
+    }
+
+    /**
+     * Ctor.
+     * 
+     * @param combineOperator Combination function
+     * @param defaultValue a value for default result
+     * @param results Results to combine
+     */
+    public RCombinedOrDefault(BinaryOperator<T> combineOperator, T defaultValue, Result<T>... results) {
         this(
             combineOperator,
             defaultValue,
-            List.of(taskResults)
+            List.of(results)
         );
     }
 }

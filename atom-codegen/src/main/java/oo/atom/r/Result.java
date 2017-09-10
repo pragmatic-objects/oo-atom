@@ -27,14 +27,32 @@ import io.vavr.collection.List;
 import io.vavr.control.Try;
 
 /**
- *
+ * An object, which represents a result of some execution. A result may be successful
+ * (in that case, it hold an outcome of execution) or erroneous (in that case it holds 
+ * supplementary info about the failures occured during execution)
+ * 
  * @author Kapralov Sergey
  */
 public interface Result<T> {
+    /**
+     * Inference for {@link Result}
+     * 
+     * @param <T> Value type
+     */
     interface Inference<T> {
-        Result<T> taskResult();
+        /**
+         * @return Inferred result
+         */
+        Result<T> result();
     }
     
-    Try<T> outcome();
+    /**
+     * @return Result's outcome. Erroneous in case of issues.
+     */
+    Try<T> value();
+    
+    /**
+     * @return A list of issues. Is empty if result is successful.
+     */
     List<String> issues();
 }

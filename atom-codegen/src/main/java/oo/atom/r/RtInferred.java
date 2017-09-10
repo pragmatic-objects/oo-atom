@@ -24,12 +24,17 @@
 package oo.atom.r;
 
 /**
- *
+ * Inferred transition.
+ * 
  * @author Kapralov Sergey
  */
 public class RtInferred<X, T> implements ResultTransition<X, T> {
     private final Inference<X, T> inference;
 
+    /**
+     * Ctor.
+     * @param inference Inference.
+     */
     public RtInferred(Inference<X, T> inference) {
         this.inference = inference;
     }

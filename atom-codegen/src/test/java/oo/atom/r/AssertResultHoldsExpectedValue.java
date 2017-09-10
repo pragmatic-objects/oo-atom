@@ -28,12 +28,12 @@ import io.vavr.control.Try;
 import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
- *
+ * Asserts that result represents some certain value (values equality is done by
+ * {@link Object#equals(java.lang.Object)} method).
+ * 
  * @author Kapralov Sergey
  */
 public class AssertResultHoldsExpectedValue<T> implements Assertion {
@@ -41,9 +41,16 @@ public class AssertResultHoldsExpectedValue<T> implements Assertion {
     private final Result<T> taskResult;
     private final T value;
 
-    public AssertResultHoldsExpectedValue(String description, Result<T> taskResult, T value) {
+    /**
+     * Ctor.
+     * 
+     * @param description Assertion description.
+     * @param result A result to assert on.
+     * @param value Expected value hold by result.
+     */
+    public AssertResultHoldsExpectedValue(String description, Result<T> result, T value) {
         this.description = description;
-        this.taskResult = taskResult;
+        this.taskResult = result;
         this.value = value;
     }
 
@@ -54,6 +61,6 @@ public class AssertResultHoldsExpectedValue<T> implements Assertion {
 
     @Override
     public final void check() throws Exception {
-        assertThat(taskResult.outcome()).isEqualTo(Try.success(value));
+        assertThat(taskResult.value()).isEqualTo(Try.success(value));
     }
 }

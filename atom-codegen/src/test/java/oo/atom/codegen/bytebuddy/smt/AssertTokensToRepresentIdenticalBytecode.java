@@ -53,8 +53,8 @@ class AssertTokensToRepresentIdenticalBytecodeInference implements Assertion.Inf
     public final Assertion assertion() {
         return new AssertStackManipulationsAreSame(
             description,
-            smt.outcome().get(),
-            smt2.outcome().get()
+            smt.value().get(),
+            smt2.value().get()
         );
     }
 }
