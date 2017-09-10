@@ -30,7 +30,7 @@ SOFTWARE.
     <parent>
         <groupId>oo</groupId>
         <artifactId>oo-atom</artifactId>
-        <version>0.0.6-SNAPSHOT</version>
+        <version>0.0.7</version>
     </parent>
     <artifactId>atom-api</artifactId>
     <packaging>bundle</packaging>
