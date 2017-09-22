@@ -33,7 +33,7 @@ public class BtApplyAtomAliasPatch extends BtValidated {
     public BtApplyAtomAliasPatch() {
         super(
             new ValAtomAlias(),
-            new BtAnnotate()
+            new BtAnnotateAtom()
         );
     }
 }

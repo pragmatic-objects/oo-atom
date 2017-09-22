@@ -32,7 +32,22 @@
             <url>http://dl.bintray.com/skapral/oo-maven</url>
         </pluginRepository>
     </pluginRepositories>
-            
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>oo</groupId>
+                <artifactId>atom-api</artifactId>
+                <version>${atom.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>oo</groupId>
+                <artifactId>atom-tests</artifactId>
+                <version>${atom.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -46,7 +61,7 @@
                         </initialization>
                         <transformations>
                             <transformation>
-                                <plugin>oo.atom.codegen.bytebuddy.plugin.AtomPlugin</plugin>
+                                <plugin>${atom.plugin}</plugin>
                             </transformation>
                         </transformations>
                     </configuration>

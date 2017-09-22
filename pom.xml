@@ -36,6 +36,7 @@ SOFTWARE.
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <atom.version>0.0.6-SNAPSHOT</atom.version>
+        <atom.plugin>oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin</atom.plugin>
     </properties>
     
     <name>oo-atom</name>

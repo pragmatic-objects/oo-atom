@@ -34,7 +34,7 @@ public class BtApplyAtomPatch extends BtValidated {
         super(
             new ValAtom(),
             new BtSequence(
-                new BtAnnotate(),
+                new BtAnnotateAtom(),
                 new BtGenerateEquals(),
                 new BtGenerateHashCode()
             )

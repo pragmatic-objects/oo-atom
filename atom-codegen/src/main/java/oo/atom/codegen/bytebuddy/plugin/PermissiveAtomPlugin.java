@@ -26,10 +26,13 @@ package oo.atom.codegen.bytebuddy.plugin;
 import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import static net.bytebuddy.matcher.ElementMatchers.*;
+import oo.atom.anno.NotAtom;
+import oo.atom.codegen.bytebuddy.bt.BtAnnotateNotAtom;
 import oo.atom.codegen.bytebuddy.bt.BtApplyAtomAliasPatch;
 import oo.atom.codegen.bytebuddy.bt.BtApplyAtomPatch;
 import oo.atom.codegen.bytebuddy.bt.BtApplyIfMatches;
 import oo.atom.codegen.bytebuddy.bt.BtConditional;
+import oo.atom.codegen.bytebuddy.bt.BtFallback;
 import oo.atom.codegen.bytebuddy.matchers.AnnotatedAtom;
 import oo.atom.codegen.bytebuddy.matchers.AnnotatedNonAtom;
 import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
@@ -37,11 +40,13 @@ import oo.atom.codegen.bytebuddy.matchers.ExplicitlyExtendingAnything;
 
 
 /**
- *
+ * Atoms instrumentation plugin, which applies instrumentation only on Atom-compliant
+ * classes, annotating the rest of the classes as {@link NotAtom}
+ * 
  * @author Kapralov Sergey
  */
-public class AtomPlugin extends TaskPlugin implements Plugin {
-    public AtomPlugin() {
+public class PermissiveAtomPlugin extends TaskPlugin implements Plugin {
+    public PermissiveAtomPlugin() {
         super(
             new BtApplyIfMatches(
                 new ConjunctionMatcher<TypeDescription>(
@@ -49,10 +54,13 @@ public class AtomPlugin extends TaskPlugin implements Plugin {
                     not(new AnnotatedAtom()),
                     not(isInterface())
                 ),
-                new BtConditional(
-                    new ExplicitlyExtendingAnything(),
-                    new BtApplyAtomAliasPatch(),
-                    new BtApplyAtomPatch()
+                new BtFallback(
+                    new BtConditional(
+                        new ExplicitlyExtendingAnything(),
+                        new BtApplyAtomAliasPatch(),
+                        new BtApplyAtomPatch()
+                    ),
+                    new BtAnnotateNotAtom()
                 )
             )
         );

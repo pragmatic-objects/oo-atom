@@ -24,33 +24,22 @@
 package oo.atom.codegen.bytebuddy.bt;
 
 import java.lang.annotation.Annotation;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
 import oo.atom.anno.Atom;
-import oo.atom.r.RSuccess;
-import oo.atom.r.Result;
+import oo.atom.anno.NotAtom;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotate implements BuilderTransition {
-    private final Annotation annotation;
+public class BtAnnotateNotAtom extends BtAnnotate {
+    private static class NotAtomInstance implements NotAtom {
+        @Override
+        public final Class<? extends Annotation> annotationType() {
+            return Atom.class;
+        }
+    }
 
-    public BtAnnotate(Annotation annotation) {
-        this.annotation = annotation;
-    }
-    
-    @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription type) {
-        boolean annotationPresent = type.getDeclaredAnnotations().isAnnotationPresent(Atom.class);
-        
-        return new RSuccess<>(
-            annotationPresent ?
-                source :
-                source.annotateType(
-                    annotation
-                )
-        );
-    }
+    public BtAnnotateNotAtom() {
+        super(new NotAtomInstance());
+    }    
 }

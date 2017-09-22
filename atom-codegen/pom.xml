@@ -67,7 +67,7 @@
                     </initialization>
                     <transformations>
                         <transformation>
-                            <plugin>oo.atom.codegen.bytebuddy.plugin.AtomPlugin</plugin>
+                            <plugin>oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin</plugin>
                         </transformation>
                     </transformations>
                 </configuration>

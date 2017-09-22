@@ -23,34 +23,35 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import java.lang.annotation.Annotation;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
 import oo.atom.anno.Atom;
-import oo.atom.r.RSuccess;
-import oo.atom.r.Result;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotate implements BuilderTransition {
-    private final Annotation annotation;
-
-    public BtAnnotate(Annotation annotation) {
-        this.annotation = annotation;
-    }
+public class BtAnnotateAtomTest extends AssertionsSuite {
     
-    @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription type) {
-        boolean annotationPresent = type.getDeclaredAnnotations().isAnnotationPresent(Atom.class);
-        
-        return new RSuccess<>(
-            annotationPresent ?
-                source :
-                source.annotateType(
-                    annotation
-                )
+    public BtAnnotateAtomTest() {
+        super(
+            new AssertBuilderTransitionToAnnotateAClass(
+                "annotates class with @Atom annotation",
+                new BtAnnotateAtom(),
+                Foo.class,
+                Atom.class
+            ),
+            new AssertBuilderTransitionIsNotCorruptingClass(
+                "prevents duplicate annotations", 
+                new BtAnnotateAtom(), 
+                Bar.class
+            )
         );
+    }
+
+    private static class Foo {
+    }
+
+    @Atom
+    private static class Bar {
     }
 }

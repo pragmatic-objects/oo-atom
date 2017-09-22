@@ -23,34 +23,29 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import java.lang.annotation.Annotation;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.anno.Atom;
-import oo.atom.r.RSuccess;
+import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotate implements BuilderTransition {
-    private final Annotation annotation;
+public class BtFallback implements BuilderTransition {
+    private final BuilderTransition mainTransition;
+    private final BuilderTransition fallbackTransition;
 
-    public BtAnnotate(Annotation annotation) {
-        this.annotation = annotation;
+    public BtFallback(BuilderTransition mainTransition, BuilderTransition fallbackTransition) {
+        this.mainTransition = mainTransition;
+        this.fallbackTransition = fallbackTransition;
     }
-    
+
     @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription type) {
-        boolean annotationPresent = type.getDeclaredAnnotations().isAnnotationPresent(Atom.class);
-        
-        return new RSuccess<>(
-            annotationPresent ?
-                source :
-                source.annotateType(
-                    annotation
-                )
-        );
+    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
+        Result<DynamicType.Builder<?>> result = mainTransition.transitionResult(source, typeDescription);
+        if(result.issues().nonEmpty()) {
+            result = fallbackTransition.transitionResult(source, typeDescription);
+        }
+        return result;
     }
 }

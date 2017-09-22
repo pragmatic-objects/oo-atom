@@ -23,35 +23,22 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
+import java.lang.annotation.Annotation;
 import oo.atom.anno.Atom;
-import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotateTest extends AssertionsSuite {
-    
-    public BtAnnotateTest() {
-        super(
-            new AssertBuilderTransitionToAnnotateAClass(
-                "annotates class with @Atom annotation",
-                new BtAnnotate(),
-                Foo.class,
-                Atom.class
-            ),
-            new AssertBuilderTransitionIsNotCorruptingClass(
-                "prevents duplicate annotations", 
-                new BtAnnotate(), 
-                Bar.class
-            )
-        );
+public class BtAnnotateAtom extends BtAnnotate {
+    private static class AtomInstance implements Atom {
+        @Override
+        public final Class<? extends Annotation> annotationType() {
+            return Atom.class;
+        }
     }
 
-    private static class Foo {
-    }
-
-    @Atom
-    private static class Bar {
-    }
+    public BtAnnotateAtom() {
+        super(new AtomInstance());
+    }    
 }
