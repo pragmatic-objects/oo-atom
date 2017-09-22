@@ -23,22 +23,26 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import java.lang.annotation.Annotation;
 import oo.atom.anno.NotAtom;
+import oo.atom.tests.AssertionsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotateNotAtom extends BtAnnotate {
-    private static class NotAtomInstance implements NotAtom {
-        @Override
-        public final Class<? extends Annotation> annotationType() {
-            return NotAtom.class;
-        }
+public class BtAnnotateNotAtomTest extends AssertionsSuite {
+    
+    public BtAnnotateNotAtomTest() {
+        super(
+            new AssertBuilderTransitionToAnnotateAClass(
+                "annotates class with @NotAtom annotation",
+                new BtAnnotateNotAtom(),
+                Foo.class,
+                NotAtom.class
+            )
+        );
     }
 
-    public BtAnnotateNotAtom() {
-        super(new NotAtomInstance());
-    }    
+    private static class Foo {
+    }
 }

@@ -24,21 +24,44 @@
 package oo.atom.codegen.bytebuddy.bt;
 
 import java.lang.annotation.Annotation;
-import oo.atom.anno.NotAtom;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import oo.atom.tests.AssertionsSuite;
 
 /**
- *
+ * Tests suite for {@link BtAnnotate}
+ * 
  * @author Kapralov Sergey
  */
-public class BtAnnotateNotAtom extends BtAnnotate {
-    private static class NotAtomInstance implements NotAtom {
-        @Override
-        public final Class<? extends Annotation> annotationType() {
-            return NotAtom.class;
-        }
+public class BtAnnotateTest extends AssertionsSuite {
+    
+    public BtAnnotateTest() {
+        super(
+            new AssertBuilderTransitionIsNotCorruptingClass(
+                "prevents duplicate annotations", 
+                new BtAnnotate(
+                    new DummyImpl()
+                ), 
+                Bar.class
+            )
+        );
     }
 
-    public BtAnnotateNotAtom() {
-        super(new NotAtomInstance());
-    }    
+    
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    private static @interface Dummy {}
+    
+    private static final class DummyImpl implements Dummy {
+        @Override
+        public final Class<? extends Annotation> annotationType() {
+            return Dummy.class;
+        }
+    }
+    
+    @Dummy
+    private static class Bar {
+    }
 }

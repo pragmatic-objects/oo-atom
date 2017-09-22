@@ -29,9 +29,6 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
@@ -65,8 +62,8 @@ public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
                 .get()
                 .make();
         final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
-        assertThat(
-            clazz.getAnnotation(annotation)
-        ).isNotNull();
+        assertThat(clazz.getAnnotation(annotation))
+                .withFailMessage("Expected annotation %s is missing on class %s", annotation.getName(), clazz.getName())
+                .isNotNull();
     }
 }

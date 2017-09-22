@@ -21,24 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.codegen.validator;
 
-import java.lang.annotation.Annotation;
-import oo.atom.anno.NotAtom;
+import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.r.RFailure;
+import oo.atom.r.Result;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotateNotAtom extends BtAnnotate {
-    private static class NotAtomInstance implements NotAtom {
-        @Override
-        public final Class<? extends Annotation> annotationType() {
-            return NotAtom.class;
-        }
+public class ValFail implements Validator {
+    private final String issue;
+
+    public ValFail(String issue) {
+        this.issue = issue;
     }
 
-    public BtAnnotateNotAtom() {
-        super(new NotAtomInstance());
-    }    
+    @Override
+    public final Result<TypeDescription> transitionResult(TypeDescription source) {
+        return new RFailure<>(issue);
+    }
 }
