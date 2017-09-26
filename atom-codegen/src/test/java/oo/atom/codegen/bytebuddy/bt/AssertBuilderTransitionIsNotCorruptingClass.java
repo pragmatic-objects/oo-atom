@@ -60,7 +60,7 @@ public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
                     .value()
                     .get().make();
             final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
-            //clazz.getMethods();
+            clazz.getMethods(); // Initiate validation.
         }).doesNotThrowAnyException();
-    }    
+    }
 }
