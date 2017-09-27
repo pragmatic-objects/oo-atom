@@ -23,35 +23,46 @@
  */
 package oo.atom.r;
 
-import oo.atom.r.Result;
-import io.vavr.control.Try;
+import io.vavr.collection.List;
 import oo.atom.tests.Assertion;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.*;
 
 /**
- * Asserts that result represents some certain value (values equality is done by
- * {@link Object#equals(java.lang.Object)} method).
+ * Asserts that the {@link oo.atom.r.Result} represents an issue with expected set of messages.
  * 
  * @author Kapralov Sergey
  */
-public class AssertResultHoldsExpectedValue<T> implements Assertion {
+public class AssertResultIsErroneous implements Assertion {
     private final String description;
-    private final Result<T> taskResult;
-    private final T value;
+    private final Result<?> result;
+    private final List<String> issues;
+    
+    /**
+     * Ctor.
+     * 
+     * @param description Assertion description.
+     * @param result Result to assert on
+     * @param issues A set of issue messages to expect
+     */
+    public AssertResultIsErroneous(String description, Result<?> result, List<String> issues) {
+        this.description = description;
+        this.result = result;
+        this.issues = issues;
+    }
 
     /**
      * Ctor.
      * 
      * @param description Assertion description.
-     * @param result A result to assert on.
-     * @param value Expected value hold by result.
+     * @param result Result to assert on
+     * @param issues A set of issue messages to expect
      */
-    public AssertResultHoldsExpectedValue(String description, Result<T> result, T value) {
-        this.description = description;
-        this.taskResult = result;
-        this.value = value;
+    public AssertResultIsErroneous(String description, Result<?> result, String... issues) {
+        this(
+            description,
+            result,
+            List.of(issues)
+        );
     }
 
     @Override
@@ -61,6 +72,11 @@ public class AssertResultHoldsExpectedValue<T> implements Assertion {
 
     @Override
     public final void check() throws Exception {
-        assertThat(taskResult.value()).isEqualTo(Try.success(value));
+        assertThatThrownBy(() -> {
+            result.value().get();
+        }).isInstanceOf(RuntimeException.class);
+        assertThat(result.issues())
+                .containsOnlyElementsOf(issues);
     }
+    
 }

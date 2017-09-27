@@ -23,26 +23,40 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
+import io.vavr.collection.List;
+import java.lang.reflect.Method;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.anno.Atom;
 import oo.atom.tests.Assertion;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
+ * Assertion that passes if the class, produced by {@link BuilderTransition} under the test
+ * has declared methods with certain names.
+ * 
  * @author Kapralov Sergey
  */
-public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
+public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements Assertion {
     private final String description;
     private final BuilderTransition bt;
-    private final Class<?> type;
+    private final Class<?> clazz;
+    private final List<String> methodNames;
 
-    public AssertBuilderTransitionIsNotCorruptingClass(String description, BuilderTransition bt, Class<?> type) {
+    public AssertClassToHaveCertainMethodsAfterBuilderTransition(String description, BuilderTransition bt, Class<?> clazz, List<String> methodNames) {
         this.description = description;
         this.bt = bt;
-        this.type = type;
+        this.clazz = clazz;
+        this.methodNames = methodNames;
+    }
+    
+    public AssertClassToHaveCertainMethodsAfterBuilderTransition(String description, BuilderTransition bt, Class<?> clazz, String... methodNames) {
+        this(
+            description,
+            bt,
+            clazz,
+            List.of(methodNames)
+        );
     }
 
     @Override
@@ -52,15 +66,20 @@ public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
 
     @Override
     public final void check() throws Exception {
-        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
-        final TypeDescription typeDescription = new TypeDescription.ForLoadedType(type);
-        assertThatCode(() -> {
-            final DynamicType.Unloaded<?> make = bt
-                    .transitionResult(subclass, typeDescription)
-                    .value()
-                    .get().make();
-            final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
-            clazz.getMethods(); // Initiate validation.
-        }).doesNotThrowAnyException();
+        final TypeDescription typeDescription = new TypeDescription.ForLoadedType(clazz);
+        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(clazz);
+        final DynamicType.Unloaded<?> make = bt
+                .transitionResult(subclass, typeDescription)
+                .value()
+                .get()
+                .make();
+        final Class<?> newClazz = make.load(new AnonymousClassLoader()).getLoaded();
+        assertThat(
+            List.of(newClazz.getDeclaredMethods()).map(Method::getName)
+        ).containsOnlyElementsOf(
+            methodNames
+        );
     }
+    
+    private static final class AnonymousClassLoader extends ClassLoader {}
 }

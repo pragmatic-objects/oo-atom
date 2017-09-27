@@ -29,7 +29,9 @@ import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
+ * Assertion which passes if the {@link ElementMatcher} under the test mismatches
+ * the provided {@link TypeDescription}
+ * 
  * @author skapral
  */
 public class AssertThatTypeDoesNotMatch implements Assertion {

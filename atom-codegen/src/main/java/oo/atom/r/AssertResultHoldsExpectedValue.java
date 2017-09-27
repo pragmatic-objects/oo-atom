@@ -21,32 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.r;
 
-import java.lang.annotation.Annotation;
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
+import io.vavr.control.Try;
 import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 /**
- *
+ * Asserts that result represents some certain value (values equality is done by
+ * {@link Object#equals(java.lang.Object)} method).
+ * 
  * @author Kapralov Sergey
  */
-public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
+public class AssertResultHoldsExpectedValue<T> implements Assertion {
     private final String description;
-    private final BuilderTransition builderTransition;
-    private final Class<?> type;
-    private final Class<? extends Annotation> annotation;
+    private final Result<T> taskResult;
+    private final T value;
 
-    public AssertBuilderTransitionToAnnotateAClass(String description, BuilderTransition builderTransition, Class<?> type, Class<? extends Annotation> annotation) {
+    /**
+     * Ctor.
+     * 
+     * @param description Assertion description.
+     * @param result A result to assert on.
+     * @param value Expected value hold by result.
+     */
+    public AssertResultHoldsExpectedValue(String description, Result<T> result, T value) {
         this.description = description;
-        this.builderTransition = builderTransition;
-        this.type = type;
-        this.annotation = annotation;
+        this.taskResult = result;
+        this.value = value;
     }
-    
+
     @Override
     public final String description() {
         return description;
@@ -54,16 +59,6 @@ public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
 
     @Override
     public final void check() throws Exception {
-        final TypeDescription typeDescription = new TypeDescription.ForLoadedType(type);
-        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
-        final DynamicType.Unloaded<?> make = builderTransition
-                .transitionResult(subclass, typeDescription)
-                .value()
-                .get()
-                .make();
-        final Class<?> clazz = make.load(new ClassLoader() {}).getLoaded();
-        assertThat(clazz.getAnnotation(annotation))
-                .withFailMessage("Expected annotation %s is missing on class %s", annotation.getName(), clazz.getName())
-                .isNotNull();
+        assertThat(taskResult.value()).isEqualTo(Try.success(value));
     }
 }

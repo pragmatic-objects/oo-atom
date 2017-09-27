@@ -23,41 +23,32 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import io.vavr.collection.List;
-import java.lang.reflect.Method;
+import java.lang.annotation.Annotation;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
+ * Assertion which passes only if the class, produced by {@link BuilderTransition} under the test
+ * is annotated with certain annotation.
+ * 
  * @author Kapralov Sergey
  */
-public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements Assertion {
+public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
     private final String description;
-    private final BuilderTransition bt;
-    private final Class<?> clazz;
-    private final List<String> methodNames;
+    private final BuilderTransition builderTransition;
+    private final Class<?> type;
+    private final Class<? extends Annotation> annotation;
 
-    public AssertClassToHaveCertainMethodsAfterBuilderTransition(String description, BuilderTransition bt, Class<?> clazz, List<String> methodNames) {
+    public AssertBuilderTransitionToAnnotateAClass(String description, BuilderTransition builderTransition, Class<?> type, Class<? extends Annotation> annotation) {
         this.description = description;
-        this.bt = bt;
-        this.clazz = clazz;
-        this.methodNames = methodNames;
+        this.builderTransition = builderTransition;
+        this.type = type;
+        this.annotation = annotation;
     }
     
-    public AssertClassToHaveCertainMethodsAfterBuilderTransition(String description, BuilderTransition bt, Class<?> clazz, String... methodNames) {
-        this(
-            description,
-            bt,
-            clazz,
-            List.of(methodNames)
-        );
-    }
-
     @Override
     public final String description() {
         return description;
@@ -65,18 +56,18 @@ public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements As
 
     @Override
     public final void check() throws Exception {
-        final TypeDescription typeDescription = new TypeDescription.ForLoadedType(clazz);
-        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(clazz);
-        final DynamicType.Unloaded<?> make = bt
+        final TypeDescription typeDescription = new TypeDescription.ForLoadedType(type);
+        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
+        final DynamicType.Unloaded<?> make = builderTransition
                 .transitionResult(subclass, typeDescription)
                 .value()
                 .get()
                 .make();
-        final Class<?> newClazz = make.load(new ClassLoader() {}).getLoaded();
-        assertThat(
-            List.of(newClazz.getDeclaredMethods()).map(Method::getName)
-        ).containsOnlyElementsOf(
-            methodNames
-        );
+        final Class<?> clazz = make.load(new AnonymousClassLoader()).getLoaded();
+        assertThat(clazz.getAnnotation(annotation))
+                .withFailMessage("Expected annotation %s is missing on class %s", annotation.getName(), clazz.getName())
+                .isNotNull();
     }
+    
+    private static final class AnonymousClassLoader extends ClassLoader {}
 }

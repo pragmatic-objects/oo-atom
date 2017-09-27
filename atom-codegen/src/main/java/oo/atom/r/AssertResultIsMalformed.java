@@ -23,7 +23,6 @@
  */
 package oo.atom.r;
 
-import oo.atom.r.Result;
 import oo.atom.tests.Assertion;
 import org.assertj.core.api.Assertions;
 

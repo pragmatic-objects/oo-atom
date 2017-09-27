@@ -21,48 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.r;
+package oo.atom.codegen.bytebuddy.bt;
 
-import io.vavr.collection.List;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.tests.Assertion;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
- * Asserts that the {@link oo.atom.r.Result} represents an issue with expected set of messages.
+ * Assertion that passes if {@link BuilderTransition} under the test produces a valid class.
+ * The class is implied as valid if it is successfully loaded by JVM and passes verification
  * 
  * @author Kapralov Sergey
  */
-public class AssertResultIsErroneous implements Assertion {
+public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
     private final String description;
-    private final Result<?> result;
-    private final List<String> issues;
-    
-    /**
-     * Ctor.
-     * 
-     * @param description Assertion description.
-     * @param result Result to assert on
-     * @param issues A set of issue messages to expect
-     */
-    public AssertResultIsErroneous(String description, Result<?> result, List<String> issues) {
-        this.description = description;
-        this.result = result;
-        this.issues = issues;
-    }
+    private final BuilderTransition bt;
+    private final Class<?> type;
 
-    /**
-     * Ctor.
-     * 
-     * @param description Assertion description.
-     * @param result Result to assert on
-     * @param issues A set of issue messages to expect
-     */
-    public AssertResultIsErroneous(String description, Result<?> taskResult, String... issues) {
-        this(
-            description,
-            taskResult,
-            List.of(issues)
-        );
+    public AssertBuilderTransitionIsNotCorruptingClass(String description, BuilderTransition bt, Class<?> type) {
+        this.description = description;
+        this.bt = bt;
+        this.type = type;
     }
 
     @Override
@@ -72,11 +53,17 @@ public class AssertResultIsErroneous implements Assertion {
 
     @Override
     public final void check() throws Exception {
-        assertThatThrownBy(() -> {
-            result.value().get();
-        }).isInstanceOf(RuntimeException.class);
-        assertThat(result.issues())
-                .containsOnlyElementsOf(issues);
+        final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
+        final TypeDescription typeDescription = new TypeDescription.ForLoadedType(type);
+        assertThatCode(() -> {
+            final DynamicType.Unloaded<?> make = bt
+                    .transitionResult(subclass, typeDescription)
+                    .value()
+                    .get().make();
+            final Class<?> clazz = make.load(new AnonymousClassLoader()).getLoaded();
+            clazz.getMethods(); // Initiate validation.
+        }).doesNotThrowAnyException();
     }
-    
+
+    private static final class AnonymousClassLoader extends ClassLoader {}
 }
