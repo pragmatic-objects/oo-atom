@@ -25,6 +25,7 @@ package oo.atom.codegen.bytebuddy.smt;
 
 import java.util.function.Supplier;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.codegen.bytebuddy.smt.StackManipulationToken;
 import oo.atom.tests.Assertion;
 import oo.atom.tests.InferredAssertion;
 

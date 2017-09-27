@@ -21,21 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
+package oo.atom.codegen.bytebuddy.matchers;
 
-import net.bytebuddy.description.type.TypeDescription;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import oo.atom.tests.AssertionsSuite;
 
 /**
- *
+ * Tests suite for {@link AssertThatTypeMatches}
  * @author Kapralov Sergey
+ * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertThatTypeMatches}
  */
-public class ProbaTest {
-    
-    
-    @Test
-    public void test() {
-        Assertions.assertThat(new TypeDescription.ForLoadedType(Object[].class).isArray()).isTrue();
-    }
+public class AssertThatTypeMatchesTest extends AssertionsSuite {
 }
