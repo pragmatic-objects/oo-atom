@@ -23,11 +23,12 @@
         <dependency>
             <groupId>oo</groupId>
             <artifactId>atom-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>oo</groupId>
             <artifactId>atom-tests</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency> 
             <groupId>io.vavr</groupId> 
