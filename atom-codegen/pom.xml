@@ -4,7 +4,7 @@
     <parent>
         <groupId>oo</groupId>
         <artifactId>oo-atom</artifactId>
-        <version>0.0.0-SNAPSHOT</version>
+        <version>0.0.8</version>
     </parent>
     <artifactId>atom-codegen</artifactId>
     <packaging>bundle</packaging>
