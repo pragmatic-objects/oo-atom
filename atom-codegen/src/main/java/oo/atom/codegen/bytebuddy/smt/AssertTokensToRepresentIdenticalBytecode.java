@@ -23,7 +23,6 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import oo.atom.codegen.bytebuddy.smt.StackManipulationToken;
 import oo.atom.tests.Assertion;
 import oo.atom.tests.InferredAssertion;
 
