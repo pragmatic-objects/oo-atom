@@ -5,7 +5,7 @@
 
 OO-atom is a desperate attempt to make Java programming more predictable and transparent. Instead of fighting the boilerplate code by hiding it, introducing hidden coupling, like it is done by Java EE, Spring and Hibernate, OO-atom greets clean design by taking the most from Java SE, and eliminating the worst parts of it.
 
-The project is built around the term named Atom. Atom is a Java class, which strictly follows a set of [requirements](https://github.com/project-avral/oo-atom/wiki/What-is-Atom). For each Atom, OO-atom project enforces:
+The project is built around the term named Atom. Atom is a Java class, which strictly follows a set of [requirements](https://github.com/project-avral/oo-atom/ATOM_SPECIFICATION.md). For each Atom, OO-atom project enforces:
 - composition over inheritance
 - separation of side effects ([partial]())
 - design by contract
