@@ -299,5 +299,6 @@ SOFTWARE.
         <module>atom-starter</module>
         <module>atom-it</module>
         <module>atom-tests</module>
+        <module>atom-samples</module>
     </modules>
 </project>
