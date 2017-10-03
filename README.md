@@ -5,7 +5,7 @@
 
 OO-atom is a desperate attempt to make Java programming more predictable and transparent. Instead of fighting the boilerplate code by hiding it, introducing hidden coupling, like it is done by Java EE, Spring and Hibernate, OO-atom greets clean design by taking the most from Java SE, and eliminating the worst parts of it.
 
-The project is built around the term named Atom. Atom is a Java class, which strictly follows a set of [requirements](https://github.com/project-avral/oo-atom/ATOM_SPECIFICATION.md). For each Atom, OO-atom project enforces:
+The project is built around the term named Atom. Atom is a Java class, which strictly follows a set of [requirements](ATOM_SPECIFICATION.md). For each Atom, OO-atom project enforces:
 - composition over inheritance
 - separation of side effects ([partial]())
 - design by contract
@@ -60,7 +60,7 @@ The project is inspired by the guidelines from the books "[Elegant Objects](http
     </dependency>
 ```
 
-4. Study the [samples](https://github.com/project-avral/oo-atom/atom-samples)
+4. Study the [samples](atom-samples)
 
 Maven will track each class of your project, fail the project's build if any of the class doesn't match the Atom's specification, and apply additional instrumentaions for each Atom. This process is the recommended way of development in OO-atom-managed projects, but in complicated cases, it can be overriden. This process in details is explained [here]().
 
