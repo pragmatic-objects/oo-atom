@@ -34,6 +34,11 @@ import oo.atom.r.RInferred;
 import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
+/**
+ * Inference for {@link oo.atom.codegen.bytebuddy.smt.SmtBox}
+ * 
+ * @author Kapralov Sergey
+ */
 class SmtBoxInference implements Result.Inference<StackManipulation> {
 
     private static final Method BOOLEAN_VALUEOF;
@@ -67,7 +72,7 @@ class SmtBoxInference implements Result.Inference<StackManipulation> {
     }
 
     @Override
-    public final Result<StackManipulation> taskResult() {
+    public final Result<StackManipulation> result() {
         return Match(type).<Result<StackManipulation>>of(Case($(t -> t.represents(boolean.class)), new RSuccess<StackManipulation>(
                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
             )),
@@ -93,21 +98,27 @@ class SmtBoxInference implements Result.Inference<StackManipulation> {
                 MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
             )),
             Case($(), new RFailure<StackManipulation>(
-                String.format("Attempt to box non-primitive type %s", type)
+                String.format("Attempt to box non-primitive type %s", type.getName())
             ))
         );
     }
 }
 
 /**
- *
+ * Stack manipulation token which boxes some primitive-type value on stack.
+ * Fails in case when the passed type is not primitive.
+ * 
  * @author Kapralov Sergey
  */
 public class SmtBox extends RInferred<StackManipulation> implements StackManipulationToken {
-
+    /**
+     * Ctor.
+     * 
+     * @param type a type to box
+     */
     public SmtBox(TypeDescription type) {
         super(
-                new SmtBoxInference(type)
+            new SmtBoxInference(type)
         );
     }
 }

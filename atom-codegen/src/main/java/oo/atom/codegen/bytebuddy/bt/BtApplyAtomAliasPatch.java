@@ -23,14 +23,17 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
+import oo.atom.codegen.validator.ValAtomAlias;
+
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtApplyAtomAliasPatch extends BtSequence {
+public class BtApplyAtomAliasPatch extends BtValidated {
     public BtApplyAtomAliasPatch() {
         super(
-            new BtAnnotate()
+            new ValAtomAlias(),
+            new BtAnnotateAtom()
         );
     }
 }

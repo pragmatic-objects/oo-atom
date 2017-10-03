@@ -24,13 +24,20 @@
 package oo.atom.r;
 
 /**
- *
+ * Two result transitions, chained together. Result value is passed through
+ * the first transition, then the second one.
+ * 
  * @author Kapralov Sergey
  */
 public class RtChain<X, S, T> implements ResultTransition<X, T> {
     private final ResultTransition<X, S> first;
     private final ResultTransition<S, T> second;
 
+    /**
+     * Ctor.
+     * @param first First transition
+     * @param second Second transition.
+     */
     public RtChain(ResultTransition<X, S> first, ResultTransition<S, T> second) {
         this.first = first;
         this.second = second;

@@ -27,7 +27,6 @@ import io.vavr.collection.List;
 import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
-import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
 import oo.atom.r.Result;
 
@@ -36,21 +35,20 @@ import oo.atom.r.Result;
  * @author Kapralov Sergey
  */
 public class TaskPlugin implements Plugin {
-    private final ElementMatcher<TypeDescription> matcher;
     private final BuilderTransition bt;
 
-    public TaskPlugin(ElementMatcher<TypeDescription> matcher, BuilderTransition bt) {
-        this.matcher = matcher;
+    public TaskPlugin(BuilderTransition bt) {
         this.bt = bt;
     }
 
     @Override
     public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
+        System.out.println("Transforming type: " + typeDescription.getName());
         Result<Builder<?>> result = bt
                 .transitionResult(builder, typeDescription);
         List<String> issues = result.issues();
         if(issues.isEmpty()) {
-            return result.outcome().get();
+            return result.value().get();
         } else {
             issues.map(str -> "ERROR: " + str).forEach(System.err::println);
             throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
@@ -59,6 +57,6 @@ public class TaskPlugin implements Plugin {
 
     @Override
     public final boolean matches(TypeDescription target) {
-        return matcher.matches(target);
+        return true;
     }
 }

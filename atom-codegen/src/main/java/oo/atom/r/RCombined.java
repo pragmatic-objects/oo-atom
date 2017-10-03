@@ -28,28 +28,43 @@ import io.vavr.collection.List;
 import io.vavr.control.Try;
 
 /**
- *
+ * Represents combination of several results to one. In case when some result is
+ * erroneous, resulting result will be erroneous too, containing aggregated list of all issues.
+ * 
+ * WARNING: empty list of results is not allowed for {@link RCombined}. Check
+ * {@link RCombinedOrDefault} as an alternative for such cases.
+ * 
  * @author Kapralov Sergey
  */
 public class RCombined<T> implements Result<T> {
-    private final List<Result<T>> taskResults;
+    private final List<Result<T>> results;
     private final BinaryOperator<T> combineOperator;
 
-    public RCombined(BinaryOperator<T> combineOperator, List<Result<T>> taskResults) {
-        this.taskResults = taskResults;
+    /**
+     * Ctor.
+     * @param combineOperator Combination function
+     * @param results Results to combine
+     */
+    public RCombined(BinaryOperator<T> combineOperator, List<Result<T>> results) {
+        this.results = results;
         this.combineOperator = combineOperator;
     }
 
-    public RCombined(BinaryOperator<T> combineOperator, Result<T>... taskResults) {
-        this(combineOperator, List.of(taskResults));
+    /**
+     * Ctor.
+     * @param combineOperator Combination function
+     * @param results Results to combine
+     */
+    public RCombined(BinaryOperator<T> combineOperator, Result<T>... results) {
+        this(combineOperator, List.of(results));
     }
 
     @Override
-    public final Try<T> outcome() {
-        if(taskResults.isEmpty()) {
-            throw new IllegalArgumentException("Attempt to combine an empty set");
+    public final Try<T> value() {
+        if(results.isEmpty()) {
+            throw new IllegalStateException("Attempt to combine an empty set");
         }
-        return taskResults.map(Result::outcome)
+        return results.map(Result::value)
                 .reduce((t1, t2) -> {
                     if(t1.isFailure() || t2.isFailure()) {
                         return Try.failure(
@@ -66,9 +81,9 @@ public class RCombined<T> implements Result<T> {
     
     @Override
     public final List<String> issues() {
-        if(taskResults.isEmpty()) {
-            throw new IllegalArgumentException("Attempt to combine an empty set");
+        if(results.isEmpty()) {
+            throw new IllegalStateException("Attempt to combine an empty set");
         }
-        return taskResults.flatMap(Result::issues);
+        return results.flatMap(Result::issues);
     }
 }

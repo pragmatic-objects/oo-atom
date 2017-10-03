@@ -46,7 +46,7 @@ public class BtSequence implements BuilderTransition {
     }
 
     @Override
-    public Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
+    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
         return transitions.<Result<Builder<?>>>foldLeft(
             new RSuccess<>(source),
             (state, transition) -> new RBind<>(

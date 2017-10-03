@@ -30,7 +30,7 @@ import net.bytebuddy.jar.asm.Opcodes;
  *
  * @author Kapralov Sergey
  */
-public class BIfNonNull extends Base {
+public class BIfNonNull extends BImpl {
     
     public BIfNonNull(Label label) {
         super(-1, 0, label, Opcodes.IFNONNULL);

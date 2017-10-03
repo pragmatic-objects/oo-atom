@@ -39,7 +39,7 @@ class SmtArrayInference implements Result.Inference {
     }
 
     @Override
-    public final Result<StackManipulation> taskResult() {
+    public final Result<StackManipulation> result() {
         return new RTransformed<>(
             members, 
             list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(

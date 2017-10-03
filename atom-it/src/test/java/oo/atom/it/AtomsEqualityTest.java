@@ -54,11 +54,6 @@ public class AtomsEqualityTest extends AssertionsSuite {
                 "alias atom and basis atom with same constructor arguments are equal",
                 new FooAlias(),
                 new Foo(42)
-            ),
-            new AssertAtomsAreNotEqual(
-                "non-atom classes keep original equality semantics",
-                new NotAtom(),
-                new NotAtom()
             )
         );
     }

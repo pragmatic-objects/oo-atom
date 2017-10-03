@@ -27,19 +27,24 @@ import io.vavr.collection.List;
 import io.vavr.control.Try;
 
 /**
- *
+ * Represents successful result, which holds some value.
+ * 
  * @author Kapralov Sergey
  */
 public class RSuccess<T> implements Result<T> {
-    private final T outcome;
+    private final T value;
 
-    public RSuccess(T outcome) {
-        this.outcome = outcome;
+    /**
+     * Ctor.
+     * @param value Value
+     */
+    public RSuccess(T value) {
+        this.value = value;
     }
 
     @Override
-    public final Try<T> outcome() {
-        return Try.success(outcome);
+    public final Try<T> value() {
+        return Try.success(value);
     }
 
     @Override

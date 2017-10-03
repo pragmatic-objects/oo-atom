@@ -29,13 +29,14 @@ SOFTWARE.
     
     <groupId>oo</groupId>
     <artifactId>oo-atom</artifactId>
-    <version>0.0.6-SNAPSHOT</version>
+    <version>0.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <atom.version>0.0.6-SNAPSHOT</atom.version>
+        <atom.version>0.0.0-SNAPSHOT</atom.version>
+        <atom.plugin>oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin</atom.plugin>
     </properties>
     
     <name>oo-atom</name>
@@ -110,11 +111,17 @@ SOFTWARE.
                     <groupId>net.bytebuddy</groupId>
                     <artifactId>byte-buddy-maven-plugin</artifactId>
                     <version>1.7.1</version>
+                    <!--
+                    @todo #10 upgrade this plugin after fix for https://github.com/raphw/byte-buddy/issues/331 released
+                    -->
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.20</version>
+                    <configuration>
+                        <trimStackTrace>false</trimStackTrace>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -166,6 +173,9 @@ SOFTWARE.
         </profile>
         <profile>
             <id>mutations</id>
+            <properties>
+                <pitest.target.tests>*</pitest.target.tests>
+            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -189,6 +199,7 @@ SOFTWARE.
                                     </excludedMethods>
                                     <timestampedReports>false</timestampedReports>
                                     <failWhenNoMutations>false</failWhenNoMutations>
+                                    <targetTests>${pitest.target.tests}</targetTests>
                                 </configuration>
                             </execution>
                         </executions>

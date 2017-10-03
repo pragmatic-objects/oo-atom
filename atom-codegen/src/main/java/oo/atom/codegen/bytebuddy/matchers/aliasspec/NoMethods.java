@@ -25,8 +25,7 @@ package oo.atom.codegen.bytebuddy.matchers.aliasspec;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import static net.bytebuddy.matcher.ElementMatchers.isConstructor;
-import static net.bytebuddy.matcher.ElementMatchers.not;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
  *
@@ -37,6 +36,7 @@ public class NoMethods implements ElementMatcher<TypeDescription> {
     public final boolean matches(TypeDescription target) {
         return target.getDeclaredMethods()
                 .filter(not(isConstructor()))
+                .filter(not(isSynthetic()))
                 .isEmpty();
     }
 }

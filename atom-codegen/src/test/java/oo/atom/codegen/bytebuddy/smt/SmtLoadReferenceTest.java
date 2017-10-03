@@ -27,18 +27,19 @@ import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import oo.atom.tests.AssertionsSuite;
 
 /**
- *
+ * Tests suite for {@link oo.atom.codegen.bytebuddy.smt.SmtLoadReference}
+ * 
  * @author Kapralov Sergey
  */
 public class SmtLoadReferenceTest extends AssertionsSuite {
     public SmtLoadReferenceTest() {
         super(
-            new AssertTaskToGenerateBytecode(
+            new AssertTokenToRepresentExpectedStackManipulation(
                 "can load 0th argument on stack",
                 new SmtLoadReference(0),
                 () -> MethodVariableAccess.REFERENCE.loadFrom(0)
             ),
-            new AssertTaskToGenerateBytecode(
+            new AssertTokenToRepresentExpectedStackManipulation(
                 "can load 5th argument on stack",
                 new SmtLoadReference(5),
                 () -> MethodVariableAccess.REFERENCE.loadFrom(5)

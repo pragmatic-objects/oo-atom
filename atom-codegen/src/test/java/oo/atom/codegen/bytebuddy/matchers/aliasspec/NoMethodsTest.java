@@ -24,6 +24,7 @@
 package oo.atom.codegen.bytebuddy.matchers.aliasspec;
 
 import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.codegen.bytebuddy.bt.BtGenerateHashCode;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
 import oo.atom.tests.AssertionsSuite;

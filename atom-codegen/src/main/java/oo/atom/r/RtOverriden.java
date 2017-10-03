@@ -24,7 +24,8 @@
 package oo.atom.r;
 
 /**
- *
+ * Transition, which just overrides input value with some explicit result.
+ * 
  * @author Kapralov Sergey
  */
 public class RtOverriden<X, T> implements ResultTransition<X, T> {
