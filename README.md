@@ -17,7 +17,7 @@ OO-atom project is designed on the following principles:
 - it is flexible. You are free to use it with any solution from a large Java ecosystem
 - it operates at compile-time only. It never brings ad-hoc runtime dependencies to your application.
 
-The project is inspired by the guidelines from the books "Elegant Objects vol. [1]() and [2]()", written by Yegor Bugayenko, and the materials from his [blog](). However, several changes and additions were made to initial concept - see [this]() page for the list of differences.
+The project is inspired by the guidelines from the books "[Elegant Objects](http://www.yegor256.com/elegant-objects.html)", written by Yegor Bugayenko, and the materials from his [blog](http://www.yegor256.com/tag/oop.html). However, several changes and additions were made to initial concept - see [this]() page for the list of differences.
 
 # Quick start with Maven
 
