@@ -60,7 +60,7 @@ The project is inspired by the guidelines from the books "Elegant Objects vol. [
     </dependency>
 ```
 
-4. Study the [samples]()
+4. Study the [samples](https://github.com/project-avral/oo-atom/atom-samples)
 
 Maven will track each class of your project, fail the project's build if any of the class doesn't match the Atom's specification, and apply additional instrumentaions for each Atom. This process is the recommended way of development in OO-atom-managed projects, but in complicated cases, it can be overriden. This process in details is explained [here]().
 
