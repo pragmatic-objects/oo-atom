@@ -23,50 +23,23 @@
  */
 package oo.atom.tests;
 
-import java.util.Objects;
-import oo.atom.anno.Atom;
 import static org.assertj.core.api.Assertions.*;
 
 /**
  *
  * @author Kapralov Sergey
  */
-@Atom
 public class AssertAtomsAreEqual implements Assertion {
-    private final String description;
     private final Object atom1;
     private final Object atom2;
 
-    public AssertAtomsAreEqual(String description, Object atom1, Object atom2) {
-        this.description = description;
+    public AssertAtomsAreEqual(Object atom1, Object atom2) {
         this.atom1 = atom1;
         this.atom2 = atom2;
     }
 
     @Override
-    public final String description() {
-        return description;
-    }
-
-    @Override
     public final void check() throws Exception {
         assertThat(atom1).isEqualTo(atom2);
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if(o instanceof AssertAtomsAreEqual) {
-            AssertAtomsAreEqual that = (AssertAtomsAreEqual)o;
-            return Objects.equals(description, that.description) &&
-                Objects.equals(atom1, that.atom1) &&
-                Objects.equals(atom2, that.atom2);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(description, atom1, atom2);
     }
 }

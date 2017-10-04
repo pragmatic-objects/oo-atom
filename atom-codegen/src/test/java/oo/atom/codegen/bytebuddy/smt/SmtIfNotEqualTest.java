@@ -24,33 +24,38 @@
 package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtIfNotEqualTest extends AssertionsSuite {
+public class SmtIfNotEqualTest extends TestsSuite {
     public SmtIfNotEqualTest() {
         super(
-            new AssertTokensToRepresentIdenticalBytecode(
+            new TestCase(
                 "arrays are compared using deep equality",
-                new SmtIfNotEqual(
-                    new TypeDescription.ForLoadedType(Object[].class),
-                    new SmtReturnInteger(42)
-                ),
-                new SmtIfNotDeeplyEqual(
-                    new SmtReturnInteger(42)
+                new AssertTokensToRepresentIdenticalBytecode(
+                    new SmtIfNotEqual(
+                        new TypeDescription.ForLoadedType(Object[].class),
+                        new SmtReturnInteger(42)
+                    ),
+                    new SmtIfNotDeeplyEqual(
+                        new SmtReturnInteger(42)
+                    )
                 )
             ),
-            new AssertTokensToRepresentIdenticalBytecode(
+            new TestCase(
                 "single values are compared using value equality",
-                new SmtIfNotEqual(
-                    new TypeDescription.ForLoadedType(Object.class),
-                    new SmtReturnInteger(42)
-                ),
-                new SmtIfNotEqualByValue(
-                    new SmtReturnInteger(42)
+                new AssertTokensToRepresentIdenticalBytecode(
+                    new SmtIfNotEqual(
+                        new TypeDescription.ForLoadedType(Object.class),
+                        new SmtReturnInteger(42)
+                    ),
+                    new SmtIfNotEqualByValue(
+                        new SmtReturnInteger(42)
+                    )
                 )
             )
         );

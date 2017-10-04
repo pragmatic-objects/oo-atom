@@ -28,13 +28,14 @@ import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import oo.atom.r.AssertResultIsErroneous;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link oo.atom.codegen.bytebuddy.smt.SmtBoxTest}
  * @author Kapralov Sergey
  */
-public class SmtBoxTest extends AssertionsSuite {
+public class SmtBoxTest extends TestsSuite {
     private static final Method INT_VALUEOF;
 
     static {
@@ -47,19 +48,23 @@ public class SmtBoxTest extends AssertionsSuite {
     
     public SmtBoxTest() {
         super(
-            new AssertResultIsErroneous(
+            new TestCase(
                 "attempt to box non-primitive must fail",
-                new SmtBox(
+                new AssertResultIsErroneous(
+                    new SmtBox(
                         new TypeDescription.ForLoadedType(Object.class)
-                ),
-                "Attempt to box non-primitive type java.lang.Object"
+                    ),
+                    "Attempt to box non-primitive type java.lang.Object"
+                )
             ),
-            new AssertTokenToRepresentExpectedStackManipulation(
+            new TestCase(
                 "can box integer primitive", 
-                new SmtBox(
+                new AssertTokenToRepresentExpectedStackManipulation(
+                    new SmtBox(
                         new TypeDescription.ForLoadedType(int.class)
-                ),
-                () -> MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                    ),
+                    () -> MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                )
             )
         );
     }

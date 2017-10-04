@@ -25,29 +25,36 @@ package oo.atom.it.explicit;
 
 import oo.atom.tests.AssertAtomsAreEqual;
 import oo.atom.tests.AssertAtomsAreNotEqual;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class AtomEqualityTest extends AssertionsSuite {
+public class AtomEqualityTest extends TestsSuite {
     public AtomEqualityTest() {
         super(
-            new AssertAtomsAreNotEqual(
+            new TestCase(
                 "non-atom classes keep original equality semantics",
-                new NotAtom(2, 2),
-                new NotAtom(2, 2)
+                new AssertAtomsAreNotEqual(
+                    new NotAtom(2, 2),
+                    new NotAtom(2, 2)
+                )
             ),
-            new AssertAtomsAreEqual(
+            new TestCase(
                 "explicit atom classes keep original equality semantics",
-                new ExplicitAtom(2, 2),
-                new ExplicitAtom(4, 0)
+                new AssertAtomsAreEqual(
+                    new ExplicitAtom(2, 2),
+                    new ExplicitAtom(4, 0)
+                )
             ),
-            new AssertAtomsAreEqual(
+            new TestCase(
                 "implicit atoms follow the specification",
-                new ImplicitAtom(2, 2),
-                new ImplicitAtom(2, 2)
+                new AssertAtomsAreEqual(
+                    new ImplicitAtom(2, 2),
+                    new ImplicitAtom(2, 2)
+                )
             )
         );
     }

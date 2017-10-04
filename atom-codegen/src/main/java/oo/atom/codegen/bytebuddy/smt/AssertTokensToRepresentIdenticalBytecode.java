@@ -24,7 +24,7 @@
 package oo.atom.codegen.bytebuddy.smt;
 
 import oo.atom.tests.Assertion;
-import oo.atom.tests.InferredAssertion;
+import oo.atom.tests.AssertInferred;
 
 /**
  * Inference for {@link oo.atom.codegen.bytebuddy.smt.AssertTokensToRepresentIdenticalBytecode} assertion
@@ -32,19 +32,16 @@ import oo.atom.tests.InferredAssertion;
  * @author Kapralov Sergey
  */
 class AssertTokensToRepresentIdenticalBytecodeInference implements Assertion.Inference {
-    private final String description;
     private final StackManipulationToken smt;
     private final StackManipulationToken smt2;
 
     /**
      * Ctor.
      * 
-     * @param description assertion description
      * @param smt stack manipulation token to assert on
      * @param smt2 stack manipulation token to compare
      */
-    public AssertTokensToRepresentIdenticalBytecodeInference(String description, StackManipulationToken smt, StackManipulationToken smt2) {
-        this.description = description;
+    public AssertTokensToRepresentIdenticalBytecodeInference(StackManipulationToken smt, StackManipulationToken smt2) {
         this.smt = smt;
         this.smt2 = smt2;
     }
@@ -52,7 +49,6 @@ class AssertTokensToRepresentIdenticalBytecodeInference implements Assertion.Inf
     @Override
     public final Assertion assertion() {
         return new AssertStackManipulationsAreSame(
-            description,
             smt.value().get(),
             smt2.value().get()
         );
@@ -65,18 +61,16 @@ class AssertTokensToRepresentIdenticalBytecodeInference implements Assertion.Inf
  * 
  * @author Kapralov Sergey
  */
-public class AssertTokensToRepresentIdenticalBytecode extends InferredAssertion {
+public class AssertTokensToRepresentIdenticalBytecode extends AssertInferred {
     /**
      * Ctor.
      * 
-     * @param description assertion description
      * @param smt stack manipulation token to assert on
      * @param smt2 stack manipulation token to compare
      */
-    public AssertTokensToRepresentIdenticalBytecode(String description, StackManipulationToken smt, StackManipulationToken smt2) {
+    public AssertTokensToRepresentIdenticalBytecode(StackManipulationToken smt, StackManipulationToken smt2) {
         super(
             new AssertTokensToRepresentIdenticalBytecodeInference(
-                description,
                 smt,
                 smt2
             )

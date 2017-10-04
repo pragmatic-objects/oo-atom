@@ -33,20 +33,14 @@ import org.junit.Test;
  */
 public class AssertAssertionFailsTest {
     @Test
-    public final void hasDescription() {
-        final Assertion assertion = new AssertAssertionFails("has description", new AssertFail("FAIL"));
-        assertThat(assertion.description()).isEqualTo("has description");
-    }
-    
-    @Test
     public final void succeedsOnFailedAssertion() {
-        final Assertion assertion = new AssertAssertionFails("succeeds on failed assertion", new AssertFail("FAIL"));
+        final Assertion assertion = new AssertAssertionFails(new AssertFail());
         assertThatCode(() -> assertion.check()).doesNotThrowAnyException();
     }
 
     @Test
     public final void failsOnPassingAssertion() {
-        final Assertion assertion = new AssertAssertionFails("fails on passing assertion", new AssertPass("FAIL"));
+        final Assertion assertion = new AssertAssertionFails(new AssertPass());
         assertThatThrownBy(() -> assertion.check()).isInstanceOf(AssertionError.class);
     }
 }

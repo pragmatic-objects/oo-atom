@@ -26,7 +26,6 @@ package oo.atom.tests;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests suite for {@link AssertPass}
@@ -35,14 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class AssertPassTest {
     @Test
-    public final void hasDescription() {
-        Assertion assertion = new AssertPass("PASS");
-        assertThat(assertion.description()).isEqualTo("PASS");
-    }
-
-    @Test
     public final void alwaysFails() {
-        Assertion assertion = new AssertPass("PASS");
+        Assertion assertion = new AssertPass();
         assertThatCode(() -> assertion.check()).doesNotThrowAnyException();
     }
 }

@@ -24,33 +24,39 @@
 package oo.atom.codegen.bytebuddy.matchers.aliasspec;
 
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.codegen.bytebuddy.bt.BtGenerateHashCode;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class NoMethodsTest extends AssertionsSuite {
+public class NoMethodsTest extends TestsSuite {
 
     public NoMethodsTest() {
         super(
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match type with no methods",
-                new TypeDescription.ForLoadedType(Foo.class),
-                new NoMethods()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Foo.class),
+                    new NoMethods()
+                )
             ),
-            new AssertThatTypeDoesNotMatch(
+            new TestCase(
                 "mismatch type with at least one method",
-                new TypeDescription.ForLoadedType(Bar.class),
-                new NoMethods()
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Bar.class),
+                    new NoMethods()
+                )
             ),
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match type ignoring methods declared in base class",
-                new TypeDescription.ForLoadedType(Barr.class),
-                new NoMethods()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Barr.class),
+                    new NoMethods()
+                )
             )
         );
     }

@@ -29,15 +29,7 @@ package oo.atom.tests;
  * @author Kapralov Sergey
  */
 public class AssertPass implements Assertion {
-    private final String description;
-
-    public AssertPass(String description) {
-        this.description = description;
-    }
-    
-    @Override
-    public final String description() {
-        return description;
+    public AssertPass() {
     }
 
     @Override

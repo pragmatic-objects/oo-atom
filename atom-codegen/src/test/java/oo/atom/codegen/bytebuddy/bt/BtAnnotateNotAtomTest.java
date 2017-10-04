@@ -24,21 +24,24 @@
 package oo.atom.codegen.bytebuddy.bt;
 
 import oo.atom.anno.NotAtom;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtAnnotateNotAtomTest extends AssertionsSuite {
+public class BtAnnotateNotAtomTest extends TestsSuite {
     
     public BtAnnotateNotAtomTest() {
         super(
-            new AssertBuilderTransitionToAnnotateAClass(
+            new TestCase(
                 "annotates class with @NotAtom annotation",
-                new BtAnnotateNotAtom(),
-                Foo.class,
-                NotAtom.class
+                new AssertBuilderTransitionToAnnotateAClass(
+                    new BtAnnotateNotAtom(),
+                    Foo.class,
+                    NotAtom.class
+                )
             )
         );
     }

@@ -32,6 +32,5 @@ public interface Assertion {
         Assertion assertion();
     }
     
-    public String description();
     public void check() throws Exception;
 }

@@ -26,30 +26,37 @@ package oo.atom.codegen.bytebuddy.matchers.aliasspec;
 import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class NoFieldsTest extends AssertionsSuite {
+public class NoFieldsTest extends TestsSuite {
     
     public NoFieldsTest() {
         super(
-            new AssertThatTypeMatches(
-                "match type with no fields", 
-                new TypeDescription.ForLoadedType(Foo.class),
-                new NoFields()
+            new TestCase(
+                "match type with no fields",
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Foo.class),
+                    new NoFields()
+                )
             ),
-            new AssertThatTypeDoesNotMatch(
+            new TestCase(
                 "mismatch type with at least one field",
-                new TypeDescription.ForLoadedType(Bar.class),
-                new NoFields()
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Bar.class),
+                    new NoFields()
+                )
             ),
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match type ignoring fields from the base class",
-                new TypeDescription.ForLoadedType(Barr.class),
-                new NoFields()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Barr.class),
+                    new NoFields()
+                )
             )
         );
     }

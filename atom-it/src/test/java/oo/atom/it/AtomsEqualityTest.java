@@ -25,35 +25,45 @@ package oo.atom.it;
 
 import oo.atom.tests.AssertAtomsAreEqual;
 import oo.atom.tests.AssertAtomsAreNotEqual;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 
 /**
- *
+ * Tests suite, testing atoms equality rules
+ * 
  * @author Kapralov Sergey
  */
-public class AtomsEqualityTest extends AssertionsSuite {
+public class AtomsEqualityTest extends TestsSuite {
     public AtomsEqualityTest() {
         super(
-            new AssertAtomsAreEqual(
-                "different atom objects with same fields are equal", 
-                new Foo(4), 
-                new Foo(4)
+            new TestCase(
+                "different atom objects with same fields are equal",
+                new AssertAtomsAreEqual(
+                    new Foo(4), 
+                    new Foo(4)
+                )
             ),
-            new AssertAtomsAreNotEqual(
-                "atom objects with different fields are not equal", 
-                new Foo(4),
-                new Foo(5)
+            new TestCase(
+                "atom objects with different fields are not equal",
+                new AssertAtomsAreNotEqual(
+                    new Foo(4),
+                    new Foo(5)
+                )
             ),
-            new AssertAtomsAreNotEqual(
+            new TestCase(
                 "atoms of different types are not equal", 
-                new Foo(4),
-                new Bar(4)
+                new AssertAtomsAreNotEqual(
+                    new Foo(4),
+                    new Bar(4)
+                )
             ),
-            new AssertAtomsAreEqual(
+            new TestCase(
                 "alias atom and basis atom with same constructor arguments are equal",
-                new FooAlias(),
-                new Foo(42)
+                new AssertAtomsAreEqual(
+                    new FooAlias(),
+                    new Foo(42)
+                )
             )
         );
     }

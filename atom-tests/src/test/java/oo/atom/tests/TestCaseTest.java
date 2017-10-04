@@ -23,33 +23,30 @@
  */
 package oo.atom.tests;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
- * Tests suite for {@link AssertAssertionHasDescription}
- * 
+ *
  * @author Kapralov Sergey
  */
-public class AssertAssertionHasDescriptionTest {
-    @Test
+public class TestCaseTest {
+    @org.junit.Test
     public final void hasDescription() {
-        Assertion assertion = new AssertAssertionHasDescription("has description", new AssertPass("PASS"), "PASS");
-        assertThat(assertion.description()).isEqualTo("has description");
+        Test test = new TestCase("description", new AssertPass());
+        assertThat(test.description()).isEqualTo("description");
     }
-    
-    @Test
-    public final void succeedsIfDescriptionIsRight() {
-        Assertion assertion = new AssertAssertionHasDescription("succeeds if description is right", new AssertPass("PASS"), "PASS");
-        assertThatCode(() -> assertion.check()).doesNotThrowAnyException();
+
+    @org.junit.Test
+    public final void failsWhenAssertionIsFailing() {
+        Test test = new TestCase("description", new AssertFail());
+        assertThatThrownBy(() -> test.execute()).isInstanceOf(AssertionError.class);
     }
-    
-    @Test
-    public final void failsIfDescriptionIsWrong() {
-        Assertion assertion = new AssertAssertionHasDescription("fails if description is wrong", new AssertPass("PASS"), "wrong description");
-        assertThatThrownBy(() -> assertion.check()).isInstanceOf(AssertionError.class);
+
+    @org.junit.Test
+    public final void passesWhenAssertionIsPassing() {
+        Test test = new TestCase("description", new AssertPass());
+        assertThatCode(() -> test.execute()).doesNotThrowAnyException();
     }
 }

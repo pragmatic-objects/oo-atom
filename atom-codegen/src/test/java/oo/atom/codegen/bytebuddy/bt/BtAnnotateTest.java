@@ -28,23 +28,26 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link BtAnnotate}
  * 
  * @author Kapralov Sergey
  */
-public class BtAnnotateTest extends AssertionsSuite {
+public class BtAnnotateTest extends TestsSuite {
     
     public BtAnnotateTest() {
         super(
-            new AssertBuilderTransitionIsNotCorruptingClass(
-                "prevents duplicate annotations", 
-                new BtAnnotate(
-                    new DummyImpl()
-                ), 
-                Bar.class
+            new TestCase(
+                "prevents duplicate annotations",
+                new AssertBuilderTransitionIsNotCorruptingClass(
+                    new BtAnnotate(
+                        new DummyImpl()
+                    ), 
+                    Bar.class
+                )
             )
         );
     }

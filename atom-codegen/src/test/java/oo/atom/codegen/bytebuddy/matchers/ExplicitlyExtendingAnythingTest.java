@@ -24,42 +24,51 @@
 package oo.atom.codegen.bytebuddy.matchers;
 
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class ExplicitlyExtendingAnythingTest extends AssertionsSuite {
+public class ExplicitlyExtendingAnythingTest extends TestsSuite {
     public ExplicitlyExtendingAnythingTest() {
         super(
-            new AssertThatTypeDoesNotMatch(
+            new TestCase(
                 "mismatch base types",
-                new TypeDescription.ForLoadedType(
-                    Foo.class
-                ),
-                new ExplicitlyExtendingAnything()
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(
+                        Foo.class
+                    ),
+                    new ExplicitlyExtendingAnything()
+                )
             ),
-            new AssertThatTypeMatches(
-                "match inherited types",
-                new TypeDescription.ForLoadedType(
-                    Bar.class
-                ),
-                new ExplicitlyExtendingAnything()
+            new TestCase(
+            "match inherited types",
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(
+                        Bar.class
+                    ),
+                    new ExplicitlyExtendingAnything()
+                )
             ),
-            new AssertThatTypeDoesNotMatch(
+            new TestCase(
                 "mismatch java.lang.Object",
-                new TypeDescription.ForLoadedType(
-                    Object.class
-                ),
-                new ExplicitlyExtendingAnything()
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(
+                        Object.class
+                    ),
+                    new ExplicitlyExtendingAnything()
+                )
             ),
-            new AssertThatTypeDoesNotMatch(
+            new TestCase(
                 "mismatch enumerations",
-                new TypeDescription.ForLoadedType(
-                    Far.class
-                ),
-                new ExplicitlyExtendingAnything()
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(
+                        Far.class
+                    ),
+                    new ExplicitlyExtendingAnything()
+                )
             )
         );
     }

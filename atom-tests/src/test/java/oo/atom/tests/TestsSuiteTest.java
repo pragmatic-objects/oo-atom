@@ -33,54 +33,62 @@ import org.junit.Test;
  *
  * @author skapral
  */
-public class AssertionsSuiteTest {
+public class TestsSuiteTest {
     @Test
     public final void generatesTests() throws Throwable {
         FactoryRunner.TestConsumer tc = EasyMock.mock(MockType.STRICT, FactoryRunner.TestConsumer.class);
         {
-            tc.accept("foo", new FooTest());
-            tc.accept("foo", new FooTest());
-            tc.accept("foo", new FooTest());
+            tc.accept("foo", new FooTest("foo"));
+            tc.accept("bar", new FooTest("bar"));
+            tc.accept("baz", new FooTest("baz"));
             EasyMock.replay(tc);
         }
         {
-            final AssertionsSuite suite = new AssertionsSuite(
-                new AssertFoo(),
-                new AssertFoo(),
-                new AssertFoo()
+            final TestsSuite suite = new TestsSuite(
+                new TestCase(
+                    "foo",
+                    new AssertFoo()
+                ),
+                new TestCase(
+                    "bar",
+                    new AssertFoo()
+                ),
+                new TestCase(
+                    "baz",
+                    new AssertFoo()
+                )
             );
             suite.produceTests(tc);
             EasyMock.verify(tc);
         }
     }
 
+    private static class FooTest extends TestInstance {
+        public FooTest(String testDescription) {
+            super(
+                new TestCase(
+                    testDescription,
+                    new AssertFoo()
+                )
+            );
+        }
+    }
+
     @Atom
     private static class AssertFoo implements Assertion {
         @Override
-        public final String description() {
-            return "foo";
-        }
-
-        @Override
         public final void check() throws Exception {
-            //DO NOTHING
+            // Implementation is not relevant
         }
 
         @Override
-        public final boolean equals(Object o) {
-            return o instanceof AssertFoo;
+        public final boolean equals(Object obj) {
+            return obj instanceof AssertFoo;
         }
 
         @Override
         public final int hashCode() {
             return 42;
-        }
-    }
-    
-    @Atom
-    private static class FooTest extends AssertionTest {
-        public FooTest() {
-            super(new AssertFoo());
         }
     }
 }

@@ -37,21 +37,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Kapralov Sergey
  */
 public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
-    private final String description;
     private final BuilderTransition builderTransition;
     private final Class<?> type;
     private final Class<? extends Annotation> annotation;
 
-    public AssertBuilderTransitionToAnnotateAClass(String description, BuilderTransition builderTransition, Class<?> type, Class<? extends Annotation> annotation) {
-        this.description = description;
+    public AssertBuilderTransitionToAnnotateAClass(BuilderTransition builderTransition, Class<?> type, Class<? extends Annotation> annotation) {
         this.builderTransition = builderTransition;
         this.type = type;
         this.annotation = annotation;
-    }
-    
-    @Override
-    public final String description() {
-        return description;
     }
 
     @Override

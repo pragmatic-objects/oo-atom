@@ -33,19 +33,16 @@ import static org.assertj.core.api.Assertions.*;
  * @author Kapralov Sergey
  */
 public class AssertResultIsErroneous implements Assertion {
-    private final String description;
     private final Result<?> result;
     private final List<String> issues;
     
     /**
      * Ctor.
      * 
-     * @param description Assertion description.
      * @param result Result to assert on
      * @param issues A set of issue messages to expect
      */
-    public AssertResultIsErroneous(String description, Result<?> result, List<String> issues) {
-        this.description = description;
+    public AssertResultIsErroneous(Result<?> result, List<String> issues) {
         this.result = result;
         this.issues = issues;
     }
@@ -53,21 +50,14 @@ public class AssertResultIsErroneous implements Assertion {
     /**
      * Ctor.
      * 
-     * @param description Assertion description.
      * @param result Result to assert on
      * @param issues A set of issue messages to expect
      */
-    public AssertResultIsErroneous(String description, Result<?> result, String... issues) {
+    public AssertResultIsErroneous(Result<?> result, String... issues) {
         this(
-            description,
             result,
             List.of(issues)
         );
-    }
-
-    @Override
-    public final String description() {
-        return description;
     }
 
     @Override
@@ -78,5 +68,4 @@ public class AssertResultIsErroneous implements Assertion {
         assertThat(result.issues())
                 .containsOnlyElementsOf(issues);
     }
-    
 }

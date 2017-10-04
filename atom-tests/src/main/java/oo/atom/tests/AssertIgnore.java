@@ -23,14 +23,10 @@
  */
 package oo.atom.tests;
 
-import java.util.Objects;
-import oo.atom.anno.Atom;
-
 /**
  *
  * @author Kapralov Sergey
  */
-@Atom
 public class AssertIgnore implements Assertion {
     private final Assertion assertion;
 
@@ -39,27 +35,7 @@ public class AssertIgnore implements Assertion {
     }
 
     @Override
-    public final String description() {
-        return "[IGNORED] " + assertion.description();
-    }
-
-    @Override
     public final void check() throws Exception {
         // DO NOTHING
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if(o instanceof AssertIgnore) {
-            AssertIgnore that = (AssertIgnore)o;
-            return Objects.equals(assertion, that.assertion);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(assertion);
     }
 }

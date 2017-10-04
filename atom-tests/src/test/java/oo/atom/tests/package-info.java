@@ -21,18 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.r;
-
-import oo.atom.tests.TestsSuite;
-
-/**
- * Tests suite for {@link RtInferred}
- * 
- * @author Kapralov Sergey
- * @todo #8:15m Improve test coverage and mutation coverage for {@link RtInferred}
- */
-public class RtInferredTest extends TestsSuite {
-    public RtInferredTest() {
-        super();
-    }
-}
+package oo.atom.tests;

@@ -27,40 +27,43 @@ import java.lang.reflect.Modifier;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.modifier.Visibility;
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtCheckFieldsEqualityTest extends AssertionsSuite {
+public class SmtCheckFieldsEqualityTest extends TestsSuite {
     public SmtCheckFieldsEqualityTest() {
         super(
-            new AssertTokensToRepresentIdenticalBytecode(
+            new TestCase(
                 "array fields must be compared deeply",
-                new SmtCheckFieldsEquality(
-                    new TypeDescription.ForLoadedType(
-                        Foo.class
-                    )
-                ),
-                new SmtCombined(
-                    new SmtLoadPairOfFields(
+                new AssertTokensToRepresentIdenticalBytecode(
+                    new SmtCheckFieldsEquality(
                         new TypeDescription.ForLoadedType(
                             Foo.class
-                        ),
-                        new FieldDescription.Latent(
+                        )
+                    ),
+                    new SmtCombined(
+                        new SmtLoadPairOfFields(
                             new TypeDescription.ForLoadedType(
                                 Foo.class
                             ),
-                            new FieldDescription.Token(
-                                "objects",
-                                0,
-                                new TypeDescription.ForLoadedType(Object[].class).asGenericType()
+                            new FieldDescription.Latent(
+                                new TypeDescription.ForLoadedType(
+                                    Foo.class
+                                ),
+                                new FieldDescription.Token(
+                                    "objects",
+                                    0,
+                                    new TypeDescription.ForLoadedType(Object[].class).asGenericType()
+                                )
                             )
+                        ),
+                        new SmtIfNotDeeplyEqual(
+                            new SmtReturnInteger(0)
                         )
-                    ),
-                    new SmtIfNotDeeplyEqual(
-                        new SmtReturnInteger(0)
                     )
                 )
             )

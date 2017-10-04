@@ -32,17 +32,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @author Kapralov Sergey
  */
 public class AssertAssertionFails implements Assertion {
-    private final String description;
     private final Assertion assertion;
 
-    public AssertAssertionFails(String description, Assertion assertion) {
-        this.description = description;
+    public AssertAssertionFails(Assertion assertion) {
         this.assertion = assertion;
-    }
-
-    @Override
-    public final String description() {
-        return description;
     }
 
     @Override

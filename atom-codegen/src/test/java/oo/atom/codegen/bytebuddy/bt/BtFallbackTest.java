@@ -29,44 +29,49 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import oo.atom.codegen.validator.ValFail;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link BtFallback}
  * 
  * @author Kapralov Sergey
  */
-public class BtFallbackTest extends AssertionsSuite {
+public class BtFallbackTest extends TestsSuite {
     public BtFallbackTest() {
         super(
-            new AssertBuilderTransitionToAnnotateAClass(
+            new TestCase(
                 "successful branch",
-                new BtFallback(
-                    new BtAnnotate(
-                        new SuccessImpl()
-                    ),
-                    new BtAnnotate(
-                        new FallbackImpl()
-                    )
-                ),
-                TestClass.class,
-                Success.class
-            ),
-            new AssertBuilderTransitionToAnnotateAClass(
-                "fallback branch",
-                new BtFallback(
-                    new BtValidated(
-                        new ValFail("test issue"),
+                new AssertBuilderTransitionToAnnotateAClass(
+                    new BtFallback(
                         new BtAnnotate(
                             new SuccessImpl()
+                        ),
+                        new BtAnnotate(
+                            new FallbackImpl()
                         )
                     ),
-                    new BtAnnotate(
-                        new FallbackImpl()
-                    )
-                ),
-                TestClass.class,
-                Fallback.class
+                    TestClass.class,
+                    Success.class
+                )
+            ),
+            new TestCase(
+                "fallback branch",
+                new AssertBuilderTransitionToAnnotateAClass(
+                    new BtFallback(
+                        new BtValidated(
+                            new ValFail("test issue"),
+                            new BtAnnotate(
+                                new SuccessImpl()
+                            )
+                        ),
+                        new BtAnnotate(
+                            new FallbackImpl()
+                        )
+                    ),
+                    TestClass.class,
+                    Fallback.class
+                )
             )
         );
     }

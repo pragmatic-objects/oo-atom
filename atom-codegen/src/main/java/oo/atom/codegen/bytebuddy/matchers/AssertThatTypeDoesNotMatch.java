@@ -35,19 +35,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author skapral
  */
 public class AssertThatTypeDoesNotMatch implements Assertion {
-    private final String description;
     private final TypeDescription typeDescription;
     private final ElementMatcher<TypeDescription> matcher;
 
-    public AssertThatTypeDoesNotMatch(String description, TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
-        this.description = description;
+    public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
         this.typeDescription = typeDescription;
         this.matcher = matcher;
-    }
-
-    @Override
-    public final String description() {
-        return description;
     }
 
     @Override

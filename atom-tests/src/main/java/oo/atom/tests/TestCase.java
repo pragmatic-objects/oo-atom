@@ -23,22 +23,28 @@
  */
 package oo.atom.tests;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Objects;
+import oo.atom.anno.Atom;
 
 /**
- * Assertion which passes if the assertion under test has expected description
+ * A test case with a single assertion
  * 
  * @author Kapralov Sergey
  */
-public class AssertAssertionHasDescription implements Assertion {
+@Atom
+public class TestCase implements Test {
     private final String description;
     private final Assertion assertion;
-    private final String expectedDescription;
 
-    public AssertAssertionHasDescription(String description, Assertion assertion, String expectedDescription) {
+    /**
+     * Ctor.
+     * 
+     * @param description The test's description
+     * @param assertion The test's assertion
+     */
+    public TestCase(String description, Assertion assertion) {
         this.description = description;
         this.assertion = assertion;
-        this.expectedDescription = expectedDescription;
     }
 
     @Override
@@ -47,7 +53,24 @@ public class AssertAssertionHasDescription implements Assertion {
     }
 
     @Override
-    public final void check() throws Exception {
-        assertThat(assertion.description()).isEqualTo(expectedDescription);
+    public final void execute() throws Exception {
+        assertion.check();
+    }
+    
+    
+    @Override
+    public final boolean equals(Object obj) {
+        if(obj instanceof TestCase) {
+            TestCase _obj = (TestCase) obj;
+            return Objects.equals(_obj.description, this.description) &&
+                   Objects.equals(_obj.assertion, this.assertion);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(assertion);
     }
 }

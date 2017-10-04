@@ -23,12 +23,12 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link AssertStackManipulationProducesExpectedBytecode}
  * @author Kapralov Sergey
  * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertStackManipulationProducesExpectedBytecode}
  */
-public class AssertStackManipulationProducesExpectedBytecodeTest extends AssertionsSuite {
+public class AssertStackManipulationProducesExpectedBytecodeTest extends TestsSuite {
 }

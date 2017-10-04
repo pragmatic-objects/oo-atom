@@ -25,39 +25,45 @@ package oo.atom.it.arrays;
 
 import oo.atom.tests.AssertAtomsAreEqual;
 import oo.atom.tests.AssertAtomsAreNotEqual;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
- *
+ * Tests suite, testing atoms equality rules for arrays
+ * 
  * @author Kapralov Sergey
  */
-public class AtomsEqualityTest extends AssertionsSuite {
+public class AtomsEqualityTest extends TestsSuite {
     public AtomsEqualityTest() {
         super(
-            new AssertAtomsAreEqual(
+            new TestCase(
                 "different atoms with same array contents are equal",
-                new Basis(
-                    new Relation(1),
-                    new Relation(2),
-                    new Relation(3)
-                ),
-                new Basis(
-                    new Relation(1),
-                    new Relation(2),
-                    new Relation(3)
+                new AssertAtomsAreEqual(
+                    new Basis(
+                        new Relation(1),
+                        new Relation(2),
+                        new Relation(3)
+                    ),
+                    new Basis(
+                        new Relation(1),
+                        new Relation(2),
+                        new Relation(3)
+                    )
                 )
             ),
-            new AssertAtomsAreNotEqual(
+            new TestCase(
                 "different atoms with different array contents are not equal",
-                new Basis(
-                    new Relation(1),
-                    new Relation(2),
-                    new Relation(3)
-                ),
-                new Basis(
-                    new Relation(3),
-                    new Relation(2),
-                    new Relation(1)
+                new AssertAtomsAreNotEqual(
+                    new Basis(
+                        new Relation(1),
+                        new Relation(2),
+                        new Relation(3)
+                    ),
+                    new Basis(
+                        new Relation(3),
+                        new Relation(2),
+                        new Relation(1)
+                    )
                 )
             )
         );

@@ -23,10 +23,8 @@
  */
 package oo.atom.tests;
 
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests suite for {@link AssertFail}
@@ -35,14 +33,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class AssertFailTest {
     @Test
-    public final void hasDescription() {
-        Assertion assertion = new AssertFail("FAIL");
-        assertThat(assertion.description()).isEqualTo("FAIL");
-    }
-
-    @Test
     public final void alwaysFails() {
-        Assertion assertion = new AssertFail("FAIL");
+        Assertion assertion = new AssertFail();
         assertThatThrownBy(() -> assertion.check()).isInstanceOf(AssertionError.class);
     }
 }

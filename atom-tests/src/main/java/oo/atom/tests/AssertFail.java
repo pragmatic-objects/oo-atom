@@ -31,15 +31,7 @@ import static org.assertj.core.api.Assertions.fail;
  * @author Kapralov Sergey
  */
 public class AssertFail implements Assertion {
-    private final String description;
-
-    public AssertFail(String description) {
-        this.description = description;
-    }
-    
-    @Override
-    public final String description() {
-        return description;
+    public AssertFail() {
     }
 
     @Override

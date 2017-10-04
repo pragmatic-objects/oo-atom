@@ -41,35 +41,18 @@ import org.easymock.EasyMock;
  * @author Kapralov Sergey
  */
 public class AssertStackManipulationProducesExpectedBytecode implements Assertion {
-    /**
-     * Assertion description.
-     */
-    private final String description;
-    /**
-     * Stack manipulation to assert on.
-     */
     private final StackManipulation sm;
-    /**
-     * Expected pattern.
-     */
     private final Consumer<MethodVisitor> pattern;
 
     /**
      * Ctor.
      * 
-     * @param description
-     * @param sm
-     * @param pattern 
+     * @param sm Stack manipulation to assert on.
+     * @param pattern Expected pattern.
      */
-    public AssertStackManipulationProducesExpectedBytecode(String description, StackManipulation sm, Consumer<MethodVisitor> pattern) {
-        this.description = description;
+    public AssertStackManipulationProducesExpectedBytecode(StackManipulation sm, Consumer<MethodVisitor> pattern) {
         this.sm = sm;
         this.pattern = pattern;
-    }
-
-    @Override
-    public final String description() {
-        return description;
     }
 
     @Override
@@ -78,7 +61,6 @@ public class AssertStackManipulationProducesExpectedBytecode implements Assertio
             Implementation.Context.class
         );
         
-        // Expect
         final MethodVisitorRecorder patternMvr = new MethodVisitorRecorder();
         final MethodVisitorRecorder actualMvr = new MethodVisitorRecorder();
         

@@ -31,17 +31,10 @@ import static org.assertj.core.api.Assertions.assertThatCode;
  * @author Kapralov Sergey
  */
 public class AssertAssertionPasses implements Assertion {
-    private final String description;
     private final Assertion assertion;
 
-    public AssertAssertionPasses(String description, Assertion assertion) {
-        this.description = description;
+    public AssertAssertionPasses(Assertion assertion) {
         this.assertion = assertion;
-    }
-
-    @Override
-    public final String description() {
-        return description;
     }
 
     @Override

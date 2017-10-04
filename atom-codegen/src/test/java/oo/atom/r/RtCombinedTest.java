@@ -23,7 +23,7 @@
  */
 package oo.atom.r;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link RtCombined}
@@ -31,7 +31,7 @@ import oo.atom.tests.AssertionsSuite;
  * @author Kapralov Sergey
  * @todo #8:15m Improve test coverage and mutation coverage for {@link RtCombined}
  */
-public class RtCombinedTest extends AssertionsSuite {
+public class RtCombinedTest extends TestsSuite {
     public RtCombinedTest() {
         super();
     }

@@ -23,12 +23,12 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link AssertBuilderTransitionIsNotCorruptingClass}
  * @author Kapralov Sergey
  * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertBuilderTransitionIsNotCorruptingClass}
  */
-public class AssertBuilderTransitionIsNotCorruptingClassTest extends AssertionsSuite {
+public class AssertBuilderTransitionIsNotCorruptingClassTest extends TestsSuite {
 }

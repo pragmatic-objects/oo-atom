@@ -29,24 +29,35 @@ import java.util.Objects;
 import oo.atom.anno.Atom;
 import org.junit.runner.RunWith;
 
-@Atom
-class AssertionTest implements FactoryRunner.Test {
-    private final Assertion assertion;
 
-    public AssertionTest(Assertion assertion) {
-        this.assertion = assertion;
+/**
+ * Private adapter for tests in test suite. For internal use only.
+ * 
+ * @author Kapralov Sergey
+ */
+@Atom
+class TestInstance implements FactoryRunner.Test {
+    private final Test test;
+
+    /**
+     * Ctor.
+     * 
+     * @param test A wrapped test
+     */
+    public TestInstance(Test test) {
+        this.test = test;
     }
 
     @Override
     public final void execute() throws Throwable {
-        assertion.check();
+        test.execute();
     }
 
     @Override
-    public final boolean equals(Object o) {
-        if(o instanceof AssertionTest) {
-            AssertionTest that = (AssertionTest)o;
-            return Objects.equals(assertion, that.assertion);
+    public final boolean equals(Object obj) {
+        if(obj instanceof TestInstance) {
+            TestInstance _obj = (TestInstance) obj;
+            return Objects.equals(_obj.test, this.test);
         } else {
             return false;
         }
@@ -54,45 +65,55 @@ class AssertionTest implements FactoryRunner.Test {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(assertion);
+        return Objects.hash(test);
     }
 }
 
-
 /**
- *
+ * A tests suite.
+ * 
  * @author Kapralov Sergey
  */
 @Atom
 @RunWith(FactoryRunner.class)
-public class AssertionsSuite implements FactoryRunner.Producer {
-    private final List<Assertion> assertions;
+public class TestsSuite implements FactoryRunner.Producer {
+    private final List<Test> tests;
 
-    public AssertionsSuite(Assertion... assertions) {
+    /**
+     * Ctor.
+     * 
+     * @param tests Tests, which this test suite consists of.
+     */
+    public TestsSuite(Test... tests) {
         this(
-            List.of(assertions)
+            List.of(tests)
         );
     }
-    
-    public AssertionsSuite(List<Assertion> assertions) {
-        this.assertions = assertions;
+
+    /**
+     * Ctor.
+     * 
+     * @param tests Tests, which this test suite consists of.
+     */
+    public TestsSuite(List<Test> tests) {
+        this.tests = tests;
     }
 
     @Override
     public final void produceTests(FactoryRunner.TestConsumer tc) throws Throwable {
-        for(Assertion assertion : assertions) {
+        for (Test test : tests) {
             tc.accept(
-                    assertion.description(), 
-                    new AssertionTest(assertion)
+                test.description(),
+                new TestInstance(test)
             );
         }
     }
 
     @Override
-    public final boolean equals(Object o) {
-        if(o instanceof AssertionsSuite) {
-            AssertionsSuite that = (AssertionsSuite)o;
-            return Objects.equals(assertions, that.assertions);
+    public final boolean equals(Object obj) {
+        if(obj instanceof TestsSuite) {
+            TestsSuite _obj = (TestsSuite) obj;
+            return Objects.equals(_obj.tests, this.tests);
         } else {
             return false;
         }
@@ -100,6 +121,6 @@ public class AssertionsSuite implements FactoryRunner.Producer {
 
     @Override
     public final int hashCode() {
-        return Objects.hash(assertions);
+        return Objects.hash(tests);
     }
 }

@@ -26,23 +26,26 @@ package oo.atom.codegen.bytebuddy.branching;
 import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.Opcodes;
 import oo.atom.codegen.bytebuddy.smt.AssertStackManipulationProducesExpectedBytecode;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link oo.atom.codegen.bytebuddy.branching.BIfAcmp}
  * 
  * @author Kapralov Sergey
  */
-public class BIfAcmpTest extends AssertionsSuite {
+public class BIfAcmpTest extends TestsSuite {
 
     public BIfAcmpTest() {
         super(
-            new AssertStackManipulationProducesExpectedBytecode(
+            new TestCase(
                 "puts IF_ACMPEQ bytecode",
-                new BIfAcmp(true, new Label()),
-                mv -> {
-                    mv.visitJumpInsn(Opcodes.IF_ACMPEQ, new Label());
-                }
+                new AssertStackManipulationProducesExpectedBytecode(
+                    new BIfAcmp(true, new Label()),
+                    mv -> {
+                        mv.visitJumpInsn(Opcodes.IF_ACMPEQ, new Label());
+                    }
+                )
             )
         );
     }

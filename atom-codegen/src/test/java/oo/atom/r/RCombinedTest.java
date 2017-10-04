@@ -23,85 +23,100 @@
  */
 package oo.atom.r;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link oo.atom.r.RCombined}
  * 
  * @author Kapralov Sergey
  */
-public class RCombinedTest extends AssertionsSuite {
+public class RCombinedTest extends TestsSuite {
     /**
      * Ctor.
      */
     public RCombinedTest() {
         super(
-            new AssertResultIsMalformed(
-                "empty combination is prohibited", 
-                new RCombined<Integer>(
-                    (a, b) -> a + b
+            new TestCase(
+                "empty combination is prohibited",
+                new AssertResultIsMalformed( 
+                    new RCombined<Integer>(
+                        (a, b) -> a + b
+                    )
                 )
             ),
-            new AssertResultHoldsExpectedValue(
-                "combines two results into one", 
-                new RCombined<>(
-                    (a, b) -> a + b,
-                    new RSuccess<>(2), 
-                    new RSuccess<>(2)
-                ),
-                4
+            new TestCase(
+                "combines two results into one",
+                new AssertResultHoldsExpectedValue(
+                    new RCombined<>(
+                        (a, b) -> a + b,
+                        new RSuccess<>(2), 
+                        new RSuccess<>(2)
+                    ),
+                    4
+                )
             ),
-            new AssertResultHoldsExpectedValue(
-                "combines a series of results into one", 
-                new RCombined<>(
-                    (a, b) -> a + b,
-                    new RSuccess<>(1), 
-                    new RSuccess<>(2),
-                    new RSuccess<>(3),
-                    new RSuccess<>(4)
-                ),
-                10
+            new TestCase(
+                "combines a series of results into one",
+                new AssertResultHoldsExpectedValue(
+                    new RCombined<>(
+                        (a, b) -> a + b,
+                        new RSuccess<>(1), 
+                        new RSuccess<>(2),
+                        new RSuccess<>(3),
+                        new RSuccess<>(4)
+                    ),
+                    10
+                )
             ),
-            new AssertResultHoldsExpectedValue(
-                "supports sequence of one result", 
-                new RCombined<>(
-                    (a, b) -> a + b,
-                    new RSuccess<>(2)
-                ),
-                2
+            new TestCase(
+                "supports sequence of one result",
+                new AssertResultHoldsExpectedValue(
+                    new RCombined<>(
+                        (a, b) -> a + b,
+                        new RSuccess<>(2)
+                    ),
+                    2
+                )
             ),
-            new AssertResultIsErroneous(
+            new TestCase(
                 "supports sequence of one failure", 
-                new RCombined<>(
-                    (a, b) -> a + b,
-                    new RFailure<Integer>("error")
-                ),
-                "error"
+                new AssertResultIsErroneous(
+                    new RCombined<>(
+                        (a, b) -> a + b,
+                        new RFailure<Integer>("error")
+                    ),
+                    "error"
+                )
             ),
-            new AssertResultIsErroneous(
-                "combines a series of results with error", 
-                new RCombined<>(
-                    (a, b) -> a + b,
-                    new RSuccess<>(1), 
-                    new RFailure<Integer>("error"),
-                    new RSuccess<>(3),
-                    new RSuccess<>(4)
-                ),
-                "error"
+            new TestCase(
+                "combines a series of results with error",
+                new AssertResultIsErroneous(
+                    new RCombined<>(
+                        (a, b) -> a + b,
+                        new RSuccess<>(1), 
+                        new RFailure<Integer>("error"),
+                        new RSuccess<>(3),
+                        new RSuccess<>(4)
+                    ),
+                    "error"
+                )
             ),
-            new AssertResultIsErroneous(
+            new TestCase(
                 "combines a series of errors", 
-                new RCombined<>(
-                    (a, b) -> a + b,
-                    new RFailure<Integer>("error"),
-                    new RFailure<Integer>("error2"),
-                    new RFailure<Integer>("error3"),
-                    new RFailure<Integer>("error4")
-                ),
-                "error",
-                "error2",
-                "error3",
-                "error4"
+                new AssertResultIsErroneous(
+                    new RCombined<>(
+                        (a, b) -> a + b,
+                        new RFailure<Integer>("error"),
+                        new RFailure<Integer>("error2"),
+                        new RFailure<Integer>("error3"),
+                        new RFailure<Integer>("error4")
+                    ),
+                    "error",
+                    "error2",
+                    "error3",
+                    "error4"
+                )
             )
         );
     }

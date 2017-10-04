@@ -28,14 +28,15 @@ import java.lang.reflect.Method;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link oo.atom.codegen.bytebuddy.smt.SmtBoxField}
  * 
  * @author Kapralov Sergey
  */
-public class SmtBoxFieldTest extends AssertionsSuite {
+public class SmtBoxFieldTest extends TestsSuite {
     private static final Method INT_VALUEOF;
     private static final Field NON_PRIMITIVE_FIELD;
     private static final Field PRIMITIVE_FIELD;
@@ -52,23 +53,27 @@ public class SmtBoxFieldTest extends AssertionsSuite {
 
     public SmtBoxFieldTest() {
         super(
-            new AssertTokensToRepresentIdenticalBytecode(
+            new TestCase(
                 "generates no bytecode for non-primitive fields",
-                new SmtBoxField(
-                    new FieldDescription.ForLoadedField(
-                        NON_PRIMITIVE_FIELD
-                    )
-                ),
-                new SmtDoNothing()
+                new AssertTokensToRepresentIdenticalBytecode(
+                    new SmtBoxField(
+                        new FieldDescription.ForLoadedField(
+                            NON_PRIMITIVE_FIELD
+                        )
+                    ),
+                    new SmtDoNothing()
+                )
             ),
-            new AssertTokenToRepresentExpectedStackManipulation(
+            new TestCase(
                 "boxes primitive fields",
-                new SmtBoxField(
-                    new FieldDescription.ForLoadedField(
-                        PRIMITIVE_FIELD
-                    )
-                ),
-                () -> MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                new AssertTokenToRepresentExpectedStackManipulation(
+                    new SmtBoxField(
+                        new FieldDescription.ForLoadedField(
+                            PRIMITIVE_FIELD
+                        )
+                    ),
+                    () -> MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                )
             )
         );
     }

@@ -38,30 +38,22 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Kapralov Sergey
  */
 public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements Assertion {
-    private final String description;
     private final BuilderTransition bt;
     private final Class<?> clazz;
     private final List<String> methodNames;
 
-    public AssertClassToHaveCertainMethodsAfterBuilderTransition(String description, BuilderTransition bt, Class<?> clazz, List<String> methodNames) {
-        this.description = description;
+    public AssertClassToHaveCertainMethodsAfterBuilderTransition(BuilderTransition bt, Class<?> clazz, List<String> methodNames) {
         this.bt = bt;
         this.clazz = clazz;
         this.methodNames = methodNames;
     }
     
-    public AssertClassToHaveCertainMethodsAfterBuilderTransition(String description, BuilderTransition bt, Class<?> clazz, String... methodNames) {
+    public AssertClassToHaveCertainMethodsAfterBuilderTransition(BuilderTransition bt, Class<?> clazz, String... methodNames) {
         this(
-            description,
             bt,
             clazz,
             List.of(methodNames)
         );
-    }
-
-    @Override
-    public final String description() {
-        return description;
     }
 
     @Override

@@ -24,19 +24,20 @@
 package oo.atom.tests;
 
 /**
- *
+ * Inferred assertion.
+ * 
  * @author skapral
  */
-public class InferredAssertion implements Assertion {
+public class AssertInferred implements Assertion {
     private final Inference inference;
 
-    public InferredAssertion(Inference inference) {
+    /**
+     * Ctor.
+     * 
+     * @param inference Inference
+     */
+    public AssertInferred(Inference inference) {
         this.inference = inference;
-    }
-    
-    @Override
-    public final String description() {
-        return inference.assertion().description();
     }
 
     @Override

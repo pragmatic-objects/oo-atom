@@ -35,26 +35,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Kapralov Sergey
  */
 public class AssertResultHoldsExpectedValue<T> implements Assertion {
-    private final String description;
     private final Result<T> taskResult;
     private final T value;
 
     /**
      * Ctor.
      * 
-     * @param description Assertion description.
      * @param result A result to assert on.
      * @param value Expected value hold by result.
      */
-    public AssertResultHoldsExpectedValue(String description, Result<T> result, T value) {
-        this.description = description;
+    public AssertResultHoldsExpectedValue(Result<T> result, T value) {
         this.taskResult = result;
         this.value = value;
-    }
-
-    @Override
-    public final String description() {
-        return description;
     }
 
     @Override

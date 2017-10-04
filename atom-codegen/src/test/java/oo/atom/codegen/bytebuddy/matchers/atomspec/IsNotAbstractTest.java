@@ -26,29 +26,36 @@ package oo.atom.codegen.bytebuddy.matchers.atomspec;
 import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IsNotAbstractTest extends AssertionsSuite {
+public class IsNotAbstractTest extends TestsSuite {
     public IsNotAbstractTest() {
         super(
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match non-abstract classes",
-                new TypeDescription.ForLoadedType(Foo.class),
-                new IsNotAbstract()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Foo.class),
+                    new IsNotAbstract()
+                )
             ),
-            new AssertThatTypeDoesNotMatch(
+            new TestCase(
                 "mismatch abstract classes",
-                new TypeDescription.ForLoadedType(Bar.class),
-                new IsNotAbstract()
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Bar.class),
+                    new IsNotAbstract()
+                )
             ),
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match enumeration types",
-                new TypeDescription.ForLoadedType(Faz.class),
-                new IsNotAbstract()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Faz.class),
+                    new IsNotAbstract()
+                )
             )
         );
     }

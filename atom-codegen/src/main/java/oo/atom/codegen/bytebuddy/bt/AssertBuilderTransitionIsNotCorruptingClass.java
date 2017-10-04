@@ -36,19 +36,12 @@ import static org.assertj.core.api.Assertions.assertThatCode;
  * @author Kapralov Sergey
  */
 public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
-    private final String description;
     private final BuilderTransition bt;
     private final Class<?> type;
 
-    public AssertBuilderTransitionIsNotCorruptingClass(String description, BuilderTransition bt, Class<?> type) {
-        this.description = description;
+    public AssertBuilderTransitionIsNotCorruptingClass(BuilderTransition bt, Class<?> type) {
         this.bt = bt;
         this.type = type;
-    }
-
-    @Override
-    public final String description() {
-        return description;
     }
 
     @Override

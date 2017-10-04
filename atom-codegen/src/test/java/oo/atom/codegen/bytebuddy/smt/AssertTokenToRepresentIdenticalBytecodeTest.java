@@ -23,12 +23,12 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link AssertTokenToRepresentIdenticalBytecode}
  * @author Kapralov Sergey
  * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertTokenToRepresentIdenticalBytecode}
  */
-public class AssertTokenToRepresentIdenticalBytecodeTest extends AssertionsSuite {
+public class AssertTokenToRepresentIdenticalBytecodeTest extends TestsSuite {
 }

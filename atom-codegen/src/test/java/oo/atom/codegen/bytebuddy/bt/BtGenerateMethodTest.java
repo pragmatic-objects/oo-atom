@@ -25,23 +25,26 @@ package oo.atom.codegen.bytebuddy.bt;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import oo.atom.codegen.bytebuddy.smt.SmtReturnInteger;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateMethodTest extends AssertionsSuite {
+public class BtGenerateMethodTest extends TestsSuite {
     public BtGenerateMethodTest() {
         super(
-            new AssertClassToHaveCertainMethodsAfterBuilderTransition(
+            new TestCase(
                 "double transition causes no side effects",
-                new BtSequence(
-                    new BtGenerateMethod(named("bar"), type -> new SmtReturnInteger(0)),
-                    new BtGenerateMethod(named("bar"), type -> new SmtReturnInteger(0))
-                ),
-                Foo.class,
-                "bar"
+                new AssertClassToHaveCertainMethodsAfterBuilderTransition(
+                    new BtSequence(
+                        new BtGenerateMethod(named("bar"), type -> new SmtReturnInteger(0)),
+                        new BtGenerateMethod(named("bar"), type -> new SmtReturnInteger(0))
+                    ),
+                    Foo.class,
+                    "bar"
+                )
             )
         );
     }

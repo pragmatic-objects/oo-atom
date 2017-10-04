@@ -23,12 +23,12 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link AssertStackManipulationsAreSame}
  * @author Kapralov Sergey
  * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertStackManipulationsAreSame}
  */
-public class AssertStackManipulationsAreSameTest extends AssertionsSuite {
+public class AssertStackManipulationsAreSameTest extends TestsSuite {
 }

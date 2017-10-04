@@ -39,13 +39,11 @@ public class AssertStackManipulationsAreSame extends AssertStackManipulationProd
     /**
      * Ctor.
      * 
-     * @param description Assertion description
      * @param sm Stack manipulation to assert on.
      * @param sm2 Stack manipulation to compare with
      */
-    public AssertStackManipulationsAreSame(String description, StackManipulation sm, StackManipulation sm2) {
+    public AssertStackManipulationsAreSame(StackManipulation sm, StackManipulation sm2) {
         super(
-            description,
             sm,
             mv -> {
                 Implementation.Context ctx = EasyMock.mock(Implementation.Context.class);

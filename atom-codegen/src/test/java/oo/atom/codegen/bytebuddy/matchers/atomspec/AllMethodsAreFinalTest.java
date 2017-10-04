@@ -27,7 +27,8 @@ import java.util.UUID;
 import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
 import oo.atom.tests.AssertAtomsAreNotEqual;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 import static org.assertj.core.api.Assertions.*;
 import org.junit.Test;
 
@@ -35,33 +36,43 @@ import org.junit.Test;
  *
  * @author Kapralov Sergey
  */
-public class AllMethodsAreFinalTest extends AssertionsSuite {
+public class AllMethodsAreFinalTest extends TestsSuite {
     public AllMethodsAreFinalTest() {
         super(
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match type with final methods only",
-                new TypeDescription.ForLoadedType(Foo.class),
-                new AllMethodsAreFinal()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Foo.class),
+                    new AllMethodsAreFinal()
+                )
             ),
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match type ignoring bridge methods",
-                new TypeDescription.ForLoadedType(Baz.class),
-                new AllMethodsAreFinal()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Baz.class),
+                    new AllMethodsAreFinal()
+                )
             ),
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match type ignoring static methods",
-                new TypeDescription.ForLoadedType(Haz.class),
-                new AllMethodsAreFinal()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Haz.class),
+                    new AllMethodsAreFinal()
+                )
             ),
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match enumeration types",
-                new TypeDescription.ForLoadedType(Faz.class),
-                new AllMethodsAreFinal()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Faz.class),
+                    new AllMethodsAreFinal()
+                )
             ),
-            new AssertAtomsAreNotEqual(
+            new TestCase(
                 "mismatch type with at least one non final method",
-                new TypeDescription.ForLoadedType(Bar.class),
-                new AllMethodsAreFinal()
+                new AssertAtomsAreNotEqual(
+                    new TypeDescription.ForLoadedType(Bar.class),
+                    new AllMethodsAreFinal()
+                )
             )
         );
     }

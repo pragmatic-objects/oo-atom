@@ -27,34 +27,43 @@ import java.util.function.Supplier;
 import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
 import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class HasNoStaticMethodsTest extends AssertionsSuite {
+public class HasNoStaticMethodsTest extends TestsSuite {
     public HasNoStaticMethodsTest() {
         super(
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match type with no static methods",
-                new TypeDescription.ForLoadedType(Foo.class),
-                new HasNoStaticMethods()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Foo.class),
+                    new HasNoStaticMethods()
+                )
             ),
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match type with lambdas",
-                new TypeDescription.ForLoadedType(Baz.class),
-                new HasNoStaticMethods()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Baz.class),
+                    new HasNoStaticMethods()
+                )
             ),
-            new AssertThatTypeMatches(
+            new TestCase(
                 "match enumeration types",
-                new TypeDescription.ForLoadedType(Faz.class),
-                new HasNoStaticMethods()
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Faz.class),
+                    new HasNoStaticMethods()
+                )
             ),
-            new AssertThatTypeDoesNotMatch(
+            new TestCase(
                 "mismatch type with at least one static method",
-                new TypeDescription.ForLoadedType(Bar.class),
-                new HasNoStaticMethods()
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Bar.class),
+                    new HasNoStaticMethods()
+                )
             )
         );
     }

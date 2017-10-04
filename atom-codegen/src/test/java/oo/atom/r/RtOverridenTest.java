@@ -23,7 +23,7 @@
  */
 package oo.atom.r;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link RtOverriden}
@@ -31,7 +31,7 @@ import oo.atom.tests.AssertionsSuite;
  * @author Kapralov Sergey
  * @todo #8:15m Improve test coverage and mutation coverage for {@link RtOverriden}
  */
-public class RtOverridenTest extends AssertionsSuite {
+public class RtOverridenTest extends TestsSuite {
     public RtOverridenTest() {
         super();
     }

@@ -23,12 +23,12 @@
  */
 package oo.atom.r;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link AssertResultHoldsExpectedValue}
  * @author Kapralov Sergey
  * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertResultHoldsExpectedValue}
  */
-public class AssertResultHoldsExpectedValueTest extends AssertionsSuite {
+public class AssertResultHoldsExpectedValueTest extends TestsSuite {
 }

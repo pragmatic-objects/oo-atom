@@ -23,7 +23,7 @@
  */
 package oo.atom.r;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link RTransformed}
@@ -31,7 +31,7 @@ import oo.atom.tests.AssertionsSuite;
  * @author Kapralov Sergey
  * @todo #8:15m Improve test coverage and mutation coverage for {@link RTransformed}
  */
-public class RTransformedTest extends AssertionsSuite {
+public class RTransformedTest extends TestsSuite {
     public RTransformedTest() {
         super();
     }

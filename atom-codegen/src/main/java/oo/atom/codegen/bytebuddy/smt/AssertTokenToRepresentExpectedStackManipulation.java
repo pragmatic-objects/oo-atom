@@ -26,7 +26,7 @@ package oo.atom.codegen.bytebuddy.smt;
 import java.util.function.Supplier;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.tests.Assertion;
-import oo.atom.tests.InferredAssertion;
+import oo.atom.tests.AssertInferred;
 
 /**
  * Inference for {@link oo.atom.codegen.bytebuddy.smt.AssertTokenToRepresentExpectedStackManipulation} assertion
@@ -34,19 +34,16 @@ import oo.atom.tests.InferredAssertion;
  * @author Kapralov Sergey
  */
 class AssertTokenToRepresentExpectedStackManipulationInference implements Assertion.Inference {
-    private final String description;
     private final StackManipulationToken smt;
     private final Supplier<StackManipulation> pattern;
 
     /**
      * Ctor.
      * 
-     * @param description
      * @param smt
      * @param pattern 
      */
-    public AssertTokenToRepresentExpectedStackManipulationInference(String description, StackManipulationToken smt, Supplier<StackManipulation> pattern) {
-        this.description = description;
+    public AssertTokenToRepresentExpectedStackManipulationInference(StackManipulationToken smt, Supplier<StackManipulation> pattern) {
         this.smt = smt;
         this.pattern = pattern;
     }
@@ -54,7 +51,6 @@ class AssertTokenToRepresentExpectedStackManipulationInference implements Assert
     @Override
     public final Assertion assertion() {
         return new AssertStackManipulationsAreSame(
-            description,
             smt.value().get(),
             pattern.get()
         );
@@ -66,17 +62,16 @@ class AssertTokenToRepresentExpectedStackManipulationInference implements Assert
  * 
  * @author Kapralov Sergey
  */
-public class AssertTokenToRepresentExpectedStackManipulation extends InferredAssertion implements Assertion {
+public class AssertTokenToRepresentExpectedStackManipulation extends AssertInferred implements Assertion {
     /**
      * Ctor.
      * 
-     * @param description Assertion description
      * @param smt Stack manipulation to assert on
      * @param pattern Bytecode pattern to expect
      */
-    public AssertTokenToRepresentExpectedStackManipulation(String description, StackManipulationToken smt, Supplier<StackManipulation> pattern) {
-        super(new AssertTokenToRepresentExpectedStackManipulationInference(
-                description,
+    public AssertTokenToRepresentExpectedStackManipulation(StackManipulationToken smt, Supplier<StackManipulation> pattern) {
+        super(
+            new AssertTokenToRepresentExpectedStackManipulationInference(
                 smt,
                 pattern
             )

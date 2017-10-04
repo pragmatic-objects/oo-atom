@@ -28,44 +28,36 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import oo.atom.tests.AssertAssertionFails;
-import oo.atom.tests.AssertAssertionHasDescription;
 import oo.atom.tests.AssertAssertionPasses;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link AssertBuilderTransitionToAnnotateAClassTest}
  * 
  * @author Kapralov Sergey
  */
-public class AssertBuilderTransitionToAnnotateAClassTest extends AssertionsSuite {
+public class AssertBuilderTransitionToAnnotateAClassTest extends TestsSuite {
     public AssertBuilderTransitionToAnnotateAClassTest() {
         super(
-            new AssertAssertionHasDescription(
-                "has description",
-                new AssertBuilderTransitionToAnnotateAClass(
-                    "meaningful description",
-                    new BtNop(),
-                    AnnotatedClass.class,
-                    Annotation.class
-                ),
-                "meaningful description"
-            ),
-            new AssertAssertionPasses(
+            new TestCase(
                 "passes when produced class is annotated",
-                new AssertBuilderTransitionToAnnotateAClass(
-                    "stub",
-                    new BtNop(),
-                    AnnotatedClass.class,
-                    Annotation.class
+                new AssertAssertionPasses(
+                    new AssertBuilderTransitionToAnnotateAClass(
+                        new BtNop(),
+                        AnnotatedClass.class,
+                        Annotation.class
+                    )
                 )
             ),
-            new AssertAssertionFails(
+            new TestCase(
                 "fails when the produced class is not annotated",
-                new AssertBuilderTransitionToAnnotateAClass(
-                    "stub",
-                    new BtNop(),
-                    SimpleClass.class,
-                    Annotation.class
+                new AssertAssertionFails(
+                    new AssertBuilderTransitionToAnnotateAClass(
+                        new BtNop(),
+                        SimpleClass.class,
+                        Annotation.class
+                    )
                 )
             )
         );

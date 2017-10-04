@@ -23,12 +23,12 @@
  */
 package oo.atom.codegen.bytebuddy.matchers;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link AssertThatTypeDoesNotMatch}
  * @author Kapralov Sergey
  * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertThatTypeDoesNotMatch}
  */
-public class AssertThatTypeDoesNotMatchTest extends AssertionsSuite {
+public class AssertThatTypeDoesNotMatchTest extends TestsSuite {
 }

@@ -25,32 +25,36 @@ package oo.atom.codegen.bytebuddy.matchers;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
-import oo.atom.anno.Atom;
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class ExtendingTest extends AssertionsSuite {
+public class ExtendingTest extends TestsSuite {
     public ExtendingTest() {
         super(
-            new AssertThatTypeMatches(
+            new TestCase(
                 "matches types inherited from atom", 
-                new TypeDescription.ForLoadedType(
-                    Bar.class
-                ), 
-                new Extending(
-                    ElementMatchers.anyOf(Foo.class)
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(
+                        Bar.class
+                    ), 
+                    new Extending(
+                        ElementMatchers.anyOf(Foo.class)
+                    )
                 )
             ),
-            new AssertThatTypeDoesNotMatch(
-                "mismatch atoms", 
-                new TypeDescription.ForLoadedType(
-                    Foo.class
-                ), 
-                new Extending(
-                    ElementMatchers.anyOf(Foo.class)
+            new TestCase(
+                "mismatch atoms",
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(
+                        Foo.class
+                    ), 
+                    new Extending(
+                        ElementMatchers.anyOf(Foo.class)
+                    )
                 )
             )
         );

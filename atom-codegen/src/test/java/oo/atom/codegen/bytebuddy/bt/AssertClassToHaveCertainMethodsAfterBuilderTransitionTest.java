@@ -23,12 +23,12 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import oo.atom.tests.AssertionsSuite;
+import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link AssertClassToHaveCertainMethodsAfterBuilderTransition}
  * @author Kapralov Sergey
  * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertClassToHaveCertainMethodsAfterBuilderTransition}
  */
-public class AssertClassToHaveCertainMethodsAfterBuilderTransitionTest extends AssertionsSuite {
+public class AssertClassToHaveCertainMethodsAfterBuilderTransitionTest extends TestsSuite {
 }
