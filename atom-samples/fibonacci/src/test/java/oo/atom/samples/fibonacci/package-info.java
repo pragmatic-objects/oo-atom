@@ -21,33 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.sample1;
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class IvFibonacci implements IntegerValue {
-    private final int position;
-
-    public IvFibonacci(int position) {
-        this.position = position;
-    }
-
-    @Override
-    public final int primitive() {
-        if(position < 0) {
-            throw new IllegalStateException("position must be greater than 0");
-        }
-        if(position == 0) {
-            return 0;
-        }
-        if(position == 1) {
-            return 1;
-        }
-        return new IvSum(
-            new IvFibonacci(position - 1),
-            new IvFibonacci(position - 2)
-        ).primitive();
-    }
-}
+package oo.atom.samples.fibonacci;

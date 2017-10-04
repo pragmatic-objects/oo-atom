@@ -11,6 +11,6 @@
     <packaging>pom</packaging>
     
     <modules>
-        <module>sample1</module>
+        <module>fibonacci</module>
     </modules>
 </project>

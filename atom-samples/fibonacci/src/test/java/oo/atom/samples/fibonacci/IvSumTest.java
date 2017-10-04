@@ -21,12 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.sample1;
+package oo.atom.samples.fibonacci;
+
+import oo.atom.samples.fibonacci.IvSum;
+import oo.atom.samples.fibonacci.IntegerValue;
+import oo.atom.samples.fibonacci.IvConstant;
+import org.assertj.core.api.Assertions;
+import org.junit.Test;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public interface IntegerValue {
-    int primitive();
+public class IvSumTest {
+    @Test
+    public final void holdsSumOfTheArguments() {
+        IntegerValue value = new IvSum(
+            new IvConstant(2),
+            new IvConstant(2)
+        );
+        Assertions.assertThat(value.primitive()).isEqualTo(4);
+    }
 }

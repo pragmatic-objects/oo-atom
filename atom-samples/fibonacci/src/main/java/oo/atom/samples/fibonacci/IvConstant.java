@@ -21,22 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.sample1;
-
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+package oo.atom.samples.fibonacci;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IvSumTest {
-    @Test
-    public final void holdsSumOfTheArguments() {
-        IntegerValue value = new IvSum(
-            new IvConstant(2),
-            new IvConstant(2)
-        );
-        Assertions.assertThat(value.primitive()).isEqualTo(4);
+public class IvConstant implements IntegerValue {
+    private final int constantValue;
+
+    public IvConstant(int constantValue) {
+        this.constantValue = constantValue;
+    }
+
+    @Override
+    public final int primitive() {
+        return constantValue;
     }
 }

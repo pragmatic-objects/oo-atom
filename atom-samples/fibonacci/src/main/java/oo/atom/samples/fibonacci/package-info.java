@@ -21,19 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.sample1;
-
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class IvConstantTest {
-    @Test
-    public final void holdsExplicitConstant() {
-        IntegerValue value = new IvConstant(42);
-        Assertions.assertThat(value.primitive()).isEqualTo(42);
-    }
-}
+package oo.atom.samples.fibonacci;

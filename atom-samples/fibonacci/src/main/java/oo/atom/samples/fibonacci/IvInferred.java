@@ -21,37 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.sample1;
-
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+package oo.atom.samples.fibonacci;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IvFibonacciTest {
-    @Test
-    public final void failsOnNegativePosition() {
-        IntegerValue value = new IvFibonacci(-1);
-        Assertions.assertThatThrownBy(() -> value.primitive()).isInstanceOf(IllegalStateException.class);
+public class IvInferred implements IntegerValue {
+    private final Inference inference;
+
+    public IvInferred(Inference inference) {
+        this.inference = inference;
     }
 
-    @Test
-    public final void holdsZeroAtZeroPosition() {
-        IntegerValue value = new IvFibonacci(0);
-        Assertions.assertThat(value.primitive()).isEqualTo(0);
-    }
-    
-    @Test
-    public final void holdsOneAtFirstPosition() {
-        IntegerValue value = new IvFibonacci(1);
-        Assertions.assertThat(value.primitive()).isEqualTo(1);
-    }
-    
-    @Test
-    public final void holdsThreeAtForthPosition() {
-        IntegerValue value = new IvFibonacci(4);
-        Assertions.assertThat(value.primitive()).isEqualTo(3);
+    @Override
+    public final int primitive() {
+        return inference.integerValue().primitive();
     }
 }

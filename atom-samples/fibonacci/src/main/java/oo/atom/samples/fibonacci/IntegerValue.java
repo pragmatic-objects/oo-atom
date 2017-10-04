@@ -21,4 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.sample1;
+package oo.atom.samples.fibonacci;
+
+/**
+ *
+ * @author Kapralov Sergey
+ */
+public interface IntegerValue {
+    interface Inference {
+        IntegerValue integerValue();
+    }
+    
+    int primitive();
+}

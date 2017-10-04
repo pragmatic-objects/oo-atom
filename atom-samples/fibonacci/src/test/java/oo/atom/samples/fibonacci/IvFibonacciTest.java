@@ -21,21 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.sample1;
+package oo.atom.samples.fibonacci;
+
+import oo.atom.samples.fibonacci.IntegerValue;
+import oo.atom.samples.fibonacci.IvFibonacci;
+import org.assertj.core.api.Assertions;
+import org.junit.Test;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class IvConstant implements IntegerValue {
-    private final int constantValue;
-
-    public IvConstant(int constantValue) {
-        this.constantValue = constantValue;
+public class IvFibonacciTest {
+    @Test
+    public final void failsOnNegativePosition() {
+        IntegerValue value = new IvFibonacci(-1);
+        Assertions.assertThatThrownBy(() -> value.primitive()).isInstanceOf(IllegalStateException.class);
     }
 
-    @Override
-    public final int primitive() {
-        return constantValue;
+    @Test
+    public final void holdsZeroAtZeroPosition() {
+        IntegerValue value = new IvFibonacci(0);
+        Assertions.assertThat(value.primitive()).isEqualTo(0);
+    }
+    
+    @Test
+    public final void holdsOneAtFirstPosition() {
+        IntegerValue value = new IvFibonacci(1);
+        Assertions.assertThat(value.primitive()).isEqualTo(1);
+    }
+    
+    @Test
+    public final void holdsThreeAtForthPosition() {
+        IntegerValue value = new IvFibonacci(4);
+        Assertions.assertThat(value.primitive()).isEqualTo(3);
     }
 }
