@@ -23,19 +23,24 @@
  */
 package oo.atom.samples.fibonacci;
 
-import oo.atom.samples.fibonacci.IntegerValue;
-import oo.atom.samples.fibonacci.IvConstant;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
- *
+ * Tests suite for {@link IvConstant}
+ * 
  * @author Kapralov Sergey
  */
-public class IvConstantTest {
-    @Test
-    public final void holdsExplicitConstant() {
-        IntegerValue value = new IvConstant(42);
-        Assertions.assertThat(value.primitive()).isEqualTo(42);
+public class IvConstantTest extends TestsSuite {
+    public IvConstantTest() {
+        super(
+            new TestCase(
+                "holds a constant",
+                new AssertIntegerValueBoxesCertainInteger(
+                    new IvConstant(42),
+                    42
+                )
+            )
+        );
     }
 }

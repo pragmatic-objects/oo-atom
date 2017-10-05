@@ -24,13 +24,19 @@
 package oo.atom.samples.fibonacci;
 
 /**
- *
+ * A value from Fibonacci's row at certain position. Implemented using naive algorithm.
+ * 
  * @author Kapralov Sergey
  */
 public class IvFibonacci extends IvInferred implements IntegerValue {
     private static final class Inference implements IntegerValue.Inference {
         private final int position;
 
+        /**
+         * Ctor.
+         * 
+         * @param position Fibonacci's number position in row
+         */
         public Inference(int position) {
             this.position = position;
         }

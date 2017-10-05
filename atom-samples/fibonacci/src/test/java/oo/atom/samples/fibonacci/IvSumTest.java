@@ -23,23 +23,27 @@
  */
 package oo.atom.samples.fibonacci;
 
-import oo.atom.samples.fibonacci.IvSum;
-import oo.atom.samples.fibonacci.IntegerValue;
-import oo.atom.samples.fibonacci.IvConstant;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
- *
+ * Tests suite for {@link IvSum}
+ * 
  * @author Kapralov Sergey
  */
-public class IvSumTest {
-    @Test
-    public final void holdsSumOfTheArguments() {
-        IntegerValue value = new IvSum(
-            new IvConstant(2),
-            new IvConstant(2)
+public class IvSumTest extends TestsSuite {
+    public IvSumTest() {
+        super(
+            new TestCase(
+                "2 + 2 = 4",
+                new AssertIntegerValueBoxesCertainInteger(
+                    new IvSum(
+                        new IvConstant(2),
+                        new IvConstant(2)
+                    ),
+                    4
+                )
+            )
         );
-        Assertions.assertThat(value.primitive()).isEqualTo(4);
     }
 }

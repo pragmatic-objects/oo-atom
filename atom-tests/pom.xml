@@ -8,6 +8,7 @@
     </parent>
     <artifactId>atom-tests</artifactId>
     <packaging>bundle</packaging>
+
     <repositories>
         <repository>
             <snapshots>
@@ -18,7 +19,7 @@
             <url>http://dl.bintray.com/kim-betti/maven</url>
         </repository>
     </repositories>
-    
+
     <dependencies>
         <dependency>
             <groupId>oo</groupId>

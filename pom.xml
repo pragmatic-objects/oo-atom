@@ -199,6 +199,7 @@ SOFTWARE.
                                     </excludedMethods>
                                     <timestampedReports>false</timestampedReports>
                                     <failWhenNoMutations>false</failWhenNoMutations>
+                                    <verbose>true</verbose>
                                     <targetTests>${pitest.target.tests}</targetTests>
                                 </configuration>
                             </execution>

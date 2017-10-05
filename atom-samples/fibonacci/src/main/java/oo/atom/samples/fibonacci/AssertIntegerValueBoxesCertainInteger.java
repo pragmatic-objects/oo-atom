@@ -23,20 +23,24 @@
  */
 package oo.atom.samples.fibonacci;
 
+import oo.atom.tests.Assertion;
+import org.assertj.core.api.Assertions;
+
 /**
- * A constant integral
- * 
+ * Asserts that the int primitive, held by {@link IntegerValue}, equals to expected value
  * @author Kapralov Sergey
  */
-public class IvConstant implements IntegerValue {
-    private final int constantValue;
+public class AssertIntegerValueBoxesCertainInteger implements Assertion {
+    private final IntegerValue intValue;
+    private final int primitive;
 
-    public IvConstant(int constantValue) {
-        this.constantValue = constantValue;
+    public AssertIntegerValueBoxesCertainInteger(IntegerValue intValue, int primitive) {
+        this.intValue = intValue;
+        this.primitive = primitive;
     }
 
     @Override
-    public final int primitive() {
-        return constantValue;
+    public final void check() throws Exception {
+        Assertions.assertThat(intValue.primitive()).isEqualTo(primitive);
     }
 }

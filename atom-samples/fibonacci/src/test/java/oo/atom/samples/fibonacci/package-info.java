@@ -22,6 +22,3 @@
  * THE SOFTWARE.
  */
 package oo.atom.samples.fibonacci;
-/*
-@todo #53 Rewrite all the tests from this samples using Assertions from atom-tests.
-*/

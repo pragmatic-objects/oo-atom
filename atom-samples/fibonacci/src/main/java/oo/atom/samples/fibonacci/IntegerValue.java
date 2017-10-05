@@ -24,7 +24,8 @@
 package oo.atom.samples.fibonacci;
 
 /**
- *
+ * An integral calculation value
+ * 
  * @author Kapralov Sergey
  */
 public interface IntegerValue {

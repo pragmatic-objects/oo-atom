@@ -24,13 +24,20 @@
 package oo.atom.samples.fibonacci;
 
 /**
- *
+ * A sum of two integrals
+ * 
  * @author Kapralov Sergey
  */
 public class IvSum implements IntegerValue {
     private final IntegerValue leftArgument;
     private final IntegerValue rightArgument;
 
+    /**
+     * Ctor.
+     * 
+     * @param leftArgument Left argument
+     * @param rightArgument Right argument
+     */
     public IvSum(IntegerValue leftArgument, IntegerValue rightArgument) {
         this.leftArgument = leftArgument;
         this.rightArgument = rightArgument;

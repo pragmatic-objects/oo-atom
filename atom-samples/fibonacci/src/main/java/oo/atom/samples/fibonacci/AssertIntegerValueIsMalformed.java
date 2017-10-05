@@ -23,20 +23,23 @@
  */
 package oo.atom.samples.fibonacci;
 
+import oo.atom.tests.Assertion;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 /**
- * A constant integral
+ * Asserts that {@link IntegerValue} is inconsistent.
  * 
  * @author Kapralov Sergey
  */
-public class IvConstant implements IntegerValue {
-    private final int constantValue;
+public class AssertIntegerValueIsMalformed implements Assertion {
+    private final IntegerValue intValue;
 
-    public IvConstant(int constantValue) {
-        this.constantValue = constantValue;
+    public AssertIntegerValueIsMalformed(IntegerValue intValue) {
+        this.intValue = intValue;
     }
 
     @Override
-    public final int primitive() {
-        return constantValue;
+    public final void check() throws Exception {
+        assertThatThrownBy(() -> intValue.primitive()).isInstanceOf(IllegalStateException.class);
     }
 }

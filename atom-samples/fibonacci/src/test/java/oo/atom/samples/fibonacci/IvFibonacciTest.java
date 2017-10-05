@@ -23,37 +23,45 @@
  */
 package oo.atom.samples.fibonacci;
 
-import oo.atom.samples.fibonacci.IntegerValue;
-import oo.atom.samples.fibonacci.IvFibonacci;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
+import org.junit.Ignore;
 
 /**
- *
+ * Tests suite for {@link IvFibonacci}
+ * 
  * @author Kapralov Sergey
  */
-public class IvFibonacciTest {
-    @Test
-    public final void failsOnNegativePosition() {
-        IntegerValue value = new IvFibonacci(-1);
-        Assertions.assertThatThrownBy(() -> value.primitive()).isInstanceOf(IllegalStateException.class);
-    }
-
-    @Test
-    public final void holdsZeroAtZeroPosition() {
-        IntegerValue value = new IvFibonacci(0);
-        Assertions.assertThat(value.primitive()).isEqualTo(0);
-    }
-    
-    @Test
-    public final void holdsOneAtFirstPosition() {
-        IntegerValue value = new IvFibonacci(1);
-        Assertions.assertThat(value.primitive()).isEqualTo(1);
-    }
-    
-    @Test
-    public final void holdsThreeAtForthPosition() {
-        IntegerValue value = new IvFibonacci(4);
-        Assertions.assertThat(value.primitive()).isEqualTo(3);
+public class IvFibonacciTest extends TestsSuite {
+    public IvFibonacciTest() {
+        super(
+            new TestCase(
+                "undefined on negative position",
+                new AssertIntegerValueIsMalformed(
+                    new IvFibonacci(-1)
+                )
+            ),
+            new TestCase(
+                "0 at 0th position",
+                new AssertIntegerValueBoxesCertainInteger(
+                    new IvFibonacci(0),
+                    0
+                )
+            ),
+            new TestCase(
+                "1 at 1th position",
+                new AssertIntegerValueBoxesCertainInteger(
+                    new IvFibonacci(1),
+                    1
+                )
+            ),
+            new TestCase(
+                "3 at 4th position",
+                new AssertIntegerValueBoxesCertainInteger(
+                    new IvFibonacci(4),
+                    3
+                )
+            )
+        );
     }
 }

@@ -24,19 +24,14 @@
 package oo.atom.samples.fibonacci;
 
 /**
- * A constant integral
+ * Instance, which represents undefined integral calculation error 
+ * (like division by zero or value at some math function's break).
  * 
  * @author Kapralov Sergey
  */
-public class IvConstant implements IntegerValue {
-    private final int constantValue;
-
-    public IvConstant(int constantValue) {
-        this.constantValue = constantValue;
-    }
-
+public class IvUndefined implements IntegerValue {
     @Override
     public final int primitive() {
-        return constantValue;
+        throw new IllegalStateException("undefined");
     }
 }

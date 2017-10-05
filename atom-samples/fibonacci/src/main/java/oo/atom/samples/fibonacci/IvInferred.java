@@ -24,7 +24,8 @@
 package oo.atom.samples.fibonacci;
 
 /**
- *
+ * Inferred {@link IntegerValue}
+ * 
  * @author Kapralov Sergey
  */
 public class IvInferred implements IntegerValue {

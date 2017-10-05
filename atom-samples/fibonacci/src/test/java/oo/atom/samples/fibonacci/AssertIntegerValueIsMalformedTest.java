@@ -23,20 +23,35 @@
  */
 package oo.atom.samples.fibonacci;
 
+import oo.atom.tests.AssertAssertionFails;
+import oo.atom.tests.AssertAssertionPasses;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
+
 /**
- * A constant integral
+ * Tests suite for {@link AssertIntegerValueIsMalformed}
  * 
  * @author Kapralov Sergey
  */
-public class IvConstant implements IntegerValue {
-    private final int constantValue;
-
-    public IvConstant(int constantValue) {
-        this.constantValue = constantValue;
-    }
-
-    @Override
-    public final int primitive() {
-        return constantValue;
+public class AssertIntegerValueIsMalformedTest extends TestsSuite {
+    public AssertIntegerValueIsMalformedTest() {
+        super(
+            new TestCase(
+                "assertion must fail on a defined integer value",
+                new AssertAssertionFails(
+                    new AssertIntegerValueIsMalformed(
+                        new IvConstant(42)
+                    )
+                )
+            ),
+            new TestCase(
+                "assertion must pass on undefined integer value",
+                new AssertAssertionPasses(
+                    new AssertIntegerValueIsMalformed(
+                        new IvUndefined()
+                    )
+                )
+            )
+        );
     }
 }

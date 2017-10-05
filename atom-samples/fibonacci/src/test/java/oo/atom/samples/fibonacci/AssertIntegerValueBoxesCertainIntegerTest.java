@@ -23,20 +23,36 @@
  */
 package oo.atom.samples.fibonacci;
 
+import oo.atom.tests.AssertAssertionFails;
+import oo.atom.tests.AssertAssertionPasses;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
+
 /**
- * A constant integral
- * 
+ *
  * @author Kapralov Sergey
  */
-public class IvConstant implements IntegerValue {
-    private final int constantValue;
-
-    public IvConstant(int constantValue) {
-        this.constantValue = constantValue;
-    }
-
-    @Override
-    public final int primitive() {
-        return constantValue;
+public class AssertIntegerValueBoxesCertainIntegerTest extends TestsSuite {
+    public AssertIntegerValueBoxesCertainIntegerTest() {
+        super(
+            new TestCase(
+                "assertion must pass when returned primitive matches expected value",
+                new AssertAssertionPasses(
+                    new AssertIntegerValueBoxesCertainInteger(
+                        new IvConstant(42),
+                        42
+                    )
+                )
+            ),
+            new TestCase(
+                "assertion must fail when returned primitive mismatches expected value",
+                new AssertAssertionFails(
+                    new AssertIntegerValueBoxesCertainInteger(
+                        new IvConstant(42),
+                        24
+                    )
+                )
+            )
+        );
     }
 }
