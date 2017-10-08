@@ -3,11 +3,10 @@
 [![Build Status](https://img.shields.io/travis/project-avral/oo-atom/master.svg)](https://travis-ci.org/project-avral/oo-atom)
 [![PDD status](http://www.0pdd.com/svg?name=project-avral/oo-atom)](http://www.0pdd.com/p?name=project-avral/oo-atom)
 
-OO-atom is a desperate attempt to make Java programming more predictable and transparent. Instead of fighting the boilerplate code by hiding it, introducing hidden coupling, like it is done by Java EE, Spring and Hibernate, OO-atom greets clean design by taking the most from Java SE, and eliminating the worst parts of it.
+OO-atom is a desperate attempt to make Java programming more predictable and transparent. Instead of fighting the boilerplate code by hiding it, introducing hidden coupling, like it is done by Java EE, Spring and Hibernate, OO-atom greets clean design by taking the most from Java SE, and the best from OOP.
 
 The project is built around the term named Atom. Atom is a Java class, which strictly follows a set of [requirements](ATOM_SPECIFICATION.md). For each Atom, OO-atom project enforces:
 - composition over inheritance
-- separation of side effects ([partial]())
 - design by contract
 - safe code reuse techniques
 - SOLID
