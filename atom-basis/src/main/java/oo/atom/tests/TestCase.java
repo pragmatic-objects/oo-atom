@@ -23,15 +23,11 @@
  */
 package oo.atom.tests;
 
-import java.util.Objects;
-import oo.atom.anno.Atom;
-
 /**
  * A test case with a single assertion
  * 
  * @author Kapralov Sergey
  */
-@Atom
 public class TestCase implements Test {
     private final String description;
     private final Assertion assertion;
@@ -55,22 +51,5 @@ public class TestCase implements Test {
     @Override
     public final void execute() throws Exception {
         assertion.check();
-    }
-    
-    
-    @Override
-    public final boolean equals(Object obj) {
-        if(obj instanceof TestCase) {
-            TestCase _obj = (TestCase) obj;
-            return Objects.equals(_obj.description, this.description) &&
-                   Objects.equals(_obj.assertion, this.assertion);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(assertion);
     }
 }
