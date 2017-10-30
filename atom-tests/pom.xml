@@ -7,24 +7,9 @@
         <version>0.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>atom-tests</artifactId>
-    <packaging>bundle</packaging>
-
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-kim-betti-maven</id>
-            <name>bintray</name>
-            <url>http://dl.bintray.com/kim-betti/maven</url>
-        </repository>
-    </repositories>
+    <packaging>tabularasa</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>oo</groupId>
-            <artifactId>atom-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
@@ -32,7 +17,6 @@
         <dependency>
             <groupId>com.github.kimble</groupId>
             <artifactId>junit-test-factory</artifactId>
-            <version>4.12.6</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -42,56 +26,88 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-            </plugin>
-            <!--
-                @todo #52 instrumentation can't be enabled because it introduces cyclic dependency. 
-                 Need to find a way to resolve it
-            -->
-            <!--<plugin>
-                <groupId>net.bytebuddy</groupId>
-                <artifactId>byte-buddy-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
                 <executions>
                     <execution>
+                        <phase>clean</phase>
                         <goals>
-                            <goal>transform</goal>
-                            <goal>transform-test</goal>
+                            <goal>clean</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <skip>false</skip>
-                    <transformations>
-                        <transformation>
-                            <plugin>oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin</plugin>
-                        </transformation>
-                    </transformations>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>oo</groupId>
+                            <artifactId>atom-basis</artifactId>
+                            <version>${atom.version}</version>
+                        </artifactItem>
+                    </artifactItems>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>oo</groupId>
-                        <artifactId>atom-api</artifactId>
-                        <version>${atom.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>oo</groupId>
-                        <artifactId>atom-codegen</artifactId>
+                        <artifactId>atom-basis</artifactId>
                         <version>${atom.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>-->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <classesDirectory>${project.basedir}/target/dependency</classesDirectory>
+                    <includes>
+                        <include>oo/atom/tests/**</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
