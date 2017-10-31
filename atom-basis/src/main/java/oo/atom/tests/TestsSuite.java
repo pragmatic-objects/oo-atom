@@ -23,54 +23,70 @@
  */
 package oo.atom.tests;
 
-import java.util.Objects;
-import oo.atom.anno.Atom;
+import com.github.kimble.FactoryRunner;
+import io.vavr.collection.List;
+import org.junit.runner.RunWith;
+
 
 /**
- * A test case with a single assertion
+ * Private adapter for tests in test suite. For internal use only.
  * 
  * @author Kapralov Sergey
  */
-@Atom
-public class TestCase implements Test {
-    private final String description;
-    private final Assertion assertion;
+class TestInstance implements FactoryRunner.Test {
+    private final Test test;
 
     /**
      * Ctor.
      * 
-     * @param description The test's description
-     * @param assertion The test's assertion
+     * @param test A wrapped test
      */
-    public TestCase(String description, Assertion assertion) {
-        this.description = description;
-        this.assertion = assertion;
+    public TestInstance(Test test) {
+        this.test = test;
     }
 
     @Override
-    public final String description() {
-        return description;
+    public final void execute() throws Throwable {
+        test.execute();
+    }
+}
+
+/**
+ * A tests suite.
+ * 
+ * @author Kapralov Sergey
+ */
+@RunWith(FactoryRunner.class)
+public class TestsSuite implements FactoryRunner.Producer {
+    private final List<Test> tests;
+
+    /**
+     * Ctor.
+     * 
+     * @param tests Tests, which this test suite consists of.
+     */
+    public TestsSuite(Test... tests) {
+        this(
+            List.of(tests)
+        );
+    }
+
+    /**
+     * Ctor.
+     * 
+     * @param tests Tests, which this test suite consists of.
+     */
+    public TestsSuite(List<Test> tests) {
+        this.tests = tests;
     }
 
     @Override
-    public final void execute() throws Exception {
-        assertion.check();
-    }
-    
-    
-    @Override
-    public final boolean equals(Object obj) {
-        if(obj instanceof TestCase) {
-            TestCase _obj = (TestCase) obj;
-            return Objects.equals(_obj.description, this.description) &&
-                   Objects.equals(_obj.assertion, this.assertion);
-        } else {
-            return false;
+    public final void produceTests(FactoryRunner.TestConsumer tc) throws Throwable {
+        for (Test test : tests) {
+            tc.accept(
+                test.description(),
+                new TestInstance(test)
+            );
         }
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(assertion);
     }
 }
