@@ -23,8 +23,13 @@
  */
 package oo.atom.codegen.bytebuddy.matchers.atomspec;
 
+import io.vavr.collection.List;
+import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.description.method.MethodList;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
+
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
@@ -32,15 +37,37 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
  * @author Kapralov Sergey
  */
 public class HasNoStaticMethods implements ElementMatcher<TypeDescription> {
+    private static final Junction<MethodDescription> ENUM_METHODS_MATCHER;
+
+    static {
+        ENUM_METHODS_MATCHER = List.of(Enum.class.getMethods())
+            .map(MethodDescription.ForLoadedMethod::new)
+            .filter(isStatic()::matches)
+            .map(MethodDescription::asDefined)
+            .map(ElementMatchers::is)
+            .append(new Junction.Conjunction<>(
+                named("values"),
+                takesArguments(0)
+            ))
+            .append(new Junction.Conjunction<>(
+                named("valueOf"),
+                takesArguments(String.class)
+            ))
+            .reduce(Junction.Disjunction::new);
+    }
+
     @Override
     public final boolean matches(TypeDescription target) {
+        MethodList<MethodDescription.InDefinedShape> declaredMethods = target.getDeclaredMethods()
+            .filter(isStatic())
+            .filter(not(isSynthetic()))
+            .filter(not(nameStartsWith("lambda$")));
+
         if(target.isEnum()) {
-            return true;
+            declaredMethods = declaredMethods
+                .filter(not(ENUM_METHODS_MATCHER));
         }
-        
-        return target.getDeclaredMethods()
-                .filter(isStatic())
-                .filter(not(nameStartsWith("lambda")))
-                .isEmpty();
+
+        return declaredMethods.isEmpty();
     }
 }

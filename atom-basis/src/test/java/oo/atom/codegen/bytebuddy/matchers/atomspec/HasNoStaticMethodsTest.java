@@ -64,6 +64,13 @@ public class HasNoStaticMethodsTest extends TestsSuite {
                     new TypeDescription.ForLoadedType(Bar.class),
                     new HasNoStaticMethods()
                 )
+            ),
+            new TestCase(
+                "mismatch enumeration with at least one static method",
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Naz.class),
+                    new HasNoStaticMethods()
+                )
             )
         );
     }
@@ -86,7 +93,7 @@ public class HasNoStaticMethodsTest extends TestsSuite {
         }
     }
     
-    private static enum Faz {
+    private enum Faz {
         ONE(1), TWO(2), THREE(3);
         
         private final int origin;
@@ -97,6 +104,13 @@ public class HasNoStaticMethodsTest extends TestsSuite {
 
         public final int getOrigin() {
             return origin;
+        }
+    }
+
+    private enum Naz {
+        ONE, TWO, THREE;
+
+        public static final void staticMethod() {
         }
     }
 }
