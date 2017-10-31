@@ -33,17 +33,22 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <dependencies>
+        <dependency>
+            <groupId>oo</groupId>
+            <artifactId>atom-basis</artifactId>
+            <version>${atom.version}</version>
+            <classifier>api</classifier>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>oo</groupId>
-                <artifactId>atom-api</artifactId>
+                <artifactId>atom-basis</artifactId>
                 <version>${atom.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>oo</groupId>
-                <artifactId>atom-tests</artifactId>
-                <version>${atom.version}</version>
+                <classifier>tests</classifier>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -68,13 +73,15 @@
                     <dependencies>
                         <dependency>
                             <groupId>oo</groupId>
-                            <artifactId>atom-api</artifactId>
+                            <artifactId>atom-basis</artifactId>
                             <version>${atom.version}</version>
+                            <classifier>api</classifier>
                         </dependency>
                         <dependency>
                             <groupId>oo</groupId>
-                            <artifactId>atom-codegen</artifactId>
+                            <artifactId>atom-basis</artifactId>
                             <version>${atom.version}</version>
+                            <classifier>codegen</classifier>
                         </dependency>
                     </dependencies>
                 </plugin>

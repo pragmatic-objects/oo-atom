@@ -12,7 +12,8 @@
     <dependencies>
         <dependency>
             <groupId>oo</groupId>
-            <artifactId>atom-tests</artifactId>
+            <artifactId>atom-basis</artifactId>
+            <classifier>tests</classifier>
             <scope>provided</scope>
         </dependency>
     </dependencies>

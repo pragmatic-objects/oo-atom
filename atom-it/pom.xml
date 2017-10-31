@@ -22,13 +22,15 @@
     <dependencies>
         <dependency>
             <groupId>oo</groupId>
-            <artifactId>atom-api</artifactId>
-            <scope>provided</scope>
+            <artifactId>atom-basis</artifactId>
+            <version>${atom.version}</version>
+            <classifier>api</classifier>
         </dependency>
         <dependency>
             <groupId>oo</groupId>
-            <artifactId>atom-tests</artifactId>
-            <scope>provided</scope>
+            <artifactId>atom-basis</artifactId>
+            <version>${atom.version}</version>
+            <classifier>tests</classifier>
         </dependency>
         <dependency> 
             <groupId>io.vavr</groupId> 
@@ -65,13 +67,15 @@
                 <dependencies>
                     <dependency>
                         <groupId>oo</groupId>
-                        <artifactId>atom-api</artifactId>
+                        <artifactId>atom-basis</artifactId>
                         <version>${atom.version}</version>
+                        <classifier>api</classifier>
                     </dependency>
                     <dependency>
                         <groupId>oo</groupId>
-                        <artifactId>atom-codegen</artifactId>
+                        <artifactId>atom-basis</artifactId>
                         <version>${atom.version}</version>
+                        <classifier>codegen</classifier>
                     </dependency>
                 </dependencies>
             </plugin>
