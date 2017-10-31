@@ -50,12 +50,14 @@ OO-atom project is designed on the following principles:
 ```
     <dependency>
         <groupId>oo</groupId>
-        <artifactId>atom-api</artifactId>
+        <artifactId>atom-basis</artifactId>
+        <classifier>api</classifier>
         <scope>provided</scope>
     </dependency>
     <dependency>
         <groupId>oo</groupId>
-        <artifactId>atom-tests</artifactId>
+        <artifactId>atom-basis</artifactId>
+        <classifier>tests</classifier>
         <scope>provided</scope>
     </dependency>
 ```
