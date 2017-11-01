@@ -27,6 +27,8 @@ package oo.atom.r;
 import oo.atom.tests.*;
 
 /**
+ * Tests suite for {@link AssertAValueAfterTransition}
+ *
  * @author Kapralov Sergey
  */
 public class AssertAValueAfterTransitionTest extends TestsSuite {

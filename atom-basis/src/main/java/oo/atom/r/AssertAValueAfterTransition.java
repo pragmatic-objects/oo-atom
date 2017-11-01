@@ -30,6 +30,9 @@ import oo.atom.tests.Assertion;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * Asserts that {@link ResultTransition} transformes a value to {@link Result}
+ * with expected value
+ *
  * @author Kapralov Sergey
  */
 public class AssertAValueAfterTransition<T, X> implements Assertion {
@@ -37,6 +40,13 @@ public class AssertAValueAfterTransition<T, X> implements Assertion {
     private final ResultTransition<T, X> transition;
     private final X expectation;
 
+    /**
+     * Ctor.
+     *
+     * @param source source value
+     * @param transition transition under the test
+     * @param expectation expected value of the output {@link Result}
+     */
     public AssertAValueAfterTransition(final T source, final ResultTransition<T, X> transition, final X expectation) {
         this.source = source;
         this.transition = transition;
