@@ -21,29 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.r;
 
-import oo.atom.tests.TestCase;
-import oo.atom.tests.TestsSuite;
+import io.vavr.control.Try;
+import oo.atom.tests.Assertion;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests suite for {@link RtOverriden}
- * 
  * @author Kapralov Sergey
  */
-public class RtOverridenTest extends TestsSuite {
-    public RtOverridenTest() {
-        super(
-            new TestCase(
-                "overrides a value to the other value",
-                new AssertAValueAfterTransition<>(
-                    0,
-                    new RtOverriden<>(
-                        new RSuccess<>(42)
-                    ),
-                    42
-                )
-            )
-        );
+public class AssertAValueAfterTransition<T, X> implements Assertion {
+    private final T source;
+    private final ResultTransition<T, X> transition;
+    private final X expectation;
+
+    public AssertAValueAfterTransition(final T source, final ResultTransition<T, X> transition, final X expectation) {
+        this.source = source;
+        this.transition = transition;
+        this.expectation = expectation;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        final Result<X> xResult = transition.transitionResult(source);
+        assertThat(xResult.value()).isEqualTo(Try.success(expectation));
     }
 }

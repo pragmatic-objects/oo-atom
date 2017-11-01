@@ -21,27 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.r;
 
-import oo.atom.tests.TestCase;
-import oo.atom.tests.TestsSuite;
+import oo.atom.tests.*;
 
 /**
- * Tests suite for {@link RtOverriden}
- * 
  * @author Kapralov Sergey
  */
-public class RtOverridenTest extends TestsSuite {
-    public RtOverridenTest() {
+public class AssertAValueAfterTransitionTest extends TestsSuite {
+    public AssertAValueAfterTransitionTest() {
         super(
             new TestCase(
-                "overrides a value to the other value",
-                new AssertAValueAfterTransition<>(
-                    0,
-                    new RtOverriden<>(
-                        new RSuccess<>(42)
-                    ),
-                    42
+                "passes when expectation is met",
+                new AssertAssertionPasses(
+                    new AssertAValueAfterTransition<>(
+                        0,
+                        new RtOverriden<>(
+                            new RSuccess<>(42)
+                        ),
+                        42
+                    )
+                )
+            ),
+            new TestCase(
+                "fails when expectation is not met",
+                new AssertAssertionFails(
+                    new AssertAValueAfterTransition<>(
+                        0,
+                        new RtOverriden<>(
+                            new RSuccess<>(42)
+                        ),
+                        24
+                    )
                 )
             )
         );
