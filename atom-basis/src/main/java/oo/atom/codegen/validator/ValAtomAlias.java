@@ -27,10 +27,15 @@ import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoFields;
 import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoMethods;
 
 /**
+ * A validator which validates that certain {@link net.bytebuddy.description.type.TypeDescription} is
+ * the atom alias.
  *
  * @author Kapralov Sergey
  */
 public class ValAtomAlias extends ValComplex {
+    /**
+     * Ctor.
+     */
     public ValAtomAlias() {
         super(
             new ValSingle(

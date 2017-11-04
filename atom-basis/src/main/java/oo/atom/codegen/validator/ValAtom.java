@@ -29,10 +29,15 @@ import oo.atom.codegen.bytebuddy.matchers.atomspec.HasNoStaticMethods;
 import oo.atom.codegen.bytebuddy.matchers.atomspec.IsNotAbstract;
 
 /**
+ * A validator which validates that certain {@link net.bytebuddy.description.type.TypeDescription} is
+ * the atom.
  *
  * @author Kapralov Sergey
  */
 public class ValAtom extends ValComplex {
+    /**
+     * Ctor.
+     */
     public ValAtom() {
         super(
             new ValSingle(new AllFieldsArePrivateFinal(), "All Atom's fields must be private final"),

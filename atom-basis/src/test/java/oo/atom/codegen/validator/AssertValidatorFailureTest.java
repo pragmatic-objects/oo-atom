@@ -21,39 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.codegen.validator;
 
-import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.r.RtCombined;
+import oo.atom.tests.AssertAssertionFails;
+import oo.atom.tests.AssertAssertionPasses;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
- * A combined validator. Passes if all {@link Validator} instances are passed, combines
- * issues from all {@link Validator} instances if at least one of them failed.
+ * Tests suite for {@link AssertValidatorFailure}
  *
  * @author Kapralov Sergey
  */
-public class ValComplex extends RtCombined<TypeDescription, TypeDescription> implements Validator {
-    /**
-     * Ctor.
-     *
-     * @param validators a list of validators to combine
-     */
-    public ValComplex(List<Validator> validators) {
+public class AssertValidatorFailureTest extends TestsSuite {
+    public AssertValidatorFailureTest() {
         super(
-            List.narrow(validators),
-            (r1, r2) -> r1
-        );
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param validators a list of validators to combine
-     */
-    public ValComplex(Validator... validators) {
-        this(
-            List.of(validators)
+            new TestCase(
+                "passes when validator fails",
+                new AssertAssertionPasses(
+                    new AssertValidatorFailure(
+                        new ValFail("Just as planned"),
+                        new TypeDescription.ForLoadedType(Object.class),
+                        "Just as planned"
+                    )
+                )
+            ),
+            new TestCase(
+                "fails when validator passes",
+                new AssertAssertionFails(
+                    new AssertValidatorFailure(
+                        new ValSuccess(),
+                        new TypeDescription.ForLoadedType(Object.class),
+                        "Expected failure"
+                    )
+                )
+            )
         );
     }
 }

@@ -21,39 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.codegen.validator;
 
-import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.r.RtCombined;
+import oo.atom.r.AssertResultHoldsExpectedValue;
+import oo.atom.tests.AssertInferred;
+import oo.atom.tests.Assertion;
 
 /**
- * A combined validator. Passes if all {@link Validator} instances are passed, combines
- * issues from all {@link Validator} instances if at least one of them failed.
+ * Asserts that validator succeeds on certain {@link TypeDescription}
  *
  * @author Kapralov Sergey
  */
-public class ValComplex extends RtCombined<TypeDescription, TypeDescription> implements Validator {
+public class AssertValidatorSuccess extends AssertInferred {
     /**
      * Ctor.
      *
-     * @param validators a list of validators to combine
+     * @param validator The validator under the test.
+     * @param type Type to validate.
      */
-    public ValComplex(List<Validator> validators) {
+    public AssertValidatorSuccess(final Validator validator, final TypeDescription type) {
         super(
-            List.narrow(validators),
-            (r1, r2) -> r1
+            new AssertValidatorSuccessInference(
+                validator,
+                type
+            )
         );
     }
+}
+
+class AssertValidatorSuccessInference implements Assertion.Inference {
+    private final Validator validator;
+    private final TypeDescription type;
 
     /**
      * Ctor.
      *
-     * @param validators a list of validators to combine
+     * @param validator The validator under the test.
+     * @param type Type to validate.
      */
-    public ValComplex(Validator... validators) {
-        this(
-            List.of(validators)
+    public AssertValidatorSuccessInference(final Validator validator, final TypeDescription type) {
+        this.validator = validator;
+        this.type = type;
+    }
+
+    @Override
+    public final Assertion assertion() {
+        return new AssertResultHoldsExpectedValue<>(
+            validator.transitionResult(type),
+            type
         );
     }
 }

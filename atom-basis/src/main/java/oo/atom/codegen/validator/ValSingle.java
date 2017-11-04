@@ -30,11 +30,21 @@ import oo.atom.r.RSuccess;
 import oo.atom.r.ResultTransition;
 import oo.atom.r.RtInferred;
 
-
+/**
+ * {@link ValSingle} inference
+ *
+ * @author Kapralov Sergey
+ */
 class ValSingleInference implements ResultTransition.Inference<TypeDescription, TypeDescription> {
     private final ElementMatcher<TypeDescription> matcher;
     private final String errorMessage;
 
+    /**
+     * Ctor.
+     *
+     * @param matcher a validating matcher
+     * @param errorMessage error message if validation is failed
+     */
     public ValSingleInference(ElementMatcher<TypeDescription> matcher, String errorMessage) {
         this.matcher = matcher;
         this.errorMessage = errorMessage;
@@ -53,10 +63,17 @@ class ValSingleInference implements ResultTransition.Inference<TypeDescription, 
 }
 
 /**
+ * A single-matcher validation
  *
  * @author Kapralov Sergey
  */
 public class ValSingle extends RtInferred<TypeDescription, TypeDescription> implements Validator {
+    /**
+     * Ctor.
+     *
+     * @param matcher a validating matcher
+     * @param errorMessage error message if validation is failed
+     */
     public ValSingle(ElementMatcher<TypeDescription> matcher, String errorMessage) {
         super(
             new ValSingleInference(matcher, errorMessage)

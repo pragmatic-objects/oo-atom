@@ -28,6 +28,7 @@ import oo.atom.r.RFailure;
 import oo.atom.r.Result;
 
 /**
+ * A validator, which always fails
  *
  * @author Kapralov Sergey
  */
