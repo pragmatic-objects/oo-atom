@@ -21,36 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+
+package oo.atom.codegen.bytebuddy.cfls;
 
 import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
+import java.nio.file.Path;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class TaskPlugin implements Plugin {
-    private final BuilderTransition bt;
 
-    public TaskPlugin(BuilderTransition bt) {
-        this.bt = bt;
+class CflsFromPathsInference implements ClassFileLocatorSource.Inference {
+    private final List<Path> paths;
+
+    public CflsFromPathsInference(final List<Path> paths) {
+        this.paths = paths;
     }
 
     @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        System.out.println("Transforming type: " + typeDescription.getName());
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.value().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+    public final ClassFileLocatorSource classFileLocatorSource() {
+        return paths
+            .<ClassFileLocatorSource>map(CflsFromPath::new)
+            .transform(CflsCompound::new);
+    }
+}
+
+public class CflsFromPaths extends CflsInferred implements ClassFileLocatorSource {
+    public CflsFromPaths(final List<Path> paths) {
+        super(
+            new CflsFromPathsInference(
+                paths
+            )
+        );
     }
 }

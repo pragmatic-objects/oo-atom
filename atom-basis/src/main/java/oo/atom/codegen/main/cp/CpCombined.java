@@ -21,36 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+
+package oo.atom.codegen.main.cp;
+
 
 import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class TaskPlugin implements Plugin {
-    private final BuilderTransition bt;
+import java.nio.file.Path;
 
-    public TaskPlugin(BuilderTransition bt) {
-        this.bt = bt;
+public class CpCombined implements ClassPath {
+    private final List<ClassPath> classPaths;
+
+    public CpCombined(final List<ClassPath> classPaths) {
+        this.classPaths = classPaths;
+    }
+
+    public CpCombined(final ClassPath... classPaths) {
+        this(
+            List.of(classPaths)
+        );
     }
 
     @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        System.out.println("Transforming type: " + typeDescription.getName());
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.value().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+    public final List<Path> paths() {
+        return classPaths.flatMap(ClassPath::paths);
     }
 }

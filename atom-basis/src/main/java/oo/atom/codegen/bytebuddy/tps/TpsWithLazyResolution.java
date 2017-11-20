@@ -21,36 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
 
-import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
+package oo.atom.codegen.bytebuddy.tps;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class TaskPlugin implements Plugin {
-    private final BuilderTransition bt;
+import net.bytebuddy.dynamic.ClassFileLocator;
+import net.bytebuddy.pool.TypePool;
 
-    public TaskPlugin(BuilderTransition bt) {
-        this.bt = bt;
+public class TpsWithLazyResolution implements TypePoolSource {
+    private final ClassFileLocator cfl;
+    private final TypePool delegate;
+
+    public TpsWithLazyResolution(final ClassFileLocator cfl, final TypePool delegate) {
+        this.cfl = cfl;
+        this.delegate = delegate;
     }
 
     @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        System.out.println("Transforming type: " + typeDescription.getName());
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.value().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+    public final TypePool typePool() {
+        return new TypePool.Default.WithLazyResolution(
+            new TypePool.CacheProvider.Simple(),
+            cfl,
+            TypePool.Default.ReaderMode.FAST,
+            delegate
+        );
     }
 }
