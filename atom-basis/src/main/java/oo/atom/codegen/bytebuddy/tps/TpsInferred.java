@@ -26,9 +26,19 @@ package oo.atom.codegen.bytebuddy.tps;
 
 import net.bytebuddy.pool.TypePool;
 
+/**
+ * Inferred {@link TypePoolSource}
+ *
+ * @author Kapralov Sergey
+ */
 public class TpsInferred implements TypePoolSource {
     private final Inference inference;
 
+    /**
+     * Ctor
+     *
+     * @param inference {@link TypePoolSource} inference.
+     */
     public TpsInferred(final Inference inference) {
         this.inference = inference;
     }

@@ -26,6 +26,11 @@ package oo.atom.codegen.bytebuddy.cfls;
 
 import net.bytebuddy.dynamic.ClassFileLocator;
 
+/**
+ * Instance, that wraps the procedure of obtaining {@link ClassFileLocator}
+ *
+ * @author Kapralov Sergey
+ */
 public interface ClassFileLocatorSource {
     interface Inference {
         ClassFileLocatorSource classFileLocatorSource();

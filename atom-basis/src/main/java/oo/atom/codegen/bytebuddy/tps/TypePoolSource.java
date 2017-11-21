@@ -26,6 +26,11 @@ package oo.atom.codegen.bytebuddy.tps;
 
 import net.bytebuddy.pool.TypePool;
 
+/**
+ * Encapsulates the procedure of obtaining {@link TypePool}
+ *
+ * @author Kapralov Sergey
+ */
 public interface TypePoolSource {
     interface Inference {
         TypePoolSource typePoolSource();

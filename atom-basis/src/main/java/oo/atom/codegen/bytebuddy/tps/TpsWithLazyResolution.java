@@ -27,10 +27,21 @@ package oo.atom.codegen.bytebuddy.tps;
 import net.bytebuddy.dynamic.ClassFileLocator;
 import net.bytebuddy.pool.TypePool;
 
+/**
+ * A source for {@link TypePool} with lazy resolution
+ *
+ * @author Kapralov Sergey
+ */
 public class TpsWithLazyResolution implements TypePoolSource {
     private final ClassFileLocator cfl;
     private final TypePool delegate;
 
+    /**
+     * Ctor.
+     *
+     * @param cfl Class file locator.
+     * @param delegate Delegating type pool.
+     */
     public TpsWithLazyResolution(final ClassFileLocator cfl, final TypePool delegate) {
         this.cfl = cfl;
         this.delegate = delegate;

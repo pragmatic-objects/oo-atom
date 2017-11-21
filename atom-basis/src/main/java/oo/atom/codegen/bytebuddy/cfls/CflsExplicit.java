@@ -26,6 +26,11 @@ package oo.atom.codegen.bytebuddy.cfls;
 
 import net.bytebuddy.dynamic.ClassFileLocator;
 
+/**
+ * Provides explicit {@link ClassFileLocator}
+ *
+ * @author Kapralov Sergey
+ */
 public class CflsExplicit implements ClassFileLocatorSource {
     private final ClassFileLocator cfl;
 

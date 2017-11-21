@@ -24,11 +24,22 @@
 
 package oo.atom.codegen.bytebuddy.tps;
 
+import net.bytebuddy.dynamic.ClassFileLocator;
 import net.bytebuddy.pool.TypePool;
 
+/**
+ * A source for {@link TypePool}, backed by specified {@link ClassLoader}
+ *
+ * @author Kapralov Sergey
+ */
 public class TpsFromClassLoader implements TypePoolSource {
     private final ClassLoader classLoader;
 
+    /**
+     * Ctor.
+     *
+     * @param classLoader Class loader.
+     */
     public TpsFromClassLoader(final ClassLoader classLoader) {
         this.classLoader = classLoader;
     }

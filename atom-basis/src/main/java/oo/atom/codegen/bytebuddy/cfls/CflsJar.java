@@ -28,9 +28,19 @@ import net.bytebuddy.dynamic.ClassFileLocator;
 
 import java.nio.file.Path;
 
+/**
+ * Source of {@link ClassFileLocator}, made from provided JAR file
+ *
+ * @author Kapralov Sergey
+ */
 public class CflsJar implements ClassFileLocatorSource {
     private final Path path;
 
+    /**
+     * Ctor.
+     *
+     * @param path A path to JAR file.
+     */
     public CflsJar(final Path path) {
         this.path = path;
     }

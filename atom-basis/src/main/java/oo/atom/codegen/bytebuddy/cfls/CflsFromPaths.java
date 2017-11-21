@@ -27,7 +27,11 @@ package oo.atom.codegen.bytebuddy.cfls;
 import io.vavr.collection.List;
 import java.nio.file.Path;
 
-
+/**
+ * {@link CflsFromPaths} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class CflsFromPathsInference implements ClassFileLocatorSource.Inference {
     private final List<Path> paths;
 
@@ -43,6 +47,11 @@ class CflsFromPathsInference implements ClassFileLocatorSource.Inference {
     }
 }
 
+/**
+ * Source from {@link net.bytebuddy.dynamic.ClassFileLocator}, made from provided paths.
+ *
+ * @author Kapralov Sergey
+ */
 public class CflsFromPaths extends CflsInferred implements ClassFileLocatorSource {
     public CflsFromPaths(final List<Path> paths) {
         super(
