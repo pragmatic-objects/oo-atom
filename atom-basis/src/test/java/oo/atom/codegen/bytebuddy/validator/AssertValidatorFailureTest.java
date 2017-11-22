@@ -21,45 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.validator;
+
+package oo.atom.codegen.bytebuddy.validator;
 
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.r.RFailure;
-import oo.atom.r.RSuccess;
-import oo.atom.r.ResultTransition;
-import oo.atom.r.RtInferred;
-
-
-class ValSingleInference implements ResultTransition.Inference<TypeDescription, TypeDescription> {
-    private final ElementMatcher<TypeDescription> matcher;
-    private final String errorMessage;
-
-    public ValSingleInference(ElementMatcher<TypeDescription> matcher, String errorMessage) {
-        this.matcher = matcher;
-        this.errorMessage = errorMessage;
-    }
-
-    @Override
-    public final ResultTransition<TypeDescription, TypeDescription> taskResultTransition() {
-        return (type) -> {
-            if(matcher.matches(type)) {
-                return new RSuccess<>(type);
-            } else {
-                return new RFailure<>(errorMessage);
-            }
-        };
-    }
-}
+import oo.atom.tests.AssertAssertionFails;
+import oo.atom.tests.AssertAssertionPasses;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
 /**
+ * Tests suite for {@link AssertValidatorFailure}
  *
  * @author Kapralov Sergey
  */
-public class ValSingle extends RtInferred<TypeDescription, TypeDescription> implements Validator {
-    public ValSingle(ElementMatcher<TypeDescription> matcher, String errorMessage) {
+public class AssertValidatorFailureTest extends TestsSuite {
+    public AssertValidatorFailureTest() {
         super(
-            new ValSingleInference(matcher, errorMessage)
+            new TestCase(
+                "passes when validator fails",
+                new AssertAssertionPasses(
+                    new AssertValidatorFailure(
+                        new ValFail("Just as planned"),
+                        new TypeDescription.ForLoadedType(Object.class),
+                        "Just as planned"
+                    )
+                )
+            ),
+            new TestCase(
+                "fails when validator passes",
+                new AssertAssertionFails(
+                    new AssertValidatorFailure(
+                        new ValSuccess(),
+                        new TypeDescription.ForLoadedType(Object.class),
+                        "Expected failure"
+                    )
+                )
+            )
         );
     }
 }

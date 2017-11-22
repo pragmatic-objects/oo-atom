@@ -21,36 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
 
-import io.vavr.collection.List;
+package oo.atom.codegen.bytebuddy.validator;
+
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.codegen.bytebuddy.validator.Validator;
-import oo.atom.r.RFailure;
-import oo.atom.r.Result;
+import oo.atom.r.AssertResultHoldsExpectedValue;
+import oo.atom.tests.AssertInferred;
+import oo.atom.tests.Assertion;
 
 /**
+ * Asserts that validator succeeds on certain {@link TypeDescription}
  *
  * @author Kapralov Sergey
  */
-public class BtValidated implements BuilderTransition {
-    private final Validator validator;
-    private final BuilderTransition delegate;
+public class AssertValidatorSuccess extends AssertInferred {
+    /**
+     * Ctor.
+     *
+     * @param validator The validator under the test.
+     * @param type Type to validate.
+     */
+    public AssertValidatorSuccess(final Validator validator, final TypeDescription type) {
+        super(
+            new AssertValidatorSuccessInference(
+                validator,
+                type
+            )
+        );
+    }
+}
 
-    public BtValidated(Validator validator, BuilderTransition delegate) {
+class AssertValidatorSuccessInference implements Assertion.Inference {
+    private final Validator validator;
+    private final TypeDescription type;
+
+    /**
+     * Ctor.
+     *
+     * @param validator The validator under the test.
+     * @param type Type to validate.
+     */
+    public AssertValidatorSuccessInference(final Validator validator, final TypeDescription type) {
         this.validator = validator;
-        this.delegate = delegate;
+        this.type = type;
     }
 
     @Override
-    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
-        final Result<TypeDescription> validateResult = validator.transitionResult(typeDescription);
-        final List<String> issues = validateResult.issues();
-        if(issues.isEmpty()) {
-            return delegate.transitionResult(source, typeDescription);
-        } else {
-            return new RFailure<>(issues);
-        }
+    public final Assertion assertion() {
+        return new AssertResultHoldsExpectedValue<>(
+            validator.transitionResult(type),
+            type
+        );
     }
 }

@@ -21,4 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.validator;
+
+package oo.atom.codegen.bytebuddy.validator;
+
+import oo.atom.tests.TestsSuite;
+
+/**
+ * Tests suite for {@link ValComplex}
+ *
+ * @author Kapralov Sergey
+ * @todo #8:15m Improve test coverage and mutation coverage for {@link ValComplex}
+ */
+public class ValComplexTest extends TestsSuite {
+    public ValComplexTest() {
+        super();
+    }
+}

@@ -21,36 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.codegen.bytebuddy.validator;
 
-import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.codegen.bytebuddy.validator.Validator;
-import oo.atom.r.RFailure;
-import oo.atom.r.Result;
+import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoFields;
+import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoMethods;
 
 /**
+ * A validator which validates that certain {@link net.bytebuddy.description.type.TypeDescription} is
+ * the atom alias.
  *
  * @author Kapralov Sergey
  */
-public class BtValidated implements BuilderTransition {
-    private final Validator validator;
-    private final BuilderTransition delegate;
-
-    public BtValidated(Validator validator, BuilderTransition delegate) {
-        this.validator = validator;
-        this.delegate = delegate;
-    }
-
-    @Override
-    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
-        final Result<TypeDescription> validateResult = validator.transitionResult(typeDescription);
-        final List<String> issues = validateResult.issues();
-        if(issues.isEmpty()) {
-            return delegate.transitionResult(source, typeDescription);
-        } else {
-            return new RFailure<>(issues);
-        }
+public class ValAtomAlias extends ValComplex {
+    /**
+     * Ctor.
+     */
+    public ValAtomAlias() {
+        super(
+            new ValSingle(
+                new NoFields(), "Atom alias contains new fields, while it shouldn't"
+            ),
+            new ValSingle(
+                new NoMethods(), "Atom alias contains new declared methods, while it shouldn't"
+            )
+        );
     }
 }

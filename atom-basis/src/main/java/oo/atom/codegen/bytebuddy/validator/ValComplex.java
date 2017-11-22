@@ -21,24 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.validator;
+package oo.atom.codegen.bytebuddy.validator;
 
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.r.RtCombined;
 
 /**
+ * A combined validator. Passes if all {@link Validator} instances are passed, combines
+ * issues from all {@link Validator} instances if at least one of them failed.
  *
  * @author Kapralov Sergey
  */
 public class ValComplex extends RtCombined<TypeDescription, TypeDescription> implements Validator {
+    /**
+     * Ctor.
+     *
+     * @param validators a list of validators to combine
+     */
     public ValComplex(List<Validator> validators) {
         super(
             List.narrow(validators),
             (r1, r2) -> r1
         );
     }
-    
+
+    /**
+     * Ctor.
+     *
+     * @param validators a list of validators to combine
+     */
     public ValComplex(Validator... validators) {
         this(
             List.of(validators)

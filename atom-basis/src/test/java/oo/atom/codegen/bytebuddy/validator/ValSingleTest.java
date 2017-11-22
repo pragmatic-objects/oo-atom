@@ -21,25 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.validator;
 
-import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.r.RFailure;
-import oo.atom.r.Result;
+package oo.atom.codegen.bytebuddy.validator;
+
+import oo.atom.tests.TestsSuite;
 
 /**
+ * Tests suite for {@link ValSingle}
  *
  * @author Kapralov Sergey
+ * @todo #8:15m Improve test coverage and mutation coverage for {@link ValSingle}
  */
-public class ValFail implements Validator {
-    private final String issue;
-
-    public ValFail(String issue) {
-        this.issue = issue;
-    }
-
-    @Override
-    public final Result<TypeDescription> transitionResult(TypeDescription source) {
-        return new RFailure<>(issue);
+public class ValSingleTest extends TestsSuite {
+    public ValSingleTest() {
+        super();
     }
 }

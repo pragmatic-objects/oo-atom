@@ -23,7 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
-import oo.atom.codegen.validator.ValAtomAlias;
+import oo.atom.codegen.bytebuddy.validator.ValAtomAlias;
 
 /**
  *

@@ -21,24 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.validator;
+package oo.atom.codegen.bytebuddy.validator;
 
-import oo.atom.codegen.bytebuddy.matchers.atomspec.AllFieldsArePrivateFinal;
-import oo.atom.codegen.bytebuddy.matchers.atomspec.AllMethodsAreFinal;
-import oo.atom.codegen.bytebuddy.matchers.atomspec.HasNoStaticMethods;
-import oo.atom.codegen.bytebuddy.matchers.atomspec.IsNotAbstract;
+import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.r.RFailure;
+import oo.atom.r.Result;
 
 /**
+ * A validator, which always fails
  *
  * @author Kapralov Sergey
  */
-public class ValAtom extends ValComplex {
-    public ValAtom() {
-        super(
-            new ValSingle(new AllFieldsArePrivateFinal(), "All Atom's fields must be private final"),
-            new ValSingle(new AllMethodsAreFinal(), "All Atom's methods must be private final"),
-            new ValSingle(new HasNoStaticMethods(), "Atom shouldn't have static methods"),
-            new ValSingle(new IsNotAbstract(), "Atoms can't be abstract")
-        );
+public class ValFail implements Validator {
+    private final String issue;
+
+    public ValFail(String issue) {
+        this.issue = issue;
+    }
+
+    @Override
+    public final Result<TypeDescription> transitionResult(TypeDescription source) {
+        return new RFailure<>(issue);
     }
 }

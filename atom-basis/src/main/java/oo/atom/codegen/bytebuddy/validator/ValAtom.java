@@ -21,36 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.codegen.bytebuddy.validator;
 
-import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.codegen.bytebuddy.validator.Validator;
-import oo.atom.r.RFailure;
-import oo.atom.r.Result;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.AllFieldsArePrivateFinal;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.AllMethodsAreFinal;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.HasNoStaticMethods;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.IsNotAbstract;
 
 /**
+ * A validator which validates that certain {@link net.bytebuddy.description.type.TypeDescription} is
+ * the atom.
  *
  * @author Kapralov Sergey
  */
-public class BtValidated implements BuilderTransition {
-    private final Validator validator;
-    private final BuilderTransition delegate;
-
-    public BtValidated(Validator validator, BuilderTransition delegate) {
-        this.validator = validator;
-        this.delegate = delegate;
-    }
-
-    @Override
-    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
-        final Result<TypeDescription> validateResult = validator.transitionResult(typeDescription);
-        final List<String> issues = validateResult.issues();
-        if(issues.isEmpty()) {
-            return delegate.transitionResult(source, typeDescription);
-        } else {
-            return new RFailure<>(issues);
-        }
+public class ValAtom extends ValComplex {
+    /**
+     * Ctor.
+     */
+    public ValAtom() {
+        super(
+            new ValSingle(new AllFieldsArePrivateFinal(), "All Atom's fields must be private final"),
+            new ValSingle(new AllMethodsAreFinal(), "All Atom's methods must be private final"),
+            new ValSingle(new HasNoStaticMethods(), "Atom shouldn't have static methods"),
+            new ValSingle(new IsNotAbstract(), "Atoms can't be abstract")
+        );
     }
 }
