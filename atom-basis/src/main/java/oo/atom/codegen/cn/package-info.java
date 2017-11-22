@@ -22,10 +22,4 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.main.cn;
-
-import io.vavr.collection.List;
-
-public interface ClassNames {
-    List<String> classNames();
-}
+package oo.atom.codegen.cn;

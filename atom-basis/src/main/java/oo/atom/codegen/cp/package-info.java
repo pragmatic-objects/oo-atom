@@ -22,4 +22,4 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.main.bytebuddy.cfls;
+package oo.atom.codegen.cp;

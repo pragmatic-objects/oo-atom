@@ -24,7 +24,6 @@
 
 package oo.atom.codegen.bytebuddy.tps;
 
-import net.bytebuddy.dynamic.ClassFileLocator;
 import net.bytebuddy.pool.TypePool;
 
 /**

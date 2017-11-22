@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.main;
+package oo.atom.codegen.bytebuddy;
 
 import io.vavr.control.Option;
 import net.bytebuddy.ByteBuddy;
@@ -35,22 +35,30 @@ import oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin;
 import oo.atom.codegen.bytebuddy.plugin.Plugin;
 import oo.atom.codegen.bytebuddy.tps.TpsFromClassLoader;
 import oo.atom.codegen.bytebuddy.tps.TpsWithLazyResolution;
-import oo.atom.codegen.main.bytebuddy.cfls.CflsFromClassPath;
-import oo.atom.codegen.main.cn.ClassNames;
-import oo.atom.codegen.main.cn.CnFromPath;
-import oo.atom.codegen.main.cp.CpCombined;
-import oo.atom.codegen.main.cp.CpExplicit;
-import oo.atom.codegen.main.cp.CpFromString;
+import oo.atom.codegen.bytebuddy.cfls.CflsFromClassPath;
+import oo.atom.codegen.cn.ClassNames;
+import oo.atom.codegen.cn.CnFromPath;
+import oo.atom.codegen.cp.CpCombined;
+import oo.atom.codegen.cp.CpExplicit;
+import oo.atom.codegen.cp.CpFromString;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * ByteBuddy instrumentation entry point.
+ *
+ * @author Kapralov Sergey
+ */
 @NotAtom
 public final class Main {
+    /**
+     * Main entry point
+     *
+     * @param args Arguments
+     * @throws Exception If something goes wrong.
+     */
     public static void main(String... args) throws Exception {
-        System.out.println(System.getProperty("java.class.path"));
-
-
         final Path workingDirectory = Option.of(System.getProperty("user.dir"))
             .map(Paths::get)
             .getOrElseThrow(RuntimeException::new);

@@ -22,31 +22,28 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.main.cn;
+package oo.atom.codegen.cp;
+
 
 import io.vavr.collection.List;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class CnFromPath implements ClassNames {
-    private final Path path;
+public class CpCombined implements ClassPath {
+    private final List<ClassPath> classPaths;
 
-    public CnFromPath(final Path path) {
-        this.path = path;
+    public CpCombined(final List<ClassPath> classPaths) {
+        this.classPaths = classPaths;
+    }
+
+    public CpCombined(final ClassPath... classPaths) {
+        this(
+            List.of(classPaths)
+        );
     }
 
     @Override
-    public final List<String> classNames() {
-        try {
-            final List<String> classes = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))
-                .map(path::relativize)
-                .map(Object::toString)
-                .map(s -> s.replace(".class", "").replace("/", "."))
-                .collect(List.collector());
-            return classes;
-        } catch(Exception ex) {
-            throw new RuntimeException(ex);
-        }
+    public final List<Path> paths() {
+        return classPaths.flatMap(ClassPath::paths);
     }
 }

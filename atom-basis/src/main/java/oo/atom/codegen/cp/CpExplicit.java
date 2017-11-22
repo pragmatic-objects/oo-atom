@@ -22,12 +22,21 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.main.cp;
+package oo.atom.codegen.cp;
 
 import io.vavr.collection.List;
 
 import java.nio.file.Path;
 
-public interface ClassPath {
-    List<Path> paths();
+public class CpExplicit implements ClassPath {
+    private final Path path;
+
+    public CpExplicit(final Path path) {
+        this.path = path;
+    }
+
+    @Override
+    public final List<Path> paths() {
+        return List.of(path);
+    }
 }

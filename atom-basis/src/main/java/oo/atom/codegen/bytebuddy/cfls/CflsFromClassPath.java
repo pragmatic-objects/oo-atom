@@ -22,28 +22,31 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.main.cp;
+package oo.atom.codegen.bytebuddy.cfls;
 
+import oo.atom.codegen.cp.ClassPath;
 
-import io.vavr.collection.List;
+class CflsFromClassPathInference implements ClassFileLocatorSource.Inference {
+    private final ClassPath classPath;
 
-import java.nio.file.Path;
-
-public class CpCombined implements ClassPath {
-    private final List<ClassPath> classPaths;
-
-    public CpCombined(final List<ClassPath> classPaths) {
-        this.classPaths = classPaths;
-    }
-
-    public CpCombined(final ClassPath... classPaths) {
-        this(
-            List.of(classPaths)
-        );
+    public CflsFromClassPathInference(final ClassPath classPath) {
+        this.classPath = classPath;
     }
 
     @Override
-    public final List<Path> paths() {
-        return classPaths.flatMap(ClassPath::paths);
+    public final ClassFileLocatorSource classFileLocatorSource() {
+        return new CflsFromPaths(
+            classPath.paths()
+        );
+    }
+}
+
+public class CflsFromClassPath extends CflsInferred implements ClassFileLocatorSource {
+    public CflsFromClassPath(final ClassPath cp) {
+        super(
+            new CflsFromClassPathInference(
+                cp
+            )
+        );
     }
 }

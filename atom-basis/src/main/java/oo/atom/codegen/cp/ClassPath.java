@@ -22,26 +22,12 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.main.cp;
+package oo.atom.codegen.cp;
 
 import io.vavr.collection.List;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
 
-public class CpFromString implements ClassPath {
-    private final String string;
-
-    public CpFromString(final String string) {
-        this.string = string;
-    }
-
-    @Override
-    public final List<Path> paths() {
-        return List
-            .of(string.split(":"))
-            .filter(Objects::nonNull)
-            .map(Paths::get);
-    }
+public interface ClassPath {
+    List<Path> paths();
 }
