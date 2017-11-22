@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.validator;
+package oo.atom.codegen.bytebuddy.validator;
 
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;

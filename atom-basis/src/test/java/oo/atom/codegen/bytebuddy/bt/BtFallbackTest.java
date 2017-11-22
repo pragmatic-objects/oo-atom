@@ -28,7 +28,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import oo.atom.codegen.validator.ValFail;
+import oo.atom.codegen.bytebuddy.validator.ValFail;
 import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
 

@@ -21,29 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.validator;
 
-import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoFields;
-import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoMethods;
+package oo.atom.codegen.bytebuddy.validator;
+
+import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.r.RSuccess;
+import oo.atom.r.Result;
 
 /**
- * A validator which validates that certain {@link net.bytebuddy.description.type.TypeDescription} is
- * the atom alias.
+ * Validator which always succeeds
  *
  * @author Kapralov Sergey
  */
-public class ValAtomAlias extends ValComplex {
+public class ValSuccess implements Validator {
     /**
      * Ctor.
      */
-    public ValAtomAlias() {
-        super(
-            new ValSingle(
-                new NoFields(), "Atom alias contains new fields, while it shouldn't"
-            ),
-            new ValSingle(
-                new NoMethods(), "Atom alias contains new declared methods, while it shouldn't"
-            )
+    public ValSuccess() {
+    }
+
+    @Override
+    public final Result<TypeDescription> transitionResult(final TypeDescription source) {
+        return new RSuccess<>(
+            source
         );
     }
 }

@@ -26,7 +26,7 @@ package oo.atom.codegen.bytebuddy.bt;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import oo.atom.codegen.validator.Validator;
+import oo.atom.codegen.bytebuddy.validator.Validator;
 import oo.atom.r.RFailure;
 import oo.atom.r.Result;
 

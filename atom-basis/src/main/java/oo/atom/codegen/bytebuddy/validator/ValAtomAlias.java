@@ -21,20 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package oo.atom.codegen.bytebuddy.validator;
 
-package oo.atom.codegen.validator;
-
-import oo.atom.r.RBind;
-import oo.atom.tests.TestsSuite;
+import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoFields;
+import oo.atom.codegen.bytebuddy.matchers.aliasspec.NoMethods;
 
 /**
- * Tests suite for {@link ValComplex}
+ * A validator which validates that certain {@link net.bytebuddy.description.type.TypeDescription} is
+ * the atom alias.
  *
  * @author Kapralov Sergey
- * @todo #8:15m Improve test coverage and mutation coverage for {@link ValComplex}
  */
-public class ValComplexTest extends TestsSuite {
-    public ValComplexTest() {
-        super();
+public class ValAtomAlias extends ValComplex {
+    /**
+     * Ctor.
+     */
+    public ValAtomAlias() {
+        super(
+            new ValSingle(
+                new NoFields(), "Atom alias contains new fields, while it shouldn't"
+            ),
+            new ValSingle(
+                new NoMethods(), "Atom alias contains new declared methods, while it shouldn't"
+            )
+        );
     }
 }

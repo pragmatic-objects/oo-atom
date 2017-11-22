@@ -21,18 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.validator;
-
-import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.r.Result;
-import oo.atom.r.ResultTransition;
-
-/**
- * A transition, which validates {@link TypeDescription}. Implementors must produce {@link oo.atom.r.Result}
- * with input {@link TypeDescription}, if validation is passed, or with list of violations in {@link Result#issues()},
- * if failed.
- *
- * @author Kapralov Sergey
- */
-public interface Validator extends ResultTransition<TypeDescription, TypeDescription> {
-}
+package oo.atom.codegen.bytebuddy.validator;

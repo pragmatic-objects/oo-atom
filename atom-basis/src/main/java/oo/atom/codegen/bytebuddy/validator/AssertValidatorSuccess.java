@@ -22,42 +22,55 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.validator;
+package oo.atom.codegen.bytebuddy.validator;
 
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.tests.AssertAssertionFails;
-import oo.atom.tests.AssertAssertionPasses;
-import oo.atom.tests.TestCase;
-import oo.atom.tests.TestsSuite;
+import oo.atom.r.AssertResultHoldsExpectedValue;
+import oo.atom.tests.AssertInferred;
+import oo.atom.tests.Assertion;
 
 /**
- * Tests suite for {@link AssertValidatorFailure}
+ * Asserts that validator succeeds on certain {@link TypeDescription}
  *
  * @author Kapralov Sergey
  */
-public class AssertValidatorFailureTest extends TestsSuite {
-    public AssertValidatorFailureTest() {
+public class AssertValidatorSuccess extends AssertInferred {
+    /**
+     * Ctor.
+     *
+     * @param validator The validator under the test.
+     * @param type Type to validate.
+     */
+    public AssertValidatorSuccess(final Validator validator, final TypeDescription type) {
         super(
-            new TestCase(
-                "passes when validator fails",
-                new AssertAssertionPasses(
-                    new AssertValidatorFailure(
-                        new ValFail("Just as planned"),
-                        new TypeDescription.ForLoadedType(Object.class),
-                        "Just as planned"
-                    )
-                )
-            ),
-            new TestCase(
-                "fails when validator passes",
-                new AssertAssertionFails(
-                    new AssertValidatorFailure(
-                        new ValSuccess(),
-                        new TypeDescription.ForLoadedType(Object.class),
-                        "Expected failure"
-                    )
-                )
+            new AssertValidatorSuccessInference(
+                validator,
+                type
             )
+        );
+    }
+}
+
+class AssertValidatorSuccessInference implements Assertion.Inference {
+    private final Validator validator;
+    private final TypeDescription type;
+
+    /**
+     * Ctor.
+     *
+     * @param validator The validator under the test.
+     * @param type Type to validate.
+     */
+    public AssertValidatorSuccessInference(final Validator validator, final TypeDescription type) {
+        this.validator = validator;
+        this.type = type;
+    }
+
+    @Override
+    public final Assertion assertion() {
+        return new AssertResultHoldsExpectedValue<>(
+            validator.transitionResult(type),
+            type
         );
     }
 }

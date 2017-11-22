@@ -22,42 +22,18 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.validator;
+package oo.atom.codegen.bytebuddy.validator;
 
-import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.tests.AssertAssertionFails;
-import oo.atom.tests.AssertAssertionPasses;
-import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
 
 /**
- * Tests suite for {@link AssertValidatorSuccessTest}
+ * Tests suite for {@link ValSingle}
  *
  * @author Kapralov Sergey
+ * @todo #8:15m Improve test coverage and mutation coverage for {@link ValSingle}
  */
-public class AssertValidatorSuccessTest extends TestsSuite {
-    public AssertValidatorSuccessTest() {
-        super(
-            new TestCase(
-                "passes when validator under test passes",
-                new AssertAssertionPasses(
-                    new AssertValidatorSuccess(
-                        new ValSuccess(),
-                        new TypeDescription.ForLoadedType(Object.class)
-                    )
-                )
-            ),
-            new TestCase(
-                "fails when validator under test fails",
-                new AssertAssertionFails(
-                    new AssertValidatorSuccess(
-                        new ValFail(
-                            "Just as planned"
-                        ),
-                        new TypeDescription.ForLoadedType(Object.class)
-                    )
-                )
-            )
-        );
+public class ValSingleTest extends TestsSuite {
+    public ValSingleTest() {
+        super();
     }
 }
