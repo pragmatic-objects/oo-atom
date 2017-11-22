@@ -60,8 +60,7 @@ public class HasNoStaticMethods implements ElementMatcher<TypeDescription> {
     public final boolean matches(TypeDescription target) {
         MethodList<MethodDescription.InDefinedShape> declaredMethods = target.getDeclaredMethods()
             .filter(isStatic())
-            .filter(not(isSynthetic()))
-            .filter(not(nameStartsWith("lambda$")));
+            .filter(not(isSynthetic()));
 
         if(target.isEnum()) {
             declaredMethods = declaredMethods
