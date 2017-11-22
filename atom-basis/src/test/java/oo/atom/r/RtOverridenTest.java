@@ -23,16 +23,27 @@
  */
 package oo.atom.r;
 
+import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link RtOverriden}
  * 
  * @author Kapralov Sergey
- * @todo #8:15m Improve test coverage and mutation coverage for {@link RtOverriden}
  */
 public class RtOverridenTest extends TestsSuite {
     public RtOverridenTest() {
-        super();
+        super(
+            new TestCase(
+                "overrides a value to the other value",
+                new AssertAValueAfterTransition<>(
+                    0,
+                    new RtOverriden<>(
+                        new RSuccess<>(42)
+                    ),
+                    42
+                )
+            )
+        );
     }
 }

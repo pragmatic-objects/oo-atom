@@ -23,7 +23,6 @@
  */
 package oo.atom.codegen.bytebuddy.plugin;
 
-import net.bytebuddy.build.Plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 import oo.atom.anno.Atom;

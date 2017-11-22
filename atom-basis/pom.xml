@@ -54,14 +54,6 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.vavr</groupId>
-            <artifactId>vavr</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
         </dependency>
@@ -75,25 +67,28 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>net.bytebuddy</groupId>
-                <artifactId>byte-buddy-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>instrument-prod</id>
+                        <phase>process-classes</phase>
                         <goals>
-                            <goal>transform</goal>
+                            <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <workingDirectory>${basedir}/target/classes</workingDirectory>
+                        </configuration>
                     </execution>
+                    <!-- Instrumentation for tests is disabled intentionally -->
                 </executions>
                 <configuration>
-                    <skip>false</skip>
-                    <initialization>
-                        <entryPoint>REDEFINE</entryPoint>
-                    </initialization>
-                    <transformations>
-                        <transformation>
-                            <plugin>oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin</plugin>
-                        </transformation>
-                    </transformations>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-classpath</argument>
+                        <classpath/>
+                        <argument>oo.atom.codegen.bytebuddy.Main</argument>
+                    </arguments>
                 </configuration>
             </plugin>
             <plugin>

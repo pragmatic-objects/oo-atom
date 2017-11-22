@@ -21,36 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+
+package oo.atom.codegen.bytebuddy.cfls;
 
 import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
+import net.bytebuddy.dynamic.ClassFileLocator;
 
 /**
+ * {@link CflsCompound} inference;
  *
  * @author Kapralov Sergey
  */
-public class TaskPlugin implements Plugin {
-    private final BuilderTransition bt;
+class CflsCompoundInference implements ClassFileLocatorSource.Inference {
+    private final List<ClassFileLocatorSource> parts;
 
-    public TaskPlugin(BuilderTransition bt) {
-        this.bt = bt;
+    /**
+     * Ctor.
+     *
+     * @param parts Parts to combine
+     */
+    public CflsCompoundInference(final List<ClassFileLocatorSource> parts) {
+        this.parts = parts;
     }
 
     @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        System.out.println("Transforming type: " + typeDescription.getName());
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.value().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+    public final ClassFileLocatorSource classFileLocatorSource() {
+        return new CflsExplicit(
+            parts
+                .map(ClassFileLocatorSource::classFileLocator)
+                .transform(cflsl -> new ClassFileLocator.Compound(cflsl.toJavaList()))
+        );
+    }
+}
+
+/**
+ * Source for a combined {@link ClassFileLocator}, consisting of provided parts
+ *
+ * @author Kapralov Sergey
+ */
+public class CflsCompound extends CflsInferred implements ClassFileLocatorSource {
+    /**
+     * Ctor.
+     *
+     * @param parts Parts to combine
+     */
+    public CflsCompound(List<ClassFileLocatorSource> parts) {
+        super(
+            new CflsCompoundInference(
+                parts
+            )
+        );
     }
 }

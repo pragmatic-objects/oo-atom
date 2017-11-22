@@ -21,36 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
+
+package oo.atom.codegen.cn;
 
 import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class TaskPlugin implements Plugin {
-    private final BuilderTransition bt;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-    public TaskPlugin(BuilderTransition bt) {
-        this.bt = bt;
+public class CnFromPath implements ClassNames {
+    private final Path path;
+
+    public CnFromPath(final Path path) {
+        this.path = path;
     }
 
     @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        System.out.println("Transforming type: " + typeDescription.getName());
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.value().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
+    public final List<String> classNames() {
+        try {
+            final List<String> classes = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))
+                .map(path::relativize)
+                .map(Object::toString)
+                .map(s -> s.replace(".class", "").replace("/", "."))
+                .collect(List.collector());
+            return classes;
+        } catch(Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

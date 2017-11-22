@@ -21,36 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
 
-import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
+package oo.atom.r;
+
+import io.vavr.control.Try;
+import oo.atom.tests.Assertion;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * Asserts that {@link ResultTransition} transformes a value to {@link Result}
+ * with expected value
  *
  * @author Kapralov Sergey
  */
-public class TaskPlugin implements Plugin {
-    private final BuilderTransition bt;
+public class AssertAValueAfterTransition<T, X> implements Assertion {
+    private final T source;
+    private final ResultTransition<T, X> transition;
+    private final X expectation;
 
-    public TaskPlugin(BuilderTransition bt) {
-        this.bt = bt;
+    /**
+     * Ctor.
+     *
+     * @param source source value
+     * @param transition transition under the test
+     * @param expectation expected value of the output {@link Result}
+     */
+    public AssertAValueAfterTransition(final T source, final ResultTransition<T, X> transition, final X expectation) {
+        this.source = source;
+        this.transition = transition;
+        this.expectation = expectation;
     }
 
     @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        System.out.println("Transforming type: " + typeDescription.getName());
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.value().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+    public final void check() throws Exception {
+        final Result<X> xResult = transition.transitionResult(source);
+        assertThat(xResult.value()).isEqualTo(Try.success(expectation));
     }
 }

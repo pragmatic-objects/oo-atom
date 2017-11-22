@@ -21,36 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
 
-import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
+package oo.atom.codegen.bytebuddy.cfls;
+
+import net.bytebuddy.dynamic.ClassFileLocator;
 
 /**
+ * Provides explicit {@link ClassFileLocator}
  *
  * @author Kapralov Sergey
  */
-public class TaskPlugin implements Plugin {
-    private final BuilderTransition bt;
+public class CflsExplicit implements ClassFileLocatorSource {
+    private final ClassFileLocator cfl;
 
-    public TaskPlugin(BuilderTransition bt) {
-        this.bt = bt;
+    public CflsExplicit(final ClassFileLocator cfl) {
+        this.cfl = cfl;
     }
 
     @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        System.out.println("Transforming type: " + typeDescription.getName());
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.value().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+    public final ClassFileLocator classFileLocator() {
+        return cfl;
     }
 }
