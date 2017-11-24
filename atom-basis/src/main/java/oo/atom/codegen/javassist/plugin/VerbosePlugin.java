@@ -21,35 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.plugin;
 
-import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType.Builder;
-import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import oo.atom.r.Result;
+package oo.atom.codegen.javassist.plugin;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class TaskPlugin implements Plugin {
-    private final BuilderTransition bt;
+import javassist.ClassPool;
+import javassist.CtClass;
 
-    public TaskPlugin(BuilderTransition bt) {
-        this.bt = bt;
+public class VerbosePlugin implements Plugin {
+    private final Plugin plugin;
+
+    public VerbosePlugin(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
-    public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.value().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+    public final void operateOn(final CtClass clazz, final ClassPool classPool) {
+        System.out.println(plugin.getClass().getName() + ": Transforming type " + clazz.getName());
+        plugin.operateOn(clazz, classPool);
     }
 }

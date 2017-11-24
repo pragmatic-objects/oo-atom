@@ -39,10 +39,14 @@ import oo.atom.codegen.stage.JavassistStage;
 public class Main {
     private static final Instrumentation INSTRUMENTATION = new Instrumentation.Implementation(
         new JavassistStage(
-            new InlineTemplates()
+            new oo.atom.codegen.javassist.plugin.VerbosePlugin(
+                new InlineTemplates()
+            )
         ),
         new ByteBuddyStage(
-            new EnforcingAtomPlugin()
+            new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
+                new EnforcingAtomPlugin()
+            )
         )
     );
 
