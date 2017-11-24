@@ -27,5 +27,8 @@ package oo.atom.codegen.cn;
 import io.vavr.collection.List;
 
 public interface ClassNames {
+    interface Inference {
+        ClassNames classNames();
+    }
     List<String> classNames();
 }

@@ -21,20 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+package oo.atom.it.generics;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class BtGenerateHashCode extends BtGenerateMethod {
-    public BtGenerateHashCode() {
+import oo.atom.anno.Atom;
+import oo.atom.tests.AssertAtomsAreEqual;
+import oo.atom.tests.AssertAtomsAreNotEqual;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
+
+public class AtomsEqualityTests extends TestsSuite {
+    public AtomsEqualityTests() {
         super(
-            named("hashCode"),
-            type -> new SmtAtomHashCode(type)
+            new TestCase(
+                "generic item with atoms uses value equality",
+                new AssertAtomsAreEqual(
+                    new GenericItem<>(
+                        new AtomItem()
+                    ),
+                    new GenericItem<>(
+                        new AtomItem()
+                    )
+                )
+            ),
+            new TestCase(
+                "generic item with non-atoms uses reference equality",
+                new AssertAtomsAreNotEqual(
+                    new GenericItem<>(
+                        new NotAtomItem()
+                    ),
+                    new GenericItem<>(
+                        new NotAtomItem()
+                    )
+                )
+            )
         );
     }
 }

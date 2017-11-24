@@ -23,9 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
-import java.lang.reflect.Modifier;
 import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.modifier.Visibility;
 import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
@@ -34,13 +32,13 @@ import oo.atom.tests.TestsSuite;
  *
  * @author Kapralov Sergey
  */
-public class SmtCheckFieldsEqualityTest extends TestsSuite {
-    public SmtCheckFieldsEqualityTest() {
+public class SmtCheckAtomFieldsEqualityTest extends TestsSuite {
+    public SmtCheckAtomFieldsEqualityTest() {
         super(
             new TestCase(
                 "array fields must be compared deeply",
                 new AssertTokensToRepresentIdenticalBytecode(
-                    new SmtCheckFieldsEquality(
+                    new SmtCheckAtomFieldsEquality(
                         new TypeDescription.ForLoadedType(
                             Foo.class
                         )

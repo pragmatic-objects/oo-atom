@@ -21,20 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+package oo.atom.codegen.javassist.cps;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class BtGenerateHashCode extends BtGenerateMethod {
-    public BtGenerateHashCode() {
-        super(
-            named("hashCode"),
-            type -> new SmtAtomHashCode(type)
-        );
+import io.vavr.collection.List;
+import javassist.ClassPool;
+
+import java.nio.file.Path;
+
+public class CpsWithPaths implements ClassPoolSource {
+    private final ClassPoolSource cps;
+    private final List<Path> paths;
+
+    public CpsWithPaths(final ClassPoolSource cps, final List<Path> paths) {
+        this.cps = cps;
+        this.paths = paths;
+    }
+
+    @Override
+    public final ClassPool classPool() {
+        try {
+            final ClassPool classPool = cps.classPool();
+            for(Path path : paths) {
+                classPool.appendClassPath(path.toString());
+            }
+            return classPool;
+        } catch(Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

@@ -21,20 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+package oo.atom.codegen;
+
+import oo.atom.anno.NotAtom;
+import oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin;
+import oo.atom.codegen.javassist.plugin.InlineTemplates;
+import oo.atom.codegen.stage.ByteBuddyStage;
+import oo.atom.codegen.stage.JavassistStage;
 
 /**
+ * Instrumentation entry point
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateHashCode extends BtGenerateMethod {
-    public BtGenerateHashCode() {
-        super(
-            named("hashCode"),
-            type -> new SmtAtomHashCode(type)
-        );
+@NotAtom
+public class Main {
+    private static final Instrumentation INSTRUMENTATION = new Instrumentation.Implementation(
+        new JavassistStage(
+            new InlineTemplates()
+        ),
+        new ByteBuddyStage(
+            new EnforcingAtomPlugin()
+        )
+    );
+
+    /**
+     * Main.
+     *
+     * @param args CLI arguments
+     * @throws Exception If something goes wrong.
+     */
+    public static final void main(String... args) throws Exception {
+        INSTRUMENTATION.apply();
     }
 }

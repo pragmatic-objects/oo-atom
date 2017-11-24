@@ -63,7 +63,7 @@
                         <arguments>
                             <argument>-classpath</argument>
                             <classpath/>
-                            <argument>oo.atom.codegen.bytebuddy.Main</argument>
+                            <argument>oo.atom.codegen.Main</argument>
                         </arguments>
                     </configuration>
                 </plugin>

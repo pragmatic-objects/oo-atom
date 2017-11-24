@@ -23,22 +23,38 @@
  */
 package oo.atom.codegen.bytebuddy.smt;
 
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import oo.atom.r.RInferred;
+import oo.atom.r.Result;
+
+class SmtCheckAtomFieldsEqualityInference implements Result.Inference<StackManipulation> {
+
+    private final TypeDescription type;
+
+    public SmtCheckAtomFieldsEqualityInference(TypeDescription type) {
+        this.type = type;
+    }
+
+    @Override
+    public final Result<StackManipulation> result() {
+        return new SmtCombined(
+            List.of(type)
+                .flatMap(TypeDescription::getDeclaredFields)
+                .filter(f -> !f.isStatic())
+                .map(f -> new SmtCheckAtomFieldEquality(type, f))
+                .toJavaArray(SmtCheckAtomFieldEquality.class)
+        );
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtEquals extends SmtCombined {
-    public SmtEquals(TypeDescription type) {
-        super(
-                new SmtLoadReference(1),
-                new SmtIfNotInstanceOf(
-                        type,
-                        new SmtReturnInteger(0)
-                ),
-                new SmtCheckFieldsEquality(type),
-                new SmtReturnInteger(1)
-        );
+public class SmtCheckAtomFieldsEquality extends RInferred<StackManipulation> implements StackManipulationToken {
+    public SmtCheckAtomFieldsEquality(final TypeDescription type) {
+        super(new SmtCheckAtomFieldsEqualityInference(type));
     }
 }

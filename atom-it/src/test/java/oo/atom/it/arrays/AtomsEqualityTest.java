@@ -36,6 +36,8 @@ import oo.atom.tests.TestsSuite;
 public class AtomsEqualityTest extends TestsSuite {
     public AtomsEqualityTest() {
         super(
+            // @todo #78 Applying equality rules to Atom fields of array type was mistake. Arrays are mutable.
+            // Array fields should be restricted by instrumentation phase.
             new TestCase(
                 "different atoms with same array contents are equal",
                 new AssertAtomsAreEqual(

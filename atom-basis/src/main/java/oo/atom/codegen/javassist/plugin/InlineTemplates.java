@@ -21,40 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
 
-import io.vavr.collection.List;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.r.RInferred;
-import oo.atom.r.Result;
+package oo.atom.codegen.javassist.plugin;
 
-class SmtFieldsEqualityInference implements Result.Inference<StackManipulation> {
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
+import javassist.CtNewMethod;
+import javassist.bytecode.AccessFlag;
+import oo.atom.codegen.javassist.templates.Atoms;
 
-    private final TypeDescription type;
-
-    public SmtFieldsEqualityInference(TypeDescription type) {
-        this.type = type;
-    }
-
+public class InlineTemplates implements Plugin {
     @Override
-    public final Result<StackManipulation> result() {
-        return new SmtCombined(
-            List.of(type)
-                .flatMap(TypeDescription::getDeclaredFields)
-                .filter(f -> !f.isStatic())
-                .map(f -> new SmtCheckFieldEquality(type, f))
-                .toJavaArray(SmtCheckFieldEquality.class)
-        );
-    }
-}
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class SmtCheckFieldsEquality extends RInferred<StackManipulation> implements StackManipulationToken {
-    public SmtCheckFieldsEquality(final TypeDescription type) {
-        super(new SmtFieldsEqualityInference(type));
+    public final void operateOn(final CtClass clazz, final ClassPool classPool) {
+        try {
+            if(clazz.isAnnotation() || clazz.isInterface() || clazz.getName().equals(Atoms.class.getName())) {
+                return;
+            }
+            final CtMethod equal = classPool.get(Atoms.class.getName()).getDeclaredMethod("atom$equal");
+            CtMethod m = CtNewMethod.copy(equal, "atom$equal", clazz, null);
+            // @todo #78 Of course inlined method is not bridge. It's workaroung for the issue https://github.com/hcoles/pitest/issues/420. To remove it after resolution.
+            m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
+            clazz.addMethod(m);
+        } catch(Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

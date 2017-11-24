@@ -30,11 +30,11 @@ import net.bytebuddy.description.type.TypeDescription;
  *
  * @author Kapralov Sergey
  */
-public class SmtCheckFieldEquality extends SmtCombined {
-    public SmtCheckFieldEquality(final TypeDescription type, final FieldDescription field) {
+public class SmtCheckAtomFieldEquality extends SmtCombined {
+    public SmtCheckAtomFieldEquality(final TypeDescription type, final FieldDescription field) {
         super(
-                new SmtLoadPairOfFields(type, field),
-                new SmtIfNotEqual(field.getType().asErasure(), new SmtReturnInteger(0))
+            new SmtLoadPairOfFields(type, field),
+            new SmtIfFieldsNotEqualByAtomSemantics(field, new SmtReturnInteger(0))
         );
     }
 }

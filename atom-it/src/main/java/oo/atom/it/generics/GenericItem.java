@@ -21,20 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+package oo.atom.it.generics;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class BtGenerateHashCode extends BtGenerateMethod {
-    public BtGenerateHashCode() {
-        super(
-            named("hashCode"),
-            type -> new SmtAtomHashCode(type)
-        );
+public class GenericItem<T> {
+    private final T item;
+
+    public GenericItem(final T item) {
+        this.item = item;
     }
 }

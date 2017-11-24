@@ -21,20 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+package oo.atom.codegen.javassist.templates;
+
+import oo.atom.anno.Atom;
+import oo.atom.anno.NotAtom;
 
 /**
+ * Utility methods for Atoms.
+ * WARNING: this class is used as a template for instrumentation procedures. NEVER use it directly in the code.
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateHashCode extends BtGenerateMethod {
-    public BtGenerateHashCode() {
-        super(
-            named("hashCode"),
-            type -> new SmtAtomHashCode(type)
-        );
+@NotAtom
+public class Atoms {
+    private Atoms() {
+        throw new IllegalAccessError();
+    }
+
+    private static boolean atom$equal(Object object1, Object object2) {
+        if (object1 == object2) {
+            return true;
+        }
+        if (object1 == null) {
+            return object2 == null;
+        }
+        Class class1 = object1.getClass();
+        Class class2 = object2.getClass();
+        if(class1 != class2) {
+            return false;
+        }
+        boolean isAtom = object1.getClass().isAnnotationPresent(Atom.class);
+        if(isAtom) {
+            return object1.equals(object2);
+        }
+        return false;
     }
 }

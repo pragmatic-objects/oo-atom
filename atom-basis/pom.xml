@@ -58,6 +58,10 @@
             <artifactId>byte-buddy</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
             <scope>provided</scope>
@@ -87,7 +91,7 @@
                     <arguments>
                         <argument>-classpath</argument>
                         <classpath/>
-                        <argument>oo.atom.codegen.bytebuddy.Main</argument>
+                        <argument>oo.atom.codegen.Main</argument>
                     </arguments>
                 </configuration>
             </plugin>

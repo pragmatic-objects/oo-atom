@@ -22,78 +22,51 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.bytebuddy;
+package oo.atom.codegen.javassist;
 
 import io.vavr.control.Option;
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.ClassFileLocator;
-import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.pool.TypePool;
+import javassist.ClassPool;
+import javassist.CtClass;
 import oo.atom.anno.NotAtom;
-import oo.atom.codegen.bytebuddy.cfls.CflsCompound;
-import oo.atom.codegen.bytebuddy.cfls.CflsExplicit;
-import oo.atom.codegen.bytebuddy.cfls.CflsFromClassPath;
-import oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin;
-import oo.atom.codegen.bytebuddy.plugin.Plugin;
 import oo.atom.codegen.cn.ClassNames;
 import oo.atom.codegen.cn.CnFromPath;
+import oo.atom.codegen.cp.ClassPath;
 import oo.atom.codegen.cp.CpCombined;
 import oo.atom.codegen.cp.CpExplicit;
 import oo.atom.codegen.cp.CpFromString;
+import oo.atom.codegen.javassist.cps.ClassPoolSource;
+import oo.atom.codegen.javassist.cps.CpsFromClassPath;
+import oo.atom.codegen.javassist.plugin.InlineTemplates;
+import oo.atom.codegen.javassist.plugin.Plugin;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/**
- * ByteBuddy instrumentation entry point.
- *
- * @author Kapralov Sergey
- */
 @NotAtom
-public final class Main {
-    /**
-     * Main entry point
-     *
-     * @param args Arguments
-     * @throws Exception If something goes wrong.
-     */
+public class Main {
     public static void main(String... args) throws Exception {
         final Path workingDirectory = Option.of(System.getProperty("user.dir"))
             .map(Paths::get)
             .getOrElseThrow(RuntimeException::new);
-        final ClassFileLocator cfl = new CflsCompound(
-            new CflsFromClassPath(
-                new CpCombined(
-                    new CpFromString(
-                        System.getProperty("java.class.path")
-                    ),
-                    new CpExplicit(
-                        workingDirectory
-                    )
-                )
+        final ClassPath classPath = new CpCombined(
+            new CpFromString(
+                System.getProperty("java.class.path")
             ),
-            new CflsExplicit(
-                ClassFileLocator.ForClassLoader.ofClassPath()
+            new CpExplicit(
+                workingDirectory
             )
-        ).classFileLocator();
-
-        final TypePool tps = TypePool.Default.of(cfl);
+        );
+        final ClassPoolSource cps = new CpsFromClassPath(classPath);
+        final ClassPool classPool = cps.classPool();
         final ClassNames cn = new CnFromPath(
             workingDirectory
         );
-
-        final Plugin plugin = new EnforcingAtomPlugin();
+        final Plugin plugin = new InlineTemplates();
         for(String className : cn.classNames()) {
-            final TypePool.Resolution resolution = tps.describe(className);
-            if(resolution.isResolved()) {
-                final TypeDescription td = resolution.resolve();
-                final DynamicType.Builder<?> builder = new ByteBuddy().redefine(td, cfl);
-                final DynamicType.Unloaded<?> unloaded = plugin.apply(builder, td).make();
-                unloaded.saveIn(workingDirectory.toFile());
-            } else {
-                throw new RuntimeException();
-            }
+            final CtClass ctClass = classPool.get(className);
+            System.out.println("Transforming " + className + " - phase 2");
+            plugin.operateOn(ctClass, classPool);
+            ctClass.writeFile();
         }
     }
 }

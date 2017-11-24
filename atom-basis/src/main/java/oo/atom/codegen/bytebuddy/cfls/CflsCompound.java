@@ -72,4 +72,15 @@ public class CflsCompound extends CflsInferred implements ClassFileLocatorSource
             )
         );
     }
+
+    /**
+     * Ctor.
+     *
+     * @param parts Parts to combine
+     */
+    public CflsCompound(final ClassFileLocatorSource... parts) {
+        this(
+            List.of(parts)
+        );
+    }
 }

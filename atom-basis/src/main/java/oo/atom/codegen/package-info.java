@@ -21,21 +21,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.description.type.TypeDescription;
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class SmtHashCode extends SmtCombined {
-
-    public SmtHashCode(TypeDescription type) {
-        super(
-            new SmtLoadArrayOfFields(type),
-            new SmtInvokeObjectsHash()
-        );
-    }
-
-}
+package oo.atom.codegen;

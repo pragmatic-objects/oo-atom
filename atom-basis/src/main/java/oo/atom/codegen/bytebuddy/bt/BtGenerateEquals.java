@@ -24,7 +24,7 @@
 package oo.atom.codegen.bytebuddy.bt;
 
 import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.smt.SmtEquals;
+import oo.atom.codegen.bytebuddy.smt.SmtAtomEquals;
 
 /**
  *
@@ -34,7 +34,7 @@ public class BtGenerateEquals extends BtGenerateMethod {
     public BtGenerateEquals() {
         super(
             named("equals"),
-            type -> new SmtEquals(type)
+            type -> new SmtAtomEquals(type)
         );
     }
 }

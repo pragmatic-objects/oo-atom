@@ -21,20 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+package oo.atom.codegen.javassist.cps;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class BtGenerateHashCode extends BtGenerateMethod {
-    public BtGenerateHashCode() {
-        super(
-            named("hashCode"),
-            type -> new SmtAtomHashCode(type)
-        );
+import javassist.ClassPool;
+
+public class CpsInferred implements ClassPoolSource {
+    private final Inference inference;
+
+    public CpsInferred(final Inference inference) {
+        this.inference = inference;
+    }
+
+    @Override
+    public final ClassPool classPool() {
+        return inference.classPoolSource().classPool();
     }
 }

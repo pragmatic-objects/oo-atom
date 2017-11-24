@@ -21,20 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.codegen.bytebuddy.smt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+import net.bytebuddy.description.type.TypeDescription;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateHashCode extends BtGenerateMethod {
-    public BtGenerateHashCode() {
+public class SmtAtomEquals extends SmtCombined {
+    public SmtAtomEquals(TypeDescription type) {
         super(
-            named("hashCode"),
-            type -> new SmtAtomHashCode(type)
+                new SmtLoadReference(1),
+                new SmtIfNotInstanceOf(
+                        type,
+                        new SmtReturnInteger(0)
+                ),
+                new SmtCheckAtomFieldsEquality(type),
+                new SmtReturnInteger(1)
         );
     }
 }
