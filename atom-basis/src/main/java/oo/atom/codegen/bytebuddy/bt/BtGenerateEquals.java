@@ -24,17 +24,26 @@
 package oo.atom.codegen.bytebuddy.bt;
 
 import static net.bytebuddy.matcher.ElementMatchers.*;
+
+import oo.atom.codegen.bytebuddy.matchers.HasMethodDeclared;
 import oo.atom.codegen.bytebuddy.smt.SmtAtomEquals;
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateEquals extends BtGenerateMethod {
+public class BtGenerateEquals extends BtApplyIfMatches {
     public BtGenerateEquals() {
         super(
-            named("equals"),
-            type -> new SmtAtomEquals(type)
+            not(
+                new HasMethodDeclared(
+                    named("equals")
+                )
+            ),
+            new BtGenerateMethod(
+                named("equals"),
+                type -> new SmtAtomEquals(type)
+            )
         );
     }
 }

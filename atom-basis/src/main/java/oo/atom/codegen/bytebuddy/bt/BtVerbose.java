@@ -21,29 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.codegen.bytebuddy.bt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
+import oo.atom.r.Result;
 
-import oo.atom.codegen.bytebuddy.matchers.HasMethodDeclared;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+public class BtVerbose implements BuilderTransition {
+    private final BuilderTransition bt;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class BtGenerateHashCode extends BtApplyIfMatches {
-    public BtGenerateHashCode() {
-        super(
-            not(
-                new HasMethodDeclared(
-                    named("hashCode")
-                )
-            ),
-            new BtGenerateMethod(
-                named("hashCode"),
-                type -> new SmtAtomHashCode(type)
-            )
-        );
+    public BtVerbose(final BuilderTransition bt) {
+        this.bt = bt;
+    }
+
+    @Override
+    public final Result<DynamicType.Builder<?>> transitionResult(final DynamicType.Builder<?> source, final TypeDescription typeDescription) {
+        System.out.println(bt.getClass().getName() + ": transit " + typeDescription.getName());
+        return bt.transitionResult(source, typeDescription);
     }
 }

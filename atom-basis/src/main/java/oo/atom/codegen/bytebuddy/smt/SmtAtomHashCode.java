@@ -24,6 +24,7 @@
 package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 
 /**
  *
@@ -34,7 +35,10 @@ public class SmtAtomHashCode extends SmtCombined {
     public SmtAtomHashCode(TypeDescription type) {
         super(
             new SmtLoadArrayOfFields(type),
-            new SmtInvokeObjectsHash()
+            new SmtInvokeAtomHashCode(type),
+            new SmtStatic(
+                MethodReturn.INTEGER
+            )
         );
     }
 

@@ -21,39 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.codegen.bytebuddy.smt.c.Condition;
+package oo.atom.codegen.bytebuddy.matchers.atomspec;
 
-/**
- *
- * @author Kapralov Sergey
- */
-class SmtIfNotEqualByValue extends SmtCombined implements StackManipulationToken  {
-    private static final StackManipulation INVOKE_EQUALS;
-    
-    static {
-        try {
-            INVOKE_EQUALS = MethodInvocation.invoke(
-                new MethodDescription.ForLoadedMethod(
-                    Object.class.getMethod("equals", Object.class)
-                )
-            );
-        } catch(Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-    
-    public SmtIfNotEqualByValue(StackManipulationToken smt) {
-        super(
-            new SmtStatic(INVOKE_EQUALS),
-            new SmtIf(
-                Condition.IS_FALSE,
-                smt
-            )
-        );
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+import static net.bytebuddy.matcher.ElementMatchers.*;
+
+public class NoArrayFields implements ElementMatcher<TypeDescription> {
+    @Override
+    public final boolean matches(final TypeDescription target) {
+        return target.getDeclaredFields()
+            .filter(not(isSynthetic()))
+            .filter(f -> f.getType().isArray())
+            .isEmpty();
     }
 }

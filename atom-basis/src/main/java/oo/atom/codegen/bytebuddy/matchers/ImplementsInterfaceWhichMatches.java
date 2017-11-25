@@ -21,29 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
+package oo.atom.codegen.bytebuddy.matchers;
 
-import oo.atom.codegen.bytebuddy.matchers.HasMethodDeclared;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class BtGenerateHashCode extends BtApplyIfMatches {
-    public BtGenerateHashCode() {
-        super(
-            not(
-                new HasMethodDeclared(
-                    named("hashCode")
-                )
-            ),
-            new BtGenerateMethod(
-                named("hashCode"),
-                type -> new SmtAtomHashCode(type)
-            )
-        );
+
+public class ImplementsInterfaceWhichMatches implements ElementMatcher<TypeDescription> {
+    private final ElementMatcher<TypeDescription> matcher;
+
+    public ImplementsInterfaceWhichMatches(final ElementMatcher<TypeDescription> matcher) {
+        this.matcher = matcher;
+    }
+
+    @Override
+    public final boolean matches(final TypeDescription target) {
+        boolean truth = !target.getInterfaces()
+            .asErasures()
+            .filter(matcher)
+            .isEmpty();
+        return truth;
     }
 }

@@ -25,7 +25,7 @@
 package oo.atom.codegen;
 
 import oo.atom.anno.NotAtom;
-import oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin;
+import oo.atom.codegen.bytebuddy.plugin.*;
 import oo.atom.codegen.javassist.plugin.InlineTemplates;
 import oo.atom.codegen.stage.ByteBuddyStage;
 import oo.atom.codegen.stage.JavassistStage;
@@ -38,7 +38,7 @@ import oo.atom.codegen.stage.JavassistStage;
 @NotAtom
 public class Main {
     private static final Instrumentation INSTRUMENTATION = new Instrumentation.Implementation(
-        new JavassistStage(
+        /*new JavassistStage(
             new oo.atom.codegen.javassist.plugin.VerbosePlugin(
                 new InlineTemplates()
             )
@@ -46,6 +46,31 @@ public class Main {
         new ByteBuddyStage(
             new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
                 new EnforcingAtomPlugin()
+            )
+        )*/
+        new ByteBuddyStage(
+            new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
+                new AnnotateInterfacesPlugin()
+            )
+        ),
+        new ByteBuddyStage(
+            new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
+                new AnnotateClassesPlugin()
+            )
+        ),
+        new JavassistStage(
+            new oo.atom.codegen.javassist.plugin.VerbosePlugin(
+                new InlineTemplates()
+            )
+        ),
+        new ByteBuddyStage(
+            new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
+                new GenerateEqualsAndHashCodePlugin()
+            )
+        ),
+        new ByteBuddyStage(
+            new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
+                new ValidateAtomAliases()
             )
         )
     );

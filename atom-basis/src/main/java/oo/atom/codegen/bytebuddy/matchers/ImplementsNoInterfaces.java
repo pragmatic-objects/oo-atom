@@ -21,16 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it.arrays;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class Relation {
-    private final int integer;
+package oo.atom.codegen.bytebuddy.matchers;
 
-    public Relation(int integer) {
-        this.integer = integer;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+
+public class ImplementsNoInterfaces implements ElementMatcher<TypeDescription> {
+    @Override
+    public final boolean matches(final TypeDescription target) {
+        return target
+            .getInterfaces()
+            .isEmpty();
     }
 }

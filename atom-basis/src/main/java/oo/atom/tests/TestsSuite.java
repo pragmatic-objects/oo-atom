@@ -25,6 +25,7 @@ package oo.atom.tests;
 
 import com.github.kimble.FactoryRunner;
 import io.vavr.collection.List;
+import oo.atom.anno.Atom;
 import org.junit.runner.RunWith;
 
 
@@ -33,6 +34,7 @@ import org.junit.runner.RunWith;
  * 
  * @author Kapralov Sergey
  */
+@Atom
 class TestInstance implements FactoryRunner.Test {
     private final Test test;
 
@@ -56,6 +58,7 @@ class TestInstance implements FactoryRunner.Test {
  * 
  * @author Kapralov Sergey
  */
+@Atom
 @RunWith(FactoryRunner.class)
 public class TestsSuite implements FactoryRunner.Producer {
     private final List<Test> tests;

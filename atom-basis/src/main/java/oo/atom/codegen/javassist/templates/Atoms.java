@@ -57,4 +57,20 @@ public class Atoms {
         }
         return false;
     }
+
+    private static int atom$hashCode(Object... elements) {
+        if (elements == null) {
+            return 0;
+        }
+        int result = 1;
+        for (Object element : elements) {
+            result = 31 * result;
+            if(element != null) {
+                final boolean annotationPresent = element.getClass().isAnnotationPresent(Atom.class);
+                final int hashCode = annotationPresent ? element.hashCode() : System.identityHashCode(element);
+                result = result + (element == null ? 0 : element.hashCode());
+            }
+        }
+        return result;
+    }
 }

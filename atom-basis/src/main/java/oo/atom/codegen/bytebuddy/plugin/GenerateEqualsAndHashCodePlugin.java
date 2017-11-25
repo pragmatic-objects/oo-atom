@@ -21,45 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.codegen.bytebuddy.plugin;
 
-import net.bytebuddy.description.type.TypeDescription;
-import static net.bytebuddy.matcher.ElementMatchers.*;
-import oo.atom.anno.NotAtom;
-import oo.atom.codegen.bytebuddy.bt.BtAnnotateNotAtom;
-import oo.atom.codegen.bytebuddy.bt.BtApplyAtomAliasPatch;
-import oo.atom.codegen.bytebuddy.bt.BtApplyAtomPatch;
-import oo.atom.codegen.bytebuddy.bt.BtApplyIfMatches;
-import oo.atom.codegen.bytebuddy.bt.BtConditional;
-import oo.atom.codegen.bytebuddy.bt.BtFallback;
+import oo.atom.codegen.bytebuddy.bt.*;
 import oo.atom.codegen.bytebuddy.matchers.AnnotatedAtom;
-import oo.atom.codegen.bytebuddy.matchers.AnnotatedNonAtom;
 import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 import oo.atom.codegen.bytebuddy.matchers.ExplicitlyExtendingAnything;
+import oo.atom.codegen.bytebuddy.validator.ValAtom;
 
+import static net.bytebuddy.matcher.ElementMatchers.isAnnotation;
+import static net.bytebuddy.matcher.ElementMatchers.isInterface;
+import static net.bytebuddy.matcher.ElementMatchers.not;
 
-/**
- * Atoms instrumentation plugin, which applies instrumentation only on Atom-compliant
- * classes, annotating the rest of the classes as {@link NotAtom}
- * 
- * @author Kapralov Sergey
- */
-public class PermissiveAtomPlugin extends TaskPlugin implements Plugin {
-    public PermissiveAtomPlugin() {
+public class GenerateEqualsAndHashCodePlugin extends TaskPlugin implements Plugin {
+    public GenerateEqualsAndHashCodePlugin() {
         super(
             new BtApplyIfMatches(
-                new ConjunctionMatcher<TypeDescription>(
-                    not(new AnnotatedNonAtom()),
-                    not(new AnnotatedAtom()),
-                    not(isInterface())
+                new ConjunctionMatcher<>(
+                    not(isInterface()),
+                    not(isAnnotation()),
+                    new AnnotatedAtom(),
+                    not(new ExplicitlyExtendingAnything())
                 ),
-                new BtFallback(
-                    new BtConditional(
-                        new ExplicitlyExtendingAnything(),
-                        new BtApplyAtomAliasPatch(),
-                        new BtApplyAtomPatch()
-                    ),
-                    new BtAnnotateNotAtom()
+                new BtValidated(
+                    new ValAtom(),
+                    new BtSequence(
+                        new BtGenerateEquals(),
+                        new BtGenerateHashCode()
+                    )
                 )
             )
         );

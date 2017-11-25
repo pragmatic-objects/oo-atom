@@ -21,42 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import oo.atom.r.RInferred;
-import oo.atom.r.Result;
+package oo.atom.codegen.bytebuddy.plugin;
 
-class SmtIfNotEqualInference implements Result.Inference<StackManipulation> {
-    private final TypeDescription type;
-    private final StackManipulationToken smt;
+import oo.atom.codegen.bytebuddy.bt.BtAnnotateAtom;
+import oo.atom.codegen.bytebuddy.bt.BtApplyIfMatches;
+import oo.atom.codegen.bytebuddy.matchers.AnnotatedAtom;
+import oo.atom.codegen.bytebuddy.matchers.AnnotatedNonAtom;
+import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 
-    public SmtIfNotEqualInference(TypeDescription type, StackManipulationToken smt) {
-        this.type = type;
-        this.smt = smt;
-    }
+import static net.bytebuddy.matcher.ElementMatchers.isInterface;
+import static net.bytebuddy.matcher.ElementMatchers.not;
 
-    @Override
-    public final Result<StackManipulation> result() {
-        if(type.isArray()) {
-            return new SmtIfNotDeeplyEqual(smt);
-        } else {
-            return new SmtIfNotEqualByValue(smt);
-        }
-    }
-}
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class SmtIfNotEqual extends RInferred<StackManipulation> implements StackManipulationToken {
-    public SmtIfNotEqual(TypeDescription type, StackManipulationToken smt) {
+public class AnnotateInterfacesPlugin extends TaskPlugin implements Plugin {
+    public AnnotateInterfacesPlugin() {
         super(
-            new SmtIfNotEqualInference(
-                type,
-                smt
+            new BtApplyIfMatches(
+                new ConjunctionMatcher<>(
+                    isInterface(),
+                    not(new AnnotatedAtom()),
+                    not(new AnnotatedNonAtom())
+                ),
+                new BtAnnotateAtom()
             )
         );
     }

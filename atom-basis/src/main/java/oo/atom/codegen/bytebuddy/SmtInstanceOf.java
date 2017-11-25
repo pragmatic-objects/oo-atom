@@ -21,48 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
 
+package oo.atom.codegen.bytebuddy;
+
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.Label;
-import oo.atom.codegen.bytebuddy.branching.BMark;
-import oo.atom.codegen.bytebuddy.smt.c.Condition;
-import oo.atom.r.RInferred;
-import oo.atom.r.Result;
+import net.bytebuddy.jar.asm.MethodVisitor;
+import net.bytebuddy.jar.asm.Opcodes;
+import oo.atom.codegen.bytebuddy.smt.SmtStatic;
+import oo.atom.codegen.bytebuddy.smt.StackManipulationToken;
 
 
-class SmtIfInference implements Result.Inference<StackManipulation> {
-        
-    private final Condition condition;
-    private final StackManipulationToken successBranch;
+class InstanceOfStackManipulation implements StackManipulation {
+    private final TypeDescription type;
 
-    public SmtIfInference(Condition condition, StackManipulationToken successBranch) {
-        this.condition = condition;
-        this.successBranch = successBranch;
-    }    
+    public InstanceOfStackManipulation(TypeDescription type) {
+        this.type = type;
+    }
 
     @Override
-    public final Result<StackManipulation> result() {
-        Label label = new Label();
-        return new SmtCombined(
-            new SmtStatic(condition.branching(label)),
-            successBranch,
-            new SmtStatic(new BMark(label))
-        );
+    public final boolean isValid() {
+        return true;
+    }
+
+    @Override
+    public final StackManipulation.Size apply(MethodVisitor mv, Implementation.Context cntxt) {
+        mv.visitTypeInsn(Opcodes.INSTANCEOF, type.getInternalName());
+        return new StackManipulation.Size(0, 0);
     }
 }
 
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class SmtIf extends RInferred<StackManipulation> implements StackManipulationToken {
-    public SmtIf(Condition condition, StackManipulationToken successBranch) {
+public class SmtInstanceOf extends SmtStatic implements StackManipulationToken {
+    public SmtInstanceOf(final TypeDescription td) {
         super(
-            new SmtIfInference(
-                condition,
-                successBranch
+            new InstanceOfStackManipulation(
+                td
             )
         );
     }

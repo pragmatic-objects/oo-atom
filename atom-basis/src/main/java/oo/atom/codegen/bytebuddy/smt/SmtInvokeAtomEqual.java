@@ -21,45 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.Implementation;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.MethodVisitor;
-import net.bytebuddy.jar.asm.Opcodes;
-import oo.atom.codegen.bytebuddy.smt.c.Condition;
+import static net.bytebuddy.matcher.ElementMatchers.*;
+import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 
-class InstanceOfStackManipulation implements StackManipulation {
-    private final TypeDescription type;
-
-    public InstanceOfStackManipulation(TypeDescription type) {
-        this.type = type;
-    }
-    
-    @Override
-    public final boolean isValid() {
-        return true;
-    }
-
-    @Override
-    public final StackManipulation.Size apply(MethodVisitor mv, Implementation.Context cntxt) {
-        mv.visitTypeInsn(Opcodes.INSTANCEOF, type.getInternalName());
-        return new StackManipulation.Size(0, 0);
-    }
-}
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class SmtIfNotInstanceOf extends SmtCombined implements StackManipulationToken {
-    public SmtIfNotInstanceOf(TypeDescription type, StackManipulationToken smt) {
+public class SmtInvokeAtomEqual extends SmtInvokeMethod implements StackManipulationToken {
+    public SmtInvokeAtomEqual(final TypeDescription type) {
         super(
-            new SmtStatic(new InstanceOfStackManipulation(type)),
-            new SmtIf(
-                Condition.IS_FALSE,
-                smt
+            type,
+            new ConjunctionMatcher<>(
+                isSynthetic(),
+                named("atom$equal")
             )
         );
     }

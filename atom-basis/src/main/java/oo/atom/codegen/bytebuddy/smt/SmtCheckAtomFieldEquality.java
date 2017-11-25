@@ -25,6 +25,7 @@ package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.codegen.bytebuddy.smt.c.Condition;
 
 /**
  *
@@ -34,7 +35,11 @@ public class SmtCheckAtomFieldEquality extends SmtCombined {
     public SmtCheckAtomFieldEquality(final TypeDescription type, final FieldDescription field) {
         super(
             new SmtLoadPairOfFields(type, field),
-            new SmtIfFieldsNotEqualByAtomSemantics(field, new SmtReturnInteger(0))
+            new SmtCompareAtomFields(field),
+            new SmtBranch(
+                Condition.IS_FALSE,
+                new SmtReturnInteger(0)
+            )
         );
     }
 }

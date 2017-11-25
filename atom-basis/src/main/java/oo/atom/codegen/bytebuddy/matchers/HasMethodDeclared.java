@@ -21,16 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it.arrays;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class Basis {
-    private final Relation[] relations;
+package oo.atom.codegen.bytebuddy.matchers;
 
-    public Basis(Relation... relations) {
-        this.relations = relations;
+import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+
+public class HasMethodDeclared implements ElementMatcher<TypeDescription> {
+    private final ElementMatcher<MethodDescription> methodMatcher;
+
+    public HasMethodDeclared(final ElementMatcher<MethodDescription> methodMatcher) {
+        this.methodMatcher = methodMatcher;
+    }
+
+    @Override
+    public final boolean matches(final TypeDescription target) {
+        return !target.getDeclaredMethods()
+            .filter(methodMatcher)
+            .isEmpty();
     }
 }

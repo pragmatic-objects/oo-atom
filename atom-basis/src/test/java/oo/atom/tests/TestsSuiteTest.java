@@ -31,7 +31,7 @@ import org.junit.Test;
 
 /**
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
 public class TestsSuiteTest {
     @Test

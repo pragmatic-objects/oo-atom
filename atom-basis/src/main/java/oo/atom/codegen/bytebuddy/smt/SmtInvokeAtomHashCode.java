@@ -21,4 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it.arrays;
+
+package oo.atom.codegen.bytebuddy.smt;
+
+import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
+
+import static net.bytebuddy.matcher.ElementMatchers.*;
+
+public class SmtInvokeAtomHashCode extends SmtInvokeMethod implements StackManipulationToken {
+    public SmtInvokeAtomHashCode(final TypeDescription type) {
+        super(
+            type,
+            new ConjunctionMatcher<>(
+                isSynthetic(),
+                named("atom$hashCode")
+            )
+        );
+    }
+}

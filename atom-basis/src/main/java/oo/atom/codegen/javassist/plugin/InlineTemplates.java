@@ -38,11 +38,19 @@ public class InlineTemplates implements Plugin {
             if(clazz.isAnnotation() || clazz.isInterface() || clazz.getName().equals(Atoms.class.getName())) {
                 return;
             }
-            final CtMethod equal = classPool.get(Atoms.class.getName()).getDeclaredMethod("atom$equal");
-            CtMethod m = CtNewMethod.copy(equal, "atom$equal", clazz, null);
-            // @todo #78 Of course inlined method is not bridge. It's workaroung for the issue https://github.com/hcoles/pitest/issues/420. To remove it after resolution.
-            m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
-            clazz.addMethod(m);
+            // @todo #78 Of course inlined methods are not bridge. It's workaroung for the issue https://github.com/hcoles/pitest/issues/420. To remove it after resolution.
+            {
+                final CtMethod equal = classPool.get(Atoms.class.getName()).getDeclaredMethod("atom$equal");
+                CtMethod m = CtNewMethod.copy(equal, "atom$equal", clazz, null);
+                m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
+                clazz.addMethod(m);
+            }
+            {
+                final CtMethod hashCode = classPool.get(Atoms.class.getName()).getDeclaredMethod("atom$hashCode");
+                CtMethod m = CtNewMethod.copy(hashCode, "atom$hashCode", clazz, null);
+                m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
+                clazz.addMethod(m);
+            }
         } catch(Exception ex) {
             throw new RuntimeException(ex);
         }

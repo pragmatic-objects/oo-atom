@@ -21,28 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+
+package oo.atom.codegen.bytebuddy.plugin;
+
+import oo.atom.codegen.bytebuddy.bt.BtAnnotateAtom;
+import oo.atom.codegen.bytebuddy.bt.BtApplyIfMatches;
+import oo.atom.codegen.bytebuddy.matchers.*;
 
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
-import oo.atom.codegen.bytebuddy.matchers.HasMethodDeclared;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
-
-/**
- *
- * @author Kapralov Sergey
- */
-public class BtGenerateHashCode extends BtApplyIfMatches {
-    public BtGenerateHashCode() {
+public class AnnotateClassesPlugin extends TaskPlugin implements Plugin {
+    public AnnotateClassesPlugin() {
         super(
-            not(
-                new HasMethodDeclared(
-                    named("hashCode")
-                )
-            ),
-            new BtGenerateMethod(
-                named("hashCode"),
-                type -> new SmtAtomHashCode(type)
+            new BtApplyIfMatches(
+                new ConjunctionMatcher<>(
+                    not(isInterface()),
+                    not(isAnnotation()),
+                    not(new AnnotatedAtom()),
+                    not(new AnnotatedNonAtom()),
+                    new ThisOrSuperClassMatcher(
+                        new DisjunctionMatcher<>(
+                            new AnnotatedAtom(),
+                            new ImplementsNoInterfaces(),
+                            new ImplementsInterfaceWhichMatches(
+                                new AnnotatedAtom()
+                            )
+                        )
+                    )
+                ),
+                new BtAnnotateAtom()
             )
         );
     }

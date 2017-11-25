@@ -25,41 +25,44 @@ package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
-import oo.atom.codegen.bytebuddy.branching.BIfAcmp;
 import oo.atom.codegen.bytebuddy.branching.BMark;
-import oo.atom.r.RBind;
-import oo.atom.r.RSuccess;
+import oo.atom.codegen.bytebuddy.smt.c.Condition;
+import oo.atom.r.RInferred;
 import oo.atom.r.Result;
-import oo.atom.r.ResultTransition;
 
-class RtIfEqualByReference implements ResultTransition<StackManipulation, StackManipulation> {
-    private final boolean equals;
 
-    public RtIfEqualByReference(boolean equals) {
-        this.equals = equals;
-    }
+class SmtBranchInference implements Result.Inference<StackManipulation> {
+    private final Condition condition;
+    private final StackManipulationToken successBranch;
+
+    public SmtBranchInference(Condition condition, StackManipulationToken successBranch) {
+        this.condition = condition;
+        this.successBranch = successBranch;
+    }    
 
     @Override
-    public final Result<StackManipulation> transitionResult(StackManipulation sm) {
-        final Label checkEnd = new Label();
-        return new RSuccess<>(
-            new StackManipulation.Compound(
-                new BIfAcmp(equals, checkEnd),
-                sm,
-                new BMark(checkEnd)
-            )
+    public final Result<StackManipulation> result() {
+        Label label = new Label();
+        return new SmtCombined(
+            new SmtStatic(condition.branching(label)),
+            successBranch,
+            new SmtStatic(new BMark(label))
         );
     }
 }
+
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class SmtIfNotEqualByReference extends RBind<StackManipulation, StackManipulation> implements StackManipulationToken {
-    public SmtIfNotEqualByReference(boolean equals, StackManipulationToken smt) {
-        super(smt,
-            new RtIfEqualByReference(equals)
+public class SmtBranch extends RInferred<StackManipulation> implements StackManipulationToken {
+    public SmtBranch(Condition condition, StackManipulationToken successBranch) {
+        super(
+            new SmtBranchInference(
+                condition,
+                successBranch
+            )
         );
     }
 }

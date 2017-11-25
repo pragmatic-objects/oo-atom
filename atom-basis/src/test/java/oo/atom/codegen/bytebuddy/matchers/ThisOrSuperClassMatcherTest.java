@@ -21,43 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
+
+package oo.atom.codegen.bytebuddy.matchers;
 
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class SmtIfNotEqualTest extends TestsSuite {
-    public SmtIfNotEqualTest() {
+public class ThisOrSuperClassMatcherTest extends TestsSuite {
+    public ThisOrSuperClassMatcherTest() {
         super(
             new TestCase(
-                "arrays are compared using deep equality",
-                new AssertTokensToRepresentIdenticalBytecode(
-                    new SmtIfNotEqual(
-                        new TypeDescription.ForLoadedType(Object[].class),
-                        new SmtReturnInteger(42)
-                    ),
-                    new SmtIfNotDeeplyEqual(
-                        new SmtReturnInteger(42)
+                "matches on current class",
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Foo.class),
+                    new ThisOrSuperClassMatcher(
+                        new FooMatcher()
                     )
                 )
             ),
             new TestCase(
-                "single values are compared using value equality",
-                new AssertTokensToRepresentIdenticalBytecode(
-                    new SmtIfNotEqual(
-                        new TypeDescription.ForLoadedType(Object.class),
-                        new SmtReturnInteger(42)
-                    ),
-                    new SmtIfNotEqualByValue(
-                        new SmtReturnInteger(42)
+                "matches on super class",
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Foo2.class),
+                    new ThisOrSuperClassMatcher(
+                        new FooMatcher()
+                    )
+                )
+            ),
+            new TestCase(
+                "mismatches on current class",
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Bar.class),
+                    new ThisOrSuperClassMatcher(
+                        new FooMatcher()
                     )
                 )
             )
         );
+    }
+
+    private static class Foo {}
+    private static class Bar {}
+    private static class Foo2 extends Foo {}
+
+    private static final class FooMatcher implements ElementMatcher<TypeDescription> {
+        @Override
+        public boolean matches(final TypeDescription target) {
+            return target.represents(Foo.class);
+        }
     }
 }

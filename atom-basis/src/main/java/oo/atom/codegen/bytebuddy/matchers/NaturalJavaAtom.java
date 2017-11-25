@@ -23,6 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.matchers;
 
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import static net.bytebuddy.matcher.ElementMatchers.*;
@@ -32,9 +33,9 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
  * @author Kapralov Sergey
  */
 public class NaturalJavaAtom implements ElementMatcher<TypeDescription> {
-    private static final Class<?>[] JAVA_ATOMS = new Class<?>[]{
+    private static final List<Class<?>> JAVA_ATOMS = List.of(
         String.class
-    };
+    );
 
     @Override
     public final boolean matches(TypeDescription target) {

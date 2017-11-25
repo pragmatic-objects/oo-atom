@@ -21,40 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
 
-import java.util.Objects;
-import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import oo.atom.codegen.bytebuddy.smt.c.Condition;
+package oo.atom.codegen.bytebuddy.plugin;
 
+import oo.atom.codegen.bytebuddy.bt.BtApplyIfMatches;
+import oo.atom.codegen.bytebuddy.bt.BtNop;
+import oo.atom.codegen.bytebuddy.bt.BtValidated;
+import oo.atom.codegen.bytebuddy.matchers.AnnotatedAtom;
+import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
+import oo.atom.codegen.bytebuddy.matchers.ExplicitlyExtendingAnything;
+import oo.atom.codegen.bytebuddy.validator.ValAtomAlias;
 
-/**
- *
- * @author Kapralov Sergey
- */
-class SmtIfNotDeeplyEqual extends SmtCombined implements StackManipulationToken  {
-    private static final StackManipulation INVOKE_DEEPEQUALS;
-    
-    static {
-        try {
-            INVOKE_DEEPEQUALS = MethodInvocation.invoke(
-                new MethodDescription.ForLoadedMethod(
-                    Objects.class.getMethod("deepEquals", Object.class, Object.class)
-                )
-            );
-        } catch(Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-    
-    public SmtIfNotDeeplyEqual(StackManipulationToken smt) {
+import static net.bytebuddy.matcher.ElementMatchers.*;
+
+public class ValidateAtomAliases extends TaskPlugin implements Plugin {
+    public ValidateAtomAliases() {
         super(
-            new SmtStatic(INVOKE_DEEPEQUALS),
-            new SmtIf(
-                Condition.IS_FALSE,
-                smt
+            new BtApplyIfMatches(
+                new ConjunctionMatcher<>(
+                    not(isInterface()),
+                    not(isAnnotation()),
+                    new AnnotatedAtom(),
+                    new ExplicitlyExtendingAnything()
+                ),
+                new BtValidated(
+                    new ValAtomAlias(),
+                    new BtNop()
+                )
             )
         );
     }

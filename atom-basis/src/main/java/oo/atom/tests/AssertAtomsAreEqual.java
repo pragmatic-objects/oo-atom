@@ -41,5 +41,6 @@ public class AssertAtomsAreEqual implements Assertion {
     @Override
     public final void check() throws Exception {
         assertThat(atom1).isEqualTo(atom2);
+        assertThat(atom1.hashCode()).isEqualTo(atom2.hashCode());
     }
 }

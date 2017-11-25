@@ -21,28 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.bt;
+package oo.atom.codegen.bytebuddy.smt;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
+import net.bytebuddy.description.field.FieldDescription;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.matcher.ElementMatchers;
+import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
+import oo.atom.r.RInferred;
+import oo.atom.r.Result;
 
-import oo.atom.codegen.bytebuddy.matchers.HasMethodDeclared;
-import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
+class SmtCompareAtomFieldsInference implements Result.Inference<StackManipulation> {
+    private final FieldDescription field;
+
+    public SmtCompareAtomFieldsInference(FieldDescription field) {
+        this.field = field;
+    }
+
+    @Override
+    public final Result<StackManipulation> result() {
+        return new SmtCombined(
+            new SmtInvokeMethod(
+                field.getDeclaringType().asErasure(),
+                new ConjunctionMatcher<>(
+                    ElementMatchers.isSynthetic(),
+                    ElementMatchers.named("atom$equal")
+                )
+            )
+        );
+    }
+}
 
 /**
  *
  * @author Kapralov Sergey
  */
-public class BtGenerateHashCode extends BtApplyIfMatches {
-    public BtGenerateHashCode() {
+public class SmtCompareAtomFields extends RInferred<StackManipulation> implements StackManipulationToken {
+    public SmtCompareAtomFields(FieldDescription field) {
         super(
-            not(
-                new HasMethodDeclared(
-                    named("hashCode")
-                )
-            ),
-            new BtGenerateMethod(
-                named("hashCode"),
-                type -> new SmtAtomHashCode(type)
+            new SmtCompareAtomFieldsInference(
+                field
             )
         );
     }

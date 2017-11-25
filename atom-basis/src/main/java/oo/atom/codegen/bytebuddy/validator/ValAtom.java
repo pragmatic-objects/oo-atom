@@ -23,10 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.validator;
 
-import oo.atom.codegen.bytebuddy.matchers.atomspec.AllFieldsArePrivateFinal;
-import oo.atom.codegen.bytebuddy.matchers.atomspec.AllMethodsAreFinal;
-import oo.atom.codegen.bytebuddy.matchers.atomspec.HasNoStaticMethods;
-import oo.atom.codegen.bytebuddy.matchers.atomspec.IsNotAbstract;
+import oo.atom.codegen.bytebuddy.matchers.atomspec.*;
 
 /**
  * A validator which validates that certain {@link net.bytebuddy.description.type.TypeDescription} is
@@ -41,6 +38,7 @@ public class ValAtom extends ValComplex {
     public ValAtom() {
         super(
             new ValSingle(new AllFieldsArePrivateFinal(), "All Atom's fields must be private final"),
+            new ValSingle(new NoArrayFields(), "Fields of array type are restricted in Atoms"),
             new ValSingle(new AllMethodsAreFinal(), "All Atom's methods must be private final"),
             new ValSingle(new HasNoStaticMethods(), "Atom shouldn't have static methods"),
             new ValSingle(new IsNotAbstract(), "Atoms can't be abstract")

@@ -24,6 +24,8 @@
 package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.type.TypeDescription;
+import oo.atom.codegen.bytebuddy.SmtInstanceOf;
+import oo.atom.codegen.bytebuddy.smt.c.Condition;
 
 /**
  *
@@ -33,9 +35,10 @@ public class SmtAtomEquals extends SmtCombined {
     public SmtAtomEquals(TypeDescription type) {
         super(
                 new SmtLoadReference(1),
-                new SmtIfNotInstanceOf(
-                        type,
-                        new SmtReturnInteger(0)
+                new SmtInstanceOf(type),
+                new SmtBranch(
+                    Condition.IS_FALSE,
+                    new SmtReturnInteger(0)
                 ),
                 new SmtCheckAtomFieldsEquality(type),
                 new SmtReturnInteger(1)
