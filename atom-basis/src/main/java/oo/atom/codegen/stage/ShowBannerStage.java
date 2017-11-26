@@ -22,46 +22,23 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.bytebuddy.cfls;
+package oo.atom.codegen.stage;
 
-import java.nio.file.Files;
+import oo.atom.banner.Banner;
+import oo.atom.codegen.cn.ClassNames;
+import oo.atom.codegen.cp.ClassPath;
+
 import java.nio.file.Path;
 
-/**
- * {@link CflsFromPath} inference
- *
- * @author Kapralov Sergey
- */
-class CflsFromPathInference implements ClassFileLocatorSource.Inference {
-    private final Path path;
+public class ShowBannerStage implements Stage {
+    private final Banner banner;
 
-    public CflsFromPathInference(final Path path) {
-        this.path = path;
+    public ShowBannerStage(final Banner banner) {
+        this.banner = banner;
     }
 
     @Override
-    public final ClassFileLocatorSource classFileLocatorSource() {
-        if(Files.isDirectory(path)) {
-            return new CflsDirectory(path);
-        } else {
-            return new CflsJar(path);
-        }
-    }
-}
-
-/**
- * Source for {@link net.bytebuddy.dynamic.ClassFileLocator}, made from specified path.
- * It automatically determines the nature of path provided (a directory or a jar file)
- * and chooses suitable locator for it.
- *
- * @author Kapralov Sergey
- */
-public class CflsFromPath extends CflsInferred implements ClassFileLocatorSource {
-    public CflsFromPath(final Path path) {
-        super(
-            new CflsFromPathInference(
-                path
-            )
-        );
+    public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {
+        banner.print(System.out::println);
     }
 }

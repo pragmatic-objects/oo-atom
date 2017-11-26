@@ -22,46 +22,14 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.bytebuddy.cfls;
+package oo.atom.codegen.bytebuddy.plugin;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
 
-/**
- * {@link CflsFromPath} inference
- *
- * @author Kapralov Sergey
- */
-class CflsFromPathInference implements ClassFileLocatorSource.Inference {
-    private final Path path;
-
-    public CflsFromPathInference(final Path path) {
-        this.path = path;
-    }
-
+public class NopPlugin implements Plugin {
     @Override
-    public final ClassFileLocatorSource classFileLocatorSource() {
-        if(Files.isDirectory(path)) {
-            return new CflsDirectory(path);
-        } else {
-            return new CflsJar(path);
-        }
-    }
-}
-
-/**
- * Source for {@link net.bytebuddy.dynamic.ClassFileLocator}, made from specified path.
- * It automatically determines the nature of path provided (a directory or a jar file)
- * and chooses suitable locator for it.
- *
- * @author Kapralov Sergey
- */
-public class CflsFromPath extends CflsInferred implements ClassFileLocatorSource {
-    public CflsFromPath(final Path path) {
-        super(
-            new CflsFromPathInference(
-                path
-            )
-        );
+    public final DynamicType.Builder<?> apply(final DynamicType.Builder<?> builder, final TypeDescription typeDescription) {
+        return builder;
     }
 }

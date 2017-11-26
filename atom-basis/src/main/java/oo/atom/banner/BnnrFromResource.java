@@ -22,46 +22,32 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.bytebuddy.cfls;
+package oo.atom.banner;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.function.Consumer;
 
-/**
- * {@link CflsFromPath} inference
- *
- * @author Kapralov Sergey
- */
-class CflsFromPathInference implements ClassFileLocatorSource.Inference {
-    private final Path path;
+public class BnnrFromResource implements Banner {
+    private final String resourceName;
 
-    public CflsFromPathInference(final Path path) {
-        this.path = path;
+    public BnnrFromResource(final String resourceName) {
+        this.resourceName = resourceName;
     }
 
     @Override
-    public final ClassFileLocatorSource classFileLocatorSource() {
-        if(Files.isDirectory(path)) {
-            return new CflsDirectory(path);
-        } else {
-            return new CflsJar(path);
+    public final void print(final Consumer<String> printoutConsumer) {
+        try {
+            final InputStream stream = BnnrFromResource.class.getClassLoader().getResourceAsStream(resourceName);
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            while (true) {
+                final String s = reader.readLine();
+                if(s == null) break;
+                printoutConsumer.accept(s);
+            }
+        } catch(Exception ex) {
+            throw new RuntimeException(ex);
         }
-    }
-}
-
-/**
- * Source for {@link net.bytebuddy.dynamic.ClassFileLocator}, made from specified path.
- * It automatically determines the nature of path provided (a directory or a jar file)
- * and chooses suitable locator for it.
- *
- * @author Kapralov Sergey
- */
-public class CflsFromPath extends CflsInferred implements ClassFileLocatorSource {
-    public CflsFromPath(final Path path) {
-        super(
-            new CflsFromPathInference(
-                path
-            )
-        );
     }
 }

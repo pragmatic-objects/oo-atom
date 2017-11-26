@@ -24,11 +24,13 @@
 
 package oo.atom.codegen;
 
+import oo.atom.anno.Atom;
 import oo.atom.anno.NotAtom;
+import oo.atom.banner.BnnrFromResource;
 import oo.atom.codegen.bytebuddy.plugin.*;
+import oo.atom.codegen.cn.CnExplicit;
 import oo.atom.codegen.javassist.plugin.InlineTemplates;
-import oo.atom.codegen.stage.ByteBuddyStage;
-import oo.atom.codegen.stage.JavassistStage;
+import oo.atom.codegen.stage.*;
 
 /**
  * Instrumentation entry point
@@ -38,16 +40,21 @@ import oo.atom.codegen.stage.JavassistStage;
 @NotAtom
 public class Main {
     private static final Instrumentation INSTRUMENTATION = new Instrumentation.Implementation(
-        /*new JavassistStage(
-            new oo.atom.codegen.javassist.plugin.VerbosePlugin(
-                new InlineTemplates()
+        new ShowBannerStage(
+            new BnnrFromResource(
+                "banner"
             )
         ),
-        new ByteBuddyStage(
-            new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
-                new EnforcingAtomPlugin()
+        new ShowStatsStage(),
+        new OverrideClassesStage(
+            new ByteBuddyStage(
+                new NopPlugin()
+            ),
+            new CnExplicit(
+                Atom.class.getName(),
+                NotAtom.class.getName()
             )
-        )*/
+        ),
         new ByteBuddyStage(
             new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
                 new AnnotateInterfacesPlugin()
