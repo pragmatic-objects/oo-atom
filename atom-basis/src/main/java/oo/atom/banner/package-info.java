@@ -22,19 +22,4 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.stage;
-
-import oo.atom.codegen.cn.ClassNames;
-import oo.atom.codegen.cp.ClassPath;
-
-import java.nio.file.Path;
-
-public class ShowStatsStage implements Stage {
-    @Override
-    public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {
-        System.out.println();
-        System.out.println("java.class.path:");
-        classPath.paths().forEach(p -> System.out.println(" " + p));
-        System.out.println();
-    }
-}
+package oo.atom.banner;
