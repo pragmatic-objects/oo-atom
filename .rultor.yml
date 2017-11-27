@@ -9,6 +9,9 @@ merge:
 release:
   script: |
     mvn versions:set "-DnewVersion=${tag}"
-    mvn versions:update-property -Dproperty=atom.version
+    cd atom-starter
+    mvn versions:set "-DnewVersion=${tag}"
+    mvn versions:set-property -Dproperty=atom.version "-DnewVersion=${tag}"
+    cd -
     git commit -am "[release] oo-atom-${tag}"
     mvn clean deploy -Poo-atom --settings /home/r/settings.xml
