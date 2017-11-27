@@ -26,11 +26,9 @@ package oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.matcher.ElementMatchers;
 import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 import oo.atom.codegen.bytebuddy.matchers.NaturalJavaAtom;
-import oo.atom.codegen.bytebuddy.smt.c.Condition;
 import oo.atom.r.RInferred;
 import oo.atom.r.Result;
 
