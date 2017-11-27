@@ -35,8 +35,6 @@ SOFTWARE.
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <atom.version>0.0.0-SNAPSHOT</atom.version>
-        <atom.plugin>oo.atom.codegen.bytebuddy.plugin.EnforcingAtomPlugin</atom.plugin>
     </properties>
     
     <name>oo-atom</name>
@@ -63,14 +61,7 @@ SOFTWARE.
             <dependency>
                 <groupId>oo</groupId>
                 <artifactId>atom-basis</artifactId>
-                <version>${atom.version}</version>
-                <classifier>api</classifier>
-            </dependency>
-            <dependency>
-                <groupId>oo</groupId>
-                <artifactId>atom-basis</artifactId>
-                <version>${atom.version}</version>
-                <classifier>tests</classifier>
+                <version>${project.version}</version>
             </dependency>
             <dependency> 
                 <groupId>io.vavr</groupId> 
@@ -132,6 +123,11 @@ SOFTWARE.
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>2.4.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

@@ -98,29 +98,82 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                </configuration>
                 <executions>
                     <execution>
+                        <id>jar-atomizer</id>
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <shadedClassifierName>all</shadedClassifierName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>oo.atom.codegen.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jar-api</id>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedClassifierName>api</shadedClassifierName>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <includes>
+                                        <include>oo/atom/anno/**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jar-tests</id>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedClassifierName>tests</shadedClassifierName>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <includes>
+                                        <include>oo/atom/tests/**</include>
+                                        <include>org/assertj/**</include>
+                                        <include>com/github/kimble/**</include>
+                                        <include>io/vavr/**</include>
+                                        <include>oo/atom/anno/**</include>
+                                        <include>org/junit/**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <shadedArtifactAttached>true</shadedArtifactAttached>
-                    <shadedClassifierName>all</shadedClassifierName>
-                    <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>oo.atom.codegen.Main</mainClass>
-                        </transformer>
-                    </transformers>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.skife.maven</groupId>
                 <artifactId>really-executable-jar-maven-plugin</artifactId>
                 <version>1.4.1</version>
                 <configuration>
-                    <programFile>atomize</programFile>
+                    <programFile>atomizer</programFile>
+                    <classifier>all</classifier>
                 </configuration>
                 <executions>
                     <execution>
@@ -132,66 +185,49 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${basedir}/target/atomize</file>
-                                    <type>exe</type>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-install-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>jar-api</id>
+                        <id>install-tests</id>
+                        <phase>install</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>install-file</goal>
                         </goals>
                         <configuration>
-                            <classifier>api</classifier>
-                            <includes>
-                                <include>oo/atom/anno/**</include>
-                            </includes>
+                            <groupId>oo</groupId>
+                            <artifactId>atom-tests</artifactId>
+                            <packaging>jar</packaging>
+                            <version>${project.version}</version>
+                            <file>${basedir}/target/atom-basis-${project.version}-tests.jar</file>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>jar-codegen</id>
+                        <id>install-api</id>
+                        <phase>install</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>install-file</goal>
                         </goals>
                         <configuration>
-                            <classifier>codegen</classifier>
-                            <skipIfEmpty>false</skipIfEmpty>
-                            <includes>
-                                <include>oo/atom/codegen/**</include>
-                                <include>oo/atom/r/**</include>
-                            </includes>
+                            <groupId>oo</groupId>
+                            <artifactId>atom-api</artifactId>
+                            <packaging>jar</packaging>
+                            <version>${project.version}</version>
+                            <file>${basedir}/target/atom-basis-${project.version}-api.jar</file>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>jar-tests</id>
+                        <id>install-atomizer</id>
+                        <phase>install</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>install-file</goal>
                         </goals>
                         <configuration>
-                            <skipIfEmpty>false</skipIfEmpty>
-                            <classifier>tests</classifier>
-                            <includes>
-                                <include>oo/atom/tests/**</include>
-                            </includes>
+                            <groupId>oo</groupId>
+                            <artifactId>atomizer</artifactId>
+                            <packaging>jar</packaging>
+                            <version>${project.version}</version>
+                            <file>${basedir}/target/atomizer</file>
                         </configuration>
                     </execution>
                 </executions>

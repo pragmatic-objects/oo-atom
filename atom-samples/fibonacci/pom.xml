@@ -8,13 +8,4 @@
     </parent>
     <artifactId>fibonacci</artifactId>
     <packaging>jar</packaging>
-    
-    <dependencies>
-        <dependency>
-            <groupId>oo</groupId>
-            <artifactId>atom-basis</artifactId>
-            <classifier>tests</classifier>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 </project>

@@ -9,35 +9,12 @@
     </parent>
     <artifactId>atom-it</artifactId>
     <packaging>jar</packaging>
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-kim-betti-maven</id>
-            <name>bintray</name>
-            <url>http://dl.bintray.com/kim-betti/maven</url>
-        </repository>
-    </repositories>
-    
+
     <dependencies>
-        <dependency>
-            <groupId>oo</groupId>
-            <artifactId>atom-basis</artifactId>
-            <version>${atom.version}</version>
-            <classifier>api</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>oo</groupId>
-            <artifactId>atom-basis</artifactId>
-            <version>${atom.version}</version>
-            <classifier>tests</classifier>
-            <scope>provided</scope>
-        </dependency>
         <dependency> 
             <groupId>io.vavr</groupId> 
             <artifactId>vavr</artifactId>
+            <version>0.9.0</version>
         </dependency>
     </dependencies>
 </project>
