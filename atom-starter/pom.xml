@@ -66,6 +66,7 @@
                                         <groupId>oo</groupId>
                                         <artifactId>atomizer</artifactId>
                                         <version>${atom.version}</version>
+                                        <type>sh</type>
                                         <outputDirectory>${basedir}/target</outputDirectory>
                                         <destFileName>atomize</destFileName>
                                     </artifactItem>

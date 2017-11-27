@@ -25,7 +25,6 @@ package oo.atom.samples.fibonacci;
 
 import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
-import org.junit.Ignore;
 
 /**
  * Tests suite for {@link IvFibonacci}

@@ -96,6 +96,17 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>add-third-party</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <configuration>
@@ -120,10 +131,38 @@
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <includes>
-                                        <include>**</include>
+                                        <include>**/*.class</include>
+                                        <include>banner</include>
+                                        <include>THIRD-PARTY.txt</include>
                                     </includes>
                                 </filter>
                             </filters>
+                            <relocations>
+                                <relocation>
+                                    <pattern>io</pattern>
+                                    <shadedPattern>oo.atom.embedded.io</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org</pattern>
+                                    <shadedPattern>oo.atom.embedded.org</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com</pattern>
+                                    <shadedPattern>oo.atom.embedded.com</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net</pattern>
+                                    <shadedPattern>oo.atom.embedded.net</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>junit</pattern>
+                                    <shadedPattern>oo.atom.embedded.junit</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javassist</pattern>
+                                    <shadedPattern>oo.atom.embedded.javassist</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                     <execution>
@@ -138,6 +177,8 @@
                                     <artifact>*:*</artifact>
                                     <includes>
                                         <include>oo/atom/anno/**</include>
+                                        <include>banner</include>
+                                        <include>THIRD-PARTY.txt</include>
                                     </includes>
                                 </filter>
                             </filters>
@@ -160,9 +201,25 @@
                                         <include>io/vavr/**</include>
                                         <include>oo/atom/anno/**</include>
                                         <include>org/junit/**</include>
+                                        <include>banner</include>
+                                        <include>THIRD-PARTY.txt</include>
                                     </includes>
                                 </filter>
                             </filters>
+                            <relocations>
+                                <relocation>
+                                    <pattern>io</pattern>
+                                    <shadedPattern>oo.atom.embedded.io</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org</pattern>
+                                    <shadedPattern>oo.atom.embedded.org</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com</pattern>
+                                    <shadedPattern>oo.atom.embedded.com</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -225,7 +282,7 @@
                         <configuration>
                             <groupId>oo</groupId>
                             <artifactId>atomizer</artifactId>
-                            <packaging>jar</packaging>
+                            <packaging>sh</packaging>
                             <version>${project.version}</version>
                             <file>${basedir}/target/atomizer</file>
                         </configuration>
