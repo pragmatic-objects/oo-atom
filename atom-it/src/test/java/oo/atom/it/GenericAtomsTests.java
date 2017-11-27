@@ -21,50 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.it;
 
+import oo.atom.anno.NotAtom;
 import oo.atom.tests.AssertAtomsAreEqual;
 import oo.atom.tests.AssertAtomsAreNotEqual;
 import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
 
-
-/**
- * Tests suite, testing atoms equality rules
- * 
- * @author Kapralov Sergey
- */
-public class AtomsEqualityTest extends TestsSuite {
-    public AtomsEqualityTest() {
+public class GenericAtomsTests extends TestsSuite {
+    public GenericAtomsTests() {
         super(
             new TestCase(
-                "different atom objects with same fields are equal",
+                "generic item with atoms uses value equality",
                 new AssertAtomsAreEqual(
-                    new Foo(4), 
-                    new Foo(4)
+                    new GenericItem<>(
+                        new AtomItem()
+                    ),
+                    new GenericItem<>(
+                        new AtomItem()
+                    )
                 )
             ),
             new TestCase(
-                "atom objects with different fields are not equal",
+                "generic item with non-atoms uses reference equality",
                 new AssertAtomsAreNotEqual(
-                    new Foo(4),
-                    new Foo(5)
-                )
-            ),
-            new TestCase(
-                "atoms of different types are not equal", 
-                new AssertAtomsAreNotEqual(
-                    new Foo(4),
-                    new Bar(4)
-                )
-            ),
-            new TestCase(
-                "alias atom and basis atom with same constructor arguments are equal",
-                new AssertAtomsAreEqual(
-                    new FooAlias(),
-                    new Foo(42)
+                    new GenericItem<>(
+                        new NotAtomItem()
+                    ),
+                    new GenericItem<>(
+                        new NotAtomItem()
+                    )
                 )
             )
         );
+    }
+
+    public static class AtomItem {
+    }
+
+    public static class GenericItem<T> {
+        private final T item;
+
+        public GenericItem(final T item) {
+            this.item = item;
+        }
+    }
+
+    @NotAtom
+    public static class NotAtomItem {
     }
 }

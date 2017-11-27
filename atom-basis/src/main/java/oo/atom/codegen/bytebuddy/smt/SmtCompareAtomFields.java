@@ -24,9 +24,13 @@
 package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.field.FieldDescription;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.matcher.ElementMatchers;
 import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
+import oo.atom.codegen.bytebuddy.matchers.NaturalJavaAtom;
+import oo.atom.codegen.bytebuddy.smt.c.Condition;
 import oo.atom.r.RInferred;
 import oo.atom.r.Result;
 
@@ -39,15 +43,22 @@ class SmtCompareAtomFieldsInference implements Result.Inference<StackManipulatio
 
     @Override
     public final Result<StackManipulation> result() {
-        return new SmtCombined(
-            new SmtInvokeMethod(
-                field.getDeclaringType().asErasure(),
+        final TypeDescription declaringType = field.getDeclaringType().asErasure();
+        final TypeDescription fieldType = field.getType().asErasure();
+        if(new NaturalJavaAtom().matches(fieldType)) {
+            return new SmtInvokeMethod(
+                new TypeDescription.ForLoadedType(Object.class),
+                ElementMatchers.named("equals")
+            );
+        } else {
+            return new SmtInvokeMethod(
+                declaringType,
                 new ConjunctionMatcher<>(
                     ElementMatchers.isSynthetic(),
                     ElementMatchers.named("atom$equal")
                 )
-            )
-        );
+            );
+        }
     }
 }
 

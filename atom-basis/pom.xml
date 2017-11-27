@@ -200,7 +200,6 @@
                                         <include>com/github/kimble/**</include>
                                         <include>io/vavr/**</include>
                                         <include>oo/atom/anno/**</include>
-                                        <include>org/junit/**</include>
                                         <include>banner</include>
                                         <include>THIRD-PARTY.txt</include>
                                     </includes>
@@ -212,8 +211,8 @@
                                     <shadedPattern>oo.atom.embedded.io</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org</pattern>
-                                    <shadedPattern>oo.atom.embedded.org</shadedPattern>
+                                    <pattern>org.assertj</pattern>
+                                    <shadedPattern>oo.atom.embedded.org.assertj</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com</pattern>
@@ -227,7 +226,6 @@
             <plugin>
                 <groupId>org.skife.maven</groupId>
                 <artifactId>really-executable-jar-maven-plugin</artifactId>
-                <version>1.4.1</version>
                 <configuration>
                     <programFile>atomizer</programFile>
                     <classifier>all</classifier>

@@ -21,19 +21,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.it.explicit;
 
-/**
- *
- * @author Kapralov Sergey
- */
-@oo.atom.anno.NotAtom
-public class NotAtom {
-    private final int a;
-    private final int b;
+package oo.atom.it;
 
-    public NotAtom(int a, int b) {
-        this.a = a;
-        this.b = b;
+import oo.atom.tests.*;
+
+public class NaturalAtomsTest extends TestsSuite {
+    public NaturalAtomsTest() {
+        super(
+            new TestCase(
+                "atom with Integer",
+                new AssertAtomsAreEqual(
+                    new IntegerAtom(
+                        new Integer(1)
+                    ),
+                    new IntegerAtom(
+                        new Integer(1)
+                    )
+                )
+            ),
+            new TestCase(
+                "atom with String",
+                new AssertAtomsAreEqual(
+                    new StringAtom(
+                        "aaa"
+                    ),
+                    new StringAtom(
+                        "aaa"
+                    )
+                )
+            )
+        );
+    }
+
+    private static class IntegerAtom {
+        private final Integer i;
+
+        public IntegerAtom(final Integer i) {
+            this.i = i;
+        }
+    }
+
+    private static class StringAtom {
+        private final String i;
+
+        public StringAtom(final String i) {
+            this.i = i;
+        }
     }
 }

@@ -21,40 +21,84 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package oo.atom.it;
 
-package oo.atom.it.generics;
-
-import oo.atom.anno.Atom;
 import oo.atom.tests.AssertAtomsAreEqual;
 import oo.atom.tests.AssertAtomsAreNotEqual;
 import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
 
-public class AtomsEqualityTests extends TestsSuite {
-    public AtomsEqualityTests() {
+
+/**
+ * Tests suite, testing atoms equality rules
+ * 
+ * @author Kapralov Sergey
+ */
+public class BasicTest extends TestsSuite {
+    public BasicTest() {
         super(
             new TestCase(
-                "generic item with atoms uses value equality",
+                "different atom objects with same fields are equal",
                 new AssertAtomsAreEqual(
-                    new GenericItem<>(
-                        new AtomItem()
-                    ),
-                    new GenericItem<>(
-                        new AtomItem()
-                    )
+                    new Foo(4), 
+                    new Foo(4)
                 )
             ),
             new TestCase(
-                "generic item with non-atoms uses reference equality",
+                "atom objects with different fields are not equal",
                 new AssertAtomsAreNotEqual(
-                    new GenericItem<>(
-                        new NotAtomItem()
-                    ),
-                    new GenericItem<>(
-                        new NotAtomItem()
-                    )
+                    new Foo(4),
+                    new Foo(5)
+                )
+            ),
+            new TestCase(
+                "atoms of different types are not equal", 
+                new AssertAtomsAreNotEqual(
+                    new Foo(4),
+                    new Bar(4)
+                )
+            ),
+            new TestCase(
+                "alias atom and basis atom with same constructor arguments are equal",
+                new AssertAtomsAreEqual(
+                    new FooAlias(),
+                    new Foo(42)
                 )
             )
         );
+    }
+
+    /**
+     *
+     * @author Kapralov Sergey
+     */
+    public static class Bar {
+        private final int a;
+
+        public Bar(int a) {
+            this.a = a;
+        }
+    }
+
+    /**
+     *
+     * @author Kapralov Sergey
+     */
+    public static class Foo {
+        private final int a;
+
+        public Foo(int a) {
+            this.a = a;
+        }
+    }
+
+    /**
+     *
+     * @author Kapralov Sergey
+     */
+    public static class FooAlias extends Foo {
+        public FooAlias() {
+            super(42);
+        }
     }
 }

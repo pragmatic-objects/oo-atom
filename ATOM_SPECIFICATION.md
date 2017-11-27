@@ -38,3 +38,6 @@ The fields of Atom classes are compared following these rules:
 - [x] If field is of non-Atom type, it is compared by reference, unless the object, referenced by a field is annotated by `@Atom` annotation.
 - [x] Atom aliases must always delegate calling `equals` and `hashCode` methods to super class.
 
+A set of standard Java classes are treated as Atoms. They are:
+- [x] All primitive types and their wrappers
+- [x] `java.util.String`
