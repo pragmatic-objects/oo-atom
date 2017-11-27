@@ -2,7 +2,10 @@
 
 *Note: checked items are validated and enforced by OO-atom project's current version.*
 
-Atom is a Java class, which follows the set of rules, provided below:
+*Atom interface* is Java interface, annotated with `@oo.atom.anno.Atom` annotation.
+All implementors of the Atom interface must be Atoms.
+
+*Atom* is a Java class, marked with `@oo.atom.anno.Atom` annotation, which follows the set of rules, provided below:
 
 - [x] All fields are private final
 - [x] All methods are final.
@@ -29,7 +32,9 @@ A class which extends Atom and follows the rules above is named *Atom alias*.
 
 Atoms define a set of requirements on equality. The rules are:
 - [x] Two atoms are equal, if and only if they are instance of the same class and their fields are equal.
-- [x] A field of two Atoms is compared by `equals` method
+
+The fields of Atom classes are compared following these rules:
+- [x] If field is of Atom type, it is compared by `equals` method.
+- [x] If field is of non-Atom type, it is compared by reference, unless the object, referenced by a field is annotated by `@Atom` annotation.
 - [x] Atom aliases must always delegate calling `equals` and `hashCode` methods to super class.
 
-OO-Atom project generates `equals`/`hashCode` methods implicitly for Atom-compliant classes.
