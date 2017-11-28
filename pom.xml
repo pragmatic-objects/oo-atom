@@ -311,8 +311,11 @@ SOFTWARE.
     
     <modules>
         <module>atom-basis</module>
+        <module>atom-api</module>
+        <module>atom-tests</module>
         <module>atom-starter</module>
         <module>atom-it</module>
         <module>atom-samples</module>
+        <module>atomizer</module>
     </modules>
 </project>
