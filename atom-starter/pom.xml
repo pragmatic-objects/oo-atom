@@ -172,4 +172,12 @@
             </build>
         </profile>
     </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-skapral-oo-maven</id>
+            <name>skapral-oo-maven</name>
+            <url>https://api.bintray.com/maven/skapral/oo-maven/oo-atom/;publish=1</url>
+        </repository>
+    </distributionManagement>
 </project>
