@@ -45,24 +45,7 @@ OO-atom project is designed on the following principles:
     </parent>
 ```
 
-3. (optional) Include a couple of handy artifacts to your project's dependencies list
-
-```
-    <dependency>
-        <groupId>oo</groupId>
-        <artifactId>atom-basis</artifactId>
-        <classifier>api</classifier>
-        <scope>provided</scope>
-    </dependency>
-    <dependency>
-        <groupId>oo</groupId>
-        <artifactId>atom-basis</artifactId>
-        <classifier>tests</classifier>
-        <scope>provided</scope>
-    </dependency>
-```
-
-4. Study the [samples](atom-samples)
+3. Study the [samples](atom-samples)
 
 
 
