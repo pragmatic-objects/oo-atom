@@ -62,6 +62,10 @@
             <artifactId>javassist</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.bcel</groupId>
+            <artifactId>bcel</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
             <scope>provided</scope>
@@ -91,7 +95,7 @@
                     <arguments>
                         <argument>-classpath</argument>
                         <classpath/>
-                        <argument>oo.atom.codegen.Main</argument>
+                        <argument>oo.atom.codegen.AtomizerMain</argument>
                     </arguments>
                 </configuration>
             </plugin>

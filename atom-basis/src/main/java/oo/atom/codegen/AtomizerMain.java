@@ -38,7 +38,7 @@ import oo.atom.codegen.stage.*;
  * @author Kapralov Sergey
  */
 @NotAtom
-public class Main {
+public class AtomizerMain {
     private static final Instrumentation INSTRUMENTATION = new Instrumentation.Implementation(
         new ShowBannerStage(
             new BnnrFromResource(
@@ -82,6 +82,21 @@ public class Main {
         )
     );
 
+    private static final Instrumentation INSTRUMENTATION_AGGRO = new Instrumentation.Implementation(
+        new ShowBannerStage(
+            new BnnrFromResource(
+                "banner_aggro"
+            )
+        ),
+        new ShowStatsStage(),
+        new BcelStage(
+            // @todo #99 In aggro mode, instrumentation must search for redundant object allocations and eliminate them
+            new oo.atom.codegen.bcel.plugin.VerbosePlugin(
+                new oo.atom.codegen.bcel.plugin.NopPlugin()
+            )
+        )
+    );
+
     /**
      * Main.
      *
@@ -89,6 +104,10 @@ public class Main {
      * @throws Exception If something goes wrong.
      */
     public static final void main(String... args) throws Exception {
-        INSTRUMENTATION.apply();
+        if(args.length > 0 && args[0].equals("-aggro")) {
+            INSTRUMENTATION_AGGRO.apply();
+        } else {
+            INSTRUMENTATION.apply();
+        }
     }
 }

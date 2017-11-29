@@ -86,12 +86,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>1.6.0</version>
-                    <configuration>
-                        <executable>bash</executable>
-                        <arguments>
-                            <argument>${basedir}/target/atomize</argument>
-                        </arguments>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -137,6 +131,10 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
+                                    <executable>bash</executable>
+                                    <arguments>
+                                        <argument>${basedir}/target/atomize</argument>
+                                    </arguments>
                                     <workingDirectory>${basedir}/target/classes</workingDirectory>
                                 </configuration>
                             </execution>
@@ -146,7 +144,38 @@
             </build>
         </profile>
         <profile>
-            <id>atomizetests</id>
+            <id>atomize-aggro</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>instrument-prod</id>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>bash</executable>
+                                    <arguments>
+                                        <argument>${basedir}/target/atomize</argument>
+                                        <argument>-aggro</argument>
+                                    </arguments>
+                                    <workingDirectory>${basedir}/target/classes</workingDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>atomize-tests</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -163,6 +192,10 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
+                                    <executable>bash</executable>
+                                    <arguments>
+                                        <argument>${basedir}/target/atomize</argument>
+                                    </arguments>
                                     <workingDirectory>${basedir}/target/test-classes</workingDirectory>
                                 </configuration>
                             </execution>
