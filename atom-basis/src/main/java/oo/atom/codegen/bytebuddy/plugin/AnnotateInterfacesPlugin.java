@@ -26,6 +26,7 @@ package oo.atom.codegen.bytebuddy.plugin;
 
 import oo.atom.codegen.bytebuddy.bt.BtAnnotateAtom;
 import oo.atom.codegen.bytebuddy.bt.BtApplyIfMatches;
+import oo.atom.codegen.bytebuddy.matchers.Annotated;
 import oo.atom.codegen.bytebuddy.matchers.AnnotatedAtom;
 import oo.atom.codegen.bytebuddy.matchers.AnnotatedNonAtom;
 import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
@@ -40,7 +41,8 @@ public class AnnotateInterfacesPlugin extends TaskPlugin implements Plugin {
                 new ConjunctionMatcher<>(
                     isInterface(),
                     not(new AnnotatedAtom()),
-                    not(new AnnotatedNonAtom())
+                    not(new AnnotatedNonAtom()),
+                    not(new Annotated(FunctionalInterface.class))
                 ),
                 new BtAnnotateAtom()
             )

@@ -21,18 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.codegen.bytebuddy.matchers;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import oo.atom.anno.NotAtom;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class AnnotatedNonAtom extends Annotated implements ElementMatcher<TypeDescription> {
-    public AnnotatedNonAtom() {
-        super(NotAtom.class);
+import java.lang.annotation.Annotation;
+
+import static net.bytebuddy.matcher.ElementMatchers.annotationType;
+import static net.bytebuddy.matcher.ElementMatchers.hasAnnotation;
+
+public class Annotated implements ElementMatcher<TypeDescription> {
+    private final Class<? extends Annotation> annotation;
+
+    public Annotated(final Class<? extends Annotation> annotation) {
+        this.annotation = annotation;
+    }
+
+    @Override
+    public final boolean matches(final TypeDescription target) {
+        return hasAnnotation(annotationType(annotation)).matches(target);
     }
 }
