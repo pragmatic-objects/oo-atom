@@ -29,13 +29,14 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.bytecode.AccessFlag;
+import oo.atom.anno.NotAtom;
 import oo.atom.codegen.javassist.templates.Atoms;
 
 public class InlineTemplates implements Plugin {
     @Override
     public final void operateOn(final CtClass clazz, final ClassPool classPool) {
         try {
-            if(clazz.isAnnotation() || clazz.isInterface() || clazz.getName().equals(Atoms.class.getName())) {
+            if(clazz.isAnnotation() || clazz.isInterface() || clazz.hasAnnotation(NotAtom.class)) {
                 return;
             }
             // @todo #78 Of course inlined methods are not bridge. It's workaroung for the issue https://github.com/hcoles/pitest/issues/420. To remove it after resolution.
@@ -52,7 +53,8 @@ public class InlineTemplates implements Plugin {
                 clazz.addMethod(m);
             }
         } catch(Exception ex) {
-            throw new RuntimeException(ex);
+            //throw new RuntimeException(ex);
+            ex.printStackTrace();
         }
     }
 }

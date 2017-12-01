@@ -32,6 +32,7 @@ import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.matcher.ElementMatcher;
+import oo.atom.anno.NotAtom;
 import oo.atom.codegen.bytebuddy.smt.StackManipulationToken;
 import oo.atom.r.RBind;
 import oo.atom.r.RSuccess;
@@ -75,11 +76,11 @@ class BtGenerateMethodImplementation implements Implementation {
  * @author Kapralov Sergey
  */
 public class BtGenerateMethod implements BuilderTransition {
+    @NotAtom
     interface StackManipulationTokenByTypeDescription {
         StackManipulationToken token(TypeDescription type);
     }
-    
-    
+
     private final ElementMatcher<? super MethodDescription> elementMatcher;
     private final StackManipulationTokenByTypeDescription methodBodySmt;
 

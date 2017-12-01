@@ -30,6 +30,7 @@ import oo.atom.banner.BnnrFromResource;
 import oo.atom.codegen.bytebuddy.plugin.*;
 import oo.atom.codegen.cn.CnExplicit;
 import oo.atom.codegen.javassist.plugin.InlineTemplates;
+import oo.atom.codegen.javassist.plugin.MakeLambdaBreakers;
 import oo.atom.codegen.stage.*;
 
 /**
@@ -63,6 +64,11 @@ public class AtomizerMain {
         new ByteBuddyStage(
             new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
                 new AnnotateClassesPlugin()
+            )
+        ),
+        new JavassistStage(
+            new oo.atom.codegen.javassist.plugin.VerbosePlugin(
+                new MakeLambdaBreakers()
             )
         ),
         new JavassistStage(

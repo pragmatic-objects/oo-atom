@@ -31,7 +31,9 @@ import oo.atom.codegen.cp.ClassPath;
 import oo.atom.codegen.javassist.cps.ClassPoolSource;
 import oo.atom.codegen.javassist.cps.CpsFromClassPath;
 import oo.atom.codegen.javassist.plugin.Plugin;
+import org.apache.commons.io.FileUtils;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -56,12 +58,15 @@ public class JavassistStage implements Stage {
         try {
             final ClassPoolSource cps = new CpsFromClassPath(classPath);
             final ClassPool classPool = cps.classPool();
-
+            final Path tempPath = Files.createTempDirectory(".atom");
             for (String className : classNames.classNames()) {
                 final CtClass ctClass = classPool.get(className);
+                ctClass.defrost();
                 task.operateOn(ctClass, classPool);
-                ctClass.writeFile(workingDirectory.toString());
+                ctClass.writeFile(tempPath.toString());
             }
+            FileUtils.copyDirectory(tempPath.toFile(), workingDirectory.toFile());
+            FileUtils.deleteDirectory(tempPath.toFile());
         } catch(Exception ex) {
             throw new RuntimeException(ex);
         }
