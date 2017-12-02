@@ -3,7 +3,10 @@
 *Note: checked items are validated and enforced by OO-atom project's current version.*
 
 *Atom interface* is Java interface, annotated with `@oo.atom.anno.Atom` annotation.
-All implementors of the Atom interface must be Atoms.
+All implementors of the Atom interface must be Atoms. The following requirements are set on
+Atom interfaces:
+- [x] Atom interfaces with one method only should never be used for lambdas. Interfaces explicitly annotated with
+`@FunctionalInterface` annotation should never be considered as Atom interfaces.
 
 *Atom* is a Java class, marked with `@oo.atom.anno.Atom` annotation, which follows the set of rules, provided below:
 
