@@ -135,6 +135,9 @@
                                     <arguments>
                                         <argument>${basedir}/target/atomize</argument>
                                     </arguments>
+                                    <environmentVariables>
+                                        <JAVA_HOME>${java.home}</JAVA_HOME>
+                                    </environmentVariables>
                                     <workingDirectory>${basedir}/target/classes</workingDirectory>
                                 </configuration>
                             </execution>
@@ -166,6 +169,9 @@
                                         <argument>${basedir}/target/atomize</argument>
                                         <argument>-aggro</argument>
                                     </arguments>
+                                    <environmentVariables>
+                                        <JAVA_HOME>${java.home}</JAVA_HOME>
+                                    </environmentVariables>
                                     <workingDirectory>${basedir}/target/classes</workingDirectory>
                                 </configuration>
                             </execution>
@@ -196,6 +202,9 @@
                                     <arguments>
                                         <argument>${basedir}/target/atomize</argument>
                                     </arguments>
+                                    <environmentVariables>
+                                        <JAVA_HOME>${java.home}</JAVA_HOME>
+                                    </environmentVariables>
                                     <workingDirectory>${basedir}/target/test-classes</workingDirectory>
                                 </configuration>
                             </execution>

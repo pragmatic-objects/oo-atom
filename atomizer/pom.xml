@@ -69,6 +69,7 @@
                     <programFile>atomizer</programFile>
                     <attachProgramFile>true</attachProgramFile>
                     <programFileType>sh</programFileType>
+                    <scriptFile>${basedir}/src/templates/bootstrap.sh</scriptFile>
                 </configuration>
                 <executions>
                     <execution>
