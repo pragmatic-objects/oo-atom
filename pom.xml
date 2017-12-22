@@ -252,6 +252,7 @@ SOFTWARE.
                                     <goal>mutationCoverage</goal>
                                 </goals>
                                 <configuration>
+                                    <skip>${skipTests}</skip>
                                     <excludedMethods>
                                         <param>equals</param>
                                         <param>hashCode</param>
@@ -317,8 +318,6 @@ SOFTWARE.
             </build>
         </profile>
     </profiles>
-    
-    
     <modules>
         <module>atom-basis</module>
         <module>atom-api</module>
