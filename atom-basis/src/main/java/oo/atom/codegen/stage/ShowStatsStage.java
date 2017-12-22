@@ -33,6 +33,7 @@ public class ShowStatsStage implements Stage {
     @Override
     public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {
         System.out.println();
+        System.out.println("java.home: " + System.getProperty("java.home"));
         System.out.println("java.class.path:");
         classPath.paths().forEach(p -> System.out.println(" " + p));
         System.out.println();
