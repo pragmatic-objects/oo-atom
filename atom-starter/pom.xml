@@ -134,40 +134,7 @@
                                     <executable>bash</executable>
                                     <arguments>
                                         <argument>${basedir}/target/atomize</argument>
-                                    </arguments>
-                                    <environmentVariables>
-                                        <JAVA_HOME>${java.home}</JAVA_HOME>
-                                    </environmentVariables>
-                                    <workingDirectory>${basedir}/target/classes</workingDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>atomize-aggro</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>instrument-prod</id>
-                                <phase>process-classes</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>bash</executable>
-                                    <arguments>
-                                        <argument>${basedir}/target/atomize</argument>
-                                        <argument>-aggro</argument>
+                                        <classpath/>
                                     </arguments>
                                     <environmentVariables>
                                         <JAVA_HOME>${java.home}</JAVA_HOME>
@@ -201,6 +168,7 @@
                                     <executable>bash</executable>
                                     <arguments>
                                         <argument>${basedir}/target/atomize</argument>
+                                        <classpath/>
                                     </arguments>
                                     <environmentVariables>
                                         <JAVA_HOME>${java.home}</JAVA_HOME>
