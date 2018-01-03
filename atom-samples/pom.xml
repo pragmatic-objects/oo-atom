@@ -12,5 +12,6 @@
     
     <modules>
         <module>fibonacci</module>
+        <module>todo</module>
     </modules>
 </project>
