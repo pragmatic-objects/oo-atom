@@ -29,17 +29,4 @@
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-
-  <!--<servlet>
-    <servlet-name>JerseyApplilcation</servlet-name>
-    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-    <init-param>
-      <param-name>javax.ws.rs.Application</param-name>
-      <param-value> com.github.skapral.pandora.web.JerseyApplication</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>JerseyApplilcation</servlet-name>
-    <url-pattern>/web/*</url-pattern>
-  </servlet-mapping>-->
 </web-app>
