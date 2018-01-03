@@ -58,38 +58,6 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.0.2</version>
-                    <executions>
-                        <execution>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <groupId>oo</groupId>
-                                        <artifactId>atomizer</artifactId>
-                                        <version>${atom.version}</version>
-                                        <type>sh</type>
-                                        <outputDirectory>${basedir}/target</outputDirectory>
-                                        <destFileName>atomize</destFileName>
-                                    </artifactItem>
-                                </artifactItems>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.6.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
     <profiles>
         <profile>
             <id>install-atomizer</id>
@@ -101,12 +69,26 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
+                        <version>3.0.2</version>
                         <executions>
                             <execution>
+                                <id>install-atomizer</id>
                                 <phase>process-classes</phase>
                                 <goals>
                                     <goal>copy</goal>
                                 </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>oo</groupId>
+                                            <artifactId>atomizer</artifactId>
+                                            <version>${atom.version}</version>
+                                            <type>sh</type>
+                                            <outputDirectory>${basedir}/target</outputDirectory>
+                                            <destFileName>atomize</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -123,6 +105,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
                         <executions>
                             <execution>
                                 <id>instrument-prod</id>
@@ -157,6 +140,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
                         <executions>
                             <execution>
                                 <id>instrument-tests</id>
