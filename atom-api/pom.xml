@@ -40,7 +40,7 @@
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                                    <includes>oo/atom/anno/**,banner,THIRD-PARTY.txt</includes>
+                                    <includes>oo/atom/anno/**,THIRD-PARTY.txt</includes>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

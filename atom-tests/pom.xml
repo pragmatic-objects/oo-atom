@@ -56,7 +56,7 @@
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                                    <includes>oo/atom/anno/**,oo/atom/tests/**,banner,THIRD-PARTY.txt</includes>
+                                    <includes>oo/atom/anno/**,oo/atom/tests/**,THIRD-PARTY.txt</includes>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
