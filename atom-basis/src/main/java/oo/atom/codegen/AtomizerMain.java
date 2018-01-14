@@ -24,11 +24,12 @@
 
 package oo.atom.codegen;
 
-import oo.atom.anno.Atom;
 import oo.atom.anno.NotAtom;
 import oo.atom.banner.BnnrFromResource;
-import oo.atom.codegen.bytebuddy.plugin.*;
-import oo.atom.codegen.cn.CnExplicit;
+import oo.atom.codegen.bytebuddy.plugin.AnnotateClassesPlugin;
+import oo.atom.codegen.bytebuddy.plugin.AnnotateInterfacesPlugin;
+import oo.atom.codegen.bytebuddy.plugin.GenerateEqualsAndHashCodePlugin;
+import oo.atom.codegen.bytebuddy.plugin.ValidateAtomAliases;
 import oo.atom.codegen.javassist.plugin.InlineTemplates;
 import oo.atom.codegen.javassist.plugin.MakeLambdaBreakers;
 import oo.atom.codegen.stage.*;
@@ -47,15 +48,6 @@ public class AtomizerMain {
             )
         ),
         new ShowStatsStage(),
-        new OverrideClassesStage(
-            new ByteBuddyStage(
-                new NopPlugin()
-            ),
-            new CnExplicit(
-                Atom.class.getName(),
-                NotAtom.class.getName()
-            )
-        ),
         new ByteBuddyStage(
             new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
                 new AnnotateInterfacesPlugin()
@@ -85,7 +77,8 @@ public class AtomizerMain {
             new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
                 new ValidateAtomAliases()
             )
-        )
+        ),
+        new CopyAtomAnnotations()
     );
 
     private static final Instrumentation INSTRUMENTATION_AGGRO = new Instrumentation.Implementation(
