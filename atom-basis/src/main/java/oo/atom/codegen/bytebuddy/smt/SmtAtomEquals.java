@@ -24,7 +24,6 @@
 package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.codegen.bytebuddy.SmtInstanceOf;
 import oo.atom.codegen.bytebuddy.smt.c.Condition;
 
 /**

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2018 Kapralov Sergey.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,13 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.bytebuddy;
+package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
-import oo.atom.codegen.bytebuddy.smt.SmtStatic;
-import oo.atom.codegen.bytebuddy.smt.StackManipulationToken;
 
 
 class InstanceOfStackManipulation implements StackManipulation {
