@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2018 Kapralov Sergey.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,41 +22,29 @@
  * THE SOFTWARE.
  */
 
-package oo.atom.codegen.bytebuddy;
+package oo.atom.codegen.stage;
 
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.Implementation;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.jar.asm.MethodVisitor;
-import net.bytebuddy.jar.asm.Opcodes;
-import oo.atom.codegen.bytebuddy.smt.SmtStatic;
-import oo.atom.codegen.bytebuddy.smt.StackManipulationToken;
+import oo.atom.anno.Atom;
+import oo.atom.anno.NotAtom;
+import oo.atom.codegen.bytebuddy.plugin.NopPlugin;
+import oo.atom.codegen.cn.CnExplicit;
 
-
-class InstanceOfStackManipulation implements StackManipulation {
-    private final TypeDescription type;
-
-    public InstanceOfStackManipulation(TypeDescription type) {
-        this.type = type;
-    }
-
-    @Override
-    public final boolean isValid() {
-        return true;
-    }
-
-    @Override
-    public final StackManipulation.Size apply(MethodVisitor mv, Implementation.Context cntxt) {
-        mv.visitTypeInsn(Opcodes.INSTANCEOF, type.getInternalName());
-        return new StackManipulation.Size(0, 0);
-    }
-}
-
-public class SmtInstanceOf extends SmtStatic implements StackManipulationToken {
-    public SmtInstanceOf(final TypeDescription td) {
+/**
+ * Includes annotations {@link Atom} and {@link NotAtom} to the working directory, if nesessary.
+ *
+ * @author Kapralov Sergey
+ */
+public class CopyAtomAnnotations extends DoOnNonEmptyWorkingDirectoryStage {
+    public CopyAtomAnnotations() {
         super(
-            new InstanceOfStackManipulation(
-                td
+            new OverrideClassesStage(
+                new ByteBuddyStage(
+                    new NopPlugin()
+                ),
+                new CnExplicit(
+                    Atom.class.getName(),
+                    NotAtom.class.getName()
+                )
             )
         );
     }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2018 Kapralov Sergey.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,26 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.codegen.bytebuddy.smt.c.Condition;
+import net.bytebuddy.implementation.Implementation;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.jar.asm.MethodVisitor;
+import net.bytebuddy.jar.asm.Opcodes;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class SmtAtomEquals extends SmtCombined {
-    public SmtAtomEquals(TypeDescription type) {
+
+class InstanceOfStackManipulation implements StackManipulation {
+    private final TypeDescription type;
+
+    public InstanceOfStackManipulation(TypeDescription type) {
+        this.type = type;
+    }
+
+    @Override
+    public final boolean isValid() {
+        return true;
+    }
+
+    @Override
+    public final StackManipulation.Size apply(MethodVisitor mv, Implementation.Context cntxt) {
+        mv.visitTypeInsn(Opcodes.INSTANCEOF, type.getInternalName());
+        return new StackManipulation.Size(0, 0);
+    }
+}
+
+public class SmtInstanceOf extends SmtStatic implements StackManipulationToken {
+    public SmtInstanceOf(final TypeDescription td) {
         super(
-                new SmtLoadReference(1),
-                new SmtInstanceOf(type),
-                new SmtBranch(
-                    Condition.IS_FALSE,
-                    new SmtReturnInteger(0)
-                ),
-                new SmtCheckAtomFieldsEquality(type),
-                new SmtReturnInteger(1)
+            new InstanceOfStackManipulation(
+                td
+            )
         );
     }
 }

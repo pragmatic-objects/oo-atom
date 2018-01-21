@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2018 Kapralov Sergey.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,26 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.description.type.TypeDescription;
-import oo.atom.codegen.bytebuddy.smt.c.Condition;
+package oo.atom.codegen.stage;
 
-/**
- *
- * @author Kapralov Sergey
- */
-public class SmtAtomEquals extends SmtCombined {
-    public SmtAtomEquals(TypeDescription type) {
-        super(
-                new SmtLoadReference(1),
-                new SmtInstanceOf(type),
-                new SmtBranch(
-                    Condition.IS_FALSE,
-                    new SmtReturnInteger(0)
-                ),
-                new SmtCheckAtomFieldsEquality(type),
-                new SmtReturnInteger(1)
-        );
+import oo.atom.codegen.cn.ClassNames;
+import oo.atom.codegen.cp.ClassPath;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+public class DoOnNonEmptyWorkingDirectoryStage implements Stage {
+    private final Stage stage;
+
+    public DoOnNonEmptyWorkingDirectoryStage(final Stage stage) {
+        this.stage = stage;
+    }
+
+    @Override
+    public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {
+        try {
+            if (Files.list(workingDirectory).findAny().isPresent()) {
+                stage.apply(classPath, classNames, workingDirectory);
+            }
+        } catch(IOException ex) {
+            throw new RuntimeException("Failed attempt to access path " + workingDirectory.toString(), ex);
+        }
     }
 }
