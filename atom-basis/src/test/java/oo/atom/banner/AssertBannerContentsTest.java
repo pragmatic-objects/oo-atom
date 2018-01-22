@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2018 Kapralov Sergey.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,33 @@
 
 package oo.atom.banner;
 
-import java.util.function.Consumer;
+import oo.atom.tests.AssertAssertionFails;
+import oo.atom.tests.AssertAssertionPasses;
+import oo.atom.tests.TestCase;
+import oo.atom.tests.TestsSuite;
 
-/**
- * A banner.
- *
- * @author Kapralov Sergey
- */
-public interface Banner {
-    /**
-     * Print out the banner.
-     *
-     * @param printoutConsumer A consumer which will accept and print the banner's contents
-     */
-    void print(Consumer<String> printoutConsumer);
+
+public class AssertBannerContentsTest extends TestsSuite {
+    public AssertBannerContentsTest() {
+        super(
+            new TestCase(
+                "assertion failure",
+                new AssertAssertionFails(
+                    new AssertBannerContents(
+                        new BnnrExplicit("Just cause"),
+                        "Wrong way!"
+                    )
+                )
+            ),
+            new TestCase(
+                "assertion success",
+                new AssertAssertionPasses(
+                    new AssertBannerContents(
+                        new BnnrExplicit("Just cause"),
+                        "Just cause"
+                    )
+                )
+            )
+        );
+    }
 }

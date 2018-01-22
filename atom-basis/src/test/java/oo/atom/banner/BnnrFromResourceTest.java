@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2018 Kapralov Sergey.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,16 @@
 
 package oo.atom.banner;
 
-import java.util.function.Consumer;
+import oo.atom.tests.TestsSuite;
 
 /**
- * A banner.
+ * Tests suite for {@link BnnrFromResource}
  *
  * @author Kapralov Sergey
+ * @todo #8:15m Improve test coverage and mutation coverage for {@link BnnrFromResource}
  */
-public interface Banner {
-    /**
-     * Print out the banner.
-     *
-     * @param printoutConsumer A consumer which will accept and print the banner's contents
-     */
-    void print(Consumer<String> printoutConsumer);
+public class BnnrFromResourceTest extends TestsSuite {
+    public BnnrFromResourceTest() {
+        super();
+    }
 }

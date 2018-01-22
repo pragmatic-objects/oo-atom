@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2018 Kapralov Sergey.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,31 @@
 
 package oo.atom.banner;
 
-import java.util.function.Consumer;
+import oo.atom.tests.Assertion;
+import org.assertj.core.api.Assertions;
 
 /**
- * A banner.
+ * Asserts that the banner prints out specific contents.
  *
  * @author Kapralov Sergey
  */
-public interface Banner {
+public class AssertBannerContents implements Assertion {
+    private final Banner banner;
+    private final String contents;
+
     /**
-     * Print out the banner.
+     * Ctor.
      *
-     * @param printoutConsumer A consumer which will accept and print the banner's contents
+     * @param banner a banner under the tests.
+     * @param contents contents expected to be printed.
      */
-    void print(Consumer<String> printoutConsumer);
+    public AssertBannerContents(final Banner banner, final String contents) {
+        this.banner = banner;
+        this.contents = contents;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        banner.print(c -> Assertions.assertThat(c).isEqualTo(contents));
+    }
 }

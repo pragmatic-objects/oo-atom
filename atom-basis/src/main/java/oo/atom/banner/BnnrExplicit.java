@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright 2018 Kapralov Sergey.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,24 @@ package oo.atom.banner;
 import java.util.function.Consumer;
 
 /**
- * A banner.
+ * A banner with explicit contents
  *
  * @author Kapralov Sergey
  */
-public interface Banner {
+public class BnnrExplicit implements Banner {
+    private final String contents;
+
     /**
-     * Print out the banner.
+     * Ctor.
      *
-     * @param printoutConsumer A consumer which will accept and print the banner's contents
+     * @param contents Banner contents.
      */
-    void print(Consumer<String> printoutConsumer);
+    public BnnrExplicit(final String contents) {
+        this.contents = contents;
+    }
+
+    @Override
+    public final void print(final Consumer<String> printoutConsumer) {
+        printoutConsumer.accept(contents);
+    }
 }

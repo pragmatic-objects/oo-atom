@@ -29,9 +29,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.function.Consumer;
 
+/**
+ * A banner, stored in a resource. It is obtained by provided name using {@link ClassLoader#getResourceAsStream(String)}
+ * call.
+ *
+ * @author Kapralov Sergey
+ */
 public class BnnrFromResource implements Banner {
     private final String resourceName;
 
+    /**
+     * Ctor.
+     *
+     * @param resourceName A valid resource name
+     */
     public BnnrFromResource(final String resourceName) {
         this.resourceName = resourceName;
     }
