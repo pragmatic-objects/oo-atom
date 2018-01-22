@@ -25,7 +25,11 @@ package oo.atom.codegen.bytebuddy.branching;
 
 import net.bytebuddy.jar.asm.Label;
 
-
+/**
+ * {@link BIfIcmp} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class BIfIcmpInference implements BranchingInference {
     private final boolean equals;
     private final Label label;

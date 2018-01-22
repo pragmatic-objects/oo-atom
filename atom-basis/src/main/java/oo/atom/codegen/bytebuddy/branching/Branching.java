@@ -26,6 +26,7 @@ package oo.atom.codegen.bytebuddy.branching;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 
 /**
+ * A {@link StackManipulation} for different branching constructs.
  *
  * @author Kapralov Sergey
  */

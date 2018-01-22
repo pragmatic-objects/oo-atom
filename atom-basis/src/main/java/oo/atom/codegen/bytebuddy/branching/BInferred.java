@@ -32,20 +32,20 @@ import net.bytebuddy.jar.asm.MethodVisitor;
  */
 public class BInferred implements Branching {
     
-    private final BranchingInference derivative;
+    private final BranchingInference inference;
 
-    public BInferred(BranchingInference derivative) {
-        this.derivative = derivative;
+    public BInferred(BranchingInference inference) {
+        this.inference = inference;
     }
 
     @Override
     public final boolean isValid() {
-        return derivative.branching().isValid();
+        return inference.branching().isValid();
     }
 
     @Override
     public final Size apply(MethodVisitor arg0, Implementation.Context arg1) {
-        return derivative.branching().apply(arg0, arg1);
+        return inference.branching().apply(arg0, arg1);
     }
     
 }

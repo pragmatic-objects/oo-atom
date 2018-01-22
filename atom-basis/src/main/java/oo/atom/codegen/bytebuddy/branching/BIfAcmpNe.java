@@ -27,13 +27,12 @@ import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.Opcodes;
 
 /**
+ * Implementation for IF_ACMPNE opcode.
  *
  * @author Kapralov Sergey
  */
 public class BIfAcmpNe extends BImpl {
-    
     public BIfAcmpNe(Label label) {
         super(-2, 0, label, Opcodes.IF_ACMPNE);
     }
-    
 }

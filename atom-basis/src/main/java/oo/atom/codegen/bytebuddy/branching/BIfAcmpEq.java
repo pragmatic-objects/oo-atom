@@ -27,6 +27,7 @@ import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.Opcodes;
 
 /**
+ * Implementation for IF_ACMPEQ opcode.
  *
  * @author Kapralov Sergey
  */

@@ -29,16 +29,24 @@ import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.MethodVisitor;
 
 /**
+ * General implementation for {@link Branching} for every branching one-parameter Java opcodes
  *
  * @author Kapralov Sergey
  */
 public class BImpl implements Branching {
-    
     private final int sizeImpact;
     private final int maxSize;
     private final Label label;
     private final int opcode;
 
+    /**
+     * Ctor.
+     *
+     * @param sizeImpact impact on operand stack size.
+     * @param maxSize impact on the stack maximal size.
+     * @param label ASM label for the opcode.
+     * @param opcode the opcode.
+     */
     public BImpl(int sizeImpact, int maxSize, Label label, int opcode) {
         this.sizeImpact = sizeImpact;
         this.maxSize = maxSize;

@@ -25,11 +25,10 @@ package oo.atom.codegen.bytebuddy.branching;
 
 
 /**
+ * {@link Branching} inference
  *
  * @author Kapralov Sergey
  */
 public interface BranchingInference {
-
     Branching branching();
-    
 }

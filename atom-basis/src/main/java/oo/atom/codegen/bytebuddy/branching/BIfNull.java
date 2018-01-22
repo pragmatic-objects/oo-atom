@@ -27,7 +27,7 @@ import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.Opcodes;
 
 /**
- *
+ * Implemenation for IF_NULL opcode.
  * @author Kapralov Sergey
  */
 public class BIfNull extends BImpl {

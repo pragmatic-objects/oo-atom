@@ -27,13 +27,12 @@ import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.Opcodes;
 
 /**
+ * Implementation for IF_EQ opcode.
  *
  * @author Kapralov Sergey
  */
 public class BIfEq extends BImpl {
-    
     public BIfEq(Label label) {
         super(-1, 0, label, Opcodes.IFEQ);
     }
-    
 }

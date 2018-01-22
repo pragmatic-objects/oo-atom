@@ -30,13 +30,18 @@ import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
 
 /**
+ * Branching that puts an ASM label on a desired position.
  *
  * @author Kapralov Sergey
  */
 public class BMark implements Branching {
-    
     private final Label label;
 
+    /**
+     * Ctor.
+     *
+     * @param label ASM label to put.
+     */
     public BMark(Label label) {
         this.label = label;
     }

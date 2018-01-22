@@ -27,6 +27,7 @@ import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.Opcodes;
 
 /**
+ * Implemenation for IF_ICMPNE opcode.
  *
  * @author Kapralov Sergey
  */
