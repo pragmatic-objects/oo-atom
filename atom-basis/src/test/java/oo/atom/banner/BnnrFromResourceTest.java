@@ -33,7 +33,4 @@ import oo.atom.tests.TestsSuite;
  * @todo #8:15m Improve test coverage and mutation coverage for {@link BnnrFromResource}
  */
 public class BnnrFromResourceTest extends TestsSuite {
-    public BnnrFromResourceTest() {
-        super();
-    }
 }
