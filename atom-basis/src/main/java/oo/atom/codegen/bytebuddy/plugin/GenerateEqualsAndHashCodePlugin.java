@@ -34,6 +34,12 @@ import static net.bytebuddy.matcher.ElementMatchers.isAnnotation;
 import static net.bytebuddy.matcher.ElementMatchers.isInterface;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
+/**
+ * Generates {@link Object#equals(Object)} and {@link Object#hashCode()} methods
+ * for all {@link @Atom}-annotated classes
+ *
+ * @author Kapralov Sergey
+ */
 public class GenerateEqualsAndHashCodePlugin extends TaskPlugin implements Plugin {
     public GenerateEqualsAndHashCodePlugin() {
         super(

@@ -30,6 +30,11 @@ import oo.atom.codegen.bytebuddy.matchers.*;
 
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
+/**
+ * Adds {@Atom} annotation to the classes, compliant with Atom specification,
+ *
+ * @author Kapralov Sergey
+ */
 public class AnnotateClassesPlugin extends TaskPlugin implements Plugin {
     public AnnotateClassesPlugin() {
         super(

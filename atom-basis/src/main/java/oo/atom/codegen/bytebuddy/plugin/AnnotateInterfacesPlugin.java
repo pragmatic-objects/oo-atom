@@ -34,6 +34,12 @@ import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 import static net.bytebuddy.matcher.ElementMatchers.isInterface;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
+/**
+ * Adds {@link oo.atom.anno.Atom} annotationto the interfaces, compliant
+ * with Atom specification.
+ *
+ * @author Kapralov Sergey
+ */
 public class AnnotateInterfacesPlugin extends TaskPlugin implements Plugin {
     public AnnotateInterfacesPlugin() {
         super(
