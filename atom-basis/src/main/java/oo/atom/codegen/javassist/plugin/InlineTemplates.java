@@ -32,6 +32,11 @@ import javassist.bytecode.AccessFlag;
 import oo.atom.anno.NotAtom;
 import oo.atom.codegen.javassist.templates.Atoms;
 
+/**
+ * Copies a set of methods from {@link Atoms} to the Atom class, marking them as synthetic.
+ *
+ * @author Kapralov Sergey
+ */
 public class InlineTemplates implements Plugin {
     @Override
     public final void operateOn(final CtClass clazz, final ClassPool classPool) {

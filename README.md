@@ -73,5 +73,6 @@ $ cd <directory with classes>; JAVA_HOME=<java home> atomizer.sh <classpath>
 where <classpath> is a list of jars and directories delimited with ':'.
 ```
 
-The tool is executed on compiled classes before packing them to JAR. Main procedures, done on classes, can be seen here
+The tool is executed on compiled classes before packing them to JAR. Main procedures, done on classes, are defined 
+[here](atom-basis/src/main/java/oo/atom/codegen/AtomizerMain.java).
 

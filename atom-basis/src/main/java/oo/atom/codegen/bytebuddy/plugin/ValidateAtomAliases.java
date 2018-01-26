@@ -34,6 +34,11 @@ import oo.atom.codegen.bytebuddy.validator.ValAtomAlias;
 
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
+/**
+ * Validates that Atom aliases doesn't violate Atom specification
+ *
+ * @author Kapralov Sergey
+ */
 public class ValidateAtomAliases extends TaskPlugin implements Plugin {
     public ValidateAtomAliases() {
         super(
