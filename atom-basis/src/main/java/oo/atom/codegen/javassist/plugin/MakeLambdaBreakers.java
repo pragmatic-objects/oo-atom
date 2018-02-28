@@ -31,8 +31,8 @@ import oo.atom.anno.Atom;
  * Detects Atom interfaces with one method and adds lambda-breakers on them:
  * lambda-breaker is just default implementation of the interface's method which does nothing but throws
  * exception. This trick doesn't allow to use Atom interface as lambda.
+ * See <a href="https://stackoverflow.com/questions/47565979/restrict-lambdas-on-certain-interfaces">https://stackoverflow.com/questions/47565979/restrict-lambdas-on-certain-interfaces</a>
  *
- * @see https://stackoverflow.com/questions/47565979/restrict-lambdas-on-certain-interfaces
  * @author Kapralov Sergey
  */
 public class MakeLambdaBreakers implements Plugin {

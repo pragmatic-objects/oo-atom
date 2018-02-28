@@ -36,7 +36,7 @@ import static net.bytebuddy.matcher.ElementMatchers.not;
 
 /**
  * Generates {@link Object#equals(Object)} and {@link Object#hashCode()} methods
- * for all {@link @Atom}-annotated classes
+ * for all {@link oo.atom.anno.Atom}-annotated classes
  *
  * @author Kapralov Sergey
  */
