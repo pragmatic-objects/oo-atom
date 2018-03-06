@@ -244,8 +244,8 @@ SOFTWARE.
                         <version>0.8.0</version>
                         <configuration>
                             <skip>${skipTests}</skip>
-                            <destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
-                            <datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
+                            <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+                            <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
                             <excludes>
                                 <!--
                                  A hack which prevents JaCoCo instrumentation of some classes in tests,
