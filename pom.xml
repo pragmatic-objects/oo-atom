@@ -234,7 +234,7 @@ SOFTWARE.
         <profile>
             <id>coverage</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <build>
                 <plugins>
@@ -243,6 +243,7 @@ SOFTWARE.
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <version>0.8.0</version>
                         <configuration>
+                            <skip>${skipTests}</skip>
                             <destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
                             <datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
                             <excludes>
