@@ -31,7 +31,7 @@ import oo.atom.codegen.bytebuddy.matchers.*;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
- * Adds {@Atom} annotation to the classes, compliant with Atom specification,
+ * Adds {@link oo.atom.anno.Atom} annotation to the classes, compliant with Atom specification,
  *
  * @author Kapralov Sergey
  */
