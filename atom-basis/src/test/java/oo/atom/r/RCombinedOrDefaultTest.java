@@ -23,6 +23,7 @@
  */
 package oo.atom.r;
 
+import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
 
 /**
@@ -33,6 +34,29 @@ import oo.atom.tests.TestsSuite;
  */
 public class RCombinedOrDefaultTest extends TestsSuite {
     public RCombinedOrDefaultTest() {
-        super();
+        super(
+            new TestCase(
+                "produces combined result for non-empty set",
+                new AssertResultHoldsExpectedValue<>(
+                    new RCombinedOrDefault<>(
+                        Integer::sum,
+                        42,
+                        new RSuccess<>(2),
+                        new RSuccess<>(2)
+                    ),
+                    4
+                )
+            ),
+            new TestCase(
+                "produces default result for empty set",
+                new AssertResultHoldsExpectedValue<>(
+                    new RCombinedOrDefault<>(
+                        Integer::sum,
+                        42
+                    ),
+                    42
+                )
+            )
+        );
     }
 }

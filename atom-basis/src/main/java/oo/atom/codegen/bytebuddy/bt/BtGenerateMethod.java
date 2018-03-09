@@ -23,6 +23,7 @@
  */
 package oo.atom.codegen.bytebuddy.bt;
 
+import lombok.Generated;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
@@ -36,6 +37,8 @@ import oo.atom.codegen.bytebuddy.smt.StackManipulationToken;
 import oo.atom.r.RBind;
 import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
+
+import java.lang.annotation.Annotation;
 
 class BtGenerateMethodBytecodeAppender implements ByteCodeAppender {
     private final StackManipulation sm;
@@ -96,7 +99,15 @@ public class BtGenerateMethod implements BuilderTransition {
                 source
                     .method(elementMatcher)
                     .intercept(new BtGenerateMethodImplementation(sm))
+                    .annotateMethod(new GeneratedInstance())
             );
         });
+    }
+
+    private static final class GeneratedInstance implements Generated {
+        @Override
+        public final Class<? extends Annotation> annotationType() {
+            return Generated.class;
+        }
     }
 }
