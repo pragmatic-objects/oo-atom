@@ -27,6 +27,7 @@ import java.lang.annotation.Annotation;
 import oo.atom.anno.NotAtom;
 
 /**
+ * Transition which annotates a class with {@link NotAtom} annotation.
  *
  * @author Kapralov Sergey
  */

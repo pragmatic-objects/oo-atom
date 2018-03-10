@@ -40,9 +40,19 @@ import oo.atom.r.Result;
 
 import java.lang.annotation.Annotation;
 
+/**
+ * {@link ByteCodeAppender} for {@link BtGenerateMethod}
+ *
+ * @author Kapralov Sergey
+ */
 class BtGenerateMethodBytecodeAppender implements ByteCodeAppender {
     private final StackManipulation sm;
 
+    /**
+     * Ctor.
+     *
+     * @param sm {@link ByteCodeAppender}'s {@link StackManipulation}.
+     */
     public BtGenerateMethodBytecodeAppender(StackManipulation sm) {
         this.sm = sm;
     }
@@ -54,10 +64,20 @@ class BtGenerateMethodBytecodeAppender implements ByteCodeAppender {
     }
 }
 
+/**
+ * {@link Implementation} for {@link BtGenerateMethod}
+ *
+ * @author Kapralov Sergey
+ */
 class BtGenerateMethodImplementation implements Implementation {
 
     private final StackManipulation sm;
 
+    /**
+     * Ctor.
+     *
+     * @param sm {@link Implementation}'s {@link StackManipulation}.
+     */
     public BtGenerateMethodImplementation(StackManipulation sm) {
         this.sm = sm;
     }
@@ -74,6 +94,7 @@ class BtGenerateMethodImplementation implements Implementation {
 }
 
 /**
+ * Transition which generates implementation for a certain declared method.
  *
  * @author Kapralov Sergey
  */
@@ -86,6 +107,12 @@ public class BtGenerateMethod implements BuilderTransition {
     private final ElementMatcher<? super MethodDescription> elementMatcher;
     private final StackManipulationTokenByTypeDescription methodBodySmt;
 
+    /**
+     * Ctor.
+     *
+     * @param elementMatcher A matcher which is used to discover the method declaration.
+     * @param methodBodySmt Method body to generate.
+     */
     public BtGenerateMethod(ElementMatcher<? super MethodDescription> elementMatcher, StackManipulationTokenByTypeDescription methodBodySmt) {
         this.elementMatcher = elementMatcher;
         this.methodBodySmt = methodBodySmt;

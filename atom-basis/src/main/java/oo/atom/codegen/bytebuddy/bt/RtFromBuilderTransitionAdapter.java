@@ -29,6 +29,7 @@ import oo.atom.r.Result;
 import oo.atom.r.ResultTransition;
 
 /**
+ * {@link ResultTransition} adapter from {@link BuilderTransition}
  *
  * @author Kapralov Sergey
  */

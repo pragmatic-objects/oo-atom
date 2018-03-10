@@ -42,12 +42,26 @@ public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements As
     private final Class<?> clazz;
     private final List<String> methodNames;
 
+    /**
+     * Ctor.
+     *
+     * @param bt {@link BuilderTransition} under test.
+     * @param clazz A class to instrument.
+     * @param methodNames Method names to check after instrumentation.
+     */
     public AssertClassToHaveCertainMethodsAfterBuilderTransition(BuilderTransition bt, Class<?> clazz, List<String> methodNames) {
         this.bt = bt;
         this.clazz = clazz;
         this.methodNames = methodNames;
     }
-    
+
+    /**
+     * Ctor.
+     *
+     * @param bt {@link BuilderTransition} under test.
+     * @param clazz A class to instrument.
+     * @param methodNames Method names to check after instrumentation.
+     */
     public AssertClassToHaveCertainMethodsAfterBuilderTransition(BuilderTransition bt, Class<?> clazz, String... methodNames) {
         this(
             bt,

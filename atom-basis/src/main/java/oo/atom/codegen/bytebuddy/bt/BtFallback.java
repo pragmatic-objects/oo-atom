@@ -28,6 +28,7 @@ import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.r.Result;
 
 /**
+ * Transition, which applies another transition if initial one has failed.
  *
  * @author Kapralov Sergey
  */

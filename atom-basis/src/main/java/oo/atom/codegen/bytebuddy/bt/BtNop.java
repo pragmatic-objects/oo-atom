@@ -29,6 +29,7 @@ import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
 /**
+ * Transition which does nothing.
  *
  * @author Kapralov Sergey
  */

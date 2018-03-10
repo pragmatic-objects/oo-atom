@@ -26,6 +26,11 @@ package oo.atom.codegen.bytebuddy.cfls;
 
 import net.bytebuddy.dynamic.ClassFileLocator;
 
+/**
+ * Inferred {@link ClassFileLocatorSource}
+ *
+ * @author Kapralov Sergey
+ */
 public class CflsInferred implements ClassFileLocatorSource {
     private final Inference inference;
 

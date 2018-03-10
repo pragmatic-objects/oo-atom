@@ -39,6 +39,12 @@ public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
     private final BuilderTransition bt;
     private final Class<?> type;
 
+    /**
+     * Ctor.
+     *
+     * @param bt {@link BuilderTransition} under test.
+     * @param type A type to instrument.
+     */
     public AssertBuilderTransitionIsNotCorruptingClass(BuilderTransition bt, Class<?> type) {
         this.bt = bt;
         this.type = type;

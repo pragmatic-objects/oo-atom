@@ -29,6 +29,7 @@ import oo.atom.codegen.bytebuddy.matchers.HasMethodDeclared;
 import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
 
 /**
+ * Transition which generates {@link Object#hashCode()} for Atoms.
  *
  * @author Kapralov Sergey
  */

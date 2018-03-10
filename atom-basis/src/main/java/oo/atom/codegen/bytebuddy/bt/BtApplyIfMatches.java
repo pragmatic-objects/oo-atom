@@ -27,6 +27,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Transition, made if specified condition is true for certain type.
  *
  * @author Kapralov Sergey
  */

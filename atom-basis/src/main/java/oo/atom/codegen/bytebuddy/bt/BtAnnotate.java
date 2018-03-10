@@ -30,12 +30,18 @@ import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
 /**
+ * Transition which annotates a class with certain annotation.
  *
  * @author Kapralov Sergey
  */
 public class BtAnnotate implements BuilderTransition {
     private final Annotation annotation;
 
+    /**
+     * Ctor.
+     *
+     * @param annotation Annotation to annotate the class with.
+     */
     public BtAnnotate(Annotation annotation) {
         this.annotation = annotation;
     }

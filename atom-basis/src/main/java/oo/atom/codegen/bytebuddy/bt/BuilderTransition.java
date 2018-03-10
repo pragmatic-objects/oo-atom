@@ -28,13 +28,30 @@ import net.bytebuddy.dynamic.DynamicType.Builder;
 import oo.atom.r.Result;
 
 /**
+ * Builder transition, which operates on provided class {@link Builder} to make certain instrumentations on it.
  *
  * @author Kapralov Sergey
  */
 public interface BuilderTransition {
+    /**
+     * {@link BuilderTransition} inference.
+     *
+     * @author Kapralov Sergey
+     */
     interface Inference {
+        /**
+         * @return Inferred {@link BuilderTransition}.
+         */
         BuilderTransition builderTransition();
     }
-    
+
+    /**
+     * Transition result.
+     * NOTE: Caller must guarantee that source and typeDescription are made from one type.
+     *
+     * @param source Source {@link Builder}.
+     * @param typeDescription {@link TypeDescription} of instrumented class.
+     * @return {@link Result} with {@link Builder} after all transitions applied.
+     */
     Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription);
 }

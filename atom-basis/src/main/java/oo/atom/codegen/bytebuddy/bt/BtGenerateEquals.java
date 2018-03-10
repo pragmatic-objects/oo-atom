@@ -29,6 +29,7 @@ import oo.atom.codegen.bytebuddy.matchers.HasMethodDeclared;
 import oo.atom.codegen.bytebuddy.smt.SmtAtomEquals;
 
 /**
+ * Transition which generates {@link Object#equals(Object)} for Atoms.
  *
  * @author Kapralov Sergey
  */

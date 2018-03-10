@@ -29,6 +29,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.r.Result;
 
 /**
+ * Conditional transition.
  *
  * @author Kapralov Sergey
  */

@@ -26,6 +26,7 @@ package oo.atom.codegen.bytebuddy.bt;
 import oo.atom.codegen.bytebuddy.validator.ValAtom;
 
 /**
+ * Transition which checks that the class is Atom and makes certain instrumentations.
  *
  * @author Kapralov Sergey
  */

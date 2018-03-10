@@ -31,6 +31,7 @@ import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
 /**
+ * A chained sequence of several {@link BuilderTransition}.
  *
  * @author Kapralov Sergey
  */

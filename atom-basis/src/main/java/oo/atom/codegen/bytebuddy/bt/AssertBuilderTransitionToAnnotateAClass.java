@@ -41,6 +41,13 @@ public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
     private final Class<?> type;
     private final Class<? extends Annotation> annotation;
 
+    /**
+     * Ctor.
+     *
+     * @param builderTransition {@link BuilderTransition} under test.
+     * @param type A type to instrument.
+     * @param annotation Annotation to check after transition is made.
+     */
     public AssertBuilderTransitionToAnnotateAClass(BuilderTransition builderTransition, Class<?> type, Class<? extends Annotation> annotation) {
         this.builderTransition = builderTransition;
         this.type = type;

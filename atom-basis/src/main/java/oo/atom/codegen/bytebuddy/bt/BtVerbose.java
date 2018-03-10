@@ -28,6 +28,11 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import oo.atom.r.Result;
 
+/**
+ * Verbose {@link BuilderTransition}
+ *
+ * @author Kapralov Sergey
+ */
 public class BtVerbose implements BuilderTransition {
     private final BuilderTransition bt;
 

@@ -26,6 +26,7 @@ package oo.atom.codegen.bytebuddy.bt;
 import oo.atom.codegen.bytebuddy.validator.ValAtomAlias;
 
 /**
+ * Transition which checks that a class is Atom Alias and instruments it.
  *
  * @author Kapralov Sergey
  */

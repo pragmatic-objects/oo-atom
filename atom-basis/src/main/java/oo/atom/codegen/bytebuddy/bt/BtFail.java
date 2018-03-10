@@ -29,12 +29,18 @@ import oo.atom.r.RFailure;
 import oo.atom.r.Result;
 
 /**
+ * Transition, which results to certain failure.
  *
  * @author Kapralov Sergey
  */
 public class BtFail implements BuilderTransition {
     private final String errorMessage;
 
+    /**
+     * Ctor.
+     *
+     * @param errorMessage Error message of failure.
+     */
     public BtFail(String errorMessage) {
         this.errorMessage = errorMessage;
     }

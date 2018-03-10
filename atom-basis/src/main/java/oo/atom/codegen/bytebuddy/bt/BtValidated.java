@@ -31,6 +31,7 @@ import oo.atom.r.RFailure;
 import oo.atom.r.Result;
 
 /**
+ * Transition which validates a class before applying instrumentation to it.
  *
  * @author Kapralov Sergey
  */
@@ -38,6 +39,12 @@ public class BtValidated implements BuilderTransition {
     private final Validator validator;
     private final BuilderTransition delegate;
 
+    /**
+     * Ctor.
+     *
+     * @param validator Class validator.
+     * @param delegate Transition to delegate to if class mets the validation conditions.
+     */
     public BtValidated(Validator validator, BuilderTransition delegate) {
         this.validator = validator;
         this.delegate = delegate;
