@@ -27,6 +27,18 @@ package oo.atom.codegen.bytebuddy.plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 
+/**
+ * Pluggable ByteBuddy instrumentation.
+ *
+ * @author Kapralov Sergey
+ */
 public interface Plugin {
+    /**
+     * Apply instrumentation.
+     *
+     * @param builder ByteBuddy's {@link net.bytebuddy.dynamic.DynamicType.Builder}
+     * @param typeDescription ByteBuddy's {@link TypeDescription}
+     * @return {@link net.bytebuddy.dynamic.DynamicType.Builder} instance after applied transformantions.
+     */
     DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription);
 }

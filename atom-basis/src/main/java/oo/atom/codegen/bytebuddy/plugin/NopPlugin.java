@@ -27,6 +27,11 @@ package oo.atom.codegen.bytebuddy.plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 
+/**
+ * Plugin which does nothing.
+ *
+ * @author Kapralov Sergey
+ */
 public class NopPlugin implements Plugin {
     @Override
     public final DynamicType.Builder<?> apply(final DynamicType.Builder<?> builder, final TypeDescription typeDescription) {

@@ -30,12 +30,18 @@ import oo.atom.codegen.bytebuddy.bt.BuilderTransition;
 import oo.atom.r.Result;
 
 /**
+ * Instrumentation task, which apply certain {@link BuilderTransition}, processing errors.
  *
  * @author Kapralov Sergey
  */
 public class TaskPlugin implements Plugin {
     private final BuilderTransition bt;
 
+    /**
+     * Ctor.
+     *
+     * @param bt {@link BuilderTransition}, describing instrumentation.
+     */
     public TaskPlugin(BuilderTransition bt) {
         this.bt = bt;
     }

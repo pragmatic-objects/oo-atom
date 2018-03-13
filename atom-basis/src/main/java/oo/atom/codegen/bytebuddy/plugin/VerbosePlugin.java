@@ -27,9 +27,19 @@ package oo.atom.codegen.bytebuddy.plugin;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 
+/**
+ * Verbose {@link Plugin}.
+ *
+ * @author Kapralov Sergey
+ */
 public class VerbosePlugin implements Plugin {
     private final Plugin plugin;
 
+    /**
+     * Ctor.
+     *
+     * @param plugin Delegating {@link Plugin}
+     */
     public VerbosePlugin(final Plugin plugin) {
         this.plugin = plugin;
     }
