@@ -26,9 +26,19 @@ package oo.atom.codegen.javassist.cps;
 
 import javassist.ClassPool;
 
+/**
+ * Inferred {@link ClassPoolSource}.
+ *
+ * @author Kapralov Sergey
+ */
 public class CpsInferred implements ClassPoolSource {
     private final Inference inference;
 
+    /**
+     * Ctor.
+     *
+     * @param inference {@link ClassPoolSource} inference.
+     */
     public CpsInferred(final Inference inference) {
         this.inference = inference;
     }

@@ -29,10 +29,21 @@ import javassist.ClassPool;
 
 import java.nio.file.Path;
 
+/**
+ * {@link ClassPoolSource} for classes located in certain paths.
+ *
+ * @author Kapralov Sergey
+ */
 public class CpsWithPaths implements ClassPoolSource {
     private final ClassPoolSource cps;
     private final List<Path> paths;
 
+    /**
+     * Ctor.
+     *
+     * @param cps delegating {@link ClassPoolSource}
+     * @param paths list of paths where classes are located.
+     */
     public CpsWithPaths(final ClassPoolSource cps, final List<Path> paths) {
         this.cps = cps;
         this.paths = paths;

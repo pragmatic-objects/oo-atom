@@ -26,6 +26,11 @@ package oo.atom.codegen.javassist.cps;
 
 import javassist.ClassPool;
 
+/**
+ * Empty {@link ClassPool} source.
+ *
+ * @author Kapralov Sergey
+ */
 public class CpsEmpty implements ClassPoolSource {
     @Override
     public final ClassPool classPool() {

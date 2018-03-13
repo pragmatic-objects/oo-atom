@@ -26,9 +26,19 @@ package oo.atom.codegen.javassist.cps;
 
 import oo.atom.codegen.cp.ClassPath;
 
+/**
+ * {@link CpsFromClassPath} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class CpsFromClassPathInference implements ClassPoolSource.Inference {
     private final ClassPath classPath;
 
+    /**
+     * Ctor.
+     *
+     * @param classPath class path.
+     */
     public CpsFromClassPathInference(final ClassPath classPath) {
         this.classPath = classPath;
     }
@@ -42,7 +52,17 @@ class CpsFromClassPathInference implements ClassPoolSource.Inference {
     }
 }
 
+/**
+ * {@link javassist.ClassPool} source for classes located in certain {@link ClassPath}.
+ *
+ * @author Kapralov Sergey
+ */
 public class CpsFromClassPath extends CpsInferred implements ClassPoolSource {
+    /**
+     * Ctor.
+     *
+     * @param classPath class path.
+     */
     public CpsFromClassPath(final ClassPath classPath) {
         super(
             new CpsFromClassPathInference(

@@ -32,7 +32,15 @@ import javassist.ClassPool;
  * @author Kapralov Sergey
  */
 public interface ClassPoolSource {
+    /**
+     * {@link ClassPoolSource} inference.
+     *
+     * @author Kapralov Sergey
+     */
     interface Inference {
+        /**
+         * @return Inferred {@link ClassPoolSource}
+         */
         ClassPoolSource classPoolSource();
     }
 
