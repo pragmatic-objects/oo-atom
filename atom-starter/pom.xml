@@ -114,6 +114,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
+                                    <classpathScope>compile</classpathScope>
                                     <executable>bash</executable>
                                     <arguments>
                                         <argument>${basedir}/target/atomize</argument>
@@ -149,6 +150,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
+                                    <classpathScope>test</classpathScope>
                                     <executable>bash</executable>
                                     <arguments>
                                         <argument>${basedir}/target/atomize</argument>
