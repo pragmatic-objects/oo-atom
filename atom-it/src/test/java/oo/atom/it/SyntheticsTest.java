@@ -40,6 +40,7 @@ public class SyntheticsTest {
                     break;
                 case B:
                     System.out.println(a);
+                    break;
                 default:
                     //Do nothing
             }
