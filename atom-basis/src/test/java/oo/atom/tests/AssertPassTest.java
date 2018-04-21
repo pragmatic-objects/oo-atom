@@ -24,8 +24,9 @@
 package oo.atom.tests;
 
 
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThatCode;
-import org.junit.Test;
 
 /**
  * Tests suite for {@link AssertPass}

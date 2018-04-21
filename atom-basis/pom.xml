@@ -42,10 +42,6 @@
             <artifactId>vavr</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.kimble</groupId>
-            <artifactId>junit-test-factory</artifactId>
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
@@ -54,8 +50,8 @@
             <artifactId>assertj-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
         </dependency>
         <dependency>
             <groupId>net.bytebuddy</groupId>

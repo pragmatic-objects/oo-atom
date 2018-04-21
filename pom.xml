@@ -99,14 +99,9 @@ SOFTWARE.
                 <version>3.4</version>
             </dependency>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.12</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.kimble</groupId>
-                <artifactId>junit-test-factory</artifactId>
-                <version>4.12.6</version>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.2.0-M1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -162,10 +157,17 @@ SOFTWARE.
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.20</version>
+                    <version>2.19.1</version>
                     <configuration>
                         <trimStackTrace>false</trimStackTrace>
                     </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.junit.platform</groupId>
+                            <artifactId>junit-platform-surefire-provider</artifactId>
+                            <version>1.0.2</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

@@ -23,35 +23,11 @@
  */
 package oo.atom.tests;
 
-import com.github.kimble.FactoryRunner;
+
 import io.vavr.collection.List;
 import oo.atom.anno.Atom;
-import org.junit.runner.RunWith;
-
-
-/**
- * Private adapter for tests in test suite. For internal use only.
- * 
- * @author Kapralov Sergey
- */
-@Atom
-class TestInstance implements FactoryRunner.Test {
-    private final Test test;
-
-    /**
-     * Ctor.
-     * 
-     * @param test A wrapped test
-     */
-    public TestInstance(Test test) {
-        this.test = test;
-    }
-
-    @Override
-    public final void execute() throws Throwable {
-        test.execute();
-    }
-}
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.TestFactory;
 
 /**
  * A tests suite.
@@ -59,8 +35,7 @@ class TestInstance implements FactoryRunner.Test {
  * @author Kapralov Sergey
  */
 @Atom
-@RunWith(FactoryRunner.class)
-public class TestsSuite implements FactoryRunner.Producer {
+public class TestsSuite {
     private final List<Test> tests;
 
     /**
@@ -83,13 +58,8 @@ public class TestsSuite implements FactoryRunner.Producer {
         this.tests = tests;
     }
 
-    @Override
-    public final void produceTests(FactoryRunner.TestConsumer tc) throws Throwable {
-        for (Test test : tests) {
-            tc.accept(
-                test.description(),
-                new TestInstance(test)
-            );
-        }
+    @TestFactory
+    public final Iterable<DynamicTest> produceTests() {
+        return tests.map(t -> DynamicTest.dynamicTest(t.description(), () -> t.execute()));
     }
 }

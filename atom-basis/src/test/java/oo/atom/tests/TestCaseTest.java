@@ -32,19 +32,19 @@ import static org.assertj.core.api.Assertions.assertThatCode;
  * @author Kapralov Sergey
  */
 public class TestCaseTest {
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public final void hasDescription() {
         Test test = new TestCase("description", new AssertPass());
         assertThat(test.description()).isEqualTo("description");
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public final void failsWhenAssertionIsFailing() {
         Test test = new TestCase("description", new AssertFail());
         assertThatThrownBy(() -> test.execute()).isInstanceOf(AssertionError.class);
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public final void passesWhenAssertionIsPassing() {
         Test test = new TestCase("description", new AssertPass());
         assertThatCode(() -> test.execute()).doesNotThrowAnyException();
