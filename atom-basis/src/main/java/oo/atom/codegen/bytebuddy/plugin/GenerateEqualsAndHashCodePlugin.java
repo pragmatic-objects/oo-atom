@@ -30,9 +30,7 @@ import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 import oo.atom.codegen.bytebuddy.matchers.ExplicitlyExtendingAnything;
 import oo.atom.codegen.bytebuddy.validator.ValAtom;
 
-import static net.bytebuddy.matcher.ElementMatchers.isAnnotation;
-import static net.bytebuddy.matcher.ElementMatchers.isInterface;
-import static net.bytebuddy.matcher.ElementMatchers.not;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
  * Generates {@link Object#equals(Object)} and {@link Object#hashCode()} methods
@@ -47,6 +45,7 @@ public class GenerateEqualsAndHashCodePlugin extends TaskPlugin implements Plugi
                 new ConjunctionMatcher<>(
                     not(isInterface()),
                     not(isAnnotation()),
+                    not(isSynthetic()),
                     new AnnotatedAtom(),
                     not(new ExplicitlyExtendingAnything())
                 ),
