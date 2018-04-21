@@ -282,7 +282,8 @@ SOFTWARE.
                 <pitest.target.tests>*</pitest.target.tests>
             </properties>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <!-- @todo #134 Enable Pitest back after finding a way to integrate it with JUnit 5. -->
+                <activeByDefault>false</activeByDefault>
             </activation>
             <build>
                 <plugins>
