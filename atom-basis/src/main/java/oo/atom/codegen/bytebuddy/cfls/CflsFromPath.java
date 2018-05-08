@@ -24,6 +24,8 @@
 
 package oo.atom.codegen.bytebuddy.cfls;
 
+import net.bytebuddy.dynamic.ClassFileLocator;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -41,6 +43,11 @@ class CflsFromPathInference implements ClassFileLocatorSource.Inference {
 
     @Override
     public final ClassFileLocatorSource classFileLocatorSource() {
+        if(!Files.exists(path)) {
+            return new CflsExplicit(
+                ClassFileLocator.NoOp.INSTANCE
+            );
+        }
         if(Files.isDirectory(path)) {
             return new CflsDirectory(path);
         } else {
