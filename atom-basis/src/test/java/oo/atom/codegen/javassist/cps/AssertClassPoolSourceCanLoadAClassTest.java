@@ -5,9 +5,6 @@ import oo.atom.tests.AssertAssertionFails;
 import oo.atom.tests.AssertAssertionPasses;
 import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests suite for {@link AssertClassPoolSourceCanLoadAClassTest}.
