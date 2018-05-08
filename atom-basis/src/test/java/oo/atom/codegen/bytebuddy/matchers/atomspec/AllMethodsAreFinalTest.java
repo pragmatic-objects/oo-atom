@@ -29,8 +29,6 @@ import oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
 import oo.atom.tests.AssertAtomsAreNotEqual;
 import oo.atom.tests.TestCase;
 import oo.atom.tests.TestsSuite;
-import static org.assertj.core.api.Assertions.*;
-import org.junit.Test;
 
 /**
  *

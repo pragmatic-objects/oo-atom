@@ -21,26 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package oo.atom.tests;
+package oo.atom.it;
 
-import static org.assertj.core.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+public class SyntheticsTest {
+    /**
+     * A special synthetic class is generated for switch-case in the method.
+     * It must NOT be instrumented.
+     */
+    private static class Foo {
+        private enum Bar {
+            A, B;
+        }
 
-/**
- * Tests suite for {@link AssertAssertionPasses}
- * 
- * @author Kapralov Sergey
- */
-public class AssertAssertionPassesTest {
-    @Test
-    public final void failsOnFailedAssertion() {
-        final Assertion assertion = new AssertAssertionPasses(new AssertFail());
-        assertThatThrownBy(() -> assertion.check()).isInstanceOf(AssertionError.class);
-    }
-
-    @Test
-    public final void succeedsOnPassingAssertion() {
-        final Assertion assertion = new AssertAssertionPasses(new AssertPass());
-        assertThatCode(() -> assertion.check()).doesNotThrowAnyException();
+        public final void method(Bar a) {
+            switch (a) {
+                case A:
+                    System.out.println(a);
+                    break;
+                case B:
+                    System.out.println(a);
+                    break;
+                default:
+                    //Do nothing
+            }
+        }
     }
 }

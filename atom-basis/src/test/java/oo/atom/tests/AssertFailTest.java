@@ -24,7 +24,7 @@
 package oo.atom.tests;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests suite for {@link AssertFail}

@@ -42,6 +42,7 @@ public class AnnotateClassesPlugin extends TaskPlugin implements Plugin {
                 new ConjunctionMatcher<>(
                     not(isInterface()),
                     not(isAnnotation()),
+                    not(isSynthetic()),
                     not(new AnnotatedAtom()),
                     not(new AnnotatedNonAtom()),
                     new ThisOrSuperClassMatcher(
