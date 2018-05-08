@@ -39,6 +39,9 @@ public class CnFromPath implements ClassNames {
     @Override
     public final List<String> classNames() {
         try {
+            if(Files.notExists(path)) {
+                return List.empty();
+            }
             final List<String> classes = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))
                 .map(path::relativize)
                 .map(Object::toString)
