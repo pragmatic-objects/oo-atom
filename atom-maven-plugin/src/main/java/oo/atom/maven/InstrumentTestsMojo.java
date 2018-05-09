@@ -21,48 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package oo.atom.maven;
 
-package oo.atom.codegen;
-
-import io.vavr.control.Option;
-import oo.atom.anno.NotAtom;
-import oo.atom.codegen.cp.CpFromString;
-import oo.atom.codegen.stage.AggroInstrumentationStage;
-import oo.atom.codegen.stage.Stage;
 import oo.atom.codegen.stage.StandardInstrumentationStage;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/**
- * Instrumentation entry point
- *
- * @author Kapralov Sergey
- */
-@NotAtom
-public class AtomizerMain {
-    /**
-     * Main.
-     *
-     * @param args CLI arguments
-     * @throws Exception If something goes wrong.
-     */
-    public static final void main(String... args) throws Exception {
-        final Stage stage;
-        if(args.length > 0 && args[0].equals("-aggro")) {
-            stage = new AggroInstrumentationStage();
-        } else {
-            stage = new StandardInstrumentationStage();
-        }
-        final Path workingDirectory = Option.of(System.getProperty("user.dir"))
-                .map(Paths::get)
-                .getOrElseThrow(RuntimeException::new);
-        new Instrumentation.Implementation(
-            new CpFromString(
-                System.getProperty("java.class.path")
-            ),
-            workingDirectory,
-            stage
-        ).apply();
+@Mojo(name = "instrument-tests", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES, requiresDependencyResolution = ResolutionScope.TEST)
+public class InstrumentTestsMojo extends BaseMojo {
+    @Parameter(defaultValue = "${project.build.testOutputDirectory}", required = true, readonly = true)
+    protected String outputDirectory;
+
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        doInstrumentation(
+            new StandardInstrumentationStage(),
+            Paths.get(outputDirectory)
+        );
     }
 }

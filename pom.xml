@@ -369,6 +369,7 @@ SOFTWARE.
         <module>atom-api</module>
         <module>atom-tests</module>
         <module>atom-starter</module>
+        <module>atom-maven-plugin</module>
         <module>atom-it</module>
         <module>atom-samples</module>
         <module>atomizer</module>

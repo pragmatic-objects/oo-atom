@@ -25,17 +25,14 @@
 package oo.atom.codegen;
 
 import io.vavr.collection.List;
-import io.vavr.control.Option;
 import oo.atom.codegen.cn.ClassNames;
 import oo.atom.codegen.cn.CnFromPath;
 import oo.atom.codegen.cp.ClassPath;
 import oo.atom.codegen.cp.CpCombined;
 import oo.atom.codegen.cp.CpExplicit;
-import oo.atom.codegen.cp.CpFromString;
 import oo.atom.codegen.stage.Stage;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Classes instrumentation
@@ -54,6 +51,8 @@ public interface Instrumentation {
      * @author Kapralov Sergey
      */
     class Implementation implements Instrumentation {
+        private final ClassPath classPath;
+        private final Path workingDirectory;
         private final List<Stage> stages;
 
         /**
@@ -61,7 +60,9 @@ public interface Instrumentation {
          *
          * @param stages Stages to apply.
          */
-        public Implementation(final List<Stage> stages) {
+        public Implementation(final ClassPath classPath, final Path workingDirectory, final List<Stage> stages) {
+            this.classPath = classPath;
+            this.workingDirectory = workingDirectory;
             this.stages = stages;
         }
 
@@ -70,21 +71,18 @@ public interface Instrumentation {
          *
          * @param stages Stages to apply.
          */
-        public Implementation(final Stage... stages) {
+        public Implementation(final ClassPath classPath, final Path workingDirectory, final Stage... stages) {
             this(
+                classPath,
+                workingDirectory,
                 List.of(stages)
             );
         }
 
         @Override
         public final void apply() {
-            final Path workingDirectory = Option.of(System.getProperty("user.dir"))
-                .map(Paths::get)
-                .getOrElseThrow(RuntimeException::new);
             final ClassPath classPath = new CpCombined(
-                new CpFromString(
-                    System.getProperty("java.class.path")
-                ),
+                this.classPath,
                 new CpExplicit(
                     workingDirectory
                 )

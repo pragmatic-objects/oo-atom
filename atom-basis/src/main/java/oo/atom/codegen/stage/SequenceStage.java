@@ -21,48 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package oo.atom.codegen.stage;
 
-package oo.atom.codegen;
-
-import io.vavr.control.Option;
-import oo.atom.anno.NotAtom;
-import oo.atom.codegen.cp.CpFromString;
-import oo.atom.codegen.stage.AggroInstrumentationStage;
-import oo.atom.codegen.stage.Stage;
-import oo.atom.codegen.stage.StandardInstrumentationStage;
+import io.vavr.collection.List;
+import oo.atom.codegen.cn.ClassNames;
+import oo.atom.codegen.cp.ClassPath;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
- * Instrumentation entry point
+ * Complex stage, consisting of several steps, executed sequentially.
  *
  * @author Kapralov Sergey
  */
-@NotAtom
-public class AtomizerMain {
-    /**
-     * Main.
-     *
-     * @param args CLI arguments
-     * @throws Exception If something goes wrong.
-     */
-    public static final void main(String... args) throws Exception {
-        final Stage stage;
-        if(args.length > 0 && args[0].equals("-aggro")) {
-            stage = new AggroInstrumentationStage();
-        } else {
-            stage = new StandardInstrumentationStage();
+public class SequenceStage implements Stage {
+    private final List<Stage> substages;
+
+    public SequenceStage(List<Stage> substages) {
+        this.substages = substages;
+    }
+
+    public SequenceStage(Stage... substages) {
+        this(List.of(substages));
+    }
+
+    @Override
+    public final void apply(ClassPath classPath, ClassNames classNames, Path workingDirectory) {
+        for(Stage stage : substages) {
+            stage.apply(classPath, classNames, workingDirectory);
         }
-        final Path workingDirectory = Option.of(System.getProperty("user.dir"))
-                .map(Paths::get)
-                .getOrElseThrow(RuntimeException::new);
-        new Instrumentation.Implementation(
-            new CpFromString(
-                System.getProperty("java.class.path")
-            ),
-            workingDirectory,
-            stage
-        ).apply();
     }
 }
