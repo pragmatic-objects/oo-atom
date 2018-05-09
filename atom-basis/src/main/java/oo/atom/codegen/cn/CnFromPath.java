@@ -29,9 +29,19 @@ import io.vavr.collection.List;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Class names, extracted from all .class files from certain directory.
+ *
+ * @author Kapralov Sergey
+ */
 public class CnFromPath implements ClassNames {
     private final Path path;
 
+    /**
+     * Ctor.
+     *
+     * @param path Path to scan for class names.
+     */
     public CnFromPath(final Path path) {
         this.path = path;
     }
@@ -46,6 +56,7 @@ public class CnFromPath implements ClassNames {
                 .map(path::relativize)
                 .map(Object::toString)
                 .map(s -> s.replace(".class", "").replace("/", "."))
+                .filter(s -> !"module-info".equals(s))
                 .collect(List.collector());
             return classes;
         } catch(Exception ex) {
