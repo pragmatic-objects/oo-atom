@@ -66,6 +66,10 @@
             <artifactId>bcel</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
             <scope>provided</scope>
