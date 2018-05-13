@@ -35,7 +35,7 @@ public class JpNotAtomAnnotation extends JpAnnotation {
     public JpNotAtomAnnotation() {
         super(
             "oo.atom.anno",
-            "Atom",
+            "NotAtom",
             RetentionPolicy.RUNTIME,
             ElementType.TYPE
         );
