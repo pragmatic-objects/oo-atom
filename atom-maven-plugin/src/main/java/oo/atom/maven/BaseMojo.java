@@ -1,6 +1,6 @@
 package oo.atom.maven;
 
-import oo.atom.codegen.Instrumentation;
+import oo.atom.instrumentation.ApplyStages;
 import oo.atom.codegen.cp.ClassPath;
 import oo.atom.codegen.cp.CpFromString;
 import oo.atom.codegen.stage.Stage;
@@ -25,7 +25,7 @@ public abstract class BaseMojo extends AbstractMojo {
                 .map(File::toString)
                 .collect(Collectors.joining(":"));
         ClassPath cp = new CpFromString(classPath);
-        new Instrumentation.Implementation(
+        new ApplyStages(
             cp,
             workingDirectory,
             stage

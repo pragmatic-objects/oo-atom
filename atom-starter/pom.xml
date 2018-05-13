@@ -82,6 +82,7 @@
                 <executions>
                     <execution>
                         <goals>
+                            <goal>generate-annotations</goal>
                             <goal>instrument</goal>
                             <goal>instrument-tests</goal>
                         </goals>

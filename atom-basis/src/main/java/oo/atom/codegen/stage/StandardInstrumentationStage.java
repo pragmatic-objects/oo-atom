@@ -46,8 +46,7 @@ public class StandardInstrumentationStage extends SequenceStage {
                         new oo.atom.codegen.bytebuddy.plugin.VerbosePlugin(
                                 new ValidateAtomAliases()
                         )
-                ),
-                new CopyAtomAnnotations()
+                )
         );
     }
 }

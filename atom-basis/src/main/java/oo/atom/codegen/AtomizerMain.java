@@ -28,8 +28,10 @@ import io.vavr.control.Option;
 import oo.atom.anno.NotAtom;
 import oo.atom.codegen.cp.CpFromString;
 import oo.atom.codegen.stage.AggroInstrumentationStage;
+import oo.atom.codegen.stage.CopyAtomAnnotations;
 import oo.atom.codegen.stage.Stage;
 import oo.atom.codegen.stage.StandardInstrumentationStage;
+import oo.atom.instrumentation.ApplyStages;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,12 +59,13 @@ public class AtomizerMain {
         final Path workingDirectory = Option.of(System.getProperty("user.dir"))
                 .map(Paths::get)
                 .getOrElseThrow(RuntimeException::new);
-        new Instrumentation.Implementation(
+        new ApplyStages(
             new CpFromString(
                 System.getProperty("java.class.path")
             ),
             workingDirectory,
-            stage
+            stage,
+            new CopyAtomAnnotations()
         ).apply();
     }
 }
