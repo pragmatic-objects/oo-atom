@@ -18,17 +18,21 @@ import java.util.stream.Collectors;
 public abstract class BaseMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
+    @Parameter(defaultValue = "false", required = true, readonly = true)
+    private boolean instrumentPomProjects;
 
     protected final void doInstrumentation(Stage stage, Path workingDirectory) throws MojoExecutionException, MojoFailureException {
-        String classPath = project.getArtifacts().stream()
-                .map(Artifact::getFile)
-                .map(File::toString)
-                .collect(Collectors.joining(":"));
-        ClassPath cp = new CpFromString(classPath);
-        new ApplyStages(
-            cp,
-            workingDirectory,
-            stage
-        ).apply();
+        if(!project.getPackaging().equals("pom") || instrumentPomProjects) {
+            String classPath = project.getArtifacts().stream()
+                    .map(Artifact::getFile)
+                    .map(File::toString)
+                    .collect(Collectors.joining(":"));
+            ClassPath cp = new CpFromString(classPath);
+            new ApplyStages(
+                    cp,
+                    workingDirectory,
+                    stage
+            ).apply();
+        }
     }
 }

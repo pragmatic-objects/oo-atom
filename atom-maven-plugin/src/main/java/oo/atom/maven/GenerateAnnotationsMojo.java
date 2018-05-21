@@ -19,14 +19,18 @@ public class GenerateAnnotationsMojo extends AbstractMojo {
     private String workingDirectory;
     @Parameter(defaultValue = "${project}", readonly = true)
     private MavenProject project;
+    @Parameter(defaultValue = "false", required = true, readonly = true)
+    private boolean instrumentPomProjects;
 
     @Override
     public final void execute() throws MojoExecutionException, MojoFailureException {
-        new GenerateSources(
-            Paths.get(workingDirectory),
-            new JpAtomAnnotation(),
-            new JpNotAtomAnnotation()
-        ).apply();
-        project.addCompileSourceRoot(workingDirectory);
+        if(!project.getPackaging().equals("pom") || instrumentPomProjects) {
+            new GenerateSources(
+                    Paths.get(workingDirectory),
+                    new JpAtomAnnotation(),
+                    new JpNotAtomAnnotation()
+            ).apply();
+            project.addCompileSourceRoot(workingDirectory);
+        }
     }
 }
