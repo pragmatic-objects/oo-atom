@@ -39,9 +39,9 @@
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
-        <!--<module name="Indentation"/>
+        <module name="Indentation"/>
 
-        <module name="JavadocType">
+        <!--<module name="JavadocType">
             <property name="allowUnknownTags" value="true"/>
         </module>
         <module name="JavadocMethod">

@@ -35,7 +35,7 @@ import oo.atom.codegen.bytebuddy.branching.Branching;
  *
  * @author Kapralov Sergey
  */
- public enum Condition {
+public enum Condition {
     IS_TRUE(l -> new BIfEq(l)),
     IS_FALSE(l -> new BIfNe(l)),
     IS_REF_EQUAL(l -> new BIfAcmpEq(l)),
