@@ -37,6 +37,12 @@ public class RtFromBuilderTransitionAdapter implements ResultTransition<Builder<
     private final BuilderTransition builderTransition;
     private final TypeDescription typeDescription;
 
+    /**
+     * Ctor.
+     *
+     * @param builderTransition Transition-delegate
+     * @param typeDescription Type to instrument
+     */
     public RtFromBuilderTransitionAdapter(BuilderTransition builderTransition, TypeDescription typeDescription) {
         this.builderTransition = builderTransition;
         this.typeDescription = typeDescription;

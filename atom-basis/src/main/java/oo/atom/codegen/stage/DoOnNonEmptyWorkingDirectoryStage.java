@@ -31,9 +31,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Applies stage only to non-empty woking directory
+ *
+ * @author Kapralov Sergey
+ */
 public class DoOnNonEmptyWorkingDirectoryStage implements Stage {
     private final Stage stage;
 
+    /**
+     * Ctor.
+     *
+     * @param stage {@link Stage}
+     */
     public DoOnNonEmptyWorkingDirectoryStage(final Stage stage) {
         this.stage = stage;
     }

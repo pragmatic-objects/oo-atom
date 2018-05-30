@@ -28,6 +28,17 @@ import org.apache.bcel.util.Repository;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ClassGen;
 
+/**
+ * A pluggable BCEL instrumentation operation.
+ *
+ * @author Kapralov Sergey
+ */
 public interface Plugin {
+    /**
+     * Use the plugin to instrument certain class.
+     * @param classGen BCEL {@link ClassGen} instance for the instrumented class
+     * @param clazz BCEL {@link JavaClass} instance for the instrumented class
+     * @param repository BCEL {@link Repository}, containing all dependent classes
+     */
     void operateOn(ClassGen classGen, JavaClass clazz, Repository repository);
 }

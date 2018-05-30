@@ -44,5 +44,8 @@ public interface ClassPoolSource {
         ClassPoolSource classPoolSource();
     }
 
+    /**
+     * @return {@link ClassPool}
+     */
     ClassPool classPool();
 }

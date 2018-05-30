@@ -28,9 +28,18 @@ import io.vavr.collection.List;
 
 import java.nio.file.Path;
 
+/**
+ * Class path, consisting of the single explicit path.
+ *
+ * @author Kapralov Sergey
+ */
 public class CpExplicit implements ClassPath {
     private final Path path;
 
+    /**
+     * Ctor.
+     * @param path Path.
+     */
     public CpExplicit(final Path path) {
         this.path = path;
     }

@@ -28,6 +28,9 @@ package oo.atom.r;
  * the first transition, then the second one.
  * 
  * @author Kapralov Sergey
+ * @param <X> source type
+ * @param <S> intermediate type
+ * @param <T> target type
  */
 public class RtChain<X, S, T> implements ResultTransition<X, T> {
     private final ResultTransition<X, S> first;

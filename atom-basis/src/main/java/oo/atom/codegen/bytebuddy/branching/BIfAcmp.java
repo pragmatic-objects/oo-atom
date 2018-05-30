@@ -26,7 +26,8 @@ package oo.atom.codegen.bytebuddy.branching;
 import net.bytebuddy.jar.asm.Label;
 
 /**
- * 
+ * {@link BIfAcmp} inference.
+ *
  * @author Kapralov Sergey
  */
 class BIfAcmpInference implements BranchingInference {
@@ -45,10 +46,17 @@ class BIfAcmpInference implements BranchingInference {
 }
 
 /**
+ * IF_ACMP* branching instance.
  *
  * @author Kapralov Sergey
  */
 public class BIfAcmp extends BInferred implements Branching {
+    /**
+     * Ctor.
+     *
+     * @param equals use IF_ACMPEQ or IF_ACMPNE opcode?
+     * @param label opcode's target label.
+     */
     public BIfAcmp(boolean equals, Label label) {
         super(
             new BIfAcmpInference(

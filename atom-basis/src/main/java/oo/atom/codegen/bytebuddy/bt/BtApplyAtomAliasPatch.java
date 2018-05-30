@@ -31,6 +31,9 @@ import oo.atom.codegen.bytebuddy.validator.ValAtomAlias;
  * @author Kapralov Sergey
  */
 public class BtApplyAtomAliasPatch extends BtValidated {
+    /**
+     * Ctor.
+     */
     public BtApplyAtomAliasPatch() {
         super(
             new ValAtomAlias(),

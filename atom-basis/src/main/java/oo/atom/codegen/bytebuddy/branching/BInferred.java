@@ -27,6 +27,7 @@ import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 
 /**
+ * Inferred {@link Branching}
  *
  * @author Kapralov Sergey
  */
@@ -34,6 +35,10 @@ public class BInferred implements Branching {
     
     private final BranchingInference inference;
 
+    /**
+     * Ctor.
+     * @param inference {@link Branching} inference.
+     */
     public BInferred(BranchingInference inference) {
         this.inference = inference;
     }

@@ -28,6 +28,8 @@ package oo.atom.r;
  * 
  * @author Kapralov Sergey
  * @see RBind
+ * @param <X> Source type
+ * @param <T> Transition type
  */
 public interface ResultTransition<X, T> {
     /**

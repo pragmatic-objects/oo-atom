@@ -24,13 +24,27 @@
 package oo.atom.tests;
 
 /**
+ * A reusable assertion
  *
  * @author Kapralov Sergey
  */
 public interface Assertion {
+    /**
+     * {@link Assertion} inference.
+     *
+     * @author Kapralov Sergey
+     */
     interface Inference {
+        /**
+         * @return Inferred {@link Assertion}
+         */
         Assertion assertion();
     }
-    
+
+    /**
+     * Check the assertion.
+     *
+     * @throws Exception if assertion was wrong.
+     */
     public void check() throws Exception;
 }

@@ -41,6 +41,9 @@ import static net.bytebuddy.matcher.ElementMatchers.not;
  * @author Kapralov Sergey
  */
 public class AnnotateInterfacesPlugin extends TaskPlugin implements Plugin {
+    /**
+     * Ctor.
+     */
     public AnnotateInterfacesPlugin() {
         super(
             new BtApplyIfMatches(

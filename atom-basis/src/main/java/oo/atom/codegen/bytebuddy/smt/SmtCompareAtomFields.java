@@ -32,9 +32,19 @@ import oo.atom.codegen.bytebuddy.matchers.NaturalJavaAtom;
 import oo.atom.r.RInferred;
 import oo.atom.r.Result;
 
+/**
+ * {@link SmtCompareAtomFields} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtCompareAtomFieldsInference implements Result.Inference<StackManipulation> {
     private final FieldDescription field;
 
+    /**
+     * Ctor.
+     *
+     * @param field Field.
+     */
     public SmtCompareAtomFieldsInference(FieldDescription field) {
         this.field = field;
     }
@@ -61,10 +71,16 @@ class SmtCompareAtomFieldsInference implements Result.Inference<StackManipulatio
 }
 
 /**
+ * Generates bytecode for comparing a field of two objects using atom equality semantics.
  *
  * @author Kapralov Sergey
  */
 public class SmtCompareAtomFields extends RInferred<StackManipulation> implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param field Field.
+     */
     public SmtCompareAtomFields(FieldDescription field) {
         super(
             new SmtCompareAtomFieldsInference(

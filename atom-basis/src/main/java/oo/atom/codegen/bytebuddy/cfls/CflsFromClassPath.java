@@ -26,9 +26,19 @@ package oo.atom.codegen.bytebuddy.cfls;
 
 import oo.atom.codegen.cp.ClassPath;
 
+/**
+ * {@link CflsFromClassPath} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class CflsFromClassPathInference implements ClassFileLocatorSource.Inference {
     private final ClassPath classPath;
 
+    /**
+     * Ctor.
+     *
+     * @param classPath {@link ClassPath} instance
+     */
     public CflsFromClassPathInference(final ClassPath classPath) {
         this.classPath = classPath;
     }
@@ -41,7 +51,17 @@ class CflsFromClassPathInference implements ClassFileLocatorSource.Inference {
     }
 }
 
+/**
+ * {@link ClassFileLocatorSource} which looks for classes in certain {@link ClassPath}
+ *
+ * @author Kapralov Sergey
+ */
 public class CflsFromClassPath extends CflsInferred implements ClassFileLocatorSource {
+    /**
+     * Ctor.
+     *
+     * @param cp {@link ClassPath} instance
+     */
     public CflsFromClassPath(final ClassPath cp) {
         super(
             new CflsFromClassPathInference(

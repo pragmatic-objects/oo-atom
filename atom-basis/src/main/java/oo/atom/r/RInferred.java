@@ -30,6 +30,7 @@ import io.vavr.control.Try;
  * Inferred result
  * 
  * @author Kapralov Sergey
+ * @param <T> target type
  */
 public class RInferred<T> implements Result<T> {
     private final Inference<T> inference;

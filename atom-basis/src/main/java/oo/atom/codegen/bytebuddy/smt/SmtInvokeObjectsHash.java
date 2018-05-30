@@ -32,6 +32,7 @@ import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 import oo.atom.r.RSuccess;
 
 /**
+ * Generates invocation for {@link Objects#hash(Object...)}
  *
  * @author Kapralov Sergey
  */
@@ -45,7 +46,10 @@ public class SmtInvokeObjectsHash extends RSuccess<StackManipulation> implements
             throw new RuntimeException(ex);
         }
     }
-    
+
+    /**
+     * Ctor.
+     */
     public SmtInvokeObjectsHash() {
         super(
             new StackManipulation.Compound(

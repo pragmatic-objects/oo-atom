@@ -27,7 +27,7 @@ import oo.atom.codegen.bytebuddy.matchers.atomspec.*;
 
 /**
  * A validator which validates that certain {@link net.bytebuddy.description.type.TypeDescription} is
- * the atom.
+ * Atom-compliant (by <a href="https://github.com/project-avral/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>).
  *
  * @author Kapralov Sergey
  */

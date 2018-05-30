@@ -31,7 +31,8 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
  * Assertion that passes if {@link BuilderTransition} under the test produces a valid class.
- * The class is implied as valid if it is successfully loaded by JVM and passes verification
+ * The class is implied as valid if it is successfully loaded by JVM and passes Bytecode
+ * verification
  * 
  * @author Kapralov Sergey
  */
@@ -64,5 +65,10 @@ public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
         }).doesNotThrowAnyException();
     }
 
+    /**
+     * Anonymous class loader for isolating calls on {@link AssertBuilderTransitionIsNotCorruptingClass}
+     *
+     * @author Kapralov Sergey
+     */
     private static final class AnonymousClassLoader extends ClassLoader {}
 }

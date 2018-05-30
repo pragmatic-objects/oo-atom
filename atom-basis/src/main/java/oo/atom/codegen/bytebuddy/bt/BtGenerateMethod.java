@@ -99,8 +99,15 @@ class BtGenerateMethodImplementation implements Implementation {
  * @author Kapralov Sergey
  */
 public class BtGenerateMethod implements BuilderTransition {
+    /**
+     * Lambda which produces implementation of the generated method by type
+     */
     @FunctionalInterface
     interface StackManipulationTokenByTypeDescription {
+        /**
+         * @param type type where the method must be generated
+         * @return method's implementation
+         */
         StackManipulationToken token(TypeDescription type);
     }
 
@@ -110,8 +117,8 @@ public class BtGenerateMethod implements BuilderTransition {
     /**
      * Ctor.
      *
-     * @param elementMatcher A matcher which is used to discover the method declaration.
-     * @param methodBodySmt Method body to generate.
+     * @param elementMatcher method matcher
+     * @param methodBodySmt method implementation lambda
      */
     public BtGenerateMethod(ElementMatcher<? super MethodDescription> elementMatcher, StackManipulationTokenByTypeDescription methodBodySmt) {
         this.elementMatcher = elementMatcher;
@@ -131,6 +138,11 @@ public class BtGenerateMethod implements BuilderTransition {
         });
     }
 
+    /**
+     * {@link Generated} annotation instance.
+     *
+     * @author Kapralov Sergey
+     */
     private static final class GeneratedInstance implements Generated {
         @Override
         public final Class<? extends Annotation> annotationType() {

@@ -15,6 +15,11 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.stream.Collectors;
 
+/**
+ * Base Mojo for different instrumentations
+ *
+ * @author Kapralov Sergey
+ */
 public abstract class BaseMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;

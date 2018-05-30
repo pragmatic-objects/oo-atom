@@ -36,6 +36,9 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
  * @author Kapralov Sergey
  */
 public class AnnotateClassesPlugin extends TaskPlugin implements Plugin {
+    /**
+     * Ctor.
+     */
     public AnnotateClassesPlugin() {
         super(
             new BtApplyIfMatches(

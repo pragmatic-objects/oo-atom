@@ -34,6 +34,11 @@ class BIfIcmpInference implements BranchingInference {
     private final boolean equals;
     private final Label label;
 
+    /**
+     * Ctor.
+     * @param equals IF_ICMPEQ or IF_ICMPNE?
+     * @param label Opcode's label
+     */
     public BIfIcmpInference(boolean equals, Label label) {
         this.equals = equals;
         this.label = label;
@@ -46,11 +51,16 @@ class BIfIcmpInference implements BranchingInference {
 }
 
 /**
+ * IF_ICMP* branching inference.
  *
  * @author Kapralov Sergey
  */
 public class BIfIcmp extends BInferred implements Branching {
-    
+    /**
+     * Ctor.
+     * @param equals IF_ICMPEQ or IF_ICMPNE?
+     * @param label Opcode's label
+     */
     public BIfIcmp(boolean equals, Label label) {
         super(new BIfIcmpInference(equals, label));
     }

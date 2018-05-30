@@ -29,10 +29,20 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.r.RInferred;
 import oo.atom.r.Result;
 
+/**
+ * {@link SmtBoxField} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtBoxFieldInference implements Result.Inference<StackManipulation> {
 
     private final FieldDescription field;
 
+    /**
+     * Ctor.
+     *
+     * @param field field to box
+     */
     public SmtBoxFieldInference(FieldDescription field) {
         this.field = field;
     }
@@ -49,13 +59,18 @@ class SmtBoxFieldInference implements Result.Inference<StackManipulation> {
 }
 
 /**
+ * Boxes a fields if its type is primitive
  *
  * @author Kapralov Sergey
  */
 public class SmtBoxField extends RInferred<StackManipulation> implements StackManipulationToken {
+    /**
+     * Ctor.
+     * @param field field description
+     */
     public SmtBoxField(FieldDescription field) {
         super(
-                new SmtBoxFieldInference(field)
+            new SmtBoxFieldInference(field)
         );
     }
 }

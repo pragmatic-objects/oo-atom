@@ -38,9 +38,9 @@ import net.bytebuddy.jar.asm.TypePath;
 import oo.atom.anno.NotAtom;
 
 /**
- * A customized mock, which is dedicated to assertions, which check the bytecode generation.
+ * A customized mock, dedicated to assertions, which check the bytecode generation using Byte-buddy.
  * Two instances of {@link oo.atom.codegen.bytebuddy.smt.internals.MethodVisitorRecorder}
- * are equal if they produce semantically the same Java bytecode
+ * are equal if they produce the same Java bytecode.
  * 
  * @author Kapralov Sergey
  */
@@ -51,6 +51,9 @@ public final class MethodVisitorRecorder extends MethodVisitor {
     private final IdentityHashMap<Attribute, Long> attributesTable = new IdentityHashMap<>();
     private final IdentityHashMap<Label, Long> labelsTable = new IdentityHashMap<>();
 
+    /**
+     * Ctor.
+     */
     public MethodVisitorRecorder() {
         super(Opcodes.ASM5);
     }
@@ -356,6 +359,9 @@ public final class MethodVisitorRecorder extends MethodVisitor {
         super.visitVarInsn(i, i1);
     }
 
+    /**
+     * Put the traces of what was collected by the recorder to the stdout.
+     */
     public void trace() {
         recordedCalls.forEach(System.out::println);
     }

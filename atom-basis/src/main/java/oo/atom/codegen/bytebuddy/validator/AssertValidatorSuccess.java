@@ -51,6 +51,11 @@ public class AssertValidatorSuccess extends AssertInferred {
     }
 }
 
+/**
+ * {@link AssertValidatorSuccess} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class AssertValidatorSuccessInference implements Assertion.Inference {
     private final Validator validator;
     private final TypeDescription type;

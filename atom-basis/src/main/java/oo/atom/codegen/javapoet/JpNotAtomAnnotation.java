@@ -32,6 +32,9 @@ import java.lang.annotation.RetentionPolicy;
  * @author Kapralov Sergey
  */
 public class JpNotAtomAnnotation extends JpAnnotation {
+    /**
+     * Ctor.
+     */
     public JpNotAtomAnnotation() {
         super(
             "oo.atom.anno",

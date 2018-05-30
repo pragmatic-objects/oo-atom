@@ -28,6 +28,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Matcher which matches types, all declared fields of which are private final
  *
  * @author Kapralov Sergey
  */

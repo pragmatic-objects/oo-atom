@@ -37,6 +37,11 @@ import java.nio.file.Path;
 class CflsFromPathInference implements ClassFileLocatorSource.Inference {
     private final Path path;
 
+    /**
+     * Ctor.
+     *
+     * @param path Path
+     */
     public CflsFromPathInference(final Path path) {
         this.path = path;
     }
@@ -64,6 +69,12 @@ class CflsFromPathInference implements ClassFileLocatorSource.Inference {
  * @author Kapralov Sergey
  */
 public class CflsFromPath extends CflsInferred implements ClassFileLocatorSource {
+
+    /**
+     * Ctor.
+     *
+     * @param path Path
+     */
     public CflsFromPath(final Path path) {
         super(
             new CflsFromPathInference(

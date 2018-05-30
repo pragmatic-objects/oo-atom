@@ -30,6 +30,7 @@ import io.vavr.control.Try;
  * Represents erroneous result with a list of issues.
  * 
  * @author Kapralov Sergey
+ * @param <T> result's type
  */
 public class RFailure<T> implements Result<T> {
     private final List<String> issues;

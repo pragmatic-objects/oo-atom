@@ -28,12 +28,18 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Matches classes, super-class of which is matching certain matcher.
  *
  * @author Kapralov Sergey
  */
 public class Extending implements ElementMatcher<TypeDescription> {
     private final ElementMatcher<TypeDescription> superClassMatcher;
 
+    /**
+     * Ctor.
+     *
+     * @param superClassMatcher Matcher
+     */
     public Extending(ElementMatcher<TypeDescription> superClassMatcher) {
         this.superClassMatcher = superClassMatcher;
     }

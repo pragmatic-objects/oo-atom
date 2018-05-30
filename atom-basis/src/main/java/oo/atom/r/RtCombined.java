@@ -31,6 +31,8 @@ import java.util.function.BinaryOperator;
  * then combines output results together.
  * 
  * @author Kapralov Sergey
+ * @param <X> source type
+ * @param <T> target type
  */
 public class RtCombined<X, T> implements ResultTransition<X, T> {
     private final List<ResultTransition<X, T>> transitions;

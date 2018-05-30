@@ -63,6 +63,8 @@ class RBindInference<X, T> implements Result.Inference<T> {
  * Propagates issues in case of erroneous result.
  * 
  * @author Kapralov Sergey
+ * @param <X> Source type
+ * @param <T> Transition type
  */
 public class RBind<X, T> extends RInferred<T> implements Result<T> {
     /**

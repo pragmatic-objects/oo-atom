@@ -34,6 +34,9 @@ import oo.atom.codegen.bytebuddy.smt.SmtAtomEquals;
  * @author Kapralov Sergey
  */
 public class BtGenerateEquals extends BtApplyIfMatches {
+    /**
+     * Ctor.
+     */
     public BtGenerateEquals() {
         super(
             not(

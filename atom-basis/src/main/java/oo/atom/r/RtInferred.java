@@ -27,6 +27,8 @@ package oo.atom.r;
  * Inferred transition.
  * 
  * @author Kapralov Sergey
+ * @param <X> source type
+ * @param <T> target type
  */
 public class RtInferred<X, T> implements ResultTransition<X, T> {
     private final Inference<X, T> inference;

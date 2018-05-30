@@ -29,7 +29,18 @@ import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
+/**
+ * Generates invocation of method "atom$hashCode".
+ *
+ * @see oo.atom.codegen.javassist.templates.Atoms
+ * @author Kapralov Sergey
+ */
 public class SmtInvokeAtomHashCode extends SmtInvokeMethod implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param type Type to call method on.
+     */
     public SmtInvokeAtomHashCode(final TypeDescription type) {
         super(
             type,

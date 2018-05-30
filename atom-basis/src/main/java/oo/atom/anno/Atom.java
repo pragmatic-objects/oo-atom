@@ -23,16 +23,17 @@
  */
 package oo.atom.anno;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
+ * Classes, marked by annotation {@link Atom} are either proved,
+ * or claimed to be Atom-compliant classes. For the latest Atom
+ * specification, refer to <a href="https://github.com/project-avral/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>
  *
  * @author Kapralov Sergey
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface Atom {
 }

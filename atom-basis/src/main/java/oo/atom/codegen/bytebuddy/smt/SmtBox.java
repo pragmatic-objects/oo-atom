@@ -67,6 +67,10 @@ class SmtBoxInference implements Result.Inference<StackManipulation> {
 
     private final TypeDescription type;
 
+    /**
+     * Ctor.
+     * @param type a type to box.
+     */
     public SmtBoxInference(TypeDescription type) {
         this.type = type;
     }

@@ -86,6 +86,11 @@ public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements As
             methodNames
         );
     }
-    
+
+    /**
+     * Anonymous class loader for isolating calls on {@link AssertClassToHaveCertainMethodsAfterBuilderTransition}
+     *
+     * @author Kapralov Sergey
+     */
     private static final class AnonymousClassLoader extends ClassLoader {}
 }

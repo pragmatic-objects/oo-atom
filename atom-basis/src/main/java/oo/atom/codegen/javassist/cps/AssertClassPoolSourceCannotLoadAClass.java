@@ -16,6 +16,12 @@ public class AssertClassPoolSourceCannotLoadAClass implements Assertion {
     private final ClassPoolSource source;
     private final String className;
 
+    /**
+     * Ctor.
+     *
+     * @param source {@link ClassPoolSource} under test.
+     * @param className class name to load.
+     */
     public AssertClassPoolSourceCannotLoadAClass(ClassPoolSource source, String className) {
         this.source = source;
         this.className = className;

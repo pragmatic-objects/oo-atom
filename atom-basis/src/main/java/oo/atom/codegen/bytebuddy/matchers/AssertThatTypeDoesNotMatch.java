@@ -38,6 +38,12 @@ public class AssertThatTypeDoesNotMatch implements Assertion {
     private final TypeDescription typeDescription;
     private final ElementMatcher<TypeDescription> matcher;
 
+    /**
+     * Ctor.
+     *
+     * @param typeDescription Type description
+     * @param matcher Matcher
+     */
     public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
         this.typeDescription = typeDescription;
         this.matcher = matcher;

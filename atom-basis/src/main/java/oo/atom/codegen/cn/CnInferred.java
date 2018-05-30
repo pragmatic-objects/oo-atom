@@ -26,9 +26,19 @@ package oo.atom.codegen.cn;
 
 import io.vavr.collection.List;
 
+/**
+ * Inferred {@link ClassNames}
+ *
+ * @author Kapralov Sergey
+ */
 public class CnInferred implements ClassNames {
     private final Inference inference;
 
+    /**
+     * Ctor.
+     *
+     * @param inference Inference.
+     */
     public CnInferred(final Inference inference) {
         this.inference = inference;
     }

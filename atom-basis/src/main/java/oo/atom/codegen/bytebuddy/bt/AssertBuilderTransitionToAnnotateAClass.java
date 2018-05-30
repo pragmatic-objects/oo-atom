@@ -68,6 +68,11 @@ public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
                 .withFailMessage("Expected annotation %s is missing on class %s", annotation.getName(), clazz.getName())
                 .isNotNull();
     }
-    
+
+    /**
+     * Anonymous class loader for isolating calls on {@link AssertBuilderTransitionToAnnotateAClass}
+     *
+     * @author Kapralov Sergey
+     */
     private static final class AnonymousClassLoader extends ClassLoader {}
 }

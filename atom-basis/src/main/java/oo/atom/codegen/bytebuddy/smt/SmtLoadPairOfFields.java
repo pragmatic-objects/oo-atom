@@ -27,10 +27,16 @@ import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
 
 /**
+ * Loads a same field values from `this` and first argument of arbitrary method.
  *
  * @author Kapralov Sergey
  */
 public class SmtLoadPairOfFields extends SmtCombined {
+    /**
+     * Ctor.
+     * @param type The type field belongs to
+     * @param field The field.
+     */
     public SmtLoadPairOfFields(TypeDescription type, FieldDescription field) {
         super(
                 new SmtLoadReference(0),

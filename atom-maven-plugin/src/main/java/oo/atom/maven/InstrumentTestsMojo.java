@@ -33,6 +33,11 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import java.nio.file.Paths;
 
+/**
+ * Mojo that instruments test code.
+ *
+ * @author Kapralov Sergey
+ */
 @Mojo(name = "instrument-tests", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES, requiresDependencyResolution = ResolutionScope.TEST)
 public class InstrumentTestsMojo extends BaseMojo {
     @Parameter(defaultValue = "${project.build.testOutputDirectory}", required = true, readonly = true)

@@ -30,9 +30,19 @@ import oo.atom.r.RInferred;
 import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
+/**
+ * {@link SmtCast} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtCastInference implements Result.Inference<StackManipulation> {
     private final TypeDescription typeDescription;
 
+    /**
+     * Ctor.
+     *
+     * @param typeDescription type to cast
+     */
     public SmtCastInference(TypeDescription typeDescription) {
         this.typeDescription = typeDescription;
     }
@@ -44,10 +54,16 @@ class SmtCastInference implements Result.Inference<StackManipulation> {
 }
 
 /**
+ * Places bytecode for casting on-stack value to certain type.
  *
  * @author Kapralov Sergey
  */
 public class SmtCast extends RInferred<StackManipulation> implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param type type to cast.
+     */
     public SmtCast(TypeDescription type) {
         super(
             new SmtCastInference(type)

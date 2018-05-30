@@ -31,9 +31,19 @@ import oo.atom.r.RInferred;
 import oo.atom.r.RTransformed;
 import oo.atom.r.Result;
 
+/**
+ * {@link SmtArray} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtArrayInference implements Result.Inference {
     private final List<Result<StackManipulation>> members;
 
+    /**
+     * Ctor.
+     *
+     * @param members Array members.
+     */
     public SmtArrayInference(List<Result<StackManipulation>> members) {
         this.members = members;
     }
@@ -50,16 +60,27 @@ class SmtArrayInference implements Result.Inference {
 }
 
 /**
+ * Creates an array from values on stack, provided by {@link StackManipulationToken}'s
  *
  * @author Kapralov Sergey
  */
 public class SmtArray extends RInferred<StackManipulation> implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param members Array members
+     */
     public SmtArray(List<Result<StackManipulation>> members) {
         super(
             new SmtArrayInference(members)
         );
     }
 
+    /**
+     * Ctor.
+     *
+     * @param members Array members
+     */
     public SmtArray(Result<StackManipulation>... members) {
         this(List.of(members));
     }

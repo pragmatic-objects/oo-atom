@@ -28,6 +28,14 @@ import io.vavr.collection.List;
 
 import java.nio.file.Path;
 
+/**
+ * Class path
+ *
+ * @author Kapralov Sergey
+ */
 public interface ClassPath {
+    /**
+     * @return The list of paths, this class path consists of.
+     */
     List<Path> paths();
 }

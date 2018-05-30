@@ -29,9 +29,19 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.r.RInferred;
 import oo.atom.r.Result;
 
+/**
+ * {@link SmtLoadArrayOfFields} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtLoadArrayOfFieldsInference implements Result.Inference<StackManipulation> {
     private final TypeDescription type;
 
+    /**
+     * Ctor.
+     *
+     * @param type Type.
+     */
     public SmtLoadArrayOfFieldsInference(TypeDescription type) {
         this.type = type;
     }
@@ -49,10 +59,16 @@ class SmtLoadArrayOfFieldsInference implements Result.Inference<StackManipulatio
 }
 
 /**
+ * Loads all fields of on-stack object and creates an array from them.
  *
  * @author Kapralov Sergey
  */
 public class SmtLoadArrayOfFields extends RInferred<StackManipulation> implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param type Type.
+     */
     public SmtLoadArrayOfFields(TypeDescription type) {
         super(new SmtLoadArrayOfFieldsInference(type));
     }

@@ -28,9 +28,19 @@ import io.vavr.control.Option;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
+/**
+ * Recursively checks the class and all its parents till the hierarchy root, using provided matcher.
+ *
+ * @author Kapralov Sergey
+ */
 public class ThisOrSuperClassMatcher implements ElementMatcher<TypeDescription> {
     private final ElementMatcher<TypeDescription> matcher;
 
+    /**
+     * Ctor.
+     *
+     * @param matcher Matcher
+     */
     public ThisOrSuperClassMatcher(final ElementMatcher<TypeDescription> matcher) {
         this.matcher = matcher;
     }

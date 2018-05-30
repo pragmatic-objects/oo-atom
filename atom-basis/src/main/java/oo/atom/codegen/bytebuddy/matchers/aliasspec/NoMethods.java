@@ -28,6 +28,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
+ * Matcher which matches types wih no declared methods.
  *
  * @author Kapralov Sergey
  */

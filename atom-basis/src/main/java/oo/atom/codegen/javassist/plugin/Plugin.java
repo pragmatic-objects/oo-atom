@@ -27,6 +27,17 @@ package oo.atom.codegen.javassist.plugin;
 import javassist.ClassPool;
 import javassist.CtClass;
 
+/**
+ * Javassist-backed bytecode instrumentation pluggable operation.
+ *
+ * @author Kapralov Sergey
+ */
 public interface Plugin {
+    /**
+     * Apply plugin on certain class.
+     *
+     * @param clazz {@link CtClass} instance for instrumented class
+     * @param classPool {@link ClassPool}, containing all dependent classes.
+     */
     void operateOn(CtClass clazz, ClassPool classPool);
 }

@@ -33,6 +33,11 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import java.nio.file.Paths;
 
+/**
+ * Mojo that instruments prodiction code
+ *
+ * @author Kapralov Sergey
+ */
 @Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class InstrumentMojo extends BaseMojo {
     @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)

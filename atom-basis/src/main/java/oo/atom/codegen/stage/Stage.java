@@ -29,6 +29,18 @@ import oo.atom.codegen.cp.ClassPath;
 
 import java.nio.file.Path;
 
+/**
+ * An instrumentation stage.
+ *
+ * @author Kapralov Sergey
+ */
 public interface Stage {
+    /**
+     * Apply instrumentation.
+     *
+     * @param classPath {@link ClassPath} of the instrumented classes
+     * @param classNames {@link ClassNames} of classes to instrument
+     * @param workingDirectory {@link Path} where the classes are located
+     */
     void apply(ClassPath classPath, ClassNames classNames, Path workingDirectory);
 }

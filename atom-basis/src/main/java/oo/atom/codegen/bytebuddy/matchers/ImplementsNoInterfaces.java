@@ -27,6 +27,11 @@ package oo.atom.codegen.bytebuddy.matchers;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
+/**
+ * Matches types which implements no interfaces
+ *
+ * @author Kapralov Sergey
+ */
 public class ImplementsNoInterfaces implements ElementMatcher<TypeDescription> {
     @Override
     public final boolean matches(final TypeDescription target) {

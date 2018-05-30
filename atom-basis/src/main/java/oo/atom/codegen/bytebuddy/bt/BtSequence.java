@@ -38,10 +38,18 @@ import oo.atom.r.Result;
 public class BtSequence implements BuilderTransition {
     private final List<BuilderTransition> transitions;
 
+    /**
+     * Ctor.
+     * @param transitions transitions sequence
+     */
     public BtSequence(List<BuilderTransition> transitions) {
         this.transitions = transitions;
     }
 
+    /**
+     * Ctor.
+     * @param transitions transitions sequence
+     */
     public BtSequence(BuilderTransition... transitions) {
         this(List.of(transitions));
     }

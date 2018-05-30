@@ -64,6 +64,7 @@ class RCombinedOrDefaultInference<T> implements Result.Inference<T> {
  * 
  * @author Kapralov Sergey
  * @see RCombined
+ * @param <T> Result's type
  */
 public class RCombinedOrDefault<T> extends RInferred<T> {
     /**

@@ -29,9 +29,6 @@ package oo.atom.tests;
  * @author Kapralov Sergey
  */
 public class AssertPass implements Assertion {
-    public AssertPass() {
-    }
-
     @Override
     public final void check() throws Exception {
     }

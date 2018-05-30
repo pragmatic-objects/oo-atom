@@ -28,6 +28,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
+ * Matcher which matches types with no declared fields.
  *
  * @author Kapralov Sergey
  */

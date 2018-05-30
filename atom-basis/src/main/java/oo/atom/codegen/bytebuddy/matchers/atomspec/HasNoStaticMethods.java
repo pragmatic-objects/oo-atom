@@ -33,6 +33,7 @@ import net.bytebuddy.matcher.ElementMatchers;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
+ * Matcher that matches on types without static methods.
  *
  * @author Kapralov Sergey
  */

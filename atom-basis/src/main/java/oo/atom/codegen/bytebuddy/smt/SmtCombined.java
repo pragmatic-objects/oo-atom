@@ -28,21 +28,32 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.r.RCombinedOrDefault;
 
 /**
+ * Sequentially generates bytecode using provided {@link StackManipulationToken}'s
  *
  * @author skapral
  */
 public class SmtCombined extends RCombinedOrDefault<StackManipulation> implements StackManipulationToken {
-    public SmtCombined(List<StackManipulationToken> subtasks) {
+    /**
+     * Ctor.
+     *
+     * @param tokens Tokens.
+     */
+    public SmtCombined(List<StackManipulationToken> tokens) {
         super(
             ((sm1, sm2) -> new StackManipulation.Compound(sm1, sm2)),
             new StackManipulation.Compound(),
-            List.narrow(subtasks)
+            List.narrow(tokens)
         );
     }
 
-    public SmtCombined(StackManipulationToken... tasks) {
+    /**
+     * Ctor.
+     *
+     * @param tokens Tokens.
+     */
+    public SmtCombined(StackManipulationToken... tokens) {
         this(
-            List.of(tasks)
+            List.of(tokens)
         );
     }
 }

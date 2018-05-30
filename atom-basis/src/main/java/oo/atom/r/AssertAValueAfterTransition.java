@@ -34,6 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * with expected value
  *
  * @author Kapralov Sergey
+ * @param <T> source type
+ * @param <X> target type
  */
 public class AssertAValueAfterTransition<T, X> implements Assertion {
     private final T source;

@@ -32,7 +32,10 @@ import net.bytebuddy.jar.asm.Opcodes;
  * @author Kapralov Sergey
  */
 public class BIfNe extends BImpl {
-    
+    /**
+     * Ctor.
+     * @param label Opcode's label
+     */
     public BIfNe(Label label) {
         super(-1, 0, label, Opcodes.IFNE);
     }

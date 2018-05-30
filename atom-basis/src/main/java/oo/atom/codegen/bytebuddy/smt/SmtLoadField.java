@@ -26,10 +26,16 @@ package oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.description.field.FieldDescription;
 
 /**
+ * Load a field from `this` on a stack.
  *
  * @author Kapralov Sergey
  */
 public class SmtLoadField extends SmtCombined {
+    /**
+     * Ctor.
+     *
+     * @param field field.
+     */
     public SmtLoadField(FieldDescription field) {
         super(
             new SmtLoadReference(0),

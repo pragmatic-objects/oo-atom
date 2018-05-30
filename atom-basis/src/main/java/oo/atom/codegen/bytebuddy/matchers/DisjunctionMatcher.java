@@ -27,16 +27,25 @@ import io.vavr.collection.List;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
- *
+ * Disjunction matcher: marches a type if any of provided matchers match the type.
  * @author Kapralov Sergey
+ * @param <T> matcher's type.
  */
 public class DisjunctionMatcher<T> implements ElementMatcher<T> {
     private final List<ElementMatcher<T>> matchers;
 
+    /**
+     * Ctor.
+     * @param matchers Matchers to conjunct
+     */
     public DisjunctionMatcher(ElementMatcher<T>... matchers) {
         this(List.of(matchers));
     }
-    
+
+    /**
+     * Ctor.
+     * @param matchers Matchers to conjunct
+     */
     public DisjunctionMatcher(List<ElementMatcher<T>> matchers) {
         this.matchers = matchers;
     }

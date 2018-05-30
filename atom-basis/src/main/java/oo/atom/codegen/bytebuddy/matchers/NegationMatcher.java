@@ -26,12 +26,18 @@ package oo.atom.codegen.bytebuddy.matchers;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Negates provided matcher.
  *
  * @author Kapralov Sergey
+ * @param <T> matcher's type.
  */
 public class NegationMatcher<T> implements ElementMatcher<T> {
     private final ElementMatcher<T> matcher;
 
+    /**
+     * Ctor.
+     * @param matcher Matcher to negate.
+     */
     public NegationMatcher(ElementMatcher<T> matcher) {
         this.matcher = matcher;
     }

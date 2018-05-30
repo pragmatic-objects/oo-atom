@@ -35,6 +35,7 @@ import io.vavr.control.Try;
  * {@link RCombinedOrDefault} as an alternative for such cases.
  * 
  * @author Kapralov Sergey
+ * @param <T> result's type
  */
 public class RCombined<T> implements Result<T> {
     private final List<Result<T>> results;

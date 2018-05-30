@@ -35,6 +35,11 @@ import oo.atom.r.Result;
 public class ValFail implements Validator {
     private final String issue;
 
+    /**
+     * Ctor.
+     *
+     * @param issue issue description.
+     */
     public ValFail(String issue) {
         this.issue = issue;
     }

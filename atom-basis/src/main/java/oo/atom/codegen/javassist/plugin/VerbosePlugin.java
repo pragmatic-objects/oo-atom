@@ -27,9 +27,19 @@ package oo.atom.codegen.javassist.plugin;
 import javassist.ClassPool;
 import javassist.CtClass;
 
+/**
+ * Verbose {@link Plugin}
+ *
+ * @author Kapralov Sergey
+ */
 public class VerbosePlugin implements Plugin {
     private final Plugin plugin;
 
+    /**
+     * Ctor.
+     *
+     * @param plugin plugin-delegate
+     */
     public VerbosePlugin(final Plugin plugin) {
         this.plugin = plugin;
     }

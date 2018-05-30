@@ -32,6 +32,10 @@ import net.bytebuddy.jar.asm.Opcodes;
  * @author Kapralov Sergey
  */
 public class BIfEq extends BImpl {
+    /**
+     * Ctor.
+     * @param label Opcode's label
+     */
     public BIfEq(Label label) {
         super(-1, 0, label, Opcodes.IFEQ);
     }

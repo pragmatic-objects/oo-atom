@@ -32,6 +32,11 @@ import net.bytebuddy.matcher.ElementMatcher;
  * @author Kapralov Sergey
  */
 public class BtApplyIfMatches extends BtConditional implements BuilderTransition {
+    /**
+     * Ctor.
+     * @param matcher Matcher for instrumented types.
+     * @param bt transition, which is used for instrumentations.
+     */
     public BtApplyIfMatches(ElementMatcher<TypeDescription> matcher, BuilderTransition bt) {
         super(
             matcher,

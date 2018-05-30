@@ -30,9 +30,19 @@ import oo.atom.codegen.cp.ClassPath;
 
 import java.nio.file.Path;
 
+/**
+ * Prints a banner to the stdout
+ *
+ * @author Kapralov Sergey
+ */
 public class ShowBannerStage implements Stage {
     private final Banner banner;
 
+    /**
+     * Ctor.
+     *
+     * @param banner Banner to show.
+     */
     public ShowBannerStage(final Banner banner) {
         this.banner = banner;
     }

@@ -41,12 +41,12 @@
 
         <module name="Indentation"/>
 
-        <!--<module name="JavadocType">
+        <module name="JavadocType">
             <property name="allowUnknownTags" value="true"/>
         </module>
         <module name="JavadocMethod">
             <property name="scope" value="public"/>
             <property name="allowedAnnotations" value="Override"/>
-        </module>-->
+        </module>
     </module>
 </module>

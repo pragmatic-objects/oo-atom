@@ -27,11 +27,17 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.r.RSuccess;
 
 /**
+ * A static wrapper for {@link StackManipulation} instance.
  *
  * @author Kapralov Sergey
  */
 public class SmtStatic extends RSuccess<StackManipulation> implements StackManipulationToken {
-    public SmtStatic(StackManipulation outcome) {
-        super(outcome);
+    /**
+     * Ctor.
+     *
+     * @param sm Stack manipulation.
+     */
+    public SmtStatic(StackManipulation sm) {
+        super(sm);
     }
 }

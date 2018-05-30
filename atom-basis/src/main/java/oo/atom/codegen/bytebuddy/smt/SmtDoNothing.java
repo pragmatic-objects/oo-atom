@@ -26,12 +26,16 @@ package oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 
 /**
+ * Generates no bytecode. Not even a NOP.
  *
  * @author skapral
  */
 public class SmtDoNothing extends SmtStatic implements StackManipulationToken {
     private static final StackManipulation EMPTY = new StackManipulation.Compound();
-    
+
+    /**
+     * Ctor.
+     */
     public SmtDoNothing() {
         super(
             EMPTY

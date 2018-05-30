@@ -32,6 +32,7 @@ import oo.atom.codegen.bytebuddy.branching.BIfNe;
 import oo.atom.codegen.bytebuddy.branching.Branching;
 
 /**
+ * Enumeration for possible conditions for {@link oo.atom.codegen.bytebuddy.smt.SmtBranch}
  *
  * @author Kapralov Sergey
  */
@@ -43,10 +44,18 @@ public enum Condition {
 
     private final Function<Label, Branching> branchingByLabel;
 
+    /**
+     * Ctor.
+     * @param branchingByLabel Function for wrapping ASM label to {@link Branching}
+     */
     private Condition(Function<Label, Branching> branchingByLabel) {
         this.branchingByLabel = branchingByLabel;
     }
 
+    /**
+     * @param label label for conditional opcode
+     * @return {@link Branching} instance
+     */
     public final Branching branching(Label label) {
         return branchingByLabel.apply(label);
     }

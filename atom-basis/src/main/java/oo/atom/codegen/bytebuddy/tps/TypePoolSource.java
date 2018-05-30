@@ -32,8 +32,20 @@ import net.bytebuddy.pool.TypePool;
  * @author Kapralov Sergey
  */
 public interface TypePoolSource {
+    /**
+     * {@link TypePoolSource} inference.
+     *
+     * @author Kapralov Sergey
+     */
     interface Inference {
+        /**
+         * @return Inferred {@link TypePoolSource}
+         */
         TypePoolSource typePoolSource();
     }
+
+    /**
+     * @return {@link TypePool} instance.
+     */
     TypePool typePool();
 }

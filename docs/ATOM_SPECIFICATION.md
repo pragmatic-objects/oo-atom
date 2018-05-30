@@ -51,3 +51,5 @@ by `@Atom` annotation.
 A set of standard Java classes are treated as Atoms. They are:
 - [x] All primitive types and their wrappers
 - [x] `java.util.String`
+
+@todo #165 describe the term Natural Java Atoms explicitly. 

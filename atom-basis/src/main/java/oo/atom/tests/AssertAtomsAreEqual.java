@@ -26,6 +26,7 @@ package oo.atom.tests;
 import static org.assertj.core.api.Assertions.*;
 
 /**
+ * Passes if two objects are equal.
  *
  * @author Kapralov Sergey
  */
@@ -33,9 +34,14 @@ public class AssertAtomsAreEqual implements Assertion {
     private final Object atom1;
     private final Object atom2;
 
-    public AssertAtomsAreEqual(Object atom1, Object atom2) {
-        this.atom1 = atom1;
-        this.atom2 = atom2;
+    /**
+     * Ctor.
+     * @param o1 Object to compare
+     * @param o2 Object to compare
+     */
+    public AssertAtomsAreEqual(Object o1, Object o2) {
+        this.atom1 = o1;
+        this.atom2 = o2;
     }
 
     @Override

@@ -29,7 +29,8 @@ import oo.atom.anno.NotAtom;
 
 /**
  * Utility methods for Atoms.
- * WARNING: this class is used as a template for instrumentation procedures. NEVER use it directly in the code.
+ * WARNING: this class is used as a template for instrumentation procedures. NEVER call its methods
+ * directly in the code.
  *
  * @author Kapralov Sergey
  */

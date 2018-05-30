@@ -28,6 +28,11 @@ import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ClassGen;
 import org.apache.bcel.util.Repository;
 
+/**
+ * A BCEL plugin which does nothing.
+ *
+ * @author Kapralov Sergey
+ */
 public class NopPlugin implements Plugin {
     @Override
     public final void operateOn(final ClassGen classGen, final JavaClass clazz, final Repository repository) {

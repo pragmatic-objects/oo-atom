@@ -29,10 +29,19 @@ import oo.atom.r.RInferred;
 import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
-
+/**
+ * {@link SmtLoadReference} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtLoadReferenceInference implements Result.Inference<StackManipulation> {
     private final Integer index;
 
+    /**
+     * Ctor.
+     *
+     * @param index index of the reference.
+     */
     public SmtLoadReferenceInference(Integer index) {
         this.index = index;
     }
@@ -46,10 +55,16 @@ class SmtLoadReferenceInference implements Result.Inference<StackManipulation> {
 }
 
 /**
+ * Loads a local reference on a stack.
  *
  * @author Kapralov Sergey
  */
 public class SmtLoadReference extends RInferred<StackManipulation> implements StackManipulationToken{
+    /**
+     * Ctor.
+     *
+     * @param index index of the reference.
+     */
     public SmtLoadReference(int index) {
         super(
             new SmtLoadReferenceInference(index)

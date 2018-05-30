@@ -13,6 +13,11 @@ import org.apache.maven.project.MavenProject;
 
 import java.nio.file.Paths;
 
+/**
+ * Maven Mojo which generates sources for atom-related annotations
+ *
+ * @author Kapralov Sergey
+ */
 @Mojo(name = "generate-annotations", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GenerateAnnotationsMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.basedir}/target/generated-sources/atom", required = true, readonly = true)

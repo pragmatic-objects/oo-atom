@@ -32,6 +32,7 @@ import io.vavr.control.Try;
  * supplementary info about the failures occured during execution)
  * 
  * @author Kapralov Sergey
+ * @param <T> result's type
  */
 public interface Result<T> {
     /**

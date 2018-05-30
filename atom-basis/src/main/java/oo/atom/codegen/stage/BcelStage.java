@@ -34,9 +34,18 @@ import org.apache.bcel.util.ClassPathRepository;
 
 import java.nio.file.Path;
 
+/**
+ * BCEL-backed stage.
+ *
+ * @author Kapralov Sergey
+ */
 public class BcelStage implements Stage {
     private final Plugin plugin;
 
+    /**
+     * Ctor
+     * @param plugin {@link BcelStage}
+     */
     public BcelStage(final Plugin plugin) {
         this.plugin = plugin;
     }

@@ -28,9 +28,19 @@ import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
+/**
+ * Matches types which has at least one method, matched by provided method matcher.
+ *
+ * @author Kapralov Sergey
+ */
 public class HasMethodDeclared implements ElementMatcher<TypeDescription> {
     private final ElementMatcher<MethodDescription> methodMatcher;
 
+    /**
+     * Ctor.
+     *
+     * @param methodMatcher Method matcher.
+     */
     public HasMethodDeclared(final ElementMatcher<MethodDescription> methodMatcher) {
         this.methodMatcher = methodMatcher;
     }

@@ -31,7 +31,10 @@ import net.bytebuddy.jar.asm.Opcodes;
  * @author Kapralov Sergey
  */
 public class BIfNull extends BImpl {
-    
+    /**
+     * Ctor.
+     * @param label Opcode's label
+     */
     public BIfNull(Label label) {
         super(-1, 0, label, Opcodes.IFNULL);
     }

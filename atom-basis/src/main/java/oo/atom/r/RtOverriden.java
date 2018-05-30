@@ -27,10 +27,16 @@ package oo.atom.r;
  * Transition, which just overrides input value with some explicit result.
  * 
  * @author Kapralov Sergey
+ * @param <X> source type
+ * @param <T> target type
  */
 public class RtOverriden<X, T> implements ResultTransition<X, T> {
     private final Result<T> constant;
 
+    /**
+     * Ctor.
+     * @param constant result to override with
+     */
     public RtOverriden(Result<T> constant) {
         this.constant = constant;
     }

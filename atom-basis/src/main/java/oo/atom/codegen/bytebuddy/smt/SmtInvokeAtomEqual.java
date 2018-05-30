@@ -28,7 +28,17 @@ import net.bytebuddy.description.type.TypeDescription;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 import oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 
+/**
+ * Generates invocation of method "atom$equals".
+ *
+ * @see oo.atom.codegen.javassist.templates.Atoms
+ * @author Kapralov Sergey
+ */
 public class SmtInvokeAtomEqual extends SmtInvokeMethod implements StackManipulationToken {
+    /**
+     * Ctor.
+     * @param type Type to call method on.
+     */
     public SmtInvokeAtomEqual(final TypeDescription type) {
         super(
             type,

@@ -30,11 +30,21 @@ import oo.atom.codegen.bytebuddy.smt.c.Condition;
 import oo.atom.r.RInferred;
 import oo.atom.r.Result;
 
-
+/**
+ * {@link SmtBranch} instruction
+ *
+ * @author Kapralov Sergey
+ */
 class SmtBranchInference implements Result.Inference<StackManipulation> {
     private final Condition condition;
     private final StackManipulationToken successBranch;
 
+    /**
+     * Ctor.
+     *
+     * @param condition condition.
+     * @param successBranch branch for success case.
+     */
     public SmtBranchInference(Condition condition, StackManipulationToken successBranch) {
         this.condition = condition;
         this.successBranch = successBranch;
@@ -53,10 +63,17 @@ class SmtBranchInference implements Result.Inference<StackManipulation> {
 
 
 /**
+ * Generates bytecode for branching statements.
  *
  * @author Kapralov Sergey
  */
 public class SmtBranch extends RInferred<StackManipulation> implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param condition condition.
+     * @param successBranch branch for success case.
+     */
     public SmtBranch(Condition condition, StackManipulationToken successBranch) {
         super(
             new SmtBranchInference(

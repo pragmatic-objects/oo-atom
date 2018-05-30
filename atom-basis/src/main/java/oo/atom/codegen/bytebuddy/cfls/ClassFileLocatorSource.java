@@ -32,8 +32,20 @@ import net.bytebuddy.dynamic.ClassFileLocator;
  * @author Kapralov Sergey
  */
 public interface ClassFileLocatorSource {
+    /**
+     * {@link ClassFileLocatorSource} inference
+     *
+     * @author Kapralov Sergey
+     */
     interface Inference {
+        /**
+         * @return {@link ClassFileLocatorSource} instance.
+         */
         ClassFileLocatorSource classFileLocatorSource();
     }
+
+    /**
+     * @return {@link ClassFileLocator} instance.
+     */
     ClassFileLocator classFileLocator();
 }

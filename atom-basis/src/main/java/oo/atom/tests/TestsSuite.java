@@ -58,6 +58,10 @@ public class TestsSuite {
         this.tests = tests;
     }
 
+    /**
+     * JUnit 5 test factory method
+     * @return a set of {@link DynamicTest} instances.
+     */
     @TestFactory
     public final Iterable<DynamicTest> produceTests() {
         return tests.map(t -> DynamicTest.dynamicTest(t.description(), () -> t.execute()));

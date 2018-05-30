@@ -34,6 +34,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class AssertAssertionFails implements Assertion {
     private final Assertion assertion;
 
+    /**
+     * Ctor.
+     * @param assertion Assertion under test
+     */
     public AssertAssertionFails(Assertion assertion) {
         this.assertion = assertion;
     }

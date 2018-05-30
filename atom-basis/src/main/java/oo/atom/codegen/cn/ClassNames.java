@@ -26,9 +26,26 @@ package oo.atom.codegen.cn;
 
 import io.vavr.collection.List;
 
+/**
+ * A set of class names.
+ *
+ * @author Kapralov Sergey
+ */
 public interface ClassNames {
+    /**
+     * {@link ClassNames} inference.
+     *
+     * @author Kapralov Sergey
+     */
     interface Inference {
+        /**
+         * @return Inferred {@link ClassNames}
+         */
         ClassNames classNames();
     }
+
+    /**
+     * @return class names
+     */
     List<String> classNames();
 }

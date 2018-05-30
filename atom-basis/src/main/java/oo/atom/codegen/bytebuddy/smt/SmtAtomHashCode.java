@@ -27,11 +27,15 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 
 /**
+ * {@link Object#hashCode()} method body for Atoms.
  *
  * @author Kapralov Sergey
  */
 public class SmtAtomHashCode extends SmtCombined {
-
+    /**
+     * Ctor.
+     * @param type type
+     */
     public SmtAtomHashCode(TypeDescription type) {
         super(
             new SmtLoadArrayOfFields(type),

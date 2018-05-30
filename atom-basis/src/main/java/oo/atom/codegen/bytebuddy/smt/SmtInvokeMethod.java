@@ -34,10 +34,21 @@ import oo.atom.r.RInferred;
 import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
+/**
+ * {@link SmtInvokeMethod} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtInvokeMethodInference implements Result.Inference<StackManipulation> {
     private final TypeDescription type;
     private final ElementMatcher<MethodDescription> methodMatcher;
 
+    /**
+     * Ctor.
+     *
+     * @param type Type which owns a method.
+     * @param methodMatcher method matcher.
+     */
     public SmtInvokeMethodInference(final TypeDescription type, final ElementMatcher<MethodDescription> methodMatcher) {
         this.type = type;
         this.methodMatcher = methodMatcher;
@@ -53,7 +64,18 @@ class SmtInvokeMethodInference implements Result.Inference<StackManipulation> {
     }
 }
 
+/**
+ * Generates method invocation bytecode.
+ *
+ * @author Kapralov Sergey
+ */
 public class SmtInvokeMethod extends RInferred<StackManipulation> implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param type Type which owns a method.
+     * @param methodMatcher method matcher.
+     */
     public SmtInvokeMethod(final TypeDescription type, final ElementMatcher<MethodDescription> methodMatcher) {
         super(
             new SmtInvokeMethodInference(

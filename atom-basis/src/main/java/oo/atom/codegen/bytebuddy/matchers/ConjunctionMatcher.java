@@ -27,16 +27,26 @@ import io.vavr.collection.List;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Conjunction matcher: matches a type if it is matched by all provided matchers.
  *
  * @author Kapralov Sergey
+ * @param <T> matcher's type
  */
 public class ConjunctionMatcher<T> implements ElementMatcher<T> {
     private final List<ElementMatcher<T>> matchers;
 
+    /**
+     * Ctor.
+     * @param matchers Matchers to conjunct
+     */
     public ConjunctionMatcher(ElementMatcher<T>... matchers) {
         this(List.of(matchers));
     }
-    
+
+    /**
+     * Ctor.
+     * @param matchers Matchers to conjunct
+     */
     public ConjunctionMatcher(List<ElementMatcher<T>> matchers) {
         this.matchers = matchers;
     }

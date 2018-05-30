@@ -34,6 +34,10 @@ import net.bytebuddy.dynamic.ClassFileLocator;
 public class CflsExplicit implements ClassFileLocatorSource {
     private final ClassFileLocator cfl;
 
+    /**
+     * Ctor.
+     * @param cfl {@link ClassFileLocator} instance
+     */
     public CflsExplicit(final ClassFileLocator cfl) {
         this.cfl = cfl;
     }

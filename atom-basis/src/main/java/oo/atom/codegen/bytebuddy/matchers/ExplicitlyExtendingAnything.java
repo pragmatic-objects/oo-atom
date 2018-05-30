@@ -26,10 +26,14 @@ package oo.atom.codegen.bytebuddy.matchers;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
+ * Matches all classes which `extend` anything explicitly.
  *
  * @author Kapralov Sergey
  */
 public class ExplicitlyExtendingAnything extends Extending {
+    /**
+     * Ctor.
+     */
     public ExplicitlyExtendingAnything() {
         super(
             ElementMatchers.noneOf(Object.class, Enum.class)

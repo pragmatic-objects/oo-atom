@@ -29,10 +29,20 @@ import oo.atom.codegen.cp.ClassPath;
 
 import java.nio.file.Path;
 
+/**
+ * Executes stage, overriding the classes it is applied on.
+ *
+ * @author Kapralov Sergey
+ */
 public class OverrideClassesStage implements Stage {
     private final Stage stage;
     private final ClassNames classNames;
 
+    /**
+     * Ctor.
+     * @param stage Stage.
+     * @param classNames Classes for this stage to apply on.
+     */
     public OverrideClassesStage(final Stage stage, final ClassNames classNames) {
         this.stage = stage;
         this.classNames = classNames;

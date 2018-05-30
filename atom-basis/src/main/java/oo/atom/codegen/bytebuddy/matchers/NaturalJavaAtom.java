@@ -29,6 +29,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
+ * Matches if the type is Natural Java Atom
  *
  * @author Kapralov Sergey
  */

@@ -29,10 +29,19 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.r.RInferred;
 import oo.atom.r.Result;
 
+/**
+ * {@link SmtCheckAtomFieldsEquality} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtCheckAtomFieldsEqualityInference implements Result.Inference<StackManipulation> {
-
     private final TypeDescription type;
 
+    /**
+     * Ctor.
+     *
+     * @param type Type.
+     */
     public SmtCheckAtomFieldsEqualityInference(TypeDescription type) {
         this.type = type;
     }
@@ -50,10 +59,16 @@ class SmtCheckAtomFieldsEqualityInference implements Result.Inference<StackManip
 }
 
 /**
+ * Repeats {@link SmtCheckAtomFieldEquality} for each field of compared objects.
  *
  * @author Kapralov Sergey
  */
 public class SmtCheckAtomFieldsEquality extends RInferred<StackManipulation> implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param type Type.
+     */
     public SmtCheckAtomFieldsEquality(final TypeDescription type) {
         super(new SmtCheckAtomFieldsEqualityInference(type));
     }

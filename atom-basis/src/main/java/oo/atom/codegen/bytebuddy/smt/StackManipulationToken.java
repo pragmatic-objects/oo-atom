@@ -27,6 +27,7 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import oo.atom.r.Result;
 
 /**
+ * A token for producing bytecode using Byte-buddy library.
  *
  * @author Kapralov Sergey
  */

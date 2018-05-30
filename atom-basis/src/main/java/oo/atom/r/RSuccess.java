@@ -30,6 +30,7 @@ import io.vavr.control.Try;
  * Represents successful result, which holds some value.
  * 
  * @author Kapralov Sergey
+ * @param <T> result's type
  */
 public class RSuccess<T> implements Result<T> {
     private final T value;

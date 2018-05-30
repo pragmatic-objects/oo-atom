@@ -29,13 +29,28 @@ import io.vavr.collection.List;
 
 import java.nio.file.Path;
 
+/**
+ * Class path, merged from several {@link ClassPath} instances.
+ *
+ * @author Kapralov Sergey
+ */
 public class CpCombined implements ClassPath {
     private final List<ClassPath> classPaths;
 
+    /**
+     * Ctor.
+     *
+     * @param classPaths Class paths to combine
+     */
     public CpCombined(final List<ClassPath> classPaths) {
         this.classPaths = classPaths;
     }
 
+    /**
+     * Ctor.
+     *
+     * @param classPaths Class paths to combine
+     */
     public CpCombined(final ClassPath... classPaths) {
         this(
             List.of(classPaths)

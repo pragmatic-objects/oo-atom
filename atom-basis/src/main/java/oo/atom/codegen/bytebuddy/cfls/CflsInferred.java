@@ -34,6 +34,11 @@ import net.bytebuddy.dynamic.ClassFileLocator;
 public class CflsInferred implements ClassFileLocatorSource {
     private final Inference inference;
 
+    /**
+     * Ctor.
+     *
+     * @param inference Inference.
+     */
     public CflsInferred(final Inference inference) {
         this.inference = inference;
     }

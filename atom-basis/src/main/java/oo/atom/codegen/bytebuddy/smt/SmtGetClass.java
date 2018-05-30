@@ -30,6 +30,7 @@ import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import oo.atom.r.RSuccess;
 
 /**
+ * Generates {@link Object#getClass()} method's invocation.
  *
  * @author Kapralov Sergey
  */
@@ -45,6 +46,9 @@ public class SmtGetClass extends RSuccess<StackManipulation> implements StackMan
         }
     }
 
+    /**
+     * Ctor.
+     */
     public SmtGetClass() {
         super(
             STACK_MANIPULATION

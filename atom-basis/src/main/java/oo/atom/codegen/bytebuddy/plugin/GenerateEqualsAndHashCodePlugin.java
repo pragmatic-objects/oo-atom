@@ -39,6 +39,9 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
  * @author Kapralov Sergey
  */
 public class GenerateEqualsAndHashCodePlugin extends TaskPlugin implements Plugin {
+    /**
+     * Ctor
+     */
     public GenerateEqualsAndHashCodePlugin() {
         super(
             new BtApplyIfMatches(

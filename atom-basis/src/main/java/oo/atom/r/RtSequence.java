@@ -30,6 +30,7 @@ import io.vavr.collection.List;
  * 
  * @author Kapralov Sergey
  * @see RtChain
+ * @param <T> source and target types
  */
 public class RtSequence<T> implements ResultTransition<T, T> {
     private final List<ResultTransition<T, T>> transitions;

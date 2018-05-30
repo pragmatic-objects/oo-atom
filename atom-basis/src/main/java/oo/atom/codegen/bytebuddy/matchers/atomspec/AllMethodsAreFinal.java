@@ -30,8 +30,10 @@ import net.bytebuddy.matcher.ElementMatcher;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
+ * Matcher which matches types, methods of which are final.
  *
  * @author Kapralov Sergey
+ * @todo #165 Investigate why there is a check `.filter(isPublic())` in {@link AllMethodsAreFinal}.
  */
 public class AllMethodsAreFinal implements ElementMatcher<TypeDescription> {
     @Override

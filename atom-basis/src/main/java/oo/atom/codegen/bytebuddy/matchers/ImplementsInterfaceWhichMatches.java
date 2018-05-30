@@ -27,10 +27,19 @@ package oo.atom.codegen.bytebuddy.matchers;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
-
+/**
+ * Matches classes which implement at least one matched interface.
+ *
+ * @author Kapralov Sergey
+ */
 public class ImplementsInterfaceWhichMatches implements ElementMatcher<TypeDescription> {
     private final ElementMatcher<TypeDescription> matcher;
 
+    /**
+     * Ctor.
+     *
+     * @param matcher Interface matcher.
+     */
     public ImplementsInterfaceWhichMatches(final ElementMatcher<TypeDescription> matcher) {
         this.matcher = matcher;
     }

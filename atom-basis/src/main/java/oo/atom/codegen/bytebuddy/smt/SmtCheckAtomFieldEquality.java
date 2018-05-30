@@ -28,10 +28,18 @@ import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.codegen.bytebuddy.smt.c.Condition;
 
 /**
+ * Generates bytecode for loading field of objects compared in {@link Object#equals(Object)} on stack
+ * and comparing them using Atom equality semantics
+ * (see <a href="https://github.com/project-avral/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>).
  *
  * @author Kapralov Sergey
  */
 public class SmtCheckAtomFieldEquality extends SmtCombined {
+    /**
+     * Ctor.
+     * @param type type of the compared objects
+     * @param field field to compare
+     */
     public SmtCheckAtomFieldEquality(final TypeDescription type, final FieldDescription field) {
         super(
             new SmtLoadPairOfFields(type, field),

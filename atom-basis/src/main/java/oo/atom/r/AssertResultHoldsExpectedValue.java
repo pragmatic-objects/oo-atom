@@ -33,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * {@link Object#equals(java.lang.Object)} method).
  * 
  * @author Kapralov Sergey
+ * @param <T> result's type
  */
 public class AssertResultHoldsExpectedValue<T> implements Assertion {
     private final Result<T> taskResult;

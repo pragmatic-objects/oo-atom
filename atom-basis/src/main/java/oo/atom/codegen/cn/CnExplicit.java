@@ -26,13 +26,28 @@ package oo.atom.codegen.cn;
 
 import io.vavr.collection.List;
 
+/**
+ * Explicit set of class names.
+ *
+ * @author Kapralov Sergey
+ */
 public class CnExplicit implements ClassNames {
     private final List<String> classNames;
 
+    /**
+     * Ctor.
+     *
+     * @param classNames Class names
+     */
     public CnExplicit(final List<String> classNames) {
         this.classNames = classNames;
     }
 
+    /**
+     * Ctor.
+     *
+     * @param classNames Class names
+     */
     public CnExplicit(final String... classNames) {
         this(
             List.of(classNames)

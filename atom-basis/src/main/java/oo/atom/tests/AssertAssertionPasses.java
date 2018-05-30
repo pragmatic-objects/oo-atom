@@ -33,6 +33,10 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 public class AssertAssertionPasses implements Assertion {
     private final Assertion assertion;
 
+    /**
+     * Ctor.
+     * @param assertion Assertion under test
+     */
     public AssertAssertionPasses(Assertion assertion) {
         this.assertion = assertion;
     }

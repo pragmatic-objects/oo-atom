@@ -31,9 +31,6 @@ import static org.assertj.core.api.Assertions.fail;
  * @author Kapralov Sergey
  */
 public class AssertFail implements Assertion {
-    public AssertFail() {
-    }
-
     @Override
     public final void check() throws Exception {
         fail("FAIL, just as planned");

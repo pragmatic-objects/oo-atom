@@ -59,6 +59,7 @@ public class InlineTemplates implements Plugin {
             }
         } catch(Exception ex) {
             //throw new RuntimeException(ex);
+            // @todo #165 Need to remember why rethrowing was commented out and to turn it back.
             ex.printStackTrace();
         }
     }

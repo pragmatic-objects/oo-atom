@@ -46,6 +46,8 @@ public class ApplyStages implements Instrumentation {
     /**
      * Ctor.
      *
+     * @param classPath {@link ClassPath}
+     * @param workingDirectory Working directory - root of the location where instrumented classes located.
      * @param stages Stages to apply.
      */
     public ApplyStages(final ClassPath classPath, final Path workingDirectory, final List<Stage> stages) {
@@ -57,6 +59,8 @@ public class ApplyStages implements Instrumentation {
     /**
      * Ctor.
      *
+     * @param classPath {@link ClassPath}
+     * @param workingDirectory Working directory - root of the location where instrumented classes located.
      * @param stages Stages to apply.
      */
     public ApplyStages(final ClassPath classPath, final Path workingDirectory, final Stage... stages) {

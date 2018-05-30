@@ -24,12 +24,18 @@
 package oo.atom.tests;
 
 /**
+ * Assertion that stubs another assertion. Always passes. May be used for stubbing out failing tests.
  *
  * @author Kapralov Sergey
  */
 public class AssertIgnore implements Assertion {
     private final Assertion assertion;
 
+    /**
+     * Ctor.
+     *
+     * @param assertion Assertion to stub
+     */
     public AssertIgnore(Assertion assertion) {
         this.assertion = assertion;
     }

@@ -34,6 +34,9 @@ import oo.atom.codegen.bytebuddy.smt.SmtAtomHashCode;
  * @author Kapralov Sergey
  */
 public class BtGenerateHashCode extends BtApplyIfMatches {
+    /**
+     * Ctor.
+     */
     public BtGenerateHashCode() {
         super(
             not(

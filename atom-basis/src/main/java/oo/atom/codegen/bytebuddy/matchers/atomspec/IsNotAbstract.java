@@ -27,6 +27,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Matcher which matches non-abstract types
  *
  * @author Kapralov Sergey
  */

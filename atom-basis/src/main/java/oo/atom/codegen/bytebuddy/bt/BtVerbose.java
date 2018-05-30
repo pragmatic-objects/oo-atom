@@ -36,6 +36,10 @@ import oo.atom.r.Result;
 public class BtVerbose implements BuilderTransition {
     private final BuilderTransition bt;
 
+    /**
+     * Ctor.
+     * @param bt transition-delegate
+     */
     public BtVerbose(final BuilderTransition bt) {
         this.bt = bt;
     }

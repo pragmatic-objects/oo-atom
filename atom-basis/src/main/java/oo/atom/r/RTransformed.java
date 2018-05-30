@@ -33,6 +33,8 @@ import io.vavr.control.Try;
  * of issues.
  * 
  * @author Kapralov Sergey
+ * @param <X> source type
+ * @param <T> target type
  */
 public class RTransformed<X, T> implements Result<T> {
     private final List<Result<X>> results;

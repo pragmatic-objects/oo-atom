@@ -30,9 +30,19 @@ import oo.atom.r.RInferred;
 import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
+/**
+ * {@link SmtGetField} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtGetFieldInference implements Result.Inference<StackManipulation> {
     private final FieldDescription field;
 
+    /**
+     * Ctor.
+     *
+     * @param field field.
+     */
     public SmtGetFieldInference(FieldDescription field) {
         this.field = field;
     }
@@ -46,10 +56,16 @@ class SmtGetFieldInference implements Result.Inference<StackManipulation> {
 }
 
 /**
+ * Loads a certain field on a stack.
  *
  * @author Kapralov Sergey
  */
 public class SmtGetField extends RInferred<StackManipulation> implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param field field.
+     */
     public SmtGetField(FieldDescription field) {
         super(
             new SmtGetFieldInference(field)

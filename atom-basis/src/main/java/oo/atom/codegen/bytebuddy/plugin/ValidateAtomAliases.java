@@ -40,6 +40,9 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
  * @author Kapralov Sergey
  */
 public class ValidateAtomAliases extends TaskPlugin implements Plugin {
+    /**
+     * Ctor.
+     */
     public ValidateAtomAliases() {
         super(
             new BtApplyIfMatches(

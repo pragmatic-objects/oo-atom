@@ -32,6 +32,11 @@ import oo.atom.anno.Atom;
  * @author Kapralov Sergey
  */
 public class BtAnnotateAtom extends BtAnnotate {
+    /**
+     * {@link Atom} annotation instance.
+     *
+     * @author Kapralov Sergey
+     */
     private static class AtomInstance implements Atom {
         @Override
         public final Class<? extends Annotation> annotationType() {
@@ -39,6 +44,9 @@ public class BtAnnotateAtom extends BtAnnotate {
         }
     }
 
+    /**
+     * Ctor.
+     */
     public BtAnnotateAtom() {
         super(new AtomInstance());
     }    

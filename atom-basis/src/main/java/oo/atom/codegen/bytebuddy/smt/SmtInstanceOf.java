@@ -30,10 +30,19 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
 
-
+/**
+ * Stack manipulation for {@link SmtInstanceOf}.
+ *
+ * @author Kapralov Sergey
+ */
 class InstanceOfStackManipulation implements StackManipulation {
     private final TypeDescription type;
 
+    /**
+     * Ctor.
+     *
+     * @param type Type description.
+     */
     public InstanceOfStackManipulation(TypeDescription type) {
         this.type = type;
     }
@@ -50,7 +59,17 @@ class InstanceOfStackManipulation implements StackManipulation {
     }
 }
 
+/**
+ * Generate INSTANCEOF opcode.
+ *
+ * @author Kapralov Sergey
+ */
 public class SmtInstanceOf extends SmtStatic implements StackManipulationToken {
+    /**
+     * Ctor.
+     *
+     * @param td Type description.
+     */
     public SmtInstanceOf(final TypeDescription td) {
         super(
             new InstanceOfStackManipulation(

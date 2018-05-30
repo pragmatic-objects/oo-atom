@@ -28,9 +28,18 @@ import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ClassGen;
 import org.apache.bcel.util.Repository;
 
+/**
+ * A plugin which prints information about itself to the stdout when used.
+ *
+ * @author Kapralov Sergey
+ */
 public class VerbosePlugin implements Plugin {
     private final Plugin plugin;
 
+    /**
+     * Ctor.
+     * @param plugin plugin
+     */
     public VerbosePlugin(final Plugin plugin) {
         this.plugin = plugin;
     }

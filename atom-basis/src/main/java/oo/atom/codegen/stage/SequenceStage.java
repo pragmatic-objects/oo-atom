@@ -37,10 +37,20 @@ import java.nio.file.Path;
 public class SequenceStage implements Stage {
     private final List<Stage> substages;
 
+    /**
+     * Ctor.
+     *
+     * @param substages Stages in sequence.
+     */
     public SequenceStage(List<Stage> substages) {
         this.substages = substages;
     }
 
+    /**
+     * Ctor.
+     *
+     * @param substages Stages in sequence.
+     */
     public SequenceStage(Stage... substages) {
         this(List.of(substages));
     }

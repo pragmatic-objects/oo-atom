@@ -36,6 +36,12 @@ public class BtFallback implements BuilderTransition {
     private final BuilderTransition mainTransition;
     private final BuilderTransition fallbackTransition;
 
+    /**
+     * Ctor.
+     *
+     * @param mainTransition Transition to apply.
+     * @param fallbackTransition Transition to apply {@link BtFallback#mainTransition} was unsuccessful.
+     */
     public BtFallback(BuilderTransition mainTransition, BuilderTransition fallbackTransition) {
         this.mainTransition = mainTransition;
         this.fallbackTransition = fallbackTransition;

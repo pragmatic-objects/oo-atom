@@ -30,18 +30,27 @@ import oo.atom.r.RInferred;
 import oo.atom.r.RSuccess;
 import oo.atom.r.Result;
 
+/**
+ * {@link SmtReturnInteger} inference.
+ *
+ * @author Kapralov Sergey
+ */
 class SmtReturnIntegerInference implements Result.Inference<StackManipulation> {
-    private final Integer index;
+    private final Integer returnValue;
 
-    public SmtReturnIntegerInference(Integer index) {
-        this.index = index;
+    /**
+     * Ctor.
+     * @param returnValue return value.
+     */
+    public SmtReturnIntegerInference(Integer returnValue) {
+        this.returnValue = returnValue;
     }
 
     @Override
     public final Result<StackManipulation> result() {
         return new RSuccess<>(
             new StackManipulation.Compound(
-                IntegerConstant.forValue(index),
+                IntegerConstant.forValue(returnValue),
                 MethodReturn.INTEGER
             )
         );
@@ -50,13 +59,19 @@ class SmtReturnIntegerInference implements Result.Inference<StackManipulation> {
 }
 
 /**
+ * Generates RETURN statement.
  *
  * @author Kapralov Sergey
  */
 public class SmtReturnInteger extends RInferred<StackManipulation> implements StackManipulationToken {
-    public SmtReturnInteger(Integer index) {
+    /**
+     * Ctor.
+     *
+     * @param returnValue return value.
+     */
+    public SmtReturnInteger(Integer returnValue) {
         super(
-            new SmtReturnIntegerInference(index)
+            new SmtReturnIntegerInference(returnValue)
         );
     }
 }

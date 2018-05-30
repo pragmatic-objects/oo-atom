@@ -32,9 +32,18 @@ import java.lang.annotation.Annotation;
 import static net.bytebuddy.matcher.ElementMatchers.annotationType;
 import static net.bytebuddy.matcher.ElementMatchers.hasAnnotation;
 
+/**
+ * Matches classes, annotated with certain annotation.
+ *
+ * @author Kapralov Sergey
+ */
 public class Annotated implements ElementMatcher<TypeDescription> {
     private final Class<? extends Annotation> annotation;
 
+    /**
+     * Ctor.
+     * @param annotation Annotation
+     */
     public Annotated(final Class<? extends Annotation> annotation) {
         this.annotation = annotation;
     }

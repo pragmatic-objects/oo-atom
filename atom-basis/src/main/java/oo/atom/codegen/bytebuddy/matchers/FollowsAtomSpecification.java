@@ -31,11 +31,16 @@ import oo.atom.codegen.bytebuddy.matchers.atomspec.HasNoStaticMethods;
 import oo.atom.codegen.bytebuddy.matchers.atomspec.IsNotAbstract;
 
 /**
+ * Matcher which matches all types compliant to Atom rules.
+ * See <a href="https://github.com/project-avral/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>
  *
  * @author Kapralov Sergey
  */
 public class FollowsAtomSpecification extends ConjunctionMatcher<TypeDescription> implements ElementMatcher<TypeDescription> {
-    public FollowsAtomSpecification(ElementMatcher<TypeDescription>... matchers) {
+    /**
+     * Ctor.
+     */
+    public FollowsAtomSpecification() {
         super(
             new AllFieldsArePrivateFinal(),
             new AllMethodsAreFinal(),

@@ -29,6 +29,11 @@ import oo.atom.codegen.cp.ClassPath;
 
 import java.nio.file.Path;
 
+/**
+ * Prints statistics to stdout
+ *
+ * @author Kapralov Sergey
+ */
 public class ShowStatsStage implements Stage {
     @Override
     public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {

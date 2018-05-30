@@ -27,10 +27,15 @@ import net.bytebuddy.description.type.TypeDescription;
 import oo.atom.codegen.bytebuddy.smt.c.Condition;
 
 /**
+ * {@link Object#equals(Object)} method body for Atoms
  *
  * @author Kapralov Sergey
  */
 public class SmtAtomEquals extends SmtCombined {
+    /**
+     * Ctor.
+     * @param type type
+     */
     public SmtAtomEquals(TypeDescription type) {
         super(
                 new SmtLoadReference(1),

@@ -31,6 +31,9 @@ import oo.atom.codegen.bytebuddy.validator.ValAtom;
  * @author Kapralov Sergey
  */
 public class BtApplyAtomPatch extends BtValidated {
+    /**
+     * Ctor.
+     */
     public BtApplyAtomPatch() {
         super(
             new ValAtom(),

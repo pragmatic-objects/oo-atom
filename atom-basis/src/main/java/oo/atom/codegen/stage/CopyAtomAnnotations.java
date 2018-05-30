@@ -35,6 +35,9 @@ import oo.atom.codegen.cn.CnExplicit;
  * @author Kapralov Sergey
  */
 public class CopyAtomAnnotations extends DoOnNonEmptyWorkingDirectoryStage {
+    /**
+     * Ctor.
+     */
     public CopyAtomAnnotations() {
         super(
             new OverrideClassesStage(

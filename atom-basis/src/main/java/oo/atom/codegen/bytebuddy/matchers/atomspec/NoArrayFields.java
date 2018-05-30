@@ -28,6 +28,11 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
+/**
+ * Matcher which matches class, fields of which are of non-array types
+ *
+ * @author Kapralov Sergey
+ */
 public class NoArrayFields implements ElementMatcher<TypeDescription> {
     @Override
     public final boolean matches(final TypeDescription target) {

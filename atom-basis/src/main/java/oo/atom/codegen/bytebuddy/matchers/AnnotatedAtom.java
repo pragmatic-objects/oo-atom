@@ -28,10 +28,14 @@ import net.bytebuddy.matcher.ElementMatcher;
 import oo.atom.anno.Atom;
 
 /**
+ * Matches classes, annotated with {@link Atom}
  *
  * @author Kapralov Sergey
  */
 public class AnnotatedAtom extends Annotated implements ElementMatcher<TypeDescription> {
+    /**
+     * Ctor.
+     */
     public AnnotatedAtom() {
         super(Atom.class);
     }

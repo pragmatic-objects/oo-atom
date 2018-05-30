@@ -38,6 +38,12 @@ public class BtConditional implements BuilderTransition {
     private final BuilderTransition matchBranch;
     private final BuilderTransition mismatchBranch;
 
+    /**
+     * Ctor.
+     * @param matcher Types matcher
+     * @param matchBranch Transition to apply on matched classes
+     * @param mismatchBranch Transition to apply on mismatched classes
+     */
     public BtConditional(ElementMatcher<TypeDescription> matcher, BuilderTransition matchBranch, BuilderTransition mismatchBranch) {
         this.matcher = matcher;
         this.matchBranch = matchBranch;
