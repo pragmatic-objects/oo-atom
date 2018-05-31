@@ -1,6 +1,8 @@
 # OO-atom
 
-[![Build Status](https://img.shields.io/travis/project-avral/oo-atom/master.svg)](https://travis-ci.org/project-avral/oo-atom)
+[![Build Status (Travis)](https://img.shields.io/travis/project-avral/oo-atom/master.svg)](https://travis-ci.org/project-avral/oo-atom)
+[![Build status (AppVeyor)](https://ci.appveyor.com/api/projects/status/sumvi0c7teo9oq94?svg=true)](https://ci.appveyor.com/project/skapral/oo-atom)
+
 [![Codecov](https://codecov.io/gh/project-avral/oo-atom/branch/master/graph/badge.svg)](https://codecov.io/gh/project-avral/oo-atom)
 [![PDD status](http://www.0pdd.com/svg?name=project-avral/oo-atom)](http://www.0pdd.com/p?name=project-avral/oo-atom)
 
