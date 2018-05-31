@@ -28,6 +28,8 @@ import io.vavr.collection.List;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Class names, extracted from all .class files from certain directory.
@@ -54,8 +56,9 @@ public class CnFromPath implements ClassNames {
             }
             final List<String> classes = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))
                 .map(path::relativize)
-                .map(Object::toString)
-                .map(s -> s.replace(".class", "").replace("/", "."))
+                .map(p -> List.ofAll(StreamSupport.stream(p.spliterator(), false)))
+                .map(pl -> pl.map(Object::toString).collect(Collectors.joining(".")))
+                .map(s -> s.replace(".class", ""))
                 .filter(s -> !"module-info".equals(s))
                 .collect(List.collector());
             return classes;
