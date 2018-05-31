@@ -4,6 +4,7 @@
 [![Build status (AppVeyor)](https://ci.appveyor.com/api/projects/status/sumvi0c7teo9oq94?svg=true)](https://ci.appveyor.com/project/skapral/oo-atom)
 
 [![Codecov](https://codecov.io/gh/project-avral/oo-atom/branch/master/graph/badge.svg)](https://codecov.io/gh/project-avral/oo-atom)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b91e6bf2e7744333b93d2b8785fe056b)](https://www.codacy.com/app/skapral/oo-atom?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=project-avral/oo-atom&amp;utm_campaign=Badge_Grade)
 [![PDD status](http://www.0pdd.com/svg?name=project-avral/oo-atom)](http://www.0pdd.com/p?name=project-avral/oo-atom)
 
 ## Disclaimer
