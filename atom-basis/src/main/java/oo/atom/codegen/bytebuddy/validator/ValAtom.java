@@ -39,7 +39,7 @@ public class ValAtom extends ValComplex {
         super(
             new ValSingle(new AllFieldsArePrivateFinal(), "All Atom's fields must be private final"),
             new ValSingle(new NoArrayFields(), "Fields of array type are restricted in Atoms"),
-            new ValSingle(new AllMethodsAreFinal(), "All Atom's methods must be private final"),
+            new ValSingle(new AllMethodsAreFinal(), "All Atom's methods must be public final"),
             new ValSingle(new HasNoStaticMethods(), "Atom shouldn't have static methods"),
             new ValSingle(new IsNotAbstract(), "Atoms can't be abstract")
         );
