@@ -27,6 +27,9 @@ Alternate way out of this may be to give client code an ability to define new wa
 constructors. With this idea in mind, [Atom aliases]() were introduced. They allow to distribute and maintain constructors 
 in more flexible way and at the same time keep implementation inheritance not possible.
 
+Notice: closest original concept to atom aliases is [decorator envelopes](https://www.yegor256.com/2017/01/31/decorating-envelopes.html).
+Atom aliases were introduced as more formalized alternative term with strict [requirements](ATOM_SPECIFICATION.md).
+
 ## Equals/Hash code
 Second, OO-atom provides new vision on solving mistake, related to `equals`/`hashCode` presence in Java's
 `java.lang.Object`. Instead of proposing the [alternate](http://www.yegor256.com/2017/07/11/how-to-redesign-equals.html)
