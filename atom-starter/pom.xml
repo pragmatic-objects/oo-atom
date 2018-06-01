@@ -49,13 +49,6 @@
             <version>${atom.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>oo</groupId>
-            <artifactId>atomizer</artifactId>
-            <version>${atom.version}</version>
-            <type>sh</type>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
