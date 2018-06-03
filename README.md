@@ -57,7 +57,7 @@ OO-atom project is designed on the following principles:
 
 ```
     <parent>
-        <groupId>oo</groupId>
+        <groupId>com.pragmaticobjects.oo.atom</groupId>
         <artifactId>atom-starter</artifactId>
         <version>x.y.z</version>
     </parent>
