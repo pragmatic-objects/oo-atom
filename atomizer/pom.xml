@@ -57,7 +57,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>oo.atom.codegen.AtomizerMain</mainClass>
+                            <mainClass>com.pragmaticobjects.oo.atom.codegen.AtomizerMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -52,7 +52,7 @@
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                                    <includes>oo/atom/anno/**,oo/atom/tests/**,THIRD-PARTY.txt</includes>
+                                    <includes>com/pragmaticobjects/oo/atom/anno/**,com/pragmaticobjects/oo/atom/tests/**,THIRD-PARTY.txt</includes>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

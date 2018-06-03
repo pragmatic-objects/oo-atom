@@ -99,7 +99,7 @@
                     <arguments>
                         <argument>-classpath</argument>
                         <classpath/>
-                        <argument>oo.atom.codegen.AtomizerMain</argument>
+                        <argument>com.pragmaticobjects.oo.atom.codegen.AtomizerMain</argument>
                     </arguments>
                 </configuration>
             </plugin>
