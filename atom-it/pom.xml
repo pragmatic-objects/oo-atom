@@ -11,6 +11,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>com.pragmaticobjects.oo.atom</groupId>
+            <artifactId>atom-basis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency> 
             <groupId>io.vavr</groupId> 
             <artifactId>vavr</artifactId>

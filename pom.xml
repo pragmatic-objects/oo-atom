@@ -188,17 +188,6 @@ SOFTWARE.
         </pluginManagement>
     </build>
 
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-kim-betti-maven</id>
-            <name>bintray</name>
-            <url>http://dl.bintray.com/kim-betti/maven</url>
-        </repository>
-    </repositories>
-    
     <distributionManagement>
         <repository>
             <id>bintray-skapral-oo-maven</id> 
@@ -375,12 +364,9 @@ SOFTWARE.
     </profiles>
     <modules>
         <module>atom-basis</module>
-        <module>atom-api</module>
-        <module>atom-tests</module>
         <module>atom-starter</module>
         <module>atom-maven-plugin</module>
         <module>atom-it</module>
-        <module>atom-samples</module>
         <module>atomizer</module>
     </modules>
 </project>

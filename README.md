@@ -39,21 +39,7 @@ OO-atom project is designed on the following principles:
 
 ## Quick start with Maven
 
-1. Add OO-atom repository to your project's POM file:
-
-```
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-releases</id>
-            <url>http://dl.bintray.com/skapral/oo-maven</url>
-        </repository>
-    </repositories>
-```
-
-2. Make your project parent from `atom-starter`.
+Make your project parent from `atom-starter`.
 
 ```
     <parent>
@@ -62,8 +48,6 @@ OO-atom project is designed on the following principles:
         <version>x.y.z</version>
     </parent>
 ```
-
-3. Study the [samples](atom-samples)
 
 ## How it works
 
