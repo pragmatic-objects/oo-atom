@@ -15,26 +15,16 @@
         <atom.version>0.0.0-SNAPSHOT</atom.version>
     </properties>
 
-    <repositories>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-skapral-oo-maven</id>
-            <name>bintray</name>
-            <url>http://dl.bintray.com/skapral/oo-maven</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-skapral-oo-maven</id>
-            <name>bintray</name>
-            <url>http://dl.bintray.com/skapral/oo-maven</url>
-        </pluginRepository>
-    </pluginRepositories>
+    </distributionManagement>
 
     <build>
         <plugins>
@@ -69,12 +59,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>bintray-skapral-oo-maven</id>
-            <name>skapral-oo-maven</name>
-            <url>https://api.bintray.com/maven/skapral/oo-maven/oo-atom/;publish=1</url>
-        </repository>
-    </distributionManagement>
 </project>

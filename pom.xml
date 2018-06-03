@@ -37,10 +37,12 @@ SOFTWARE.
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     
-    <name>oo-atom</name>
+    <name>OO-atom</name>
     <description>A Java polyfill for better code design</description>
-    <url>https://github.com/project-avral/oo-atom</url>
-    
+    <url>https://github.com/pragmatic-objects/oo-atom</url>
+    <scm>
+        <url>https://github.com/pragmatic-objects/oo-atom.git</url>
+    </scm>
     <licenses>
         <license>
             <name>MIT License</name>
@@ -55,7 +57,18 @@ SOFTWARE.
             <timezone>UTC+03:00</timezone>
         </developer>
     </developers>
-    
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -188,14 +201,6 @@ SOFTWARE.
         </pluginManagement>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>bintray-skapral-oo-maven</id> 
-            <name>skapral-oo-maven</name>
-            <url>https://api.bintray.com/maven/skapral/oo-maven/oo-atom/;publish=1</url> 
-        </repository>
-    </distributionManagement>
-    
     <profiles>
         <profile>
             <id>extras</id>
@@ -357,6 +362,27 @@ SOFTWARE.
                                 <version>8.10</version>
                             </dependency>
                         </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>ossrh</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
