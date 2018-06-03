@@ -48,19 +48,3 @@ Make your project parent from `atom-starter`.
         <version>x.y.z</version>
     </parent>
 ```
-
-## How it works
-
-The project provides a tool, called "Atomizer". It can be downloaded
-[here](http://dl.bintray.com/skapral/oo-maven/oo/atomizer/0.0.11/).
-The tool checks the classes in a directory for compliance with atom specification.
-To use a tool on a classpath:
-```
-$ cd <directory with classes>; JAVA_HOME=<java home> atomizer.sh <classpath>
-
-where <classpath> is a list of jars and directories delimited with ':'.
-```
-
-The tool is executed on compiled classes before packing them to JAR. Main procedures, done on classes, are defined 
-[here](atom-basis/src/main/java/oo/atom/codegen/AtomizerMain.java).
-

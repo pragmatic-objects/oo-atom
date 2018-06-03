@@ -393,6 +393,8 @@ SOFTWARE.
         <module>atom-starter</module>
         <module>atom-maven-plugin</module>
         <module>atom-it</module>
-        <module>atomizer</module>
+        <!-- @todo #178 currently, atomizer is broken: really-executable-jar-maven-plugin doesn't support attaching external dependencies. Ustub the module after fixing or working around this issue.
+        -->
+        <!--<module>atomizer</module>-->
     </modules>
 </project>

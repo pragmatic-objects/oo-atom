@@ -15,5 +15,4 @@ cd -
 mvn clean deploy -Pextras,ossrh
 git commit -am "[release] oo-atom-${TAG}"
 git tag -f ${TAG}
-git push origin ${TAG}
 
