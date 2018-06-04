@@ -8,6 +8,27 @@
     <version>0.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>atom-starter</name>
+    <description>Maven starter for OO-atom</description>
+    <url>https://github.com/pragmatic-objects/oo-atom</url>
+    <scm>
+        <url>https://github.com/pragmatic-objects/oo-atom.git</url>
+    </scm>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Kapralov Sergey</name>
+            <email>skapralov@mail.ru</email>
+            <timezone>UTC+03:00</timezone>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
