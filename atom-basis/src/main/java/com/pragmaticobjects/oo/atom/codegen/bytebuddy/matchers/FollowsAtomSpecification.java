@@ -32,7 +32,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 
 /**
  * Matcher which matches all types compliant to Atom rules.
- * See <a href="https://github.com/project-avral/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>
+ * See <a href="https://github.com/pragmatic-objects/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>
  *
  * @author Kapralov Sergey
  */

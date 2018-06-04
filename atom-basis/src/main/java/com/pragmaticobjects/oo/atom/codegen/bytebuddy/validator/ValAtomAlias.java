@@ -28,7 +28,7 @@ import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.aliasspec.NoMetho
 
 /**
  * A validator which validates that certain {@link net.bytebuddy.description.type.TypeDescription} is
- * compliant with Atom alias specification (by See <a href="https://github.com/project-avral/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>).
+ * compliant with Atom alias specification (by See <a href="https://github.com/pragmatic-objects/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>).
  *
  * @author Kapralov Sergey
  */

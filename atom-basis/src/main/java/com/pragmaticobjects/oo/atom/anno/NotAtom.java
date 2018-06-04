@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 /**
  * Classes, marked by annotation {@link NotAtom} are either proved or
  * claimed to be intentionally not compliant with Atom specification. For the latest Atom
- * specification, refer to <a href="https://github.com/project-avral/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>
+ * specification, refer to <a href="https://github.com/pragmatic-objects/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>
  * @author Kapralov Sergey
  */
 @Target(ElementType.TYPE)

@@ -30,7 +30,7 @@ import net.bytebuddy.description.type.TypeDescription;
 /**
  * Generates bytecode for loading field of objects compared in {@link Object#equals(Object)} on stack
  * and comparing them using Atom equality semantics
- * (see <a href="https://github.com/project-avral/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>).
+ * (see <a href="https://github.com/pragmatic-objects/oo-atom/blob/master/docs/ATOM_SPECIFICATION.md"></a>).
  *
  * @author Kapralov Sergey
  */
