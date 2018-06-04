@@ -27,7 +27,7 @@ SOFTWARE.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>oo</groupId>
+    <groupId>com.pragmaticobjects.oo.atom</groupId>
     <artifactId>oo-atom</artifactId>
     <version>0.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -37,10 +37,12 @@ SOFTWARE.
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     
-    <name>oo-atom</name>
+    <name>OO-atom</name>
     <description>A Java polyfill for better code design</description>
-    <url>https://github.com/project-avral/oo-atom</url>
-    
+    <url>https://github.com/pragmatic-objects/oo-atom</url>
+    <scm>
+        <url>https://github.com/pragmatic-objects/oo-atom.git</url>
+    </scm>
     <licenses>
         <license>
             <name>MIT License</name>
@@ -55,11 +57,22 @@ SOFTWARE.
             <timezone>UTC+03:00</timezone>
         </developer>
     </developers>
-    
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>oo</groupId>
+                <groupId>com.pragmaticobjects.oo.atom</groupId>
                 <artifactId>atom-basis</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -106,7 +119,7 @@ SOFTWARE.
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.2.0-M1</version>
+                <version>5.2.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -167,7 +180,7 @@ SOFTWARE.
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.19.1</version>
+                    <version>2.21.0</version>
                     <configuration>
                         <trimStackTrace>false</trimStackTrace>
                     </configuration>
@@ -175,7 +188,7 @@ SOFTWARE.
                         <dependency>
                             <groupId>org.junit.platform</groupId>
                             <artifactId>junit-platform-surefire-provider</artifactId>
-                            <version>1.0.2</version>
+                            <version>1.2.0</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -188,25 +201,6 @@ SOFTWARE.
         </pluginManagement>
     </build>
 
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-kim-betti-maven</id>
-            <name>bintray</name>
-            <url>http://dl.bintray.com/kim-betti/maven</url>
-        </repository>
-    </repositories>
-    
-    <distributionManagement>
-        <repository>
-            <id>bintray-skapral-oo-maven</id> 
-            <name>skapral-oo-maven</name>
-            <url>https://api.bintray.com/maven/skapral/oo-maven/oo-atom/;publish=1</url> 
-        </repository>
-    </distributionManagement>
-    
     <profiles>
         <profile>
             <id>extras</id>
@@ -272,7 +266,7 @@ SOFTWARE.
                                  A hack which prevents JaCoCo instrumentation of some classes in tests,
                                  since fields and methods, added by JaCoCo, impact tests semantics
                                  -->
-                                <exclude>oo.atom.codegen.bytebuddy.matchers.**Test$**</exclude>
+                                <exclude>com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.**Test$**</exclude>
                             </excludes>
                         </configuration>
                         <executions>
@@ -349,6 +343,9 @@ SOFTWARE.
                         <executions>
                             <execution>
                                 <configuration>
+                                    <sourceDirectories>
+                                        <sourceDirectory>src/main/java</sourceDirectory>
+                                    </sourceDirectories>
                                     <logViolationsToConsole>true</logViolationsToConsole>
                                     <configLocation>checkstyle.xml</configLocation>
                                     <encoding>UTF-8</encoding>
@@ -372,15 +369,34 @@ SOFTWARE.
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>ossrh</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
     <modules>
         <module>atom-basis</module>
-        <module>atom-api</module>
-        <module>atom-tests</module>
-        <module>atom-starter</module>
         <module>atom-maven-plugin</module>
         <module>atom-it</module>
-        <module>atom-samples</module>
-        <module>atomizer</module>
+        <!-- @todo #178 currently, atomizer is broken: really-executable-jar-maven-plugin doesn't support attaching external dependencies. Ustub the module after fixing or working around this issue.
+        -->
+        <!--<module>atomizer</module>-->
     </modules>
 </project>

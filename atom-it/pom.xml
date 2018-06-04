@@ -2,19 +2,84 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>oo</groupId>
-        <artifactId>atom-starter</artifactId>
+        <groupId>com.pragmaticobjects.oo.atom</groupId>
+        <artifactId>oo-atom</artifactId>
         <version>0.0.0-SNAPSHOT</version>
-        <relativePath>../atom-starter</relativePath>
     </parent>
     <artifactId>atom-it</artifactId>
-    <packaging>jar</packaging>
+    <packaging>tabularasa</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>com.pragmaticobjects.oo.atom</groupId>
+            <artifactId>atom-basis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency> 
             <groupId>io.vavr</groupId> 
             <artifactId>vavr</artifactId>
             <version>0.9.0</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.skapral</groupId>
+                <artifactId>maven-tabularasa-plugin</artifactId>
+                <version>0.0.0</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.21.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.pragmaticobjects.oo.atom</groupId>
+                <artifactId>atom-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-annotations</goal>
+                            <goal>instrument</goal>
+                            <goal>instrument-tests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

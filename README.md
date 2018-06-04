@@ -1,11 +1,11 @@
 # OO-atom
 
-[![Build Status (Travis)](https://img.shields.io/travis/project-avral/oo-atom/master.svg)](https://travis-ci.org/project-avral/oo-atom)
+[![Build Status (Travis)](https://img.shields.io/travis/pragmatic-objects/oo-atom/master.svg)](https://travis-ci.org/pragmatic-objects/oo-atom)
 [![Build status (AppVeyor)](https://ci.appveyor.com/api/projects/status/sumvi0c7teo9oq94?svg=true)](https://ci.appveyor.com/project/skapral/oo-atom)
 
-[![Codecov](https://codecov.io/gh/project-avral/oo-atom/branch/master/graph/badge.svg)](https://codecov.io/gh/project-avral/oo-atom)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b91e6bf2e7744333b93d2b8785fe056b)](https://www.codacy.com/app/skapral/oo-atom?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=project-avral/oo-atom&amp;utm_campaign=Badge_Grade)
-[![PDD status](http://www.0pdd.com/svg?name=project-avral/oo-atom)](http://www.0pdd.com/p?name=project-avral/oo-atom)
+[![Codecov](https://codecov.io/gh/pragmatic-objects/oo-atom/branch/master/graph/badge.svg)](https://codecov.io/gh/pragmatic-objects/oo-atom)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b91e6bf2e7744333b93d2b8785fe056b)](https://www.codacy.com/app/pragmatic-objects/oo-atom?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pragmatic-objects/oo-atom&amp;utm_campaign=Badge_Grade)
+[![PDD status](http://www.0pdd.com/svg?name=pragmatic-objects/oo-atom)](http://www.0pdd.com/p?name=pragmatic-objects/oo-atom)
 
 ## Disclaimer
 
@@ -39,44 +39,21 @@ OO-atom project is designed on the following principles:
 
 ## Quick start with Maven
 
-1. Add OO-atom repository to your project's POM file:
+Add `atom-maven-plugin` to your project's pom file:
 
 ```
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-releases</id>
-            <url>http://dl.bintray.com/skapral/oo-maven</url>
-        </repository>
-    </repositories>
+<plugin>
+    <groupId>com.pragmaticobjects.oo.atom</groupId>
+    <artifactId>atom-maven-plugin</artifactId>
+    <version>x.y.z</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>generate-annotations</goal>
+                <goal>instrument</goal>
+                <goal>instrument-tests</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
 ```
-
-2. Make your project parent from `atom-starter`.
-
-```
-    <parent>
-        <groupId>oo</groupId>
-        <artifactId>atom-starter</artifactId>
-        <version>x.y.z</version>
-    </parent>
-```
-
-3. Study the [samples](atom-samples)
-
-## How it works
-
-The project provides a tool, called "Atomizer". It can be downloaded
-[here](http://dl.bintray.com/skapral/oo-maven/oo/atomizer/0.0.11/).
-The tool checks the classes in a directory for compliance with atom specification.
-To use a tool on a classpath:
-```
-$ cd <directory with classes>; JAVA_HOME=<java home> atomizer.sh <classpath>
-
-where <classpath> is a list of jars and directories delimited with ':'.
-```
-
-The tool is executed on compiled classes before packing them to JAR. Main procedures, done on classes, are defined 
-[here](atom-basis/src/main/java/oo/atom/codegen/AtomizerMain.java).
-
