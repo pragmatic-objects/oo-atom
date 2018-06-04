@@ -343,6 +343,9 @@ SOFTWARE.
                         <executions>
                             <execution>
                                 <configuration>
+                                    <sourceDirectories>
+                                        <sourceDirectory>src/main/java</sourceDirectory>
+                                    </sourceDirectories>
                                     <logViolationsToConsole>true</logViolationsToConsole>
                                     <configLocation>checkstyle.xml</configLocation>
                                     <encoding>UTF-8</encoding>
@@ -390,7 +393,6 @@ SOFTWARE.
     </profiles>
     <modules>
         <module>atom-basis</module>
-        <module>atom-starter</module>
         <module>atom-maven-plugin</module>
         <module>atom-it</module>
         <!-- @todo #178 currently, atomizer is broken: really-executable-jar-maven-plugin doesn't support attaching external dependencies. Ustub the module after fixing or working around this issue.

@@ -39,12 +39,21 @@ OO-atom project is designed on the following principles:
 
 ## Quick start with Maven
 
-Make your project parent from `atom-starter`.
+Add `atom-maven-plugin` to your project's pom file:
 
 ```
-    <parent>
-        <groupId>com.pragmaticobjects.oo.atom</groupId>
-        <artifactId>atom-starter</artifactId>
-        <version>x.y.z</version>
-    </parent>
+<plugin>
+    <groupId>com.pragmaticobjects.oo.atom</groupId>
+    <artifactId>atom-maven-plugin</artifactId>
+    <version>x.y.z</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>generate-annotations</goal>
+                <goal>instrument</goal>
+                <goal>instrument-tests</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
 ```
