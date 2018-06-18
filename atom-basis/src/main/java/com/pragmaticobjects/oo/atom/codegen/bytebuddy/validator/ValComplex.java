@@ -23,7 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator;
 
-import com.pragmaticobjects.oo.atom.r.RtCombined;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 
@@ -33,17 +32,16 @@ import net.bytebuddy.description.type.TypeDescription;
  *
  * @author Kapralov Sergey
  */
-public class ValComplex extends RtCombined<TypeDescription, TypeDescription> implements Validator {
+public class ValComplex implements Validator {
+    private final List<Validator> validators;
+
     /**
      * Ctor.
      *
      * @param validators a list of validators to combine
      */
     public ValComplex(List<Validator> validators) {
-        super(
-            List.narrow(validators),
-            (r1, r2) -> r1
-        );
+        this.validators = validators;
     }
 
     /**
@@ -55,5 +53,10 @@ public class ValComplex extends RtCombined<TypeDescription, TypeDescription> imp
         this(
             List.of(validators)
         );
+    }
+
+    @Override
+    public final List<String> errors(TypeDescription type) {
+        return validators.flatMap(v -> v.errors(type));
     }
 }

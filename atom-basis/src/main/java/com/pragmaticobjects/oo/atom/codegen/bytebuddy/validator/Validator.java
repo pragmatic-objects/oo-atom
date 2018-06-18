@@ -23,16 +23,19 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator;
 
-import com.pragmaticobjects.oo.atom.r.Result;
-import com.pragmaticobjects.oo.atom.r.ResultTransition;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 
+
 /**
- * A transition, which validates {@link TypeDescription}. Implementors must produce {@link com.pragmaticobjects.oo.atom.r.Result}
- * with input {@link TypeDescription}, if validation is passed, or with list of violations in {@link Result#issues()},
- * if failed.
+ * Reusable validator for {@link TypeDescription}. Validates that certain type meets certain conditions.
  *
  * @author Kapralov Sergey
  */
-public interface Validator extends ResultTransition<TypeDescription, TypeDescription> {
+public interface Validator {
+    /**
+     * @param type a type to validate.
+     * @return a list of found validation errors.
+     */
+    List<String> errors(TypeDescription type);
 }

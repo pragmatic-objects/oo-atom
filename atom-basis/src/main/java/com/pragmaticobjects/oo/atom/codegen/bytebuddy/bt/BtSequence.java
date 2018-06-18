@@ -23,9 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
-import com.pragmaticobjects.oo.atom.r.RBind;
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
@@ -55,14 +52,10 @@ public class BtSequence implements BuilderTransition {
     }
 
     @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
-        return transitions.<Result<Builder<?>>>foldLeft(
-            new RSuccess<>(source),
-            (state, transition) -> new RBind<>(
-                state,
-                new RtFromBuilderTransitionAdapter(transition, typeDescription)
-            )
+    public final Builder<?> transitionResult(Builder<?> source, TypeDescription typeDescription) {
+        return transitions.<Builder<?>>foldLeft(
+            source,
+            (state, transition) -> transition.transitionResult(state, typeDescription)
         );
     }
-
 }

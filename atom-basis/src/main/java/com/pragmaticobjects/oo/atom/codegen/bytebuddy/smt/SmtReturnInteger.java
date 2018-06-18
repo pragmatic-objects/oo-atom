@@ -23,55 +23,32 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-
-/**
- * {@link SmtReturnInteger} inference.
- *
- * @author Kapralov Sergey
- */
-class SmtReturnIntegerInference implements Result.Inference<StackManipulation> {
-    private final Integer returnValue;
-
-    /**
-     * Ctor.
-     * @param returnValue return value.
-     */
-    public SmtReturnIntegerInference(Integer returnValue) {
-        this.returnValue = returnValue;
-    }
-
-    @Override
-    public final Result<StackManipulation> result() {
-        return new RSuccess<>(
-            new StackManipulation.Compound(
-                IntegerConstant.forValue(returnValue),
-                MethodReturn.INTEGER
-            )
-        );
-    }
-    
-}
 
 /**
  * Generates RETURN statement.
  *
  * @author Kapralov Sergey
  */
-public class SmtReturnInteger extends RInferred<StackManipulation> implements StackManipulationToken {
+public class SmtReturnInteger implements StackManipulationToken {
+    private final Integer returnValue;
+
     /**
      * Ctor.
      *
      * @param returnValue return value.
      */
     public SmtReturnInteger(Integer returnValue) {
-        super(
-            new SmtReturnIntegerInference(returnValue)
+        this.returnValue = returnValue;
+    }
+
+    @Override
+    public final StackManipulation stackManipulation() {
+        return new StackManipulation.Compound(
+            IntegerConstant.forValue(returnValue),
+            MethodReturn.INTEGER
         );
     }
 }

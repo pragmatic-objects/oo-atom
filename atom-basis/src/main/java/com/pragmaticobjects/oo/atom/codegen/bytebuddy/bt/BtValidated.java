@@ -24,11 +24,9 @@
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator.Validator;
-import com.pragmaticobjects.oo.atom.r.RFailure;
-import com.pragmaticobjects.oo.atom.r.Result;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Builder;
 
 /**
  * Transition which validates a class before applying instrumentation to it.
@@ -51,13 +49,18 @@ public class BtValidated implements BuilderTransition {
     }
 
     @Override
-    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
-        final Result<TypeDescription> validateResult = validator.transitionResult(typeDescription);
-        final List<String> issues = validateResult.issues();
+    public final Builder<?> transitionResult(Builder<?> source, TypeDescription typeDescription) {
+        final List<String> issues = validator.errors(typeDescription);
         if(issues.isEmpty()) {
             return delegate.transitionResult(source, typeDescription);
         } else {
-            return new RFailure<>(issues);
+            throw new RuntimeException(
+                String.format(
+                    "A type %s does not meet certain requirements:\r\n%s",
+                    typeDescription.getName(),
+                    String.join("\r\n", issues.toJavaArray(String.class))
+                )
+            );
         }
     }
 }

@@ -24,11 +24,10 @@
 
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator;
 
-import com.pragmaticobjects.oo.atom.r.AssertResultIsErroneous;
-import com.pragmaticobjects.oo.atom.tests.AssertInferred;
 import com.pragmaticobjects.oo.atom.tests.Assertion;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
+import org.assertj.core.api.Assertions;
 
 
 /**
@@ -36,7 +35,11 @@ import net.bytebuddy.description.type.TypeDescription;
  *
  * @author Kapralov Sergey
  */
-public class AssertValidatorFailure extends AssertInferred {
+public class AssertValidatorFailure implements Assertion {
+    private final Validator validator;
+    private final TypeDescription type;
+    private final List<String> issues;
+
     /**
      * Ctor.
      *
@@ -45,13 +48,9 @@ public class AssertValidatorFailure extends AssertInferred {
      * @param issues List of expected issues.
      */
     public AssertValidatorFailure(final Validator validator, final TypeDescription type, List<String> issues) {
-        super(
-            new AssertValidatorFailureInference(
-                validator,
-                type,
-                issues
-            )
-        );
+        this.validator = validator;
+        this.type = type;
+        this.issues = issues;
     }
 
     /**
@@ -68,36 +67,9 @@ public class AssertValidatorFailure extends AssertInferred {
             List.of(issues)
         );
     }
-}
-
-/**
- * {@link AssertValidatorFailure} inference
- *
- * @author Kapralov Sergey
- */
-class AssertValidatorFailureInference implements Assertion.Inference {
-    private final Validator validator;
-    private final TypeDescription type;
-    private final List<String> issues;
-
-    /**
-     * Ctor.
-     *
-     * @param validator The validator under the test.
-     * @param type Type to validate.
-     * @param issues List of expected issues.
-     */
-    public AssertValidatorFailureInference(final Validator validator, final TypeDescription type, List<String> issues) {
-        this.validator = validator;
-        this.type = type;
-        this.issues = issues;
-    }
 
     @Override
-    public final Assertion assertion() {
-        return new AssertResultIsErroneous(
-            validator.transitionResult(type),
-            issues
-        );
+    public final void check() throws Exception {
+        Assertions.assertThat(validator.errors(type)).containsExactly(issues.toJavaArray(String.class));
     }
 }

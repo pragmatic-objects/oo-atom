@@ -23,53 +23,54 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.Result;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-
-/**
- * {@link SmtCheckAtomFieldsEquality} inference.
- *
- * @author Kapralov Sergey
- */
-class SmtCheckAtomFieldsEqualityInference implements Result.Inference<StackManipulation> {
-    private final TypeDescription type;
-
-    /**
-     * Ctor.
-     *
-     * @param type Type.
-     */
-    public SmtCheckAtomFieldsEqualityInference(TypeDescription type) {
-        this.type = type;
-    }
-
-    @Override
-    public final Result<StackManipulation> result() {
-        return new SmtCombined(
-            List.of(type)
-                .flatMap(TypeDescription::getDeclaredFields)
-                .filter(f -> !f.isStatic())
-                .map(f -> new SmtCheckAtomFieldEquality(type, f))
-                .toJavaArray(SmtCheckAtomFieldEquality.class)
-        );
-    }
-}
 
 /**
  * Repeats {@link SmtCheckAtomFieldEquality} for each field of compared objects.
  *
  * @author Kapralov Sergey
  */
-public class SmtCheckAtomFieldsEquality extends RInferred<StackManipulation> implements StackManipulationToken {
+public class SmtCheckAtomFieldsEquality extends SmtInferred {
     /**
      * Ctor.
      *
      * @param type Type.
      */
-    public SmtCheckAtomFieldsEquality(final TypeDescription type) {
-        super(new SmtCheckAtomFieldsEqualityInference(type));
+    public SmtCheckAtomFieldsEquality(TypeDescription type) {
+        super(
+            new Inference(
+                type
+            )
+        );
+    }
+
+    /**
+     * {@link SmtCheckAtomFieldsEquality} inference
+     *
+     * @author Kapralov Sergey
+     */
+    private static class Inference implements StackManipulationToken.Inference {
+        private final TypeDescription type;
+
+        /**
+         * Ctor.
+         *
+         * @param type Type.
+         */
+        public Inference(TypeDescription type) {
+            this.type = type;
+        }
+
+        @Override
+        public final StackManipulationToken stackManipulationToken() {
+            return new SmtCombined(
+                List.of(type)
+                    .flatMap(TypeDescription::getDeclaredFields)
+                    .filter(f -> !f.isStatic())
+                    .map(f -> new SmtCheckAtomFieldEquality(type, f))
+                    .toJavaArray(SmtCheckAtomFieldEquality.class)
+            );
+        }
     }
 }

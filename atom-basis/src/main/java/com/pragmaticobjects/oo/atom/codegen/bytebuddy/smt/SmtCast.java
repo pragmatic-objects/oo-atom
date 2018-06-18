@@ -23,50 +23,29 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
-
-/**
- * {@link SmtCast} inference.
- *
- * @author Kapralov Sergey
- */
-class SmtCastInference implements Result.Inference<StackManipulation> {
-    private final TypeDescription typeDescription;
-
-    /**
-     * Ctor.
-     *
-     * @param typeDescription type to cast
-     */
-    public SmtCastInference(TypeDescription typeDescription) {
-        this.typeDescription = typeDescription;
-    }
-
-    @Override
-    public final Result<StackManipulation> result() {
-        return new RSuccess<>(TypeCasting.to(typeDescription));
-    }
-}
 
 /**
  * Places bytecode for casting on-stack value to certain type.
  *
  * @author Kapralov Sergey
  */
-public class SmtCast extends RInferred<StackManipulation> implements StackManipulationToken {
+public class SmtCast implements StackManipulationToken {
+    private final TypeDescription typeDescription;
+
     /**
      * Ctor.
      *
-     * @param type type to cast.
+     * @param typeDescription type to cast.
      */
-    public SmtCast(TypeDescription type) {
-        super(
-            new SmtCastInference(type)
-        );
+    public SmtCast(TypeDescription typeDescription) {
+        this.typeDescription = typeDescription;
+    }
+
+    @Override
+    public final StackManipulation stackManipulation() {
+        return TypeCasting.to(typeDescription);
     }
 }

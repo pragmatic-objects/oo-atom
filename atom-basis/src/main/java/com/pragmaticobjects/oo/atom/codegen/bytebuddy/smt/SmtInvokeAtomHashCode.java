@@ -37,7 +37,7 @@ import static net.bytebuddy.matcher.ElementMatchers.named;
  * @see Atoms
  * @author Kapralov Sergey
  */
-public class SmtInvokeAtomHashCode extends SmtInvokeMethod implements StackManipulationToken {
+public class SmtInvokeAtomHashCode extends SmtInvokeMethod {
     /**
      * Ctor.
      *

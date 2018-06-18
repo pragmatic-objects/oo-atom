@@ -23,9 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 
@@ -34,7 +31,7 @@ import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
  *
  * @author Kapralov Sergey
  */
-class SmtLoadReferenceInference implements Result.Inference<StackManipulation> {
+public class SmtLoadReference implements StackManipulationToken {
     private final Integer index;
 
     /**
@@ -42,32 +39,12 @@ class SmtLoadReferenceInference implements Result.Inference<StackManipulation> {
      *
      * @param index index of the reference.
      */
-    public SmtLoadReferenceInference(Integer index) {
+    public SmtLoadReference(Integer index) {
         this.index = index;
     }
-    
-    @Override
-    public final Result<StackManipulation> result() {
-        return new RSuccess<>(
-            MethodVariableAccess.REFERENCE.loadFrom(index)
-        );
-    }
-}
 
-/**
- * Loads a local reference on a stack.
- *
- * @author Kapralov Sergey
- */
-public class SmtLoadReference extends RInferred<StackManipulation> implements StackManipulationToken{
-    /**
-     * Ctor.
-     *
-     * @param index index of the reference.
-     */
-    public SmtLoadReference(int index) {
-        super(
-            new SmtLoadReferenceInference(index)
-        );
+    @Override
+    public final StackManipulation stackManipulation() {
+        return MethodVariableAccess.REFERENCE.loadFrom(index);
     }
 }

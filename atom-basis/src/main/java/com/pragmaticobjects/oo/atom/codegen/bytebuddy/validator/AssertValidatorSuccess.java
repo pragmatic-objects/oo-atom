@@ -24,39 +24,16 @@
 
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator;
 
-import com.pragmaticobjects.oo.atom.r.AssertResultHoldsExpectedValue;
-import com.pragmaticobjects.oo.atom.tests.AssertInferred;
 import com.pragmaticobjects.oo.atom.tests.Assertion;
 import net.bytebuddy.description.type.TypeDescription;
+import org.assertj.core.api.Assertions;
 
 /**
  * Asserts that validator succeeds on certain {@link TypeDescription}
  *
  * @author Kapralov Sergey
  */
-public class AssertValidatorSuccess extends AssertInferred {
-    /**
-     * Ctor.
-     *
-     * @param validator The validator under the test.
-     * @param type Type to validate.
-     */
-    public AssertValidatorSuccess(final Validator validator, final TypeDescription type) {
-        super(
-            new AssertValidatorSuccessInference(
-                validator,
-                type
-            )
-        );
-    }
-}
-
-/**
- * {@link AssertValidatorSuccess} inference.
- *
- * @author Kapralov Sergey
- */
-class AssertValidatorSuccessInference implements Assertion.Inference {
+public class AssertValidatorSuccess implements Assertion {
     private final Validator validator;
     private final TypeDescription type;
 
@@ -66,16 +43,13 @@ class AssertValidatorSuccessInference implements Assertion.Inference {
      * @param validator The validator under the test.
      * @param type Type to validate.
      */
-    public AssertValidatorSuccessInference(final Validator validator, final TypeDescription type) {
+    public AssertValidatorSuccess(final Validator validator, final TypeDescription type) {
         this.validator = validator;
         this.type = type;
     }
 
     @Override
-    public final Assertion assertion() {
-        return new AssertResultHoldsExpectedValue<>(
-            validator.transitionResult(type),
-            type
-        );
+    public final void check() throws Exception {
+        Assertions.assertThat(validator.errors(type)).isEmpty();
     }
 }

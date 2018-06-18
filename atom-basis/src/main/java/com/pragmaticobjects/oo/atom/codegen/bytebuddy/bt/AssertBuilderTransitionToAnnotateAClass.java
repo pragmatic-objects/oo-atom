@@ -62,8 +62,6 @@ public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
         final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(type);
         final DynamicType.Unloaded<?> make = builderTransition
                 .transitionResult(subclass, typeDescription)
-                .value()
-                .get()
                 .make();
         final Class<?> clazz = make.load(new AnonymousClassLoader()).getLoaded();
         assertThat(clazz.getAnnotation(annotation))

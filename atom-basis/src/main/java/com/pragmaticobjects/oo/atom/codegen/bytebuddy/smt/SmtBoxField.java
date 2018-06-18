@@ -23,54 +23,52 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
 
-/**
- * {@link SmtBoxField} inference.
- *
- * @author Kapralov Sergey
- */
-class SmtBoxFieldInference implements Result.Inference<StackManipulation> {
-
-    private final FieldDescription field;
-
-    /**
-     * Ctor.
-     *
-     * @param field field to box
-     */
-    public SmtBoxFieldInference(FieldDescription field) {
-        this.field = field;
-    }
-
-    @Override
-    public final Result<StackManipulation> result() {
-        TypeDescription type = field.getType().asErasure();
-        if (type.isPrimitive()) {
-            return new SmtBox(type);
-        } else {
-            return new SmtDoNothing();
-        }
-    }
-}
 
 /**
  * Boxes a fields if its type is primitive
  *
  * @author Kapralov Sergey
  */
-public class SmtBoxField extends RInferred<StackManipulation> implements StackManipulationToken {
+public class SmtBoxField extends SmtInferred {
     /**
      * Ctor.
      * @param field field description
      */
     public SmtBoxField(FieldDescription field) {
         super(
-            new SmtBoxFieldInference(field)
+            new Inference(field)
         );
+    }
+
+
+    /**
+     * {@link SmtBoxField} inference.
+     *
+     * @author Kapralov Sergey
+     */
+    private static class Inference implements StackManipulationToken.Inference {
+        private final FieldDescription field;
+
+        /**
+         * Ctor.
+         *
+         * @param field field to box
+         */
+        public Inference(FieldDescription field) {
+            this.field = field;
+        }
+
+        @Override
+        public final StackManipulationToken stackManipulationToken() {
+            TypeDescription type = field.getType().asErasure();
+            if (type.isPrimitive()) {
+                return new SmtBox(type);
+            } else {
+                return new SmtDoNothing();
+            }
+        }
     }
 }

@@ -23,7 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RSuccess;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
@@ -35,7 +34,7 @@ import java.lang.reflect.Method;
  *
  * @author Kapralov Sergey
  */
-public class SmtGetClass extends RSuccess<StackManipulation> implements StackManipulationToken {
+public class SmtGetClass extends SmtStatic {
     private final static StackManipulation STACK_MANIPULATION;
 
     static {

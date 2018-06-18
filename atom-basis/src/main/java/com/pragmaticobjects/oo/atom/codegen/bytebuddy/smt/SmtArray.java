@@ -23,57 +23,26 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.RTransformed;
-import com.pragmaticobjects.oo.atom.r.Result;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
 
 /**
- * {@link SmtArray} inference.
- *
- * @author Kapralov Sergey
- */
-class SmtArrayInference implements Result.Inference {
-    private final List<Result<StackManipulation>> members;
-
-    /**
-     * Ctor.
-     *
-     * @param members Array members.
-     */
-    public SmtArrayInference(List<Result<StackManipulation>> members) {
-        this.members = members;
-    }
-
-    @Override
-    public final Result<StackManipulation> result() {
-        return new RTransformed<>(
-            members, 
-            list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
-                list.toJavaList()
-            )
-        );
-    }
-}
-
-/**
  * Creates an array from values on stack, provided by {@link StackManipulationToken}'s
  *
  * @author Kapralov Sergey
  */
-public class SmtArray extends RInferred<StackManipulation> implements StackManipulationToken {
+public class SmtArray implements StackManipulationToken {
+    private final List<StackManipulationToken> members;
+
     /**
      * Ctor.
      *
      * @param members Array members
      */
-    public SmtArray(List<Result<StackManipulation>> members) {
-        super(
-            new SmtArrayInference(members)
-        );
+    public SmtArray(List<StackManipulationToken> members) {
+        this.members = members;
     }
 
     /**
@@ -81,8 +50,16 @@ public class SmtArray extends RInferred<StackManipulation> implements StackManip
      *
      * @param members Array members
      */
-    public SmtArray(Result<StackManipulation>... members) {
+    public SmtArray(StackManipulationToken... members) {
         this(List.of(members));
     }
 
+    @Override
+    public final StackManipulation stackManipulation() {
+        return members.transform(
+            list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
+                list.map(StackManipulationToken::stackManipulation).toJavaList()
+            )
+        );
+    }
 }

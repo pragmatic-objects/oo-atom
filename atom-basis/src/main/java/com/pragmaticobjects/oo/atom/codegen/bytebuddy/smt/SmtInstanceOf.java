@@ -64,17 +64,22 @@ class InstanceOfStackManipulation implements StackManipulation {
  *
  * @author Kapralov Sergey
  */
-public class SmtInstanceOf extends SmtStatic implements StackManipulationToken {
+public class SmtInstanceOf implements StackManipulationToken {
+    private final TypeDescription td;
+
     /**
      * Ctor.
      *
      * @param td Type description.
      */
     public SmtInstanceOf(final TypeDescription td) {
-        super(
-            new InstanceOfStackManipulation(
-                td
-            )
+        this.td = td;
+    }
+
+    @Override
+    public final StackManipulation stackManipulation() {
+        return new InstanceOfStackManipulation(
+            td
         );
     }
 }

@@ -25,17 +25,15 @@ package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.branching.BMark;
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt.c.Condition;
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
 
 /**
- * {@link SmtBranch} instruction
+ * Generates bytecode for branching statements.
  *
  * @author Kapralov Sergey
  */
-class SmtBranchInference implements Result.Inference<StackManipulation> {
+public class SmtBranch implements StackManipulationToken {
     private final Condition condition;
     private final StackManipulationToken successBranch;
 
@@ -45,41 +43,18 @@ class SmtBranchInference implements Result.Inference<StackManipulation> {
      * @param condition condition.
      * @param successBranch branch for success case.
      */
-    public SmtBranchInference(Condition condition, StackManipulationToken successBranch) {
+    public SmtBranch(Condition condition, StackManipulationToken successBranch) {
         this.condition = condition;
         this.successBranch = successBranch;
-    }    
+    }
 
     @Override
-    public final Result<StackManipulation> result() {
-        Label label = new Label();
-        return new SmtCombined(
-            new SmtStatic(condition.branching(label)),
-            successBranch,
-            new SmtStatic(new BMark(label))
-        );
-    }
-}
-
-
-/**
- * Generates bytecode for branching statements.
- *
- * @author Kapralov Sergey
- */
-public class SmtBranch extends RInferred<StackManipulation> implements StackManipulationToken {
-    /**
-     * Ctor.
-     *
-     * @param condition condition.
-     * @param successBranch branch for success case.
-     */
-    public SmtBranch(Condition condition, StackManipulationToken successBranch) {
-        super(
-            new SmtBranchInference(
-                condition,
-                successBranch
-            )
+    public final StackManipulation stackManipulation() {
+        final Label label = new Label();
+        return new StackManipulation.Compound(
+            condition.branching(label),
+            successBranch.stackManipulation(),
+            new BMark(label)
         );
     }
 }

@@ -28,6 +28,7 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+import net.bytebuddy.jar.asm.Opcodes;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -56,24 +57,32 @@ public class SmtBoxFieldTest extends TestsSuite {
         super(
             new TestCase(
                 "generates no bytecode for non-primitive fields",
-                new AssertTokensToRepresentIdenticalBytecode(
+                new AssertTokenToGenerateAByteCode(
                     new SmtBoxField(
                         new FieldDescription.ForLoadedField(
                             NON_PRIMITIVE_FIELD
                         )
                     ),
-                    new SmtDoNothing()
+                    mv -> {}
                 )
             ),
             new TestCase(
                 "boxes primitive fields",
-                new AssertTokenToRepresentExpectedStackManipulation(
+                new AssertTokenToGenerateAByteCode(
                     new SmtBoxField(
                         new FieldDescription.ForLoadedField(
                             PRIMITIVE_FIELD
                         )
                     ),
-                    () -> MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                    mv -> {
+                        mv.visitMethodInsn(
+                            Opcodes.INVOKESTATIC,
+                            "java/lang/Integer",
+                            "valueOf",
+                            "(I)Ljava/lang/Integer;",
+                            false
+                        );
+                    }
                 )
             )
         );

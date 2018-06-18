@@ -30,7 +30,7 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
  *
  * @author skapral
  */
-public class SmtDoNothing extends SmtStatic implements StackManipulationToken {
+public class SmtDoNothing extends SmtStatic {
     private static final StackManipulation EMPTY = new StackManipulation.Compound();
 
     /**

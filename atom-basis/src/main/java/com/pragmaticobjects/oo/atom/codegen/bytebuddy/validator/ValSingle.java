@@ -23,19 +23,16 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator;
 
-import com.pragmaticobjects.oo.atom.r.RFailure;
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.ResultTransition;
-import com.pragmaticobjects.oo.atom.r.RtInferred;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
- * {@link ValSingle} inference
+ * A single-matcher validation
  *
  * @author Kapralov Sergey
  */
-class ValSingleInference implements ResultTransition.Inference<TypeDescription, TypeDescription> {
+public class ValSingle implements Validator {
     private final ElementMatcher<TypeDescription> matcher;
     private final String errorMessage;
 
@@ -45,38 +42,17 @@ class ValSingleInference implements ResultTransition.Inference<TypeDescription, 
      * @param matcher a validating matcher
      * @param errorMessage error message if validation is failed
      */
-    public ValSingleInference(ElementMatcher<TypeDescription> matcher, String errorMessage) {
+    public ValSingle(ElementMatcher<TypeDescription> matcher, String errorMessage) {
         this.matcher = matcher;
         this.errorMessage = errorMessage;
     }
 
     @Override
-    public final ResultTransition<TypeDescription, TypeDescription> taskResultTransition() {
-        return (type) -> {
-            if(matcher.matches(type)) {
-                return new RSuccess<>(type);
-            } else {
-                return new RFailure<>(errorMessage);
-            }
-        };
-    }
-}
-
-/**
- * A single-matcher validation
- *
- * @author Kapralov Sergey
- */
-public class ValSingle extends RtInferred<TypeDescription, TypeDescription> implements Validator {
-    /**
-     * Ctor.
-     *
-     * @param matcher a validating matcher
-     * @param errorMessage error message if validation is failed
-     */
-    public ValSingle(ElementMatcher<TypeDescription> matcher, String errorMessage) {
-        super(
-            new ValSingleInference(matcher, errorMessage)
-        );
+    public final List<String> errors(TypeDescription type) {
+        if(matcher.matches(type)) {
+            return List.empty();
+        } else {
+            return List.of(errorMessage);
+        }
     }
 }

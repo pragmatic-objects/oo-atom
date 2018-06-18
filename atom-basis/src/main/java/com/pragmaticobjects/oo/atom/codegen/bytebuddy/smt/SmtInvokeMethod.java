@@ -24,9 +24,6 @@
 
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.method.MethodList;
 import net.bytebuddy.description.type.TypeDescription;
@@ -35,11 +32,11 @@ import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
- * {@link SmtInvokeMethod} inference.
+ * Generates method invocation bytecode.
  *
  * @author Kapralov Sergey
  */
-class SmtInvokeMethodInference implements Result.Inference<StackManipulation> {
+public class SmtInvokeMethod implements StackManipulationToken {
     private final TypeDescription type;
     private final ElementMatcher<MethodDescription> methodMatcher;
 
@@ -49,39 +46,15 @@ class SmtInvokeMethodInference implements Result.Inference<StackManipulation> {
      * @param type Type which owns a method.
      * @param methodMatcher method matcher.
      */
-    public SmtInvokeMethodInference(final TypeDescription type, final ElementMatcher<MethodDescription> methodMatcher) {
+    public SmtInvokeMethod(final TypeDescription type, final ElementMatcher<MethodDescription> methodMatcher) {
         this.type = type;
         this.methodMatcher = methodMatcher;
     }
 
     @Override
-    public final Result<StackManipulation> result() {
+    public final StackManipulation stackManipulation() {
         final MethodList<MethodDescription.InDefinedShape> matchedMethodsList = type.getDeclaredMethods().filter(methodMatcher);
         final MethodDescription method = matchedMethodsList.getOnly();
-        return new RSuccess<>(
-            MethodInvocation.invoke(method)
-        );
-    }
-}
-
-/**
- * Generates method invocation bytecode.
- *
- * @author Kapralov Sergey
- */
-public class SmtInvokeMethod extends RInferred<StackManipulation> implements StackManipulationToken {
-    /**
-     * Ctor.
-     *
-     * @param type Type which owns a method.
-     * @param methodMatcher method matcher.
-     */
-    public SmtInvokeMethod(final TypeDescription type, final ElementMatcher<MethodDescription> methodMatcher) {
-        super(
-            new SmtInvokeMethodInference(
-                type,
-                methodMatcher
-            )
-        );
+        return MethodInvocation.invoke(method);
     }
 }
