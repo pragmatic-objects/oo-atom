@@ -23,19 +23,16 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.FieldAccess;
 
 /**
- * {@link SmtGetField} inference.
+ * Loads a certain field on a stack.
  *
  * @author Kapralov Sergey
  */
-class SmtGetFieldInference implements Result.Inference<StackManipulation> {
+public class SmtGetField implements StackManipulationToken {
     private final FieldDescription field;
 
     /**
@@ -43,32 +40,12 @@ class SmtGetFieldInference implements Result.Inference<StackManipulation> {
      *
      * @param field field.
      */
-    public SmtGetFieldInference(FieldDescription field) {
+    public SmtGetField(FieldDescription field) {
         this.field = field;
     }
 
     @Override
-    public final Result<StackManipulation> result() {
-        return new RSuccess<>(
-            FieldAccess.forField(field).read()
-        );
-    }
-}
-
-/**
- * Loads a certain field on a stack.
- *
- * @author Kapralov Sergey
- */
-public class SmtGetField extends RInferred<StackManipulation> implements StackManipulationToken {
-    /**
-     * Ctor.
-     *
-     * @param field field.
-     */
-    public SmtGetField(FieldDescription field) {
-        super(
-            new SmtGetFieldInference(field)
-        );
+    public final StackManipulation stackManipulation() {
+        return FieldAccess.forField(field).read();
     }
 }

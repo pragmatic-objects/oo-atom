@@ -39,13 +39,13 @@ public class SmtLoadPairOfFields extends SmtCombined {
      */
     public SmtLoadPairOfFields(TypeDescription type, FieldDescription field) {
         super(
-                new SmtLoadReference(0),
-                new SmtGetField(field),
-                new SmtBoxField(field),
-                new SmtLoadReference(1),
-                new SmtCast(type),
-                new SmtGetField(field),
-                new SmtBoxField(field)
+            new SmtLoadReference(0),
+            new SmtGetField(field),
+            new SmtBoxField(field),
+            new SmtLoadReference(1),
+            new SmtCast(type),
+            new SmtGetField(field),
+            new SmtBoxField(field)
         );
     }
 }

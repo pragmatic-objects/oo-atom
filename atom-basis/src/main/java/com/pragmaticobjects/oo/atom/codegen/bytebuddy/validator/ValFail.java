@@ -23,8 +23,7 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator;
 
-import com.pragmaticobjects.oo.atom.r.RFailure;
-import com.pragmaticobjects.oo.atom.r.Result;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 
 /**
@@ -45,7 +44,7 @@ public class ValFail implements Validator {
     }
 
     @Override
-    public final Result<TypeDescription> transitionResult(TypeDescription source) {
-        return new RFailure<>(issue);
+    public final List<String> errors(TypeDescription type) {
+        return List.of(issue);
     }
 }

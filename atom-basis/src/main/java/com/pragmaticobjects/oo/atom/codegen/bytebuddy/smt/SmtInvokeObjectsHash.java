@@ -23,7 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RSuccess;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
@@ -37,7 +36,7 @@ import java.util.Objects;
  *
  * @author Kapralov Sergey
  */
-public class SmtInvokeObjectsHash extends RSuccess<StackManipulation> implements StackManipulationToken {
+public class SmtInvokeObjectsHash implements StackManipulationToken {
     private static final Method OBJECTS_HASH;
 
     static {
@@ -48,16 +47,11 @@ public class SmtInvokeObjectsHash extends RSuccess<StackManipulation> implements
         }
     }
 
-    /**
-     * Ctor.
-     */
-    public SmtInvokeObjectsHash() {
-        super(
-            new StackManipulation.Compound(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(OBJECTS_HASH)),
-                MethodReturn.INTEGER
-            )
+    @Override
+    public final StackManipulation stackManipulation() {
+        return new StackManipulation.Compound(
+            MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(OBJECTS_HASH)),
+            MethodReturn.INTEGER
         );
     }
-
 }

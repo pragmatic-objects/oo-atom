@@ -23,10 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RFailure;
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import io.vavr.API;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
@@ -37,13 +33,14 @@ import java.lang.reflect.Method;
 
 import static io.vavr.API.*;
 
+
 /**
- * Inference for {@link com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt.SmtBox}
+ * Stack manipulation token which boxes some primitive-type value on stack.
+ * Fails in case when the passed type is not primitive.
  * 
  * @author Kapralov Sergey
  */
-class SmtBoxInference implements Result.Inference<StackManipulation> {
-
+public class SmtBox implements StackManipulationToken {
     private static final Method BOOLEAN_VALUEOF;
     private static final Method BYTE_VALUEOF;
     private static final Method CHAR_VALUEOF;
@@ -72,60 +69,56 @@ class SmtBoxInference implements Result.Inference<StackManipulation> {
 
     /**
      * Ctor.
-     * @param type a type to box.
-     */
-    public SmtBoxInference(TypeDescription type) {
-        this.type = type;
-    }
-
-    @Override
-    public final Result<StackManipulation> result() {
-        return Match(type).<Result<StackManipulation>>of(API.Case($(t -> t.represents(boolean.class)), new RSuccess<StackManipulation>(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
-            )),
-            Case($(t -> t.represents(byte.class)), new RSuccess<StackManipulation>(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
-            )),
-            Case($(t -> t.represents(char.class)), new RSuccess<StackManipulation>(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
-            )),
-            Case($(t -> t.represents(short.class)), new RSuccess<StackManipulation>(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
-            )),
-            Case($(t -> t.represents(int.class)), new RSuccess<StackManipulation>(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
-            )),
-            Case($(t -> t.represents(long.class)), new RSuccess<StackManipulation>(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
-            )),
-            Case($(t -> t.represents(float.class)), new RSuccess<StackManipulation>(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
-            )),
-            Case($(t -> t.represents(double.class)), new RSuccess<StackManipulation>(
-                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
-            )),
-            API.Case($(), new RFailure<StackManipulation>(
-                String.format("Attempt to box non-primitive type %s", type.getName())
-            ))
-        );
-    }
-}
-
-/**
- * Stack manipulation token which boxes some primitive-type value on stack.
- * Fails in case when the passed type is not primitive.
- * 
- * @author Kapralov Sergey
- */
-public class SmtBox extends RInferred<StackManipulation> implements StackManipulationToken {
-    /**
-     * Ctor.
      * 
      * @param type a type to box
      */
     public SmtBox(TypeDescription type) {
-        super(
-            new SmtBoxInference(type)
+        this.type = type;
+    }
+
+    @Override
+    public final StackManipulation stackManipulation() {
+        return Match(type).<StackManipulation>of(API.Case(
+                $(t -> t.represents(boolean.class)),
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BOOLEAN_VALUEOF))
+            ),
+            Case(
+                $(t -> t.represents(byte.class)),
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(BYTE_VALUEOF))
+            ),
+            Case(
+                $(t -> t.represents(char.class)),
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(CHAR_VALUEOF))
+            ),
+            Case(
+                $(t -> t.represents(short.class)),
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(SHORT_VALUEOF))
+            ),
+            Case(
+                $(t -> t.represents(int.class)),
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+            ),
+            Case(
+                $(t -> t.represents(long.class)),
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(LONG_VALUEOF))
+            ),
+            Case(
+                $(t -> t.represents(float.class)),
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(FLOAT_VALUEOF))
+            ),
+            Case(
+                $(t -> t.represents(double.class)),
+                MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(DOUBLE_VALUEOF))
+            ),
+            Case(
+                $(),
+                () -> {
+                    throw new RuntimeException(
+                        String.format("Attempt to box non-primitive type %s", type.getName())
+                    );
+                }
+            )
         );
     }
 }
+

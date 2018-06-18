@@ -24,8 +24,7 @@
 
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator;
 
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 
 /**
@@ -41,9 +40,7 @@ public class ValSuccess implements Validator {
     }
 
     @Override
-    public final Result<TypeDescription> transitionResult(final TypeDescription source) {
-        return new RSuccess<>(
-            source
-        );
+    public final List<String> errors(TypeDescription type) {
+        return List.empty();
     }
 }

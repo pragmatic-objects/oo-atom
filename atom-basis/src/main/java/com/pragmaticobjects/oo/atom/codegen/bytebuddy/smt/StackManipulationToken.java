@@ -23,7 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 
 /**
@@ -31,5 +30,18 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
  *
  * @author Kapralov Sergey
  */
-public interface StackManipulationToken extends Result<StackManipulation> {
+public interface StackManipulationToken {
+    /**
+     * @return inferred {@link StackManipulation}.
+     */
+    StackManipulation stackManipulation();
+
+    /**
+     * {@link StackManipulationToken} inference
+     *
+     * @author Kapralov Sergey
+     */
+    interface Inference {
+        StackManipulationToken stackManipulationToken();
+    }
 }

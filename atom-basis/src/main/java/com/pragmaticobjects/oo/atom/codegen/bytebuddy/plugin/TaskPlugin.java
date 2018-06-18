@@ -24,8 +24,6 @@
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.plugin;
 
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt.BuilderTransition;
-import com.pragmaticobjects.oo.atom.r.Result;
-import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
 
@@ -48,14 +46,6 @@ public class TaskPlugin implements Plugin {
 
     @Override
     public final Builder<?> apply(Builder<?> builder, TypeDescription typeDescription) {
-        Result<Builder<?>> result = bt
-                .transitionResult(builder, typeDescription);
-        List<String> issues = result.issues();
-        if(issues.isEmpty()) {
-            return result.value().get();
-        } else {
-            issues.map(str -> "ERROR: " + str).forEach(System.err::println);
-            throw new RuntimeException("Plugin was failed. Details are in the Maven logs.");
-        }
+        return bt.transitionResult(builder, typeDescription);
     }
 }

@@ -23,10 +23,8 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Builder;
 
 /**
  * Transition which does nothing.
@@ -35,7 +33,7 @@ import net.bytebuddy.dynamic.DynamicType;
  */
 public class BtNop implements BuilderTransition {
     @Override
-    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
-        return new RSuccess<>(source);
+    public final Builder<?> transitionResult(Builder<?> source, TypeDescription typeDescription) {
+        return source;
     }
 }

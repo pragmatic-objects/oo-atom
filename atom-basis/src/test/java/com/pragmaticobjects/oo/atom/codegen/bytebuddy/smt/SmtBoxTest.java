@@ -23,12 +23,10 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.AssertResultIsErroneous;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
-import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+import net.bytebuddy.jar.asm.Opcodes;
 
 import java.lang.reflect.Method;
 
@@ -51,20 +49,27 @@ public class SmtBoxTest extends TestsSuite {
         super(
             new TestCase(
                 "attempt to box non-primitive must fail",
-                new AssertResultIsErroneous(
+                new AssertTokenToFail(
                     new SmtBox(
                         new TypeDescription.ForLoadedType(Object.class)
-                    ),
-                    "Attempt to box non-primitive type java.lang.Object"
+                    )
                 )
             ),
             new TestCase(
                 "can box integer primitive", 
-                new AssertTokenToRepresentExpectedStackManipulation(
+                new AssertTokenToGenerateAByteCode(
                     new SmtBox(
                         new TypeDescription.ForLoadedType(int.class)
                     ),
-                    () -> MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(INT_VALUEOF))
+                    mv -> {
+                        mv.visitMethodInsn(
+                            Opcodes.INVOKESTATIC,
+                            "java/lang/Integer",
+                            "valueOf",
+                            "(I)Ljava/lang/Integer;",
+                            false
+                        );
+                    }
                 )
             )
         );

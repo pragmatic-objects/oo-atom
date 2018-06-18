@@ -23,8 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
 
@@ -48,17 +46,14 @@ public class BtAnnotate implements BuilderTransition {
     }
     
     @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription type) {
+    public final Builder<?> transitionResult(Builder<?> source, TypeDescription type) {
         boolean annotationPresent = type.getDeclaredAnnotations().isAnnotationPresent(
             annotation.annotationType()
         );
-        
-        return new RSuccess<>(
-            annotationPresent ?
-                source :
-                source.annotateType(
-                    annotation
-                )
-        );
+        return annotationPresent ?
+            source :
+            source.annotateType(
+                annotation
+            );
     }
 }

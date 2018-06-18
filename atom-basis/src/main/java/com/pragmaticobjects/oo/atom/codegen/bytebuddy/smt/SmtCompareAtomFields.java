@@ -23,59 +23,17 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.NaturalJavaAtom;
-import com.pragmaticobjects.oo.atom.r.RInferred;
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.matcher.ElementMatchers;
-
-/**
- * {@link SmtCompareAtomFields} inference.
- *
- * @author Kapralov Sergey
- */
-class SmtCompareAtomFieldsInference implements Result.Inference<StackManipulation> {
-    private final FieldDescription field;
-
-    /**
-     * Ctor.
-     *
-     * @param field Field.
-     */
-    public SmtCompareAtomFieldsInference(FieldDescription field) {
-        this.field = field;
-    }
-
-    @Override
-    public final Result<StackManipulation> result() {
-        final TypeDescription declaringType = field.getDeclaringType().asErasure();
-        final TypeDescription fieldType = field.getType().asErasure();
-        if(new NaturalJavaAtom().matches(fieldType)) {
-            return new SmtInvokeMethod(
-                new TypeDescription.ForLoadedType(Object.class),
-                ElementMatchers.named("equals")
-            );
-        } else {
-            return new SmtInvokeMethod(
-                declaringType,
-                new ConjunctionMatcher<>(
-                    ElementMatchers.isSynthetic(),
-                    ElementMatchers.named("atom$equal")
-                )
-            );
-        }
-    }
-}
 
 /**
  * Generates bytecode for comparing a field of two objects using atom equality semantics.
  *
  * @author Kapralov Sergey
  */
-public class SmtCompareAtomFields extends RInferred<StackManipulation> implements StackManipulationToken {
+public class SmtCompareAtomFields extends SmtInferred implements StackManipulationToken {
     /**
      * Ctor.
      *
@@ -83,9 +41,41 @@ public class SmtCompareAtomFields extends RInferred<StackManipulation> implement
      */
     public SmtCompareAtomFields(FieldDescription field) {
         super(
-            new SmtCompareAtomFieldsInference(
+            new Inference(
                 field
             )
         );
+    }
+
+    /**
+     * {@link SmtCompareAtomFields} inference.
+     *
+     * @author Kapralov Sergey
+     */
+    private static class Inference implements StackManipulationToken.Inference {
+        private final FieldDescription field;
+
+        /**
+         * Ctor.
+         *
+         * @param field Field.
+         */
+        public Inference(FieldDescription field) {
+            this.field = field;
+        }
+
+        @Override
+        public final StackManipulationToken stackManipulationToken() {
+            final TypeDescription declaringType = field.getDeclaringType().asErasure();
+            final TypeDescription fieldType = field.getType().asErasure();
+            if(new NaturalJavaAtom().matches(fieldType)) {
+                return new SmtInvokeMethod(
+                    new TypeDescription.ForLoadedType(Object.class),
+                    ElementMatchers.named("equals")
+                );
+            } else {
+                return new SmtInvokeAtomEqual(declaringType);
+            }
+        }
     }
 }

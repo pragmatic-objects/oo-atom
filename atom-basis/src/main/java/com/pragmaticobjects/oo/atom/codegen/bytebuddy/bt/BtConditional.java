@@ -23,9 +23,8 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
@@ -51,7 +50,7 @@ public class BtConditional implements BuilderTransition {
     }
 
     @Override
-    public final Result<DynamicType.Builder<?>> transitionResult(DynamicType.Builder<?> source, TypeDescription typeDescription) {
+    public final Builder<?> transitionResult(Builder<?> source, TypeDescription typeDescription) {
         if(matcher.matches(typeDescription)) {
             return matchBranch.transitionResult(source, typeDescription);
         } else {

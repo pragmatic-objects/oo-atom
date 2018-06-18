@@ -23,7 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
-import com.pragmaticobjects.oo.atom.r.Result;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
 
@@ -51,7 +50,7 @@ public interface BuilderTransition {
      *
      * @param source Source {@link Builder}.
      * @param typeDescription {@link TypeDescription} of instrumented class.
-     * @return {@link Result} with {@link Builder} after all transitions applied.
+     * @return the {@link Builder} after all transitions applied.
      */
-    Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription);
+    Builder<?> transitionResult(Builder<?> source, TypeDescription typeDescription);
 }

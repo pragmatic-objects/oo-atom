@@ -26,6 +26,7 @@ package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
+import net.bytebuddy.jar.asm.Opcodes;
 
 /**
  * Tests suite for {@link com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt.SmtLoadReference}
@@ -37,16 +38,20 @@ public class SmtLoadReferenceTest extends TestsSuite {
         super(
             new TestCase(
                 "can load 0th argument on stack",
-                new AssertTokenToRepresentExpectedStackManipulation(
+                new AssertTokenToGenerateAByteCode(
                     new SmtLoadReference(0),
-                    () -> MethodVariableAccess.REFERENCE.loadFrom(0)
+                    mv -> {
+                        mv.visitVarInsn(Opcodes.ALOAD, 0);
+                    }
                 )
             ),
             new TestCase(
                 "can load 5th argument on stack",
-                new AssertTokenToRepresentExpectedStackManipulation(
+                new AssertTokenToGenerateAByteCode(
                     new SmtLoadReference(5),
-                    () -> MethodVariableAccess.REFERENCE.loadFrom(5)
+                    mv -> {
+                        mv.visitVarInsn(Opcodes.ALOAD, 5);
+                    }
                 )
             )
         );

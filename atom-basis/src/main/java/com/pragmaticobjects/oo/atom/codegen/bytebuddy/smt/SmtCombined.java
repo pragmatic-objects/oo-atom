@@ -23,7 +23,6 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.r.RCombinedOrDefault;
 import io.vavr.collection.List;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 
@@ -32,18 +31,16 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
  *
  * @author skapral
  */
-public class SmtCombined extends RCombinedOrDefault<StackManipulation> implements StackManipulationToken {
+public class SmtCombined implements StackManipulationToken {
+    private final List<StackManipulationToken> tokens;
+
     /**
      * Ctor.
      *
      * @param tokens Tokens.
      */
     public SmtCombined(List<StackManipulationToken> tokens) {
-        super(
-            ((sm1, sm2) -> new StackManipulation.Compound(sm1, sm2)),
-            new StackManipulation.Compound(),
-            List.narrow(tokens)
-        );
+        this.tokens = tokens;
     }
 
     /**
@@ -54,6 +51,13 @@ public class SmtCombined extends RCombinedOrDefault<StackManipulation> implement
     public SmtCombined(StackManipulationToken... tokens) {
         this(
             List.of(tokens)
+        );
+    }
+
+    @Override
+    public final StackManipulation stackManipulation() {
+        return new StackManipulation.Compound(
+            tokens.map(StackManipulationToken::stackManipulation).toJavaList()
         );
     }
 }

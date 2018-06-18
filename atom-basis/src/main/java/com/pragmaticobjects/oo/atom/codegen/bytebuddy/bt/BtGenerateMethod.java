@@ -24,74 +24,16 @@
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt.StackManipulationToken;
-import com.pragmaticobjects.oo.atom.r.RBind;
-import com.pragmaticobjects.oo.atom.r.RSuccess;
-import com.pragmaticobjects.oo.atom.r.Result;
 import lombok.Generated;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.dynamic.scaffold.InstrumentedType;
-import net.bytebuddy.implementation.Implementation;
-import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.matcher.ElementMatcher;
 
 import java.lang.annotation.Annotation;
-
-/**
- * {@link ByteCodeAppender} for {@link BtGenerateMethod}
- *
- * @author Kapralov Sergey
- */
-class BtGenerateMethodBytecodeAppender implements ByteCodeAppender {
-    private final StackManipulation sm;
-
-    /**
-     * Ctor.
-     *
-     * @param sm {@link ByteCodeAppender}'s {@link StackManipulation}.
-     */
-    public BtGenerateMethodBytecodeAppender(StackManipulation sm) {
-        this.sm = sm;
-    }
-
-    @Override
-    public final ByteCodeAppender.Size apply(MethodVisitor mv, Implementation.Context ctx, MethodDescription method) {
-        StackManipulation.Size size = sm.apply(mv, ctx);
-        return new ByteCodeAppender.Size(size.getMaximalSize(), method.getStackSize());
-    }
-}
-
-/**
- * {@link Implementation} for {@link BtGenerateMethod}
- *
- * @author Kapralov Sergey
- */
-class BtGenerateMethodImplementation implements Implementation {
-
-    private final StackManipulation sm;
-
-    /**
-     * Ctor.
-     *
-     * @param sm {@link Implementation}'s {@link StackManipulation}.
-     */
-    public BtGenerateMethodImplementation(StackManipulation sm) {
-        this.sm = sm;
-    }
-
-    @Override
-    public final ByteCodeAppender appender(Implementation.Target implementationTarget) {
-        return new BtGenerateMethodBytecodeAppender(sm);
-    }
-
-    @Override
-    public final InstrumentedType prepare(InstrumentedType instrumentedType) {
-        return instrumentedType;
-    }
-}
 
 /**
  * Transition which generates implementation for a certain declared method.
@@ -126,16 +68,12 @@ public class BtGenerateMethod implements BuilderTransition {
     }
     
     @Override
-    public final Result<Builder<?>> transitionResult(Builder<?> source, TypeDescription typeDescription) {
+    public final Builder<?> transitionResult(Builder<?> source, TypeDescription typeDescription) {
         final StackManipulationToken token = methodBodySmt.token(typeDescription);
-        return new RBind<>(token, sm -> {
-            return new RSuccess<>(
-                source
-                    .method(elementMatcher)
-                    .intercept(new BtGenerateMethodImplementation(sm))
-                    .annotateMethod(new GeneratedInstance())
-            );
-        });
+        return source
+            .method(elementMatcher)
+            .intercept(new Implementation(token.stackManipulation()))
+            .annotateMethod(new GeneratedInstance());
     }
 
     /**
@@ -147,6 +85,59 @@ public class BtGenerateMethod implements BuilderTransition {
         @Override
         public final Class<? extends Annotation> annotationType() {
             return Generated.class;
+        }
+    }
+
+    /**
+     * {@link Implementation} for {@link BtGenerateMethod}
+     *
+     * @author Kapralov Sergey
+     */
+    private static class Implementation implements net.bytebuddy.implementation.Implementation {
+
+        private final StackManipulation sm;
+
+        /**
+         * Ctor.
+         *
+         * @param sm {@link Implementation}'s {@link StackManipulation}.
+         */
+        public Implementation(StackManipulation sm) {
+            this.sm = sm;
+        }
+
+        @Override
+        public final ByteCodeAppender appender(Implementation.Target implementationTarget) {
+            return new ByteCodeAppender(sm);
+        }
+
+        @Override
+        public final InstrumentedType prepare(InstrumentedType instrumentedType) {
+            return instrumentedType;
+        }
+
+        /**
+         * {@link ByteCodeAppender} for {@link BtGenerateMethod}
+         *
+         * @author Kapralov Sergey
+         */
+        private static class ByteCodeAppender implements net.bytebuddy.implementation.bytecode.ByteCodeAppender {
+            private final StackManipulation sm;
+
+            /**
+             * Ctor.
+             *
+             * @param sm {@link ByteCodeAppender}'s {@link StackManipulation}.
+             */
+            public ByteCodeAppender(StackManipulation sm) {
+                this.sm = sm;
+            }
+
+            @Override
+            public final ByteCodeAppender.Size apply(MethodVisitor mv, net.bytebuddy.implementation.Implementation.Context ctx, MethodDescription method) {
+                StackManipulation.Size size = sm.apply(mv, ctx);
+                return new ByteCodeAppender.Size(size.getMaximalSize(), method.getStackSize());
+            }
         }
     }
 }

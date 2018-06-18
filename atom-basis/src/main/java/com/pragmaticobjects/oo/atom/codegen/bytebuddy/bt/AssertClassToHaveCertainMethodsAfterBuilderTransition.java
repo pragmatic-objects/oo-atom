@@ -78,8 +78,6 @@ public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements As
         final DynamicType.Builder<?> subclass = new ByteBuddy().redefine(clazz);
         final DynamicType.Unloaded<?> make = bt
                 .transitionResult(subclass, typeDescription)
-                .value()
-                .get()
                 .make();
         final Class<?> newClazz = make.load(new AnonymousClassLoader()).getLoaded();
         assertThat(
