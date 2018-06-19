@@ -23,12 +23,60 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
+import com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt.SmtStatic;
+import com.pragmaticobjects.oo.atom.tests.AssertAssertionPasses;
+import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  * Tests suite for {@link AssertBuilderTransitionIsNotCorruptingClass}
  * @author Kapralov Sergey
- * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertBuilderTransitionIsNotCorruptingClass}
  */
 public class AssertBuilderTransitionIsNotCorruptingClassTest extends TestsSuite {
+    public AssertBuilderTransitionIsNotCorruptingClassTest() {
+        super(
+            new TestCase(
+                "positive case",
+                new AssertAssertionPasses(
+                    new AssertBuilderTransitionIsNotCorruptingClass(
+                        new BtNop(),
+                        Foo.class
+                    )
+                )
+            ),
+            new TestCase(
+                "negative case",
+                new AssertAssertionPasses(
+                    new AssertBuilderTransitionIsNotCorruptingClass(
+                        new BtCorruptingClass(),
+                        Foo.class
+                    )
+                )
+            )
+        );
+    }
+
+    private static class Foo {}
+
+    /**
+     * A builder transition which intentionally corrupts a class,
+     * by generating equals method with no return point
+     *
+     * @author Kapralov Sergey
+     */
+    private static class BtCorruptingClass extends BtGenerateMethod {
+        /**
+         * Ctor.
+         */
+        public BtCorruptingClass() {
+            super(
+                ElementMatchers.named("equals"),
+                type -> new SmtStatic(
+                    new StackManipulation.Compound()
+                )
+            );
+        }
+    }
 }
