@@ -23,12 +23,53 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
+import com.pragmaticobjects.oo.atom.tests.AssertAssertionFails;
+import com.pragmaticobjects.oo.atom.tests.AssertAssertionPasses;
+import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link AssertClassToHaveCertainMethodsAfterBuilderTransition}
  * @author Kapralov Sergey
- * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertClassToHaveCertainMethodsAfterBuilderTransition}
  */
 public class AssertClassToHaveCertainMethodsAfterBuilderTransitionTest extends TestsSuite {
+    public AssertClassToHaveCertainMethodsAfterBuilderTransitionTest() {
+        super(
+            new TestCase(
+                "positive outcome",
+                new AssertAssertionPasses(
+                    new AssertClassToHaveCertainMethodsAfterBuilderTransition(
+                        new BtNop(),
+                        Foo.class,
+                        "bar"
+                    )
+                )
+            ),
+            new TestCase(
+                "negative outcome",
+                new AssertAssertionFails(
+                    new AssertClassToHaveCertainMethodsAfterBuilderTransition(
+                        new BtNop(),
+                        Foo.class,
+                        "baz"
+                    )
+                )
+            ),
+            new TestCase(
+                "assertion must match all methods in a resulting class or fail",
+                new AssertAssertionFails(
+                    new AssertClassToHaveCertainMethodsAfterBuilderTransition(
+                        new BtNop(),
+                        Foo.class,
+                        "bar",
+                        "baz"
+                    )
+                )
+            )
+        );
+    }
+
+    private static class Foo {
+        public void bar() {}
+    }
 }
