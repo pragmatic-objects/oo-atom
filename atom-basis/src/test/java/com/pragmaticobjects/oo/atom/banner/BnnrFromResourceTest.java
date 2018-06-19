@@ -24,13 +24,26 @@
 
 package com.pragmaticobjects.oo.atom.banner;
 
+import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 
 /**
  * Tests suite for {@link BnnrFromResource}
  *
  * @author Kapralov Sergey
- * @todo #8:15m Improve test coverage and mutation coverage for {@link BnnrFromResource}
  */
 public class BnnrFromResourceTest extends TestsSuite {
+    public BnnrFromResourceTest() {
+        super(
+            new TestCase(
+                "banner resource is read properly",
+                new AssertBannerContents(
+                    new BnnrFromResource(
+                        "testBanner"
+                    ),
+                    "=== TEST BANNER ==="
+                )
+            )
+        );
+    }
 }
