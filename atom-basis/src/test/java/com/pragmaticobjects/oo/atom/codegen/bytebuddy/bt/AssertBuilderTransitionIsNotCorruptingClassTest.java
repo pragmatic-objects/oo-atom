@@ -24,6 +24,7 @@
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt;
 
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt.SmtStatic;
+import com.pragmaticobjects.oo.atom.tests.AssertAssertionFails;
 import com.pragmaticobjects.oo.atom.tests.AssertAssertionPasses;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
@@ -48,7 +49,7 @@ public class AssertBuilderTransitionIsNotCorruptingClassTest extends TestsSuite 
             ),
             new TestCase(
                 "negative case",
-                new AssertAssertionPasses(
+                new AssertAssertionFails(       
                     new AssertBuilderTransitionIsNotCorruptingClass(
                         new BtCorruptingClass(),
                         Foo.class
