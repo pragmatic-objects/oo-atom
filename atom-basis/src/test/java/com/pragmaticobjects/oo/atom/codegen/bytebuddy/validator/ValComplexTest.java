@@ -24,16 +24,46 @@
 
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator;
 
+import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
+import net.bytebuddy.description.type.TypeDescription;
 
 /**
  * Tests suite for {@link ValComplex}
  *
  * @author Kapralov Sergey
- * @todo #8:15m Improve test coverage and mutation coverage for {@link ValComplex}
  */
 public class ValComplexTest extends TestsSuite {
     public ValComplexTest() {
-        super();
+        super(
+            new TestCase(
+                "passes only if all subvalidations pass",
+                new AssertValidatorSuccess(
+                    new ValComplex(
+                        new ValSuccess(),
+                        new ValSuccess(),
+                        new ValSuccess()
+                    ),
+                    new TypeDescription.ForLoadedType(Foo.class)
+                )
+            ),
+            new TestCase(
+                "combines all failures together",
+                new AssertValidatorFailure(
+                    new ValComplex(
+                        new ValSuccess(),
+                        new ValFail("Issue 1"),
+                        new ValComplex(
+                            new ValFail("Issue 2")
+                        )
+                    ),
+                    new TypeDescription.ForLoadedType(Foo.class),
+                    "Issue 1",
+                    "Issue 2"
+                )
+            )
+        );
     }
+
+    private static class Foo {}
 }
