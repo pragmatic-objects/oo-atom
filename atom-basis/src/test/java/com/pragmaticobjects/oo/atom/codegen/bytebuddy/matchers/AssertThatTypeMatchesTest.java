@@ -23,12 +23,41 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers;
 
+import com.pragmaticobjects.oo.atom.tests.AssertAssertionFails;
+import com.pragmaticobjects.oo.atom.tests.AssertAssertionPasses;
+import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  * Tests suite for {@link AssertThatTypeMatches}
  * @author Kapralov Sergey
- * @todo #47:15m Improve test coverage and mutation coverage for {@link AssertThatTypeMatches}
  */
 public class AssertThatTypeMatchesTest extends TestsSuite {
+    public AssertThatTypeMatchesTest() {
+        super(
+            new TestCase(
+                "Positive case",
+                new AssertAssertionPasses(
+                    new AssertThatTypeMatches(
+                        new TypeDescription.ForLoadedType(Foo.class),
+                        ElementMatchers.named(FOO_CLASS_NAME)
+                    )
+                )
+            ),
+            new TestCase(
+                "Negative case",
+                new AssertAssertionFails(
+                    new AssertThatTypeMatches(
+                        new TypeDescription.ForLoadedType(Foo.class),
+                        ElementMatchers.named("foo.bar.WrongClassName")
+                    )
+                )
+            )
+        );
+    }
+
+    private static class Foo {}
+    private static String FOO_CLASS_NAME = Foo.class.getName();
 }
