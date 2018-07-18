@@ -24,16 +24,44 @@
 
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator;
 
+import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
+import net.bytebuddy.description.type.TypeDescription;
+
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
  * Tests suite for {@link ValSingle}
  *
  * @author Kapralov Sergey
- * @todo #8:15m Improve test coverage and mutation coverage for {@link ValSingle}
  */
 public class ValSingleTest extends TestsSuite {
     public ValSingleTest() {
-        super();
+        super(
+            new TestCase(
+                "validation passes successfully",
+                new AssertValidatorSuccess(
+                    new ValSingle(
+                        named(Foo.class.getName()),
+                        "Error message"
+                    ),
+                    new TypeDescription.ForLoadedType(Foo.class)
+                )
+            ),
+            new TestCase(
+                "validation fails with certain error message",
+                new AssertValidatorFailure(
+                    new ValSingle(
+                        named(Foo.class.getName()),
+                        "Error message"
+                    ),
+                    new TypeDescription.ForLoadedType(Bar.class),
+                    "Error message"
+                )
+            )
+        );
     }
+
+    private static final class Foo {}
+    private static final class Bar {}
 }
