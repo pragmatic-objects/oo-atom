@@ -23,6 +23,7 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.atomspec;
 
+import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
 import com.pragmaticobjects.oo.atom.tests.AssertAtomsAreNotEqual;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
@@ -68,8 +69,15 @@ public class AllMethodsAreFinalTest extends TestsSuite {
             ),
             new TestCase(
                 "mismatch type with at least one non final method",
-                new AssertAtomsAreNotEqual(
+                new AssertThatTypeDoesNotMatch(
                     new TypeDescription.ForLoadedType(Bar.class),
+                    new AllMethodsAreFinal()
+                )
+            ),
+            new TestCase(
+                "ignores private methods",
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Taz.class),
                     new AllMethodsAreFinal()
                 )
             )
@@ -113,5 +121,10 @@ public class AllMethodsAreFinalTest extends TestsSuite {
     
     private static class Haz {
         private static void method() {}
+    }
+
+    private static class Taz {
+        public final void method() {}
+        private void privateMethod() {}
     }
 }
