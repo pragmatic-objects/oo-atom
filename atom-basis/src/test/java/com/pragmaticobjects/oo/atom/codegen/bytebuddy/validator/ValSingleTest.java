@@ -65,6 +65,7 @@ public class ValSingleTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static final class Foo {}
     private static final class Bar {}
 }
