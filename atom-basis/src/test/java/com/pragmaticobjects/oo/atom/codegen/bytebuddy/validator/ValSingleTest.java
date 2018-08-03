@@ -33,6 +33,9 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
  * @todo #8:15m Improve test coverage and mutation coverage for {@link ValSingle}
  */
 public class ValSingleTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public ValSingleTest() {
         super();
     }

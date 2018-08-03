@@ -30,7 +30,15 @@ import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
 
+/**
+ * Tests suite for {@link ImplementsInterfaceWhichMatches}
+ *
+ * @author Kapralov Sergey
+ */
 public class ImplementsInterfaceWhichMatchesTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public ImplementsInterfaceWhichMatchesTest() {
         super(
             new TestCase(
@@ -81,6 +89,7 @@ public class ImplementsInterfaceWhichMatchesTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     @Atom
     private interface AnnotatedAtomApi {}
 

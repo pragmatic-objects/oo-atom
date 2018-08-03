@@ -32,10 +32,14 @@ import net.bytebuddy.description.type.TypeDescription;
 import java.util.function.Supplier;
 
 /**
+ * Tests suite for {@link HasNoStaticMethods}
  *
  * @author Kapralov Sergey
  */
 public class HasNoStaticMethodsTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public HasNoStaticMethodsTest() {
         super(
             new TestCase(
@@ -76,6 +80,7 @@ public class HasNoStaticMethodsTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class Foo {
 
         private static final Object item = new Object();

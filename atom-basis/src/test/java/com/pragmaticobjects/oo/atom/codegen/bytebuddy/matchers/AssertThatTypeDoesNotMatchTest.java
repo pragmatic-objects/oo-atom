@@ -35,6 +35,9 @@ import net.bytebuddy.matcher.ElementMatchers;
  * @author Kapralov Sergey
  */
 public class AssertThatTypeDoesNotMatchTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AssertThatTypeDoesNotMatchTest() {
         super(
             new TestCase(
@@ -58,6 +61,7 @@ public class AssertThatTypeDoesNotMatchTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class Foo {}
     private static String FOO_CLASS_NAME = Foo.class.getName();
 }

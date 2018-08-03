@@ -12,6 +12,9 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
  * @author Kapralov Sergey
  */
 public class AssertClassPoolSourceCanLoadAClassTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AssertClassPoolSourceCanLoadAClassTest() {
         super(
             new TestCase(
@@ -35,6 +38,7 @@ public class AssertClassPoolSourceCanLoadAClassTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     @NotAtom
     private static final class Foo {}
     private static final String FOO_NAME = Foo.class.getName();

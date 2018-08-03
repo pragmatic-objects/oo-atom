@@ -34,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
  * @author Kapralov Sergey
  */
 public class AssertPassTest {
+    //CHECKSTYLE:OFF
     @Test
     public final void alwaysFails() {
         Assertion assertion = new AssertPass();

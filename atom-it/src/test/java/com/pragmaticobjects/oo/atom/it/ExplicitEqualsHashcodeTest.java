@@ -33,10 +33,14 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import java.util.Objects;
 
 /**
+ * Tests suite for explicit atoms equality logic
  *
  * @author Kapralov Sergey
  */
 public class ExplicitEqualsHashcodeTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public ExplicitEqualsHashcodeTest() {
         super(
             new TestCase(
@@ -63,6 +67,7 @@ public class ExplicitEqualsHashcodeTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     @Atom
     public static class ExplicitAtom {
         private final int a;

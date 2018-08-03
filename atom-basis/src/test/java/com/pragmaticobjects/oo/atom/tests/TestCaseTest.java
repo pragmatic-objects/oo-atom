@@ -30,6 +30,7 @@ import static org.assertj.core.api.Assertions.*;
  * @author Kapralov Sergey
  */
 public class TestCaseTest {
+    //CHECKSTYLE:OFF
     @org.junit.jupiter.api.Test
     public final void hasDescription() {
         Test test = new TestCase("description", new AssertPass());

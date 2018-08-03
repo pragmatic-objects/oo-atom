@@ -2,8 +2,6 @@ package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import net.bytebuddy.jar.asm.Opcodes;
 
 /**
@@ -12,6 +10,9 @@ import net.bytebuddy.jar.asm.Opcodes;
  * @author Kapralov Sergey
  */
 public class SmtCombinedTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public SmtCombinedTest() {
         super(
             new TestCase(

@@ -34,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @author Kapralov Sergey
  */
 public class AssertAssertionFailsTest {
+    //CHECKSTYLE:OFF
     @Test
     public final void succeedsOnFailedAssertion() {
         final Assertion assertion = new AssertAssertionFails(new AssertFail());

@@ -36,6 +36,9 @@ import net.bytebuddy.matcher.ElementMatchers;
  * @author Kapralov Sergey
  */
 public class AssertBuilderTransitionIsNotCorruptingClassTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AssertBuilderTransitionIsNotCorruptingClassTest() {
         super(
             new TestCase(
@@ -59,8 +62,6 @@ public class AssertBuilderTransitionIsNotCorruptingClassTest extends TestsSuite 
         );
     }
 
-    private static class Foo {}
-
     /**
      * A builder transition which intentionally corrupts a class,
      * by generating equals method with no return point
@@ -80,4 +81,7 @@ public class AssertBuilderTransitionIsNotCorruptingClassTest extends TestsSuite 
             );
         }
     }
+
+    //CHECKSTYLE:OFF
+    private static class Foo {}
 }

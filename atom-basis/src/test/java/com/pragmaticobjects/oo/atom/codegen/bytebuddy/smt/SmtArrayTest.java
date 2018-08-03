@@ -5,7 +5,15 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
 import net.bytebuddy.jar.asm.Opcodes;
 
+/**
+ * Tests suite for {@link SmtArray}
+ *
+ * @author Kapralov Sergey
+ */
 class SmtArrayTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public SmtArrayTest() {
         super(
             new TestCase(
@@ -40,7 +48,6 @@ class SmtArrayTest extends TestsSuite {
                     }
                 )
             )
-
         );
     }
 
