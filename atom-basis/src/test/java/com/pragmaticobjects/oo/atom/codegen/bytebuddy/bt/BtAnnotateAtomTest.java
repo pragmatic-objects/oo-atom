@@ -28,11 +28,14 @@ import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 
 /**
+ * Tests suite for {@link BtAnnotateAtom}
  *
  * @author Kapralov Sergey
  */
 public class BtAnnotateAtomTest extends TestsSuite {
-    
+    /**
+     * Ctor.
+     */
     public BtAnnotateAtomTest() {
         super(
             new TestCase(
@@ -53,6 +56,7 @@ public class BtAnnotateAtomTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class Foo {
     }
 

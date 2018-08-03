@@ -36,6 +36,9 @@ import net.bytebuddy.description.type.TypeDescription;
  * @author Kapralov Sergey
  */
 public class AssertValidatorSuccessTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AssertValidatorSuccessTest() {
         super(
             new TestCase(

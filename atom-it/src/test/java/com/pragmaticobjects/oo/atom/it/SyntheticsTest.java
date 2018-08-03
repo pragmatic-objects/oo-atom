@@ -23,12 +23,16 @@
  */
 package com.pragmaticobjects.oo.atom.it;
 
+/**
+ * Synthetics tests
+ */
 public class SyntheticsTest {
     /**
      * A special synthetic class is generated for switch-case in the method.
      * It must NOT be instrumented.
      */
     private static class Foo {
+        //CHECKSTYLE:OFF
         private enum Bar {
             A, B;
         }

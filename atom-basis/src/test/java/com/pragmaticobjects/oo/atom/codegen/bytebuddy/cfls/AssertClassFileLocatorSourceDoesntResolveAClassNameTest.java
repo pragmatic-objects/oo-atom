@@ -36,6 +36,9 @@ import static com.pragmaticobjects.oo.atom.codegen.bytebuddy.cfls.TestData.*;
  * @author Kapralov Sergey
  */
 public class AssertClassFileLocatorSourceDoesntResolveAClassNameTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AssertClassFileLocatorSourceDoesntResolveAClassNameTest() {
         super(
             new TestCase(

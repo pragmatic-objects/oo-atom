@@ -33,6 +33,9 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
  * @author Kapralov Sergey
  */
 public class BnnrFromResourceTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public BnnrFromResourceTest() {
         super(
             new TestCase(

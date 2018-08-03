@@ -58,9 +58,7 @@ public class InlineTemplates implements Plugin {
                 clazz.addMethod(m);
             }
         } catch(Exception ex) {
-            //throw new RuntimeException(ex);
-            // @todo #165 Need to remember why rethrowing was commented out and to turn it back.
-            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
     }
 }

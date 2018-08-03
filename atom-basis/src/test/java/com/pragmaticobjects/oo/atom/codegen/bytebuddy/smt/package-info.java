@@ -21,29 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.pragmaticobjects.oo.atom.tests;
-
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-/**
- * Tests suite for {@link AssertAssertionPasses}
- * 
- * @author Kapralov Sergey
- */
-public class AssertAssertionPassesTest {
-    //CHECKSTYLE:OFF
-    @Test
-    public final void failsOnFailedAssertion() {
-        final Assertion assertion = new AssertAssertionPasses(new AssertFail());
-        assertThatThrownBy(() -> assertion.check()).isInstanceOf(AssertionError.class);
-    }
-
-    @Test
-    public final void succeedsOnPassingAssertion() {
-        final Assertion assertion = new AssertAssertionPasses(new AssertPass());
-        assertThatCode(() -> assertion.check()).doesNotThrowAnyException();
-    }
-}
+package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;

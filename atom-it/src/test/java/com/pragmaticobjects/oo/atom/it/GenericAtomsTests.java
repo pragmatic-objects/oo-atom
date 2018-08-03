@@ -30,7 +30,15 @@ import com.pragmaticobjects.oo.atom.tests.AssertAtomsAreNotEqual;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 
+/**
+ * Generic atoms tests
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericAtomsTests extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public GenericAtomsTests() {
         super(
             new TestCase(
@@ -58,6 +66,7 @@ public class GenericAtomsTests extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     public static class AtomItem {
     }
 

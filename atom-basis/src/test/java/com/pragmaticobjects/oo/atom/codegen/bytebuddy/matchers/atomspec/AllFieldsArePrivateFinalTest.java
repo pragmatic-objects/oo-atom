@@ -30,10 +30,14 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
 
 /**
+ * Tests suite for {@link AllFieldsArePrivateFinal}
  *
  * @author Kapralov Sergey
  */
 public class AllFieldsArePrivateFinalTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AllFieldsArePrivateFinalTest() {
         super(
             new TestCase(
@@ -73,7 +77,8 @@ public class AllFieldsArePrivateFinalTest extends TestsSuite {
             )
         );
     }
-    
+
+    //CHECKSTYLE:OFF
     private static class Foo {
         private final Object method1;
         private final Object method2;

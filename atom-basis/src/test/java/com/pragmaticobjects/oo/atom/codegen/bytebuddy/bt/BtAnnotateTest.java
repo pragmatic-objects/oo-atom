@@ -34,7 +34,9 @@ import java.lang.annotation.*;
  * @author Kapralov Sergey
  */
 public class BtAnnotateTest extends TestsSuite {
-    
+    /**
+     * Ctor.
+     */
     public BtAnnotateTest() {
         super(
             new TestCase(
@@ -49,7 +51,7 @@ public class BtAnnotateTest extends TestsSuite {
         );
     }
 
-    
+    //CHECKSTYLE:OFF
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
     private static @interface Dummy {}

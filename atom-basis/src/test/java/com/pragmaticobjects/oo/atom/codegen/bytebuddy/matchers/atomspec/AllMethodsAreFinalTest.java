@@ -33,10 +33,14 @@ import net.bytebuddy.description.type.TypeDescription;
 import java.util.UUID;
 
 /**
+ * Tests suite for {@link AllMethodsAreFinal}
  *
  * @author Kapralov Sergey
  */
 public class AllMethodsAreFinalTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AllMethodsAreFinalTest() {
         super(
             new TestCase(
@@ -83,7 +87,8 @@ public class AllMethodsAreFinalTest extends TestsSuite {
             )
         );
     }
-    
+
+    //CHECKSTYLE:OFF
     private static class Foo {
         public final void method1() {}
         public final void method2() {}
