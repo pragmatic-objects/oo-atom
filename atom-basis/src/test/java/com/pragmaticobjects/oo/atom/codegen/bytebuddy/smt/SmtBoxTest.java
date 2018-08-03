@@ -31,7 +31,7 @@ import net.bytebuddy.jar.asm.Opcodes;
 import java.lang.reflect.Method;
 
 /**
- * Tests suite for {@link com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt.SmtBoxTest}
+ * Tests suite for {@link SmtBox}
  * @author Kapralov Sergey
  */
 public class SmtBoxTest extends TestsSuite {
@@ -44,7 +44,10 @@ public class SmtBoxTest extends TestsSuite {
             throw new RuntimeException(ex);
         }
     }
-    
+
+    /**
+     * Ctor.
+     */
     public SmtBoxTest() {
         super(
             new TestCase(

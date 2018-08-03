@@ -36,6 +36,9 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
  * @author Kapralov Sergey
  */
 public class ValSingleTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public ValSingleTest() {
         super(
             new TestCase(

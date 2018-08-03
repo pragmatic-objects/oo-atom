@@ -30,10 +30,14 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
 
 /**
+ * Tests suite for {@link IsNotAbstract}
  *
  * @author Kapralov Sergey
  */
 public class IsNotAbstractTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public IsNotAbstractTest() {
         super(
             new TestCase(
@@ -59,7 +63,8 @@ public class IsNotAbstractTest extends TestsSuite {
             )
         );
     }
-    
+
+    //CHECKSTYLE:OFF
     private static class Foo {
     }
     

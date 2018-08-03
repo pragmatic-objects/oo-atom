@@ -25,11 +25,18 @@
 package com.pragmaticobjects.oo.atom.it;
 
 import com.pragmaticobjects.oo.atom.tests.AssertAtomsAreEqual;
-import com.pragmaticobjects.oo.atom.tests.AssertAtomsAreNotEqual;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 
+/**
+ * Tests related to natural atoms
+ *
+ * @author Kapralov Sergey
+ */
 public class NaturalAtomsTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public NaturalAtomsTest() {
         super(
             new TestCase(
@@ -57,6 +64,7 @@ public class NaturalAtomsTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class IntegerAtom {
         private final Integer i;
 

@@ -29,10 +29,14 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
+ * Tests suite for {@link Extending}
  *
  * @author Kapralov Sergey
  */
 public class ExtendingTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public ExtendingTest() {
         super(
             new TestCase(
@@ -60,6 +64,7 @@ public class ExtendingTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class Foo {
     }
 

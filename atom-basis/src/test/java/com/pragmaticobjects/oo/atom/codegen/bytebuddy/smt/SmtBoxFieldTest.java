@@ -26,8 +26,6 @@ package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.jar.asm.Opcodes;
 
 import java.lang.reflect.Field;
@@ -53,6 +51,9 @@ public class SmtBoxFieldTest extends TestsSuite {
         }
     }
 
+    /**
+     * Ctor.
+     */
     public SmtBoxFieldTest() {
         super(
             new TestCase(
@@ -88,6 +89,7 @@ public class SmtBoxFieldTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class Foo {
 
         private final Object nonPrimitive;

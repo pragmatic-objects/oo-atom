@@ -30,7 +30,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.RetentionPolicy;
 import java.nio.file.Paths;
 
+/**
+ * Tests suite for {@link JpAnnotation}
+ *
+ * @author Kapralov Sergey
+ */
 class JpAnnotationTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public JpAnnotationTest() {
         super(
             new TestCase(

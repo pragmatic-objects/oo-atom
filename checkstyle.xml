@@ -31,6 +31,8 @@
     <module name="FileTabCharacter"/>
 
     <module name="TreeWalker">
+        <module name="SuppressionCommentFilter"/>
+
         <module name="CyclomaticComplexity"/>
         <module name="NPathComplexity"/>
         <module name="JavaNCSS"/>

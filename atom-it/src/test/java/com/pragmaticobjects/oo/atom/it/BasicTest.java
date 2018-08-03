@@ -35,6 +35,9 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
  * @author Kapralov Sergey
  */
 public class BasicTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public BasicTest() {
         super(
             new TestCase(
@@ -68,10 +71,7 @@ public class BasicTest extends TestsSuite {
         );
     }
 
-    /**
-     *
-     * @author Kapralov Sergey
-     */
+    //CHECKSTYLE:OFF
     public static class Bar {
         private final int a;
 
@@ -80,10 +80,6 @@ public class BasicTest extends TestsSuite {
         }
     }
 
-    /**
-     *
-     * @author Kapralov Sergey
-     */
     public static class Foo {
         private final int a;
 
@@ -92,10 +88,6 @@ public class BasicTest extends TestsSuite {
         }
     }
 
-    /**
-     *
-     * @author Kapralov Sergey
-     */
     public static class FooAlias extends Foo {
         public FooAlias() {
             super(42);

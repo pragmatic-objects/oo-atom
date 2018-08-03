@@ -33,6 +33,9 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
  * @author Kapralov Sergey
  */
 public class AssertClassToHaveCertainMethodsAfterBuilderTransitionTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AssertClassToHaveCertainMethodsAfterBuilderTransitionTest() {
         super(
             new TestCase(
@@ -69,6 +72,7 @@ public class AssertClassToHaveCertainMethodsAfterBuilderTransitionTest extends T
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class Foo {
         public void bar() {}
     }

@@ -30,11 +30,14 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
 
 /**
+ * Tests suite for {@link NoFields}
  *
  * @author Kapralov Sergey
  */
 public class NoFieldsTest extends TestsSuite {
-    
+    /**
+     * Ctor.
+     */
     public NoFieldsTest() {
         super(
             new TestCase(
@@ -60,7 +63,8 @@ public class NoFieldsTest extends TestsSuite {
             )
         );
     }
-    
+
+    //CHECKSTYLE:OFF
     private static class Foo {
     }
     

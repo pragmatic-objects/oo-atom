@@ -30,10 +30,13 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
 /**
- *
+ * Tests suite for {@link BtGenerateMethod}
  * @author Kapralov Sergey
  */
 public class BtGenerateMethodTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public BtGenerateMethodTest() {
         super(
             new TestCase(
@@ -49,7 +52,8 @@ public class BtGenerateMethodTest extends TestsSuite {
             )
         );
     }
-    
+
+    //CHECKSTYLE:OFF
     private static class Foo {
         public int bar() {
             return 0;

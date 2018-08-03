@@ -29,6 +29,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.util.HashMap;
 
+//CHECKSTYLE:OFF
 @NotAtom
 final class TestData {
     public static final ClassFileLocator CFL_FOO;
