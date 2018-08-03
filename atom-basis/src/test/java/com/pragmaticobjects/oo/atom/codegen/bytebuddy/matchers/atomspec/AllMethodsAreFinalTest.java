@@ -25,7 +25,6 @@ package com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.atomspec;
 
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.AssertThatTypeDoesNotMatch;
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.AssertThatTypeMatches;
-import com.pragmaticobjects.oo.atom.tests.AssertAtomsAreNotEqual;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
