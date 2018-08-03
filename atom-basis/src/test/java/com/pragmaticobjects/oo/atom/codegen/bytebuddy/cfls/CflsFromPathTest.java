@@ -5,6 +5,11 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 
 import java.nio.file.Paths;
 
+/**
+ * Tests suite for {@link CflsFromPath}
+ *
+ * @author Kapralov Sergey
+ */
 class CflsFromPathTest extends TestsSuite {
     private static final String TEST_CLASS_PATH = System.getProperty("user.dir") + "/target/test-classes";
 
@@ -12,6 +17,9 @@ class CflsFromPathTest extends TestsSuite {
         System.out.println("user.dir = " + TEST_CLASS_PATH);
     }
 
+    /**
+     * Ctor.
+     */
     public CflsFromPathTest() {
         super(
             new TestCase(
@@ -44,5 +52,6 @@ class CflsFromPathTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static final class Foo {}
 }

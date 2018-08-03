@@ -29,7 +29,15 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
+/**
+ * Tests suite for {@link ThisOrSuperClassMatcher}
+ *
+ * @author Kapralov Sergey
+ */
 public class ThisOrSuperClassMatcherTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public ThisOrSuperClassMatcherTest() {
         super(
             new TestCase(
@@ -62,6 +70,7 @@ public class ThisOrSuperClassMatcherTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class Foo {}
     private static class Bar {}
     private static class Foo2 extends Foo {}

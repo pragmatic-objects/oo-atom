@@ -34,11 +34,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Tests suite for {@link AssertBuilderTransitionToAnnotateAClassTest}
+ * Tests suite for {@link AssertBuilderTransitionToAnnotateAClass}
  * 
  * @author Kapralov Sergey
  */
 public class AssertBuilderTransitionToAnnotateAClassTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AssertBuilderTransitionToAnnotateAClassTest() {
         super(
             new TestCase(
@@ -63,7 +66,8 @@ public class AssertBuilderTransitionToAnnotateAClassTest extends TestsSuite {
             )
         );
     }
-    
+
+    //CHECKSTYLE:OFF
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
     private static @interface Annotation {}

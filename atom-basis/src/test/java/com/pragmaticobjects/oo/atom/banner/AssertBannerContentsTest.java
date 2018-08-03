@@ -29,8 +29,15 @@ import com.pragmaticobjects.oo.atom.tests.AssertAssertionPasses;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 
-
+/**
+ * Tests suite for {@link AssertBannerContents}
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertBannerContentsTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public AssertBannerContentsTest() {
         super(
             new TestCase(

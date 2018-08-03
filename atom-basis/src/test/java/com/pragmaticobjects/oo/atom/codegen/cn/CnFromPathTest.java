@@ -8,6 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Tests suite for {@link CnFromPath}
+ *
+ * @author Kapralov Sergey
+ */
 class CnFromPathTest extends TestsSuite {
     private static final Path PATH_WITH_MODULE_INFO;
     private static final Path PATH_WITH_CLASSES;
@@ -33,6 +38,9 @@ class CnFromPathTest extends TestsSuite {
         }
     }
 
+    /**
+     * Ctor.
+     */
     public CnFromPathTest() {
         super(
             new TestCase(

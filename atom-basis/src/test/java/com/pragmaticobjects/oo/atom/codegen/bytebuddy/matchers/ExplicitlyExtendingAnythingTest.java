@@ -28,10 +28,14 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
 
 /**
+ * Tests suite for {@link ExplicitlyExtendingAnything}
  *
  * @author Kapralov Sergey
  */
 public class ExplicitlyExtendingAnythingTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public ExplicitlyExtendingAnythingTest() {
         super(
             new TestCase(
@@ -72,7 +76,8 @@ public class ExplicitlyExtendingAnythingTest extends TestsSuite {
             )
         );
     }
-    
+
+    //CHECKSTYLE:OFF
     private static class Foo {
     }
 

@@ -34,6 +34,9 @@ import net.bytebuddy.description.type.TypeDescription;
  * @author Kapralov Sergey
  */
 public class ValComplexTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public ValComplexTest() {
         super(
             new TestCase(
@@ -65,5 +68,6 @@ public class ValComplexTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class Foo {}
 }

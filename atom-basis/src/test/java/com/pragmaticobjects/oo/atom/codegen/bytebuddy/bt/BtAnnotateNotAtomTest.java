@@ -32,7 +32,9 @@ import com.pragmaticobjects.oo.atom.tests.TestsSuite;
  * @author Kapralov Sergey
  */
 public class BtAnnotateNotAtomTest extends TestsSuite {
-    
+    /**
+     * Ctor.
+     */
     public BtAnnotateNotAtomTest() {
         super(
             new TestCase(
@@ -46,6 +48,7 @@ public class BtAnnotateNotAtomTest extends TestsSuite {
         );
     }
 
+    //CHECKSTYLE:OFF
     private static class Foo {
     }
 }

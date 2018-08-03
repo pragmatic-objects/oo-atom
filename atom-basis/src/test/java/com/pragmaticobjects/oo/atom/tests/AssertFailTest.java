@@ -33,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @author Kapralov Sergey
  */
 public class AssertFailTest {
+    //CHECKSTYLE:OFF
     @Test
     public final void alwaysFails() {
         Assertion assertion = new AssertFail();

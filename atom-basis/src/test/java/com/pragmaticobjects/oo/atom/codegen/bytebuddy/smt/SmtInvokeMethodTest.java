@@ -6,7 +6,15 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatchers;
 
+/**
+ * Tests suite for {@link SmtInvokeMethod}
+ *
+ * @author Kapralov Sergey
+ */
 class SmtInvokeMethodTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
     public SmtInvokeMethodTest() {
         super(
             new TestCase(
@@ -30,7 +38,7 @@ class SmtInvokeMethodTest extends TestsSuite {
         );
     }
 
-
+    //CHECKSTYLE:OFF
     private static class Foo {
         public void bar() {}
     }
