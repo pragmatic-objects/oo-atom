@@ -25,6 +25,7 @@
 package com.pragmaticobjects.oo.atom.codegen;
 
 import com.pragmaticobjects.oo.atom.anno.NotAtom;
+import com.pragmaticobjects.oo.atom.codegen.cn.CnFromPath;
 import com.pragmaticobjects.oo.atom.codegen.cp.CpFromString;
 import com.pragmaticobjects.oo.atom.codegen.stage.AggroInstrumentationStage;
 import com.pragmaticobjects.oo.atom.codegen.stage.CopyAtomAnnotations;
@@ -64,6 +65,9 @@ public class AtomizerMain {
                 System.getProperty("java.class.path")
             ),
             workingDirectory,
+            new CnFromPath(
+                workingDirectory
+            ),
             stage,
             new CopyAtomAnnotations()
         ).apply();

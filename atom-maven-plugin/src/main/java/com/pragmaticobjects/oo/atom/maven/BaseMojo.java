@@ -1,5 +1,7 @@
 package com.pragmaticobjects.oo.atom.maven;
 
+import com.pragmaticobjects.oo.atom.codegen.cn.CnExcludingPackages;
+import com.pragmaticobjects.oo.atom.codegen.cn.CnFromPath;
 import com.pragmaticobjects.oo.atom.codegen.cp.ClassPath;
 import com.pragmaticobjects.oo.atom.codegen.cp.CpFromString;
 import com.pragmaticobjects.oo.atom.codegen.stage.Stage;
@@ -13,6 +15,7 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +28,8 @@ public abstract class BaseMojo extends AbstractMojo {
     private MavenProject project;
     @Parameter(defaultValue = "false", required = true, readonly = true)
     private boolean instrumentPomProjects;
+    @Parameter
+    private String[] excludePackages;
 
     protected final void doInstrumentation(Stage stage, Path workingDirectory) throws MojoExecutionException, MojoFailureException {
         if(!project.getPackaging().equals("pom") || instrumentPomProjects) {
@@ -34,9 +39,15 @@ public abstract class BaseMojo extends AbstractMojo {
                     .collect(Collectors.joining(":"));
             ClassPath cp = new CpFromString(classPath);
             new ApplyStages(
-                    cp,
-                    workingDirectory,
-                    stage
+                cp,
+                workingDirectory,
+                new CnExcludingPackages(
+                    new CnFromPath(
+                        workingDirectory
+                    ),
+                    Optional.ofNullable(excludePackages).orElse(new String[] {})
+                ),
+                stage
             ).apply();
         }
     }
