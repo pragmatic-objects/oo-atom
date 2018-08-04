@@ -24,7 +24,6 @@
 package com.pragmaticobjects.oo.atom.instrumentation;
 
 import com.pragmaticobjects.oo.atom.codegen.cn.ClassNames;
-import com.pragmaticobjects.oo.atom.codegen.cn.CnFromPath;
 import com.pragmaticobjects.oo.atom.codegen.cp.ClassPath;
 import com.pragmaticobjects.oo.atom.codegen.cp.CpCombined;
 import com.pragmaticobjects.oo.atom.codegen.cp.CpExplicit;
@@ -42,6 +41,8 @@ public class ApplyStages implements Instrumentation {
     private final ClassPath classPath;
     private final Path workingDirectory;
     private final List<Stage> stages;
+    private final ClassNames classNames;
+
 
     /**
      * Ctor.
@@ -49,11 +50,13 @@ public class ApplyStages implements Instrumentation {
      * @param classPath {@link ClassPath}
      * @param workingDirectory Working directory - root of the location where instrumented classes located.
      * @param stages Stages to apply.
+     * @param classNames Class names
      */
-    public ApplyStages(final ClassPath classPath, final Path workingDirectory, final List<Stage> stages) {
+    public ApplyStages(ClassPath classPath, Path workingDirectory, ClassNames classNames, List<Stage> stages) {
         this.classPath = classPath;
         this.workingDirectory = workingDirectory;
         this.stages = stages;
+        this.classNames = classNames;
     }
 
     /**
@@ -62,11 +65,13 @@ public class ApplyStages implements Instrumentation {
      * @param classPath {@link ClassPath}
      * @param workingDirectory Working directory - root of the location where instrumented classes located.
      * @param stages Stages to apply.
+     * @param classNames Class names
      */
-    public ApplyStages(final ClassPath classPath, final Path workingDirectory, final Stage... stages) {
+    public ApplyStages(final ClassPath classPath, final Path workingDirectory, ClassNames classNames, final Stage... stages) {
         this(
             classPath,
             workingDirectory,
+            classNames,
             List.of(stages)
         );
     }
@@ -78,9 +83,6 @@ public class ApplyStages implements Instrumentation {
             new CpExplicit(
                 workingDirectory
             )
-        );
-        final ClassNames classNames = new CnFromPath(
-            workingDirectory
         );
         for(Stage stage : stages) {
             stage.apply(classPath, classNames, workingDirectory);
