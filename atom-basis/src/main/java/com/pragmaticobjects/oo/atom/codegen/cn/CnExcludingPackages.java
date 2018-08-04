@@ -39,7 +39,7 @@ public class CnExcludingPackages implements ClassNames {
     public final List<String> classNames() {
         List<String> names = this.delegate.classNames();
         for(String pkg : packages) {
-            names = names.filter(cn -> cn.startsWith(pkg + "."));
+            names = names.filter(cn -> !cn.startsWith(pkg + "."));
         }
         return names;
     }
