@@ -74,4 +74,8 @@ public class Atoms {
         }
         return result;
     }
+
+    private static String atom$toString(String name, Object value) {
+        return name + "=" + value.toString();
+    }
 }
