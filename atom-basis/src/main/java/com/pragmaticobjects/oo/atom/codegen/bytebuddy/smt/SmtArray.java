@@ -71,7 +71,7 @@ public class SmtArray implements StackManipulationToken {
      * @param members Array members
      */
     public SmtArray(StackManipulationToken... members) {
-        this(TypeDescription.OBJECT, List.of(members));
+        this(List.of(members));
     }
 
     @Override
