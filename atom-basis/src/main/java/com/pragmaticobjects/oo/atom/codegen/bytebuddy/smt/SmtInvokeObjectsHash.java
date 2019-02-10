@@ -26,7 +26,6 @@ package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -50,8 +49,7 @@ public class SmtInvokeObjectsHash implements StackManipulationToken {
     @Override
     public final StackManipulation stackManipulation() {
         return new StackManipulation.Compound(
-            MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(OBJECTS_HASH)),
-            MethodReturn.INTEGER
+            MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(OBJECTS_HASH))
         );
     }
 }
