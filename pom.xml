@@ -363,7 +363,7 @@ SOFTWARE.
                             <dependency>
                                 <groupId>com.puppycrawl.tools</groupId>
                                 <artifactId>checkstyle</artifactId>
-                                <version>8.10</version>
+                                <version>8.16</version>
                             </dependency>
                         </dependencies>
                     </plugin>
