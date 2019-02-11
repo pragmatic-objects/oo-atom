@@ -74,4 +74,13 @@ public class Atoms {
         }
         return result;
     }
+
+    private static String atom$toString(String name, Object value) {
+        final boolean annotationPresent = value.getClass().isAnnotationPresent(Atom.class);
+        if(annotationPresent) {
+            return "\"" + name + "\": " + value.toString();
+        } else {
+            return "\"" + name + "\": \"" + value.toString() + "\"";
+        }
+    }
 }
