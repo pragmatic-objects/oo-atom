@@ -2,10 +2,7 @@
 
 [![Build Status (Travis)](https://img.shields.io/travis/pragmatic-objects/oo-atom/master.svg)](https://travis-ci.org/pragmatic-objects/oo-atom)
 [![Build status (AppVeyor)](https://ci.appveyor.com/api/projects/status/sumvi0c7teo9oq94?svg=true)](https://ci.appveyor.com/project/skapral/oo-atom)
-
 [![Codecov](https://codecov.io/gh/pragmatic-objects/oo-atom/branch/master/graph/badge.svg)](https://codecov.io/gh/pragmatic-objects/oo-atom)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b91e6bf2e7744333b93d2b8785fe056b)](https://www.codacy.com/app/pragmatic-objects/oo-atom?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pragmatic-objects/oo-atom&amp;utm_campaign=Badge_Grade)
-[![PDD status](http://www.0pdd.com/svg?name=pragmatic-objects/oo-atom)](http://www.0pdd.com/p?name=pragmatic-objects/oo-atom)
 
 ## Disclaimer
 
