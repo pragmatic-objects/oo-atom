@@ -1,7 +1,7 @@
 /*
- * The MIT License
+ * MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright (c) 2018 Kapralov Sergey
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -10,45 +10,43 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ *
  */
 
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
-import com.pragmaticobjects.oo.atom.codegen.javassist.templates.Atoms;
 import net.bytebuddy.description.type.TypeDescription;
-
-import static net.bytebuddy.matcher.ElementMatchers.isSynthetic;
-import static net.bytebuddy.matcher.ElementMatchers.named;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- * Generates invocation of method {@link Atoms#atom$hashCode}.
+ * Generates invocation of method {@link StringBuilder#append(Object)}
  *
- * @see Atoms
  * @author Kapralov Sergey
  */
-public class SmtInvokeAtomHashCode extends SmtInvokeMethod {
+public class SmtInvokeStringBuilderAppend extends SmtInvokeMethod {
     /**
      * Ctor.
-     *
-     * @param type Type to call method on.
      */
-    public SmtInvokeAtomHashCode(final TypeDescription type) {
+    public SmtInvokeStringBuilderAppend() {
         super(
-            type,
+            new TypeDescription.ForLoadedType(StringBuilder.class),
             new ConjunctionMatcher<>(
-                isSynthetic(),
-                named("atom$hashCode")
+                ElementMatchers.named("append"),
+                ElementMatchers.takesArguments(1),
+                ElementMatchers.takesArgument(0, Object.class),
+                ElementMatchers.returns(StringBuilder.class)
             )
         );
     }

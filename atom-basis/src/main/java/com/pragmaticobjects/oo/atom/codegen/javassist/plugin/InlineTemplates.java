@@ -57,6 +57,12 @@ public class InlineTemplates implements Plugin {
                 m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
                 clazz.addMethod(m);
             }
+            {
+                final CtMethod hashCode = classPool.get(Atoms.class.getName()).getDeclaredMethod("atom$toString");
+                CtMethod m = CtNewMethod.copy(hashCode, "atom$toString", clazz, null);
+                m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
+                clazz.addMethod(m);
+            }
         } catch(Exception ex) {
             throw new RuntimeException(ex);
         }

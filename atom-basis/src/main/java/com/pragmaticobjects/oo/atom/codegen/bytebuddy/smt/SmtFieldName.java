@@ -1,7 +1,7 @@
 /*
- * The MIT License
+ * MIT License
  *
- * Copyright 2017 Kapralov Sergey.
+ * Copyright (c) 2018 Kapralov Sergey
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -10,46 +10,44 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ *
  */
+
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
-
-import java.lang.reflect.Method;
-import java.util.Objects;
+import net.bytebuddy.implementation.bytecode.constant.TextConstant;
 
 /**
- * Generates invocation for {@link Objects#hash(Object...)}
+ * Places a field name on top of the stack
  *
  * @author Kapralov Sergey
  */
-public class SmtInvokeObjectsHash implements StackManipulationToken {
-    private static final Method OBJECTS_HASH;
+public class SmtFieldName implements StackManipulationToken {
+    private final FieldDescription field;
 
-    static {
-        try {
-            OBJECTS_HASH = Objects.class.getMethod("hash", Object[].class);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+    /**
+     * Ctor.
+     * @param field Field
+     */
+    public SmtFieldName(FieldDescription field) {
+        this.field = field;
     }
 
     @Override
     public final StackManipulation stackManipulation() {
-        return new StackManipulation.Compound(
-            MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(OBJECTS_HASH))
-        );
+        return new TextConstant(field.getName());
     }
 }
