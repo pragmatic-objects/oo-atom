@@ -75,8 +75,9 @@ public class SmtAtomFieldsToString extends SmtInferred {
                     List.of(type)
                         .flatMap(TypeDescription::getDeclaredFields)
                         .filter(f -> !f.isStatic())
-                        .map(f -> new SmtAtomFieldToString(type, f))
-                        .toJavaArray(SmtAtomFieldToString.class)
+                        .<StackManipulationToken>map(f -> new SmtAtomFieldToString(type, f))
+                        .prepend(new SmtAtomTypeToString(type))
+                        .toJavaArray(StackManipulationToken.class)
                 ),
                 new SmtInvokeMethod(
                     new TypeDescription.ForLoadedType(String.class),

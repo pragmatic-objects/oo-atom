@@ -48,10 +48,14 @@ public class ToStringTest extends TestsSuite {
                         new NotAtom(1, 2),
                         new NotAtom(3, 4)
                     ),
-                    "com.pragmaticobjects.oo.atom.it.ToStringTest$SimpleAtom{" +
-                        "a=1/2, " +
-                        "b=3/4" +
+                    String.join(
+                        "",
+                        "{",
+                        "\"@type\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$SimpleAtom\", ",
+                        "\"a\": \"1/2\", ",
+                        "\"b\": \"3/4\"",
                         "}"
+                    )
                 )
             ),
             new TestCase(
@@ -67,16 +71,22 @@ public class ToStringTest extends TestsSuite {
                             new NotAtom(7, 8)
                         )
                     ),
-                    "com.pragmaticobjects.oo.atom.it.ToStringTest$ComplexAtom{" +
-                        "a=com.pragmaticobjects.oo.atom.it.ToStringTest$SimpleAtom{" +
-                        "a=1/2, " +
-                        "b=3/4" +
-                        "}, " +
-                        "b=com.pragmaticobjects.oo.atom.it.ToStringTest$SimpleAtom{" +
-                        "a=5/6, " +
-                        "b=7/8" +
-                        "}" +
+                    String.join(
+                        "",
+                        "{",
+                        "\"@type\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$ComplexAtom\", ",
+                        "\"a\": {",
+                        "\"@type\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$SimpleAtom\", ",
+                        "\"a\": \"1/2\", ",
+                        "\"b\": \"3/4\"",
+                        "}, ",
+                        "\"b\": {",
+                        "\"@type\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$SimpleAtom\", ",
+                        "\"a\": \"5/6\", ",
+                        "\"b\": \"7/8\"",
+                        "}",
                         "}"
+                    )
                 )
             )
         );

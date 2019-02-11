@@ -41,8 +41,6 @@ public class SmtAtomToString extends SmtCombined {
     public SmtAtomToString(TypeDescription type) {
         super(
             new SmtNewStringBuilder(),
-            new SmtTypeName(type),
-            new SmtInvokeStringBuilderAppend(),
             new SmtString("{"),
             new SmtInvokeStringBuilderAppend(),
             new SmtAtomFieldsToString(type),
