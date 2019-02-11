@@ -2,6 +2,8 @@
 
 *Note: checked items are validated and enforced by Atomizer's current version.*
 
+### Atoms
+
 *Atom interface* is Java interface, annotated with `@oo.atom.anno.Atom` annotation.
 All implementors of the Atom interface must be Atoms. The following requirements are set on
 Atom interfaces:
@@ -30,6 +32,8 @@ constructor per Atom. Atom aliases doesn't have a primary constructor.
 - [ ] Supplementary constructors are constructors, which delegate to another constructors, located either in this class,
 or in parent.
 
+### Atom alias
+
 It is allowed to extend Atom classes. But implementation inheritance is strictly prohibited in Atoms concept, that's why
 classes, inherited from Atoms, must follow this set of requirements:
 - [x] No new fields declaration
@@ -38,6 +42,8 @@ classes, inherited from Atoms, must follow this set of requirements:
 - [x] The only things which are allowed are supplementary constructors
 
 A class which extends Atom and follows the rules above is named *Atom alias*.
+
+### Atom equality semantics
 
 Atoms define a set of requirements on equality. The rules are:
 - [x] Two atoms are equal, if and only if they are instance of the same class and their fields are equal.
@@ -52,4 +58,15 @@ A set of standard Java classes are treated as Atoms. They are:
 - [x] All primitive types and their wrappers
 - [x] `java.util.String`
 
-@todo #165 describe the term Natural Java Atoms explicitly. 
+@todo #165 describe the term Natural Java Atoms explicitly.
+
+### Atom `toString` semantics
+
+For each Atom, `toString` method is reserved to produce stringified internal representation of the Atom structure for
+tracing and debugging purposes. Exact format of `toString` output for Atom is not regulated by this specification and
+can change at any time. Client code should never reason on the output of `toString` from Atom.
+
+`toString` implementation of each Atom must follow this set of rules:
+
+- [x] For two equal Atoms (aka Atoms of the same type and equal set of fields), `toString` must produce equal result.
+- [ ] For two non-equal Atoms, `toString` must produce non-equal result.
