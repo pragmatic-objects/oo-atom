@@ -21,45 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-package com.pragmaticobjects.oo.atom.codegen.bytebuddy.plugin;
-
-import com.pragmaticobjects.oo.atom.anno.Atom;
-import com.pragmaticobjects.oo.atom.codegen.bytebuddy.bt.*;
-import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.AnnotatedAtom;
 import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
-import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.ExplicitlyExtendingAnything;
-import com.pragmaticobjects.oo.atom.codegen.bytebuddy.validator.ValAtom;
-
-import static net.bytebuddy.matcher.ElementMatchers.*;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.implementation.bytecode.member.MethodReturn;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- * Generates {@link Object#equals(Object)} and {@link Object#hashCode()} methods
- * for all {@link Atom}-annotated classes
+ * {@link Object#equals(Object)} method body for Atoms
  *
  * @author Kapralov Sergey
  */
-public class GenerateEqualsAndHashCodePlugin extends TaskPlugin implements Plugin {
+public class SmtAtomToString extends SmtCombined {
     /**
-     * Ctor
+     * Ctor.
+     * @param type type
      */
-    public GenerateEqualsAndHashCodePlugin() {
+    public SmtAtomToString(TypeDescription type) {
         super(
-            new BtApplyIfMatches(
+            new SmtNewStringBuilder(),
+            new SmtString("{"),
+            new SmtInvokeStringBuilderAppend(),
+            new SmtAtomFieldsToString(type),
+            new SmtInvokeStringBuilderAppend(),
+            new SmtString("}"),
+            new SmtInvokeStringBuilderAppend(),
+            new SmtInvokeMethod(
+                new TypeDescription.ForLoadedType(StringBuilder.class),
                 new ConjunctionMatcher<>(
-                    not(isInterface()),
-                    not(isAnnotation()),
-                    not(isSynthetic()),
-                    new AnnotatedAtom(),
-                    not(new ExplicitlyExtendingAnything())
-                ),
-                new BtValidated(
-                    new ValAtom(),
-                    new BtSequence(
-                        new BtGenerateEquals(),
-                        new BtGenerateHashCode()
-                    )
+                    ElementMatchers.named("toString")
                 )
+            ),
+            new SmtStatic(
+                MethodReturn.of(TypeDescription.STRING)
             )
         );
     }
