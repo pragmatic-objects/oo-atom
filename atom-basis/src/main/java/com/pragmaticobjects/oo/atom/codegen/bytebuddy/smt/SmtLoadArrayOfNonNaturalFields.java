@@ -23,27 +23,28 @@
  */
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
+import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.NaturalJavaAtom;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 
 /**
- * Loads all fields of on-stack object and creates an array from them.
+ * Loads all non-natural fields of on-stack object and creates an array from them.
  *
  * @author Kapralov Sergey
  */
-public class SmtLoadArrayOfFields extends SmtInferred {
+public class SmtLoadArrayOfNonNaturalFields extends SmtInferred {
     /**
      * Ctor.
      *
      * @param type Type.
      */
-    public SmtLoadArrayOfFields(TypeDescription type) {
+    public SmtLoadArrayOfNonNaturalFields(TypeDescription type) {
         super(new Inference(type));
     }
 
 
     /**
-     * {@link SmtLoadArrayOfFields} inference.
+     * {@link SmtLoadArrayOfNonNaturalFields} inference.
      *
      * @author Kapralov Sergey
      */
@@ -61,10 +62,12 @@ public class SmtLoadArrayOfFields extends SmtInferred {
 
         @Override
         public final StackManipulationToken stackManipulationToken() {
+            NaturalJavaAtom naturalMatcher = new NaturalJavaAtom();
             return new SmtArray(
                 List.of(type)
                     .flatMap(TypeDescription::getDeclaredFields)
                     .filter(f -> !f.isStatic())
+                    .filter(f -> !naturalMatcher.matches(f.getType().asErasure()))
                     .map(f -> new SmtLoadField(f))
                     .toJavaArray(SmtLoadField.class)
             );
