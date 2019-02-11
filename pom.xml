@@ -104,7 +104,7 @@ SOFTWARE.
             <dependency>
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
-                <version>3.22.0-GA</version>
+                <version>3.24.1-GA</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.bcel</groupId>
@@ -145,7 +145,7 @@ SOFTWARE.
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>license-maven-plugin</artifactId>
-                    <version>1.14</version>
+                    <version>1.16</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -155,7 +155,7 @@ SOFTWARE.
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.0.2</version>
+                    <version>3.1.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -165,7 +165,7 @@ SOFTWARE.
                 <plugin>
                     <groupId>org.skife.maven</groupId>
                     <artifactId>really-executable-jar-maven-plugin</artifactId>
-                    <version>1.4.1</version>
+                    <version>1.5.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -363,7 +363,7 @@ SOFTWARE.
                             <dependency>
                                 <groupId>com.puppycrawl.tools</groupId>
                                 <artifactId>checkstyle</artifactId>
-                                <version>8.10</version>
+                                <version>8.16</version>
                             </dependency>
                         </dependencies>
                     </plugin>
