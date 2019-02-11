@@ -34,7 +34,18 @@ import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
  * @author Kapralov Sergey
  */
 public class SmtArray implements StackManipulationToken {
+    private final TypeDescription type;
     private final List<StackManipulationToken> members;
+
+    /**
+     * Ctor
+     * @param type Array's type
+     * @param members Array members
+     */
+    public SmtArray(TypeDescription type, List<StackManipulationToken> members) {
+        this.type = type;
+        this.members = members;
+    }
 
     /**
      * Ctor.
@@ -42,7 +53,16 @@ public class SmtArray implements StackManipulationToken {
      * @param members Array members
      */
     public SmtArray(List<StackManipulationToken> members) {
-        this.members = members;
+        this(TypeDescription.OBJECT, members);
+    }
+
+    /**
+     * Ctor
+     * @param type Array's type
+     * @param members Array members
+     */
+    public SmtArray(TypeDescription type, StackManipulationToken... members) {
+        this(type, List.of(members));
     }
 
     /**
@@ -57,7 +77,7 @@ public class SmtArray implements StackManipulationToken {
     @Override
     public final StackManipulation stackManipulation() {
         return members.transform(
-            list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(
+            list -> ArrayFactory.forType(type.asGenericType()).withValues(
                 list.map(StackManipulationToken::stackManipulation).toJavaList()
             )
         );
