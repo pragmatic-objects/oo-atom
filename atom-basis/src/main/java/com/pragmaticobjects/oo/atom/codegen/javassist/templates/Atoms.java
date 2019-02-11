@@ -40,7 +40,7 @@ public class Atoms {
         throw new IllegalAccessError();
     }
 
-    private static boolean atom$equal(Object object1, Object object2) {
+    static boolean atom$equal(Object object1, Object object2) {
         if (object1 == object2) {
             return true;
         }
@@ -59,7 +59,7 @@ public class Atoms {
         return false;
     }
 
-    private static int atom$hashCode(Object... elements) {
+    static int atom$hashCode(Object... elements) {
         if (elements == null) {
             return 0;
         }
@@ -69,7 +69,7 @@ public class Atoms {
             if(element != null) {
                 final boolean annotationPresent = element.getClass().isAnnotationPresent(Atom.class);
                 final int hashCode = annotationPresent ? element.hashCode() : System.identityHashCode(element);
-                result = result + (element == null ? 0 : element.hashCode());
+                result = result + (element == null ? 0 : hashCode);
             }
         }
         return result;
