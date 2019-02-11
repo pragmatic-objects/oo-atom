@@ -21,35 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+import static net.bytebuddy.matcher.ElementMatchers.isSynthetic;
+import static net.bytebuddy.matcher.ElementMatchers.named;
 
-import java.lang.reflect.Method;
-import java.util.Objects;
+import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
+import com.pragmaticobjects.oo.atom.codegen.javassist.templates.Atoms;
+
+import net.bytebuddy.description.type.TypeDescription;
 
 /**
- * Generates invocation for {@link Objects#hash(Object...)}
+ * Generates invocation of method "atom$toString".
  *
+ * @see Atoms
  * @author Kapralov Sergey
  */
-public class SmtInvokeObjectsHash implements StackManipulationToken {
-    private static final Method OBJECTS_HASH;
-
-    static {
-        try {
-            OBJECTS_HASH = Objects.class.getMethod("hash", Object[].class);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public final StackManipulation stackManipulation() {
-        return new StackManipulation.Compound(
-            MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(OBJECTS_HASH))
+public class SmtInvokeAtomToString extends SmtInvokeMethod {
+    /**
+     * Ctor.
+     *
+     * @param type Type to call method on.
+     */
+    public SmtInvokeAtomToString(final TypeDescription type) {
+        super(
+            type,
+            new ConjunctionMatcher<>(
+                isSynthetic(),
+                named("atom$toString")
+            )
         );
     }
 }
