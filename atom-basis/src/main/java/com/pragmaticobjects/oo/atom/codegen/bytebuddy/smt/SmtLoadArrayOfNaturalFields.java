@@ -21,35 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
-import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.ConjunctionMatcher;
-import com.pragmaticobjects.oo.atom.codegen.javassist.templates.Atoms;
+import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.NaturalJavaAtom;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 
-import static net.bytebuddy.matcher.ElementMatchers.isSynthetic;
-import static net.bytebuddy.matcher.ElementMatchers.named;
-
 /**
- * Generates invocation of method {@link Atoms#atom$hashCode}.
+ * Loads all natural fields of on-stack object and creates an array from them.
  *
- * @see Atoms
  * @author Kapralov Sergey
  */
-public class SmtInvokeAtomHashCode extends SmtInvokeMethod {
+public class SmtLoadArrayOfNaturalFields extends SmtInferred {
     /**
      * Ctor.
      *
-     * @param type Type to call method on.
+     * @param type Type.
      */
-    public SmtInvokeAtomHashCode(final TypeDescription type) {
-        super(
-            type,
-            new ConjunctionMatcher<>(
-                isSynthetic(),
-                named("atom$hashCode")
-            )
-        );
+    public SmtLoadArrayOfNaturalFields(TypeDescription type) {
+        super(new Inference(type));
+    }
+
+
+    /**
+     * {@link SmtLoadArrayOfNaturalFields} inference.
+     *
+     * @author Kapralov Sergey
+     */
+    private static class Inference implements StackManipulationToken.Inference {
+        private final TypeDescription type;
+
+        /**
+         * Ctor.
+         *
+         * @param type Type.
+         */
+        public Inference(TypeDescription type) {
+            this.type = type;
+        }
+
+        @Override
+        public final StackManipulationToken stackManipulationToken() {
+            NaturalJavaAtom naturalMatcher = new NaturalJavaAtom();
+            return new SmtArray(
+                List.of(type)
+                    .flatMap(TypeDescription::getDeclaredFields)
+                    .filter(f -> !f.isStatic())
+                    .filter(f -> naturalMatcher.matches(f.getType().asErasure()))
+                    .map(f -> new SmtLoadField(f))
+                    .toJavaArray(SmtLoadField.class)
+            );
+        }
     }
 }

@@ -24,6 +24,9 @@
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.implementation.bytecode.Addition;
+import net.bytebuddy.implementation.bytecode.Multiplication;
+import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 
 /**
@@ -38,8 +41,13 @@ public class SmtAtomHashCode extends SmtCombined {
      */
     public SmtAtomHashCode(TypeDescription type) {
         super(
-            new SmtLoadArrayOfFields(type),
+            new SmtLoadArrayOfNaturalFields(type),
+            new SmtInvokeObjectsHash(),
+            new SmtStatic(IntegerConstant.forValue(31)),
+            new SmtStatic(Multiplication.INTEGER),
+            new SmtLoadArrayOfNonNaturalFields(type),
             new SmtInvokeAtomHashCode(type),
+            new SmtStatic(Addition.INTEGER),
             new SmtStatic(
                 MethodReturn.INTEGER
             )
