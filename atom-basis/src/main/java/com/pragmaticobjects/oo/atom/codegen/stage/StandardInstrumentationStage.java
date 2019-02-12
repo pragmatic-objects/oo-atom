@@ -16,8 +16,10 @@ import com.pragmaticobjects.oo.atom.codegen.javassist.plugin.MakeLambdaBreakers;
 public class StandardInstrumentationStage extends SequenceStage {
     /**
      * Ctor.
+     * 
+     * @param stubbedInstrumentation generates stubbed implementations of certain calls. Useful for testing.
      */
-    public StandardInstrumentationStage() {
+    public StandardInstrumentationStage(boolean stubbedInstrumentation) {
         super(
             new ShowBannerStage(
                 new BnnrFromResource(
@@ -42,7 +44,7 @@ public class StandardInstrumentationStage extends SequenceStage {
             ),
             new JavassistStage(
                 new com.pragmaticobjects.oo.atom.codegen.javassist.plugin.VerbosePlugin(
-                    new InlineTemplates()
+                    new InlineTemplates(stubbedInstrumentation)
                 )
             ),
             new ByteBuddyStage(
@@ -56,5 +58,12 @@ public class StandardInstrumentationStage extends SequenceStage {
                 )
             )
         );
+    }
+    
+    /**
+     * Default ctor.
+     */
+    public StandardInstrumentationStage() {
+        this(false);
     }
 }

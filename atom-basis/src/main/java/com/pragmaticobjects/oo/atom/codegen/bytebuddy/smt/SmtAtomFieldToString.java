@@ -26,6 +26,7 @@
 
 package com.pragmaticobjects.oo.atom.codegen.bytebuddy.smt;
 
+import com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.NaturalJavaAtom;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
 
@@ -35,17 +36,49 @@ import net.bytebuddy.description.type.TypeDescription;
  *
  * @author Kapralov Sergey
  */
-public class SmtAtomFieldToString extends SmtCombined {
+public class SmtAtomFieldToString extends SmtInferred {
     /**
      * Ctor.
-     * @param type Type
      * @param field Field
      */
-    public SmtAtomFieldToString(final TypeDescription type, final FieldDescription field) {
+    public SmtAtomFieldToString(final FieldDescription field) {
         super(
-            new SmtFieldName(field),
-            new SmtLoadField(field),
-            new SmtInvokeAtomToString(type)
+            new Inference(field)
         );
+    }
+
+    /**
+     * {@link SmtAtomFieldToString} inference
+     * 
+     */
+    private static class Inference implements StackManipulationToken.Inference {
+        private final FieldDescription field;
+
+        /**
+         * Ctor.
+         * @param field Field
+         */
+        public Inference(FieldDescription field) {
+            this.field = field;
+        }
+
+        @Override
+        public final StackManipulationToken stackManipulationToken() {
+            final TypeDescription declaringType = field.getDeclaringType().asErasure();
+            final TypeDescription fieldType = field.getType().asErasure();
+            if(new NaturalJavaAtom().matches(fieldType)) {
+                return new SmtCombined(
+                    new SmtFieldName(field),
+                    new SmtLoadField(field),
+                    new SmtInvokeAtomToStringNatural(declaringType)
+                );
+            } else {
+                return new SmtCombined(
+                    new SmtFieldName(field),
+                    new SmtLoadField(field),
+                    new SmtInvokeAtomToString(declaringType)
+                );
+            }
+        }
     }
 }

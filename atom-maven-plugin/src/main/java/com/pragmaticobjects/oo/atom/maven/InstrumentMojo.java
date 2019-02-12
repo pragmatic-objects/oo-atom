@@ -34,7 +34,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import java.nio.file.Paths;
 
 /**
- * Mojo that instruments prodiction code
+ * Mojo that instruments production code
  *
  * @author Kapralov Sergey
  */
@@ -43,10 +43,13 @@ public class InstrumentMojo extends BaseMojo {
     @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
     protected String outputDirectory;
 
+    @Parameter(defaultValue = "false", required = true, readonly = true)
+    protected boolean stubbedInstrumentation;
+
     @Override
     public final void execute() throws MojoExecutionException, MojoFailureException {
         doInstrumentation(
-            new StandardInstrumentationStage(),
+            new StandardInstrumentationStage(stubbedInstrumentation),
             Paths.get(outputDirectory)
         );
     }

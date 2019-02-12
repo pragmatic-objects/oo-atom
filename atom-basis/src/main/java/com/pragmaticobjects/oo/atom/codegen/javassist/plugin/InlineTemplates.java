@@ -38,6 +38,18 @@ import javassist.bytecode.AccessFlag;
  * @author Kapralov Sergey
  */
 public class InlineTemplates implements Plugin {
+    private final boolean stubbedInstrumentation;
+
+    /**
+     * Ctor.
+     * @param stubbedInstrumentation stub calls to {@link System#identityHashCode}. 
+     *        If set to true, 42 integer will be substituted where normally 
+     *        {@link System#identityHashCode} is called
+     */
+    public InlineTemplates(boolean stubbedInstrumentation) {
+        this.stubbedInstrumentation = stubbedInstrumentation;
+    }
+
     @Override
     public final void operateOn(final CtClass clazz, final ClassPool classPool) {
         try {
@@ -60,6 +72,23 @@ public class InlineTemplates implements Plugin {
             {
                 final CtMethod hashCode = classPool.get(Atoms.class.getName()).getDeclaredMethod("atom$toString");
                 CtMethod m = CtNewMethod.copy(hashCode, "atom$toString", clazz, null);
+                m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
+                clazz.addMethod(m);
+            }
+            {
+                final CtMethod hashCode = classPool.get(Atoms.class.getName()).getDeclaredMethod("atom$toString$natural");
+                CtMethod m = CtNewMethod.copy(hashCode, "atom$toString$natural", clazz, null);
+                m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
+                clazz.addMethod(m);
+            }
+            if(stubbedInstrumentation) {
+                final CtMethod hashCode = classPool.get(Atoms.class.getName()).getDeclaredMethod("atom$hashCode$identity$stub");
+                CtMethod m = CtNewMethod.copy(hashCode, "atom$hashCode$identity", clazz, null);
+                m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
+                clazz.addMethod(m);
+            } else {
+                final CtMethod hashCode = classPool.get(Atoms.class.getName()).getDeclaredMethod("atom$hashCode$identity");
+                CtMethod m = CtNewMethod.copy(hashCode, "atom$hashCode$identity", clazz, null);
                 m.setModifiers(AccessFlag.STATIC | AccessFlag.PRIVATE | AccessFlag.SYNTHETIC | AccessFlag.BRIDGE);
                 clazz.addMethod(m);
             }

@@ -13,12 +13,10 @@
         <dependency>
             <groupId>com.pragmaticobjects.oo.atom</groupId>
             <artifactId>atom-basis</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency> 
             <groupId>io.vavr</groupId> 
             <artifactId>vavr</artifactId>
-            <version>0.10.0</version>
         </dependency>
     </dependencies>
 
@@ -77,6 +75,9 @@
                             <goal>instrument</goal>
                             <goal>instrument-tests</goal>
                         </goals>
+                        <configuration>
+                            <stubbedInstrumentation>true</stubbedInstrumentation>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
