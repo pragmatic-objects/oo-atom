@@ -29,6 +29,7 @@ package com.pragmaticobjects.oo.atom.it;
 import com.pragmaticobjects.oo.atom.tests.AssertAtomsToString;
 import com.pragmaticobjects.oo.atom.tests.TestCase;
 import com.pragmaticobjects.oo.atom.tests.TestsSuite;
+import java.util.HashMap;
 
 /**
  * Tests suite for Atoms toString logic.
@@ -52,8 +53,8 @@ public class ToStringTest extends TestsSuite {
                         "",
                         "{",
                         "\"@type\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$SimpleAtom\", ",
-                        "\"a\": \"1/2\", ",
-                        "\"b\": \"3/4\"",
+                        "\"a\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$NotAtom#42\", ",
+                        "\"b\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$NotAtom#42\"",
                         "}"
                     )
                 )
@@ -77,14 +78,27 @@ public class ToStringTest extends TestsSuite {
                         "\"@type\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$ComplexAtom\", ",
                         "\"a\": {",
                         "\"@type\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$SimpleAtom\", ",
-                        "\"a\": \"1/2\", ",
-                        "\"b\": \"3/4\"",
+                        "\"a\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$NotAtom#42\", ",
+                        "\"b\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$NotAtom#42\"",
                         "}, ",
                         "\"b\": {",
                         "\"@type\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$SimpleAtom\", ",
-                        "\"a\": \"5/6\", ",
-                        "\"b\": \"7/8\"",
+                        "\"a\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$NotAtom#42\", ",
+                        "\"b\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$NotAtom#42\"",
                         "}",
+                        "}"
+                    )
+                )
+            ),
+            new TestCase(
+                "Atom with a link to itself via non-atom attribute",
+                new AssertAtomsToString(
+                    new AtomWithRecursiveNonAtomLink(),
+                    String.join(
+                        "",
+                        "{",
+                        "\"@type\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$AtomWithRecursiveNonAtomLink\", ",
+                        "\"hashMap\": \"com.pragmaticobjects.oo.atom.it.ToStringTest$AtomWithRecursiveNonAtomLink$AHashMap#42\"",
                         "}"
                     )
                 )
@@ -126,6 +140,21 @@ public class ToStringTest extends TestsSuite {
         @Override
         public String toString() {
             return a + "/" + b;
+        }
+    }
+
+    public static class AtomWithRecursiveNonAtomLink {
+        private final HashMap hashMap;
+
+        public AtomWithRecursiveNonAtomLink() {
+            this.hashMap = new AHashMap(this);
+        }
+        
+        @com.pragmaticobjects.oo.atom.anno.NotAtom
+        private static class AHashMap extends HashMap {
+            public AHashMap(Object that) {
+                put("this", that);
+            }
         }
     }
 }

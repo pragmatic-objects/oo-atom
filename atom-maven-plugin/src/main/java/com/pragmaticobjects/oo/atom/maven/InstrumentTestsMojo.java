@@ -43,10 +43,13 @@ public class InstrumentTestsMojo extends BaseMojo {
     @Parameter(defaultValue = "${project.build.testOutputDirectory}", required = true, readonly = true)
     protected String outputDirectory;
 
+    @Parameter(defaultValue = "false", required = true, readonly = true)
+    protected boolean stubbedInstrumentation;
+    
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         doInstrumentation(
-            new StandardInstrumentationStage(),
+            new StandardInstrumentationStage(stubbedInstrumentation),
             Paths.get(outputDirectory)
         );
     }

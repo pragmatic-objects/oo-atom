@@ -68,11 +68,23 @@ public class Atoms {
             result = 31 * result;
             if(element != null) {
                 final boolean annotationPresent = element.getClass().isAnnotationPresent(Atom.class);
-                final int hashCode = annotationPresent ? element.hashCode() : System.identityHashCode(element);
+                final int hashCode = annotationPresent ? element.hashCode() : atom$hashCode$identity(element);
                 result = result + (element == null ? 0 : hashCode);
             }
         }
         return result;
+    }
+
+    static int atom$hashCode$identity(Object element) {
+        return System.identityHashCode(element);
+    }
+    
+    static int atom$hashCode$identity$stub(Object element) {
+        return 42;
+    }
+    
+    private static String atom$toString$natural(String name, Object value) {
+        return "\"" + name + "\": \"" + value.toString() + "\"";
     }
 
     private static String atom$toString(String name, Object value) {
@@ -80,7 +92,7 @@ public class Atoms {
         if(annotationPresent) {
             return "\"" + name + "\": " + value.toString();
         } else {
-            return "\"" + name + "\": \"" + value.toString() + "\"";
+            return "\"" + name + "\": \"" + value.getClass().getName() + "#" + atom$hashCode$identity(value) + "\"";
         }
     }
 }
