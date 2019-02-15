@@ -50,6 +50,7 @@ public class InstrumentMojo extends BaseMojo {
     public final void execute() throws MojoExecutionException, MojoFailureException {
         doInstrumentation(
             new StandardInstrumentationStage(stubbedInstrumentation),
+            buildClassPath(),
             Paths.get(outputDirectory)
         );
     }

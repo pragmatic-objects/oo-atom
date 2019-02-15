@@ -23,6 +23,8 @@
  */
 package com.pragmaticobjects.oo.atom.maven;
 
+import com.pragmaticobjects.oo.atom.codegen.cp.CpCombined;
+import com.pragmaticobjects.oo.atom.codegen.cp.CpFromString;
 import com.pragmaticobjects.oo.atom.codegen.stage.StandardInstrumentationStage;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -40,8 +42,10 @@ import java.nio.file.Paths;
  */
 @Mojo(name = "instrument-tests", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES, requiresDependencyResolution = ResolutionScope.TEST)
 public class InstrumentTestsMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.testOutputDirectory}", required = true, readonly = true)
+    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
     protected String outputDirectory;
+    @Parameter(defaultValue = "${project.build.testOutputDirectory}", required = true, readonly = true)
+    protected String testOutputDirectory;
 
     @Parameter(defaultValue = "false", required = true, readonly = true)
     protected boolean stubbedInstrumentation;
@@ -50,7 +54,13 @@ public class InstrumentTestsMojo extends BaseMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         doInstrumentation(
             new StandardInstrumentationStage(stubbedInstrumentation),
-            Paths.get(outputDirectory)
+            new CpCombined(
+                buildClassPath(),
+                new CpFromString(
+                    outputDirectory
+                )
+            ),
+            Paths.get(testOutputDirectory)
         );
     }
 }
