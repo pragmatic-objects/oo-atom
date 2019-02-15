@@ -30,6 +30,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 
 import java.lang.reflect.Method;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -79,7 +80,7 @@ public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements As
         final DynamicType.Unloaded<?> make = bt
                 .transitionResult(subclass, typeDescription)
                 .make();
-        final Class<?> newClazz = make.load(new AnonymousClassLoader()).getLoaded();
+        final Class<?> newClazz = make.load(new AnonymousClassLoader(), ClassLoadingStrategy.Default.CHILD_FIRST).getLoaded();
         assertThat(
             List.of(newClazz.getDeclaredMethods()).map(Method::getName)
         ).containsOnlyElementsOf(
@@ -92,5 +93,6 @@ public class AssertClassToHaveCertainMethodsAfterBuilderTransition implements As
      *
      * @author Kapralov Sergey
      */
-    private static final class AnonymousClassLoader extends ClassLoader {}
+    private static final class AnonymousClassLoader extends ClassLoader {
+    }   
 }
