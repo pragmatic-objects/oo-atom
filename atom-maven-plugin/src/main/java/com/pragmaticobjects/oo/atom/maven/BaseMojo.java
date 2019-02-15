@@ -6,6 +6,7 @@ import com.pragmaticobjects.oo.atom.codegen.cp.ClassPath;
 import com.pragmaticobjects.oo.atom.codegen.cp.CpFromString;
 import com.pragmaticobjects.oo.atom.codegen.stage.Stage;
 import com.pragmaticobjects.oo.atom.instrumentation.ApplyStages;
+import io.vavr.collection.HashSet;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
 
 /**
  * Base Mojo for different instrumentations
@@ -31,13 +33,19 @@ public abstract class BaseMojo extends AbstractMojo {
     @Parameter
     private String[] excludePackages;
 
-    protected final void doInstrumentation(Stage stage, Path workingDirectory) throws MojoExecutionException, MojoFailureException {
-        if(!project.getPackaging().equals("pom") || instrumentPomProjects) {
-            String classPath = project.getArtifacts().stream()
+    protected final ClassPath buildClassPath() {
+        PluginDescriptor pluginDescriptor = (PluginDescriptor) this.getPluginContext().get("pluginDescriptor");
+        String classPath = HashSet.ofAll(project.getArtifacts())
+                    .addAll(pluginDescriptor.getArtifacts())
                     .map(Artifact::getFile)
                     .map(File::toString)
                     .collect(Collectors.joining(":"));
-            ClassPath cp = new CpFromString(classPath);
+        ClassPath cp = new CpFromString(classPath);
+        return cp;
+    }
+    
+    protected final void doInstrumentation(Stage stage, ClassPath cp, Path workingDirectory) throws MojoExecutionException, MojoFailureException {
+        if(!project.getPackaging().equals("pom") || instrumentPomProjects) {
             new ApplyStages(
                 cp,
                 workingDirectory,
