@@ -29,6 +29,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 
 import java.lang.annotation.Annotation;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,7 +64,7 @@ public class AssertBuilderTransitionToAnnotateAClass implements Assertion {
         final DynamicType.Unloaded<?> make = builderTransition
                 .transitionResult(subclass, typeDescription)
                 .make();
-        final Class<?> clazz = make.load(new AnonymousClassLoader()).getLoaded();
+        final Class<?> clazz = make.load(new AnonymousClassLoader(), ClassLoadingStrategy.Default.CHILD_FIRST).getLoaded();
         assertThat(clazz.getAnnotation(annotation))
                 .withFailMessage("Expected annotation %s is missing on class %s", annotation.getName(), clazz.getName())
                 .isNotNull();

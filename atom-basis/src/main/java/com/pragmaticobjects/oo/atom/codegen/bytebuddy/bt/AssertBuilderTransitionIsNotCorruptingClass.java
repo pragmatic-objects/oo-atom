@@ -27,6 +27,7 @@ import com.pragmaticobjects.oo.atom.tests.Assertion;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -60,7 +61,7 @@ public class AssertBuilderTransitionIsNotCorruptingClass implements Assertion {
             final DynamicType.Unloaded<?> make = bt
                     .transitionResult(subclass, typeDescription)
                     .make();
-            final Class<?> clazz = make.load(new AnonymousClassLoader()).getLoaded();
+            final Class<?> clazz = make.load(new AnonymousClassLoader(), ClassLoadingStrategy.Default.CHILD_FIRST).getLoaded();
             clazz.getMethods(); // Initiate validation.
         }).doesNotThrowAnyException();
     }
