@@ -4,10 +4,11 @@
 [![Build status (AppVeyor)](https://ci.appveyor.com/api/projects/status/sumvi0c7teo9oq94?svg=true)](https://ci.appveyor.com/project/skapral/oo-atom)
 [![Codecov](https://codecov.io/gh/pragmatic-objects/oo-atom/branch/master/graph/badge.svg)](https://codecov.io/gh/pragmatic-objects/oo-atom)
 
-## Disclaimer
+## NOTICE
 
-The project is currently on early stage. Not all of the planned features are currently implemented, and everything
-may be changed in future.
+OO-Atom support is currenty suspended in favour of its successor --- [OO-Equivalence](https://github.com/pragmatic-objects/oo-equivalence). OO-Equivalence serves the same purpose as OO-Atom, deriving the most of the source code and ideology from it, but uses the brand new approach.
+
+OO-Equivalence is backward-compatible with OO-Atom on source code level: if your project works with OO-Atom, it will work the same way after being recompiled with OO-Equivalence. For any issues with OO-Atom to OO-Equivalence migration, report to [OO-Equivalence issue tracker](https://github.com/pragmatic-objects/oo-equivalence/issues).
 
 ## Intro
 
